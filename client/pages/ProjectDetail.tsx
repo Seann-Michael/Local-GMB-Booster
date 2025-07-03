@@ -1207,7 +1207,9 @@ export default function ProjectDetail() {
                     )}
 
                     <div className="space-y-3">
-                      {project.tasks && project.tasks.length > 0 ? (
+                      {project.tasks &&
+                      Array.isArray(project.tasks) &&
+                      project.tasks.length > 0 ? (
                         project.tasks.map((task) => (
                           <div
                             key={task.id}
