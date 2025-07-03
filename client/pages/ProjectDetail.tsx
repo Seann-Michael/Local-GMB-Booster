@@ -5,8 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Header } from "@/components/Header";
-import { Breadcrumb } from "@/components/Breadcrumb";
+import { AppLayout } from "@/components/AppLayout";
 import {
   ArrowLeft,
   Edit,
@@ -22,7 +21,6 @@ import {
   Plus,
   Phone,
   Star,
-  X,
   CheckCircle,
   Clock,
   User,
@@ -32,6 +30,9 @@ import {
   FileText,
   Calendar,
   UserPlus,
+  AtSign,
+  Smartphone,
+  Monitor,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -39,6 +40,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
@@ -66,13 +81,38 @@ interface Task {
   completed: boolean;
   assignedTo?: string;
   dueDate?: string;
+  dueTime?: string;
   createdAt: string;
+  completedAt?: string;
+  completedBy?: string;
 }
 
 interface ChecklistItem {
   id: string;
   title: string;
   completed: boolean;
+  createdAt: string;
+  completedAt?: string;
+  completedBy?: string;
+}
+
+interface ProjectNote {
+  id: string;
+  content: string;
+  createdAt: string;
+  createdBy: string;
+  updatedAt?: string;
+}
+
+interface ActivityLogEntry {
+  id: string;
+  type: string;
+  description: string;
+  timestamp: string;
+  userId: string;
+  userName: string;
+  platform: "mobile" | "web";
+  details?: any;
 }
 
 interface Project {
@@ -92,8 +132,9 @@ interface Project {
   documents: ProjectDocument[];
   tasks: Task[];
   checklist: ChecklistItem[];
+  notes: ProjectNote[];
+  activityLog: ActivityLogEntry[];
   primaryPhotoId?: string;
-  notes?: string;
   createdAt: string;
   updatedAt: string;
   status?: string;
@@ -101,6 +142,14 @@ interface Project {
   startDate?: string;
   completionDate?: string;
 }
+
+// Mock users for assignment
+const mockUsers = [
+  { id: "1", name: "John Smith", email: "john@company.com" },
+  { id: "2", name: "Sarah Johnson", email: "sarah@company.com" },
+  { id: "3", name: "Mike Wilson", email: "mike@company.com" },
+  { id: "4", name: "Lisa Davis", email: "lisa@company.com" },
+];
 
 export default function ProjectDetail() {
   const { id } = useParams();
@@ -111,23 +160,74 @@ export default function ProjectDetail() {
   const [selectedPhotos, setSelectedPhotos] = useState<number[]>([]);
   const [showAddTask, setShowAddTask] = useState(false);
   const [showAddChecklist, setShowAddChecklist] = useState(false);
-  const [notes, setNotes] = useState("");
+  const [showAddNote, setShowAddNote] = useState(false);
+  const [editingNote, setEditingNote] = useState<string | null>(null);
+  const [editingTask, setEditingTask] = useState<string | null>(null);
+  const [editingChecklistItem, setEditingChecklistItem] = useState<
+    string | null
+  >(null);
+  const [newNote, setNewNote] = useState("");
   const [newTask, setNewTask] = useState({
     title: "",
     assignedTo: "",
     dueDate: "",
+    dueTime: "",
   });
   const [newChecklistItem, setNewChecklistItem] = useState("");
+  const [mentionQuery, setMentionQuery] = useState("");
+  const [showMentionDropdown, setShowMentionDropdown] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const projects = JSON.parse(localStorage.getItem("projects") || "[]");
     const foundProject = projects.find((p: Project) => p.id === id);
     if (foundProject) {
-      setProject(foundProject);
-      setNotes(foundProject.notes || "");
+      // Ensure all required arrays exist
+      const projectWithDefaults = {
+        ...foundProject,
+        notes: foundProject.notes || [],
+        activityLog: foundProject.activityLog || [],
+        tasks: foundProject.tasks || [],
+        checklist: foundProject.checklist || [],
+      };
+      setProject(projectWithDefaults);
     }
   }, [id]);
+
+  const getCurrentUser = () => ({
+    id: "current-user",
+    name: "Current User",
+    platform: navigator.userAgent.includes("Mobile")
+      ? "mobile"
+      : ("web" as const),
+  });
+
+  const addActivityLogEntry = (
+    type: string,
+    description: string,
+    details?: any,
+  ) => {
+    if (!project) return;
+
+    const user = getCurrentUser();
+    const entry: ActivityLogEntry = {
+      id: Date.now().toString(),
+      type,
+      description,
+      timestamp: new Date().toISOString(),
+      userId: user.id,
+      userName: user.name,
+      platform: user.platform,
+      details,
+    };
+
+    const updatedProject = {
+      ...project,
+      activityLog: [entry, ...(project.activityLog || [])],
+    };
+
+    updateProject(updatedProject);
+  };
 
   const getPhotoUrl = (photo: TaggedPhoto | string): string => {
     return typeof photo === "string" ? photo : photo.url;
@@ -147,6 +247,7 @@ export default function ProjectDetail() {
     };
 
     updateProject(updatedProject);
+    addActivityLogEntry("project_completed", "Project marked as completed");
     toast.success("Project marked as completed!");
   };
 
@@ -184,6 +285,10 @@ export default function ProjectDetail() {
     const message = `Hi ${customerName}! We've completed your ${project.name} project. We'd greatly appreciate if you could leave us a Google review. Here's the link: [Your Google Business Link]`;
     const phoneUrl = `sms:${phone}?body=${encodeURIComponent(message)}`;
     window.open(phoneUrl);
+    addActivityLogEntry(
+      "review_requested",
+      `Google review requested from ${customerName}`,
+    );
     toast.success("Review request message prepared!");
   };
 
@@ -210,6 +315,10 @@ export default function ProjectDetail() {
               };
 
               updateProject(updatedProject);
+              addActivityLogEntry(
+                "photos_added",
+                `Added ${newPhotos.length} new photo(s)`,
+              );
               toast.success(`Added ${newPhotos.length} new photo(s)`);
             }
           }
@@ -230,6 +339,7 @@ export default function ProjectDetail() {
       };
 
       updateProject(updatedProject);
+      addActivityLogEntry("photo_removed", "Photo removed from project");
       toast.success("Photo removed successfully");
     }
   };
@@ -256,14 +366,67 @@ export default function ProjectDetail() {
       const photoUrl = getPhotoUrl(photo);
       downloadPhoto(photoUrl, index);
     });
+    addActivityLogEntry(
+      "photos_downloaded",
+      `Downloaded ${selectedPhotos.length} photos`,
+    );
     toast.success(`Downloaded ${selectedPhotos.length} photos`);
     setSelectedPhotos([]);
   };
 
+  // Note Management Functions
+  const addNote = () => {
+    if (!project || !newNote.trim()) return;
+
+    const note: ProjectNote = {
+      id: Date.now().toString(),
+      content: newNote,
+      createdAt: new Date().toISOString(),
+      createdBy: getCurrentUser().name,
+    };
+
+    const updatedProject = {
+      ...project,
+      notes: [note, ...(project.notes || [])],
+    };
+
+    updateProject(updatedProject);
+    addActivityLogEntry("note_added", "Added project note");
+    setNewNote("");
+    setShowAddNote(false);
+    toast.success("Note added successfully");
+  };
+
+  const editNote = (noteId: string, newContent: string) => {
+    if (!project || !newContent.trim()) return;
+
+    const updatedNotes = project.notes.map((note) =>
+      note.id === noteId
+        ? { ...note, content: newContent, updatedAt: new Date().toISOString() }
+        : note,
+    );
+
+    updateProject({ ...project, notes: updatedNotes });
+    addActivityLogEntry("note_edited", "Project note edited");
+    setEditingNote(null);
+    toast.success("Note updated successfully");
+  };
+
+  const deleteNote = (noteId: string) => {
+    if (!project || !confirm("Are you sure you want to delete this note?"))
+      return;
+
+    const updatedNotes = project.notes.filter((note) => note.id !== noteId);
+    updateProject({ ...project, notes: updatedNotes });
+    addActivityLogEntry("note_deleted", "Project note deleted");
+    toast.success("Note deleted successfully");
+  };
+
+  // Task Management Functions
   const addTask = () => {
     if (!project || !newTask.title.trim()) return;
 
-    const task = {
+    const task: Task = {
       id: Date.now().toString(),
       ...newTask,
       completed: false,
@@ -276,7 +439,11 @@ export default function ProjectDetail() {
     };
 
     updateProject(updatedProject);
-    setNewTask({ title: "", assignedTo: "", dueDate: "" });
+    addActivityLogEntry(
+      "task_added",
+      `Task "${task.title}" assigned to ${task.assignedTo || "unassigned"}`,
+    );
+    setNewTask({ title: "", assignedTo: "", dueDate: "", dueTime: "" });
     setShowAddTask(false);
     toast.success("Task added successfully");
   };
@@ -284,20 +451,59 @@ export default function ProjectDetail() {
   const toggleTask = (taskId: string) => {
     if (!project) return;
 
+    const user = getCurrentUser();
     const updatedTasks = project.tasks?.map((task) =>
-      task.id === taskId ? { ...task, completed: !task.completed } : task,
+      task.id === taskId
+        ? {
+            ...task,
+            completed: !task.completed,
+            completedAt: !task.completed ? new Date().toISOString() : undefined,
+            completedBy: !task.completed ? user.name : undefined,
+          }
+        : task,
     );
 
     updateProject({ ...project, tasks: updatedTasks });
+    const task = project.tasks.find((t) => t.id === taskId);
+    addActivityLogEntry(
+      "task_toggled",
+      `Task "${task?.title}" marked as ${!task?.completed ? "completed" : "incomplete"}`,
+    );
   };
 
+  const editTask = (taskId: string, updatedTask: Partial<Task>) => {
+    if (!project) return;
+
+    const updatedTasks = project.tasks.map((task) =>
+      task.id === taskId ? { ...task, ...updatedTask } : task,
+    );
+
+    updateProject({ ...project, tasks: updatedTasks });
+    addActivityLogEntry("task_edited", `Task "${updatedTask.title}" updated`);
+    setEditingTask(null);
+    toast.success("Task updated successfully");
+  };
+
+  const deleteTask = (taskId: string) => {
+    if (!project || !confirm("Are you sure you want to delete this task?"))
+      return;
+
+    const task = project.tasks.find((t) => t.id === taskId);
+    const updatedTasks = project.tasks.filter((task) => task.id !== taskId);
+    updateProject({ ...project, tasks: updatedTasks });
+    addActivityLogEntry("task_deleted", `Task "${task?.title}" deleted`);
+    toast.success("Task deleted successfully");
+  };
+
+  // Checklist Management Functions
   const addChecklistItem = () => {
     if (!project || !newChecklistItem.trim()) return;
 
-    const item = {
+    const item: ChecklistItem = {
       id: Date.now().toString(),
       title: newChecklistItem,
       completed: false,
+      createdAt: new Date().toISOString(),
     };
 
     const updatedProject = {
@@ -306,6 +512,10 @@ export default function ProjectDetail() {
     };
 
     updateProject(updatedProject);
+    addActivityLogEntry(
+      "checklist_item_added",
+      `Checklist item "${item.title}" added`,
+    );
     setNewChecklistItem("");
     setShowAddChecklist(false);
     toast.success("Checklist item added");
@@ -314,11 +524,91 @@ export default function ProjectDetail() {
   const toggleChecklistItem = (itemId: string) => {
     if (!project) return;
 
+    const user = getCurrentUser();
     const updatedChecklist = project.checklist?.map((item) =>
-      item.id === itemId ? { ...item, completed: !item.completed } : item,
+      item.id === itemId
+        ? {
+            ...item,
+            completed: !item.completed,
+            completedAt: !item.completed ? new Date().toISOString() : undefined,
+            completedBy: !item.completed ? user.name : undefined,
+          }
+        : item,
     );
 
     updateProject({ ...project, checklist: updatedChecklist });
+    const item = project.checklist.find((i) => i.id === itemId);
+    addActivityLogEntry(
+      "checklist_item_toggled",
+      `Checklist item "${item?.title}" marked as ${!item?.completed ? "completed" : "incomplete"}`,
+    );
+  };
+
+  const editChecklistItem = (itemId: string, newTitle: string) => {
+    if (!project || !newTitle.trim()) return;
+
+    const updatedChecklist = project.checklist.map((item) =>
+      item.id === itemId ? { ...item, title: newTitle } : item,
+    );
+
+    updateProject({ ...project, checklist: updatedChecklist });
+    addActivityLogEntry(
+      "checklist_item_edited",
+      `Checklist item updated to "${newTitle}"`,
+    );
+    setEditingChecklistItem(null);
+    toast.success("Checklist item updated");
+  };
+
+  const deleteChecklistItem = (itemId: string) => {
+    if (
+      !project ||
+      !confirm("Are you sure you want to delete this checklist item?")
+    )
+      return;
+
+    const item = project.checklist.find((i) => i.id === itemId);
+    const updatedChecklist = project.checklist.filter(
+      (item) => item.id !== itemId,
+    );
+    updateProject({ ...project, checklist: updatedChecklist });
+    addActivityLogEntry(
+      "checklist_item_deleted",
+      `Checklist item "${item?.title}" deleted`,
+    );
+    toast.success("Checklist item deleted");
+  };
+
+  // Mention System Functions
+  const handleMentionInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    const cursorPos = e.target.selectionStart;
+    const textUpToCursor = value.substring(0, cursorPos);
+    const lastAtIndex = textUpToCursor.lastIndexOf("@");
+
+    if (lastAtIndex !== -1) {
+      const textAfterAt = textUpToCursor.substring(lastAtIndex + 1);
+      if (!textAfterAt.includes(" ") && textAfterAt.length <= 20) {
+        setMentionQuery(textAfterAt);
+        setShowMentionDropdown(true);
+      } else {
+        setShowMentionDropdown(false);
+      }
+    } else {
+      setShowMentionDropdown(false);
+    }
+
+    setNewNote(value);
+  };
+
+  const insertMention = (user: (typeof mockUsers)[0]) => {
+    const cursorPos = newNote.lastIndexOf("@" + mentionQuery);
+    const beforeMention = newNote.substring(0, cursorPos);
+    const afterMention = newNote.substring(cursorPos + mentionQuery.length + 1);
+
+    setNewNote(`${beforeMention}@${user.name} ${afterMention}`);
+    setShowMentionDropdown(false);
+    setMentionQuery("");
   };
 
   const updateProject = (updatedProject: Project) => {
@@ -330,24 +620,27 @@ export default function ProjectDetail() {
     setProject(updatedProject);
   };
 
-  const saveNotes = () => {
-    if (!project) return;
-    updateProject({ ...project, notes });
-    toast.success("Notes saved");
-  };
-
   const shareProject = () => {
     const publicUrl = `${window.location.origin}/public/project/${project?.id}`;
     navigator.clipboard.writeText(publicUrl);
+    addActivityLogEntry("project_shared", "Project link shared");
     toast.success("Public project link copied to clipboard");
+  };
+
+  const formatTimestamp = (timestamp: string) => {
+    return new Date(timestamp).toLocaleString();
+  };
+
+  const getFilteredUsers = () => {
+    return mockUsers.filter((user) =>
+      user.name.toLowerCase().includes(mentionQuery.toLowerCase()),
+    );
   };
 
   if (!project) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
+      <AppLayout>
         <div className="container px-4 py-6">
-          <Breadcrumb />
           <div className="flex items-center gap-4 mb-6">
             <Link to="/">
               <Button variant="ghost" size="icon">
@@ -365,16 +658,13 @@ export default function ProjectDetail() {
             </CardContent>
           </Card>
         </div>
-      </div>
+      </AppLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-
+    <AppLayout>
       <div className="container px-4 py-6">
-        <Breadcrumb />
         <div className="flex items-center gap-4 mb-6">
           <Link to="/">
             <Button variant="ghost" size="icon">
@@ -482,6 +772,7 @@ export default function ProjectDetail() {
             {[
               { id: "overview", label: "Overview" },
               { id: "tasks", label: "Tasks & Checklists" },
+              { id: "notes", label: "Notes" },
               { id: "activity", label: "Activity Log" },
             ].map((tab) => (
               <button
@@ -669,26 +960,163 @@ export default function ProjectDetail() {
                     )}
                   </CardContent>
                 </Card>
-
-                {/* Notes Section */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Project Notes</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Textarea
-                      placeholder="Add notes about this project..."
-                      value={notes}
-                      onChange={(e) => setNotes(e.target.value)}
-                      rows={4}
-                      className="mb-3"
-                    />
-                    <Button onClick={saveNotes} size="sm">
-                      Save Notes
-                    </Button>
-                  </CardContent>
-                </Card>
               </>
+            )}
+
+            {/* Notes Tab */}
+            {activeTab === "notes" && (
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <CardTitle>Project Notes</CardTitle>
+                  <Button
+                    onClick={() => setShowAddNote(true)}
+                    size="sm"
+                    className="gap-2"
+                  >
+                    <Plus className="h-4 w-4" />
+                    Add Note
+                  </Button>
+                </CardHeader>
+                <CardContent>
+                  {showAddNote && (
+                    <div className="border rounded-lg p-4 mb-4 space-y-3">
+                      <div className="relative">
+                        <Textarea
+                          placeholder="Add a note... Use @ to mention users"
+                          value={newNote}
+                          onChange={handleMentionInput}
+                          rows={4}
+                        />
+                        {showMentionDropdown &&
+                          getFilteredUsers().length > 0 && (
+                            <div className="absolute top-full left-0 right-0 bg-white border rounded-md shadow-lg z-10 max-h-40 overflow-y-auto">
+                              {getFilteredUsers().map((user) => (
+                                <div
+                                  key={user.id}
+                                  className="px-3 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
+                                  onClick={() => insertMention(user)}
+                                >
+                                  <AtSign className="h-4 w-4" />
+                                  <span>{user.name}</span>
+                                  <span className="text-sm text-muted-foreground">
+                                    {user.email}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                      </div>
+                      <div className="flex gap-2">
+                        <Button onClick={addNote} size="sm">
+                          Add Note
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            setShowAddNote(false);
+                            setNewNote("");
+                            setShowMentionDropdown(false);
+                          }}
+                          variant="outline"
+                          size="sm"
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="space-y-4">
+                    {project.notes && project.notes.length > 0 ? (
+                      project.notes.map((note) => (
+                        <div key={note.id} className="border rounded-lg p-4">
+                          <div className="flex items-start justify-between mb-2">
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium text-sm">
+                                {note.createdBy}
+                              </span>
+                              <span className="text-xs text-muted-foreground">
+                                {formatTimestamp(note.createdAt)}
+                              </span>
+                              {note.updatedAt && (
+                                <span className="text-xs text-muted-foreground">
+                                  (edited)
+                                </span>
+                              )}
+                            </div>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-6 w-6"
+                                >
+                                  <MoreVertical className="h-3 w-3" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem
+                                  onClick={() => setEditingNote(note.id)}
+                                >
+                                  <Edit className="h-4 w-4 mr-2" />
+                                  Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => deleteNote(note.id)}
+                                  className="text-destructive focus:text-destructive"
+                                >
+                                  <Trash2 className="h-4 w-4 mr-2" />
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                          {editingNote === note.id ? (
+                            <div className="space-y-2">
+                              <Textarea
+                                defaultValue={note.content}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter" && e.ctrlKey) {
+                                    editNote(note.id, e.currentTarget.value);
+                                  }
+                                }}
+                              />
+                              <div className="flex gap-2">
+                                <Button
+                                  size="sm"
+                                  onClick={(e) => {
+                                    const textarea = e.currentTarget
+                                      .parentElement
+                                      ?.previousElementSibling as HTMLTextAreaElement;
+                                    editNote(note.id, textarea.value);
+                                  }}
+                                >
+                                  Save
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => setEditingNote(null)}
+                                >
+                                  Cancel
+                                </Button>
+                              </div>
+                            </div>
+                          ) : (
+                            <p className="text-sm whitespace-pre-wrap">
+                              {note.content}
+                            </p>
+                          )}
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                        <p>No notes added yet</p>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
             )}
 
             {/* Tasks & Checklists Tab */}
@@ -719,17 +1147,27 @@ export default function ProjectDetail() {
                             }))
                           }
                         />
-                        <div className="grid grid-cols-2 gap-2">
-                          <Input
-                            placeholder="Assigned to"
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                          <Select
                             value={newTask.assignedTo}
-                            onChange={(e) =>
+                            onValueChange={(value) =>
                               setNewTask((prev) => ({
                                 ...prev,
-                                assignedTo: e.target.value,
+                                assignedTo: value,
                               }))
                             }
-                          />
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Assign to..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {mockUsers.map((user) => (
+                                <SelectItem key={user.id} value={user.name}>
+                                  {user.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                           <Input
                             type="date"
                             placeholder="Due date"
@@ -738,6 +1176,17 @@ export default function ProjectDetail() {
                               setNewTask((prev) => ({
                                 ...prev,
                                 dueDate: e.target.value,
+                              }))
+                            }
+                          />
+                          <Input
+                            type="time"
+                            placeholder="Due time"
+                            value={newTask.dueTime}
+                            onChange={(e) =>
+                              setNewTask((prev) => ({
+                                ...prev,
+                                dueTime: e.target.value,
                               }))
                             }
                           />
@@ -759,40 +1208,160 @@ export default function ProjectDetail() {
 
                     <div className="space-y-3">
                       {project.tasks && project.tasks.length > 0 ? (
-                        project.tasks.map((task: any) => (
+                        project.tasks.map((task) => (
                           <div
                             key={task.id}
-                            className="flex items-center justify-between p-3 border rounded-lg"
+                            className="flex items-start justify-between p-3 border rounded-lg"
                           >
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-start gap-3 flex-1">
                               <input
                                 type="checkbox"
                                 checked={task.completed}
                                 onChange={() => toggleTask(task.id)}
-                                className="rounded"
+                                className="rounded mt-1"
                               />
-                              <div>
-                                <p
-                                  className={`font-medium ${task.completed ? "line-through text-muted-foreground" : ""}`}
-                                >
-                                  {task.title}
-                                </p>
-                                {task.assignedTo && (
-                                  <p className="text-sm text-muted-foreground flex items-center gap-1">
-                                    <UserPlus className="h-3 w-3" />
-                                    {task.assignedTo}
-                                  </p>
-                                )}
-                                {task.dueDate && (
-                                  <p className="text-sm text-muted-foreground flex items-center gap-1">
-                                    <Calendar className="h-3 w-3" />
-                                    {new Date(
-                                      task.dueDate,
-                                    ).toLocaleDateString()}
-                                  </p>
+                              <div className="flex-1">
+                                {editingTask === task.id ? (
+                                  <div className="space-y-2">
+                                    <Input
+                                      defaultValue={task.title}
+                                      placeholder="Task title"
+                                    />
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                      <Select defaultValue={task.assignedTo}>
+                                        <SelectTrigger>
+                                          <SelectValue placeholder="Assign to..." />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          {mockUsers.map((user) => (
+                                            <SelectItem
+                                              key={user.id}
+                                              value={user.name}
+                                            >
+                                              {user.name}
+                                            </SelectItem>
+                                          ))}
+                                        </SelectContent>
+                                      </Select>
+                                      <Input
+                                        type="date"
+                                        defaultValue={task.dueDate}
+                                      />
+                                      <Input
+                                        type="time"
+                                        defaultValue={task.dueTime}
+                                      />
+                                    </div>
+                                    <div className="flex gap-2">
+                                      <Button
+                                        size="sm"
+                                        onClick={(e) => {
+                                          const container =
+                                            e.currentTarget.closest(
+                                              ".space-y-2",
+                                            );
+                                          const titleInput =
+                                            container?.querySelector(
+                                              'input[placeholder="Task title"]',
+                                            ) as HTMLInputElement;
+                                          const assignSelect =
+                                            container?.querySelector(
+                                              "select",
+                                            ) as HTMLSelectElement;
+                                          const dateInput =
+                                            container?.querySelector(
+                                              'input[type="date"]',
+                                            ) as HTMLInputElement;
+                                          const timeInput =
+                                            container?.querySelector(
+                                              'input[type="time"]',
+                                            ) as HTMLInputElement;
+
+                                          editTask(task.id, {
+                                            title:
+                                              titleInput?.value || task.title,
+                                            assignedTo:
+                                              assignSelect?.value ||
+                                              task.assignedTo,
+                                            dueDate:
+                                              dateInput?.value || task.dueDate,
+                                            dueTime:
+                                              timeInput?.value || task.dueTime,
+                                          });
+                                        }}
+                                      >
+                                        Save
+                                      </Button>
+                                      <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => setEditingTask(null)}
+                                      >
+                                        Cancel
+                                      </Button>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <>
+                                    <p
+                                      className={`font-medium ${task.completed ? "line-through text-muted-foreground" : ""}`}
+                                    >
+                                      {task.title}
+                                    </p>
+                                    {task.assignedTo && (
+                                      <p className="text-sm text-muted-foreground flex items-center gap-1">
+                                        <UserPlus className="h-3 w-3" />
+                                        {task.assignedTo}
+                                      </p>
+                                    )}
+                                    {task.dueDate && (
+                                      <p className="text-sm text-muted-foreground flex items-center gap-1">
+                                        <Calendar className="h-3 w-3" />
+                                        {new Date(
+                                          task.dueDate,
+                                        ).toLocaleDateString()}
+                                        {task.dueTime && ` at ${task.dueTime}`}
+                                      </p>
+                                    )}
+                                    {task.completed && task.completedAt && (
+                                      <p className="text-xs text-green-600 flex items-center gap-1">
+                                        <CheckCircle className="h-3 w-3" />
+                                        Completed by {task.completedBy} on{" "}
+                                        {formatTimestamp(task.completedAt)}
+                                      </p>
+                                    )}
+                                  </>
                                 )}
                               </div>
                             </div>
+                            {editingTask !== task.id && (
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-6 w-6"
+                                  >
+                                    <MoreVertical className="h-3 w-3" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuItem
+                                    onClick={() => setEditingTask(task.id)}
+                                  >
+                                    <Edit className="h-4 w-4 mr-2" />
+                                    Edit
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() => deleteTask(task.id)}
+                                    className="text-destructive focus:text-destructive"
+                                  >
+                                    <Trash2 className="h-4 w-4 mr-2" />
+                                    Delete
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            )}
                           </div>
                         ))
                       ) : (
@@ -842,26 +1411,103 @@ export default function ProjectDetail() {
 
                     <div className="space-y-3">
                       {project.checklist && project.checklist.length > 0 ? (
-                        project.checklist.map((item: any) => (
+                        project.checklist.map((item) => (
                           <div
                             key={item.id}
-                            className="flex items-center gap-3 p-2"
+                            className="flex items-start justify-between p-2 border rounded-lg"
                           >
-                            <input
-                              type="checkbox"
-                              checked={item.completed}
-                              onChange={() => toggleChecklistItem(item.id)}
-                              className="rounded"
-                            />
-                            <span
-                              className={
-                                item.completed
-                                  ? "line-through text-muted-foreground"
-                                  : ""
-                              }
-                            >
-                              {item.title}
-                            </span>
+                            <div className="flex items-start gap-3 flex-1">
+                              <input
+                                type="checkbox"
+                                checked={item.completed}
+                                onChange={() => toggleChecklistItem(item.id)}
+                                className="rounded mt-1"
+                              />
+                              <div className="flex-1">
+                                {editingChecklistItem === item.id ? (
+                                  <div className="space-y-2">
+                                    <Input
+                                      defaultValue={item.title}
+                                      placeholder="Checklist item"
+                                    />
+                                    <div className="flex gap-2">
+                                      <Button
+                                        size="sm"
+                                        onClick={(e) => {
+                                          const input = e.currentTarget
+                                            .parentElement
+                                            ?.previousElementSibling as HTMLInputElement;
+                                          editChecklistItem(
+                                            item.id,
+                                            input.value,
+                                          );
+                                        }}
+                                      >
+                                        Save
+                                      </Button>
+                                      <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() =>
+                                          setEditingChecklistItem(null)
+                                        }
+                                      >
+                                        Cancel
+                                      </Button>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <>
+                                    <span
+                                      className={
+                                        item.completed
+                                          ? "line-through text-muted-foreground"
+                                          : ""
+                                      }
+                                    >
+                                      {item.title}
+                                    </span>
+                                    {item.completed && item.completedAt && (
+                                      <p className="text-xs text-green-600 flex items-center gap-1 mt-1">
+                                        <CheckCircle className="h-3 w-3" />
+                                        Completed by {item.completedBy} on{" "}
+                                        {formatTimestamp(item.completedAt)}
+                                      </p>
+                                    )}
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                            {editingChecklistItem !== item.id && (
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-6 w-6"
+                                  >
+                                    <MoreVertical className="h-3 w-3" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuItem
+                                    onClick={() =>
+                                      setEditingChecklistItem(item.id)
+                                    }
+                                  >
+                                    <Edit className="h-4 w-4 mr-2" />
+                                    Edit
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() => deleteChecklistItem(item.id)}
+                                    className="text-destructive focus:text-destructive"
+                                  >
+                                    <Trash2 className="h-4 w-4 mr-2" />
+                                    Delete
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            )}
                           </div>
                         ))
                       ) : (
@@ -884,59 +1530,101 @@ export default function ProjectDetail() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="flex gap-3">
-                      <Clock className="h-4 w-4 mt-1 text-muted-foreground" />
-                      <div>
+                    {project.activityLog && project.activityLog.length > 0 ? (
+                      project.activityLog.map((entry) => (
+                        <div
+                          key={entry.id}
+                          className="flex gap-3 p-3 border rounded-lg"
+                        >
+                          <div className="flex items-center gap-2">
+                            {entry.platform === "mobile" ? (
+                              <Smartphone className="h-4 w-4 text-muted-foreground" />
+                            ) : (
+                              <Monitor className="h-4 w-4 text-muted-foreground" />
+                            )}
+                            <Clock className="h-4 w-4 text-muted-foreground" />
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-sm">
+                              <span className="font-medium">
+                                {entry.description}
+                              </span>{" "}
+                              by {entry.userName}
+                            </p>
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
+                              <span>{formatTimestamp(entry.timestamp)}</span>
+                              <Badge variant="outline" className="text-xs">
+                                {entry.platform}
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <>
+                        <div className="flex gap-3">
+                          <Clock className="h-4 w-4 mt-1 text-muted-foreground" />
+                          <div>
+                            <p className="text-sm">
+                              <span className="font-medium">
+                                Project created
+                              </span>{" "}
+                              by John Smith
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {formatTimestamp(project.createdAt)} • web
+                            </p>
+                          </div>
+                        </div>
+
+                        {project.photos.length > 0 && (
+                          <div className="flex gap-3">
+                            <Images className="h-4 w-4 mt-1 text-muted-foreground" />
+                            <div>
+                              <p className="text-sm">
+                                <span className="font-medium">
+                                  {project.photos.length} photos uploaded
+                                </span>
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                Various times • web
+                              </p>
+                            </div>
+                          </div>
+                        )}
+
+                        {project.status === "completed" && (
+                          <div className="flex gap-3">
+                            <CheckCircle className="h-4 w-4 mt-1 text-green-600" />
+                            <div>
+                              <p className="text-sm">
+                                <span className="font-medium text-green-800">
+                                  Project completed
+                                </span>
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {project.completedDate
+                                  ? formatTimestamp(
+                                      project.completedDate + "T12:00:00",
+                                    )
+                                  : "Unknown"}{" "}
+                                • web
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    )}
+
+                    {(!project.activityLog ||
+                      project.activityLog.length === 0) && (
+                      <div className="text-center py-4 text-muted-foreground mt-4">
+                        <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-50" />
                         <p className="text-sm">
-                          <span className="font-medium">Project created</span>{" "}
-                          by John Smith
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {new Date(project.createdAt).toLocaleString()}
+                          Activity log tracks all project changes
                         </p>
                       </div>
-                    </div>
-
-                    {project.photos.length > 0 && (
-                      <div className="flex gap-3">
-                        <Images className="h-4 w-4 mt-1 text-muted-foreground" />
-                        <div>
-                          <p className="text-sm">
-                            <span className="font-medium">
-                              {project.photos.length} photos uploaded
-                            </span>
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            Various times
-                          </p>
-                        </div>
-                      </div>
                     )}
-
-                    {project.status === "completed" && (
-                      <div className="flex gap-3">
-                        <CheckCircle className="h-4 w-4 mt-1 text-green-600" />
-                        <div>
-                          <p className="text-sm">
-                            <span className="font-medium text-green-800">
-                              Project completed
-                            </span>
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {project.completedDate
-                              ? new Date(project.completedDate).toLocaleString()
-                              : "Unknown"}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="text-center py-4 text-muted-foreground">
-                      <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                      <p className="text-sm">
-                        Activity log tracks all project changes
-                      </p>
-                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -1111,6 +1799,33 @@ export default function ProjectDetail() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground flex items-center gap-1">
+                    <MessageSquare className="h-3 w-3" />
+                    Notes
+                  </span>
+                  <span className="font-medium">
+                    {project.notes?.length || 0}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-muted-foreground flex items-center gap-1">
+                    <User className="h-3 w-3" />
+                    Tasks
+                  </span>
+                  <span className="font-medium">
+                    {project.tasks?.length || 0}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-muted-foreground flex items-center gap-1">
+                    <CheckCircle className="h-3 w-3" />
+                    Checklist Items
+                  </span>
+                  <span className="font-medium">
+                    {project.checklist?.length || 0}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-muted-foreground flex items-center gap-1">
                     <HardDrive className="h-3 w-3" />
                     Media Storage
                   </span>
@@ -1169,6 +1884,6 @@ export default function ProjectDetail() {
           </div>
         </div>
       )}
-    </div>
+    </AppLayout>
   );
 }
