@@ -449,10 +449,10 @@ export default function ProjectDetail() {
   };
 
   const toggleTask = (taskId: string) => {
-    if (!project) return;
+    if (!project || !project.tasks) return;
 
     const user = getCurrentUser();
-    const updatedTasks = project.tasks?.map((task) =>
+    const updatedTasks = project.tasks.map((task) =>
       task.id === taskId
         ? {
             ...task,
