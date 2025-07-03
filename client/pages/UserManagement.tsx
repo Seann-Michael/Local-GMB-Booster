@@ -233,18 +233,15 @@ export default function UserManagement() {
     return matchesSearch && matchesStatus && matchesRole && matchesBusiness;
   });
 
-  const uniqueBusinesses = allUsers.reduce(
-    (acc, user) => {
-      if (!acc.find((business) => business.id === user.businessId)) {
-        acc.push({
-          id: user.businessId,
-          name: user.businessName,
-        });
-      }
-      return acc;
-    },
-    [] as { id: string; name: string }[],
-  );
+  const uniqueBusinesses = allUsers.reduce((acc, user) => {
+    if (!acc.find(business => business.id === user.businessId)) {
+      acc.push({
+        id: user.businessId,
+        name: user.businessName,
+      });
+    }
+    return acc;
+  }, [] as { id: string; name: string }[]);
 
   const handleSort = (key: SortKey) => {
     if (sortKey === key) {
@@ -321,47 +318,66 @@ export default function UserManagement() {
   const totalProjects = allUsers.reduce((sum, u) => sum + u.projectsCreated, 0);
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Super Admin Header */}
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between px-4">
-          <div className="flex items-center space-x-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-destructive">
-              <Shield className="h-5 w-5 text-destructive-foreground" />
-            </div>
-            <span className="text-xl font-semibold">Super Admin Portal</span>
-          </div>
-        </div>
-      </header>
+    <SuperAdminLayout
+      title="User Management"
+      breadcrumbs={[{ label: "User Management" }]}
+    >
+      <div className="space-y-6">{/* Summary Cards */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Total Users</p>
+                  <p className="text-2xl font-bold">{totalUsers}</p>
+                </div>
+                <Users className="h-8 w-8 text-muted-foreground" />
+              </div>
+            </CardContent>
+          </Card>
 
-      <div className="container px-4 py-6">
-        <div className="flex items-center gap-4 mb-6">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate("/super-admin")}
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <div className="flex-1">
-            <h1 className="text-3xl font-bold flex items-center gap-2">
-              <Users className="h-8 w-8" />
-              User Management
-            </h1>
-            <p className="text-muted-foreground">
-              Comprehensive user analytics and management
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="gap-2">
-              <Download className="h-4 w-4" />
-              Export Users
-            </Button>
-            <Button variant="outline" size="sm" className="gap-2">
-              <RefreshCw className="h-4 w-4" />
-              Refresh Data
-            </Button>
-          </div>
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Active Users</p>
+                  <p className="text-2xl font-bold">{activeUsers}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {((activeUsers / totalUsers) * 100).toFixed(1)}% active
+                  </p>
+                </div>
+                <Activity className="h-8 w-8 text-muted-foreground" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Total Photos</p>
+                  <p className="text-2xl font-bold">
+                    {totalPhotos.toLocaleString()}
+                  </p>
+                </div>
+                <Camera className="h-8 w-8 text-muted-foreground" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">
+                    Total Projects
+                  </p>
+                  <p className="text-2xl font-bold">{totalProjects}</p>
+                </div>
+                <FolderOpen className="h-8 w-8 text-muted-foreground" />
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Summary Cards */}
