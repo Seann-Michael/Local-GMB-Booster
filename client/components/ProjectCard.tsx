@@ -1,6 +1,20 @@
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { CalendarDays, MapPin, Images } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  CalendarDays,
+  MapPin,
+  Images,
+  MoreVertical,
+  RotateCcw,
+  CheckCircle,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface TaggedPhoto {
