@@ -945,10 +945,42 @@ export default function ProjectDetail() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-sm text-muted-foreground">
-                    Total Photos
+                  <span className="text-sm text-muted-foreground flex items-center gap-1">
+                    <Images className="h-3 w-3" />
+                    Photos
                   </span>
                   <span className="font-medium">{project.photos.length}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-muted-foreground flex items-center gap-1">
+                    <Video className="h-3 w-3" />
+                    Videos
+                  </span>
+                  <span className="font-medium">
+                    {project.videos?.length || 0}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-muted-foreground flex items-center gap-1">
+                    <FileText className="h-3 w-3" />
+                    Documents
+                  </span>
+                  <span className="font-medium">
+                    {project.documents?.length || 0}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-muted-foreground flex items-center gap-1">
+                    <HardDrive className="h-3 w-3" />
+                    Media Storage
+                  </span>
+                  <span className="font-medium">
+                    {(
+                      (project.photos.length + (project.videos?.length || 0)) *
+                      2.5
+                    ).toFixed(1)}{" "}
+                    MB
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">
