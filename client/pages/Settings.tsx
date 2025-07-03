@@ -202,6 +202,13 @@ export default function Settings() {
   ]);
 
   const [promoCode, setPromoCode] = useState("");
+  const [tags, setTags] = useState<string[]>(() => {
+    const saved = localStorage.getItem("companyTags");
+    return saved
+      ? JSON.parse(saved)
+      : ["Kitchen", "Bathroom", "Roofing", "Flooring", "Painting"];
+  });
+  const [newTag, setNewTag] = useState("");
 
   const handleInputChange = (section: string, field: string, value: any) => {
     if (section === "business") {
