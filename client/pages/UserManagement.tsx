@@ -238,13 +238,17 @@ export default function UserManagement() {
     return matchesSearch && matchesStatus && matchesRole && matchesBusiness;
   });
 
-  const uniqueBusinesses = Array.from(
-    new Set(
-      allUsers.map((user) => ({
-        id: user.businessId,
-        name: user.businessName,
-      })),
-    ),
+  const uniqueBusinesses = allUsers.reduce(
+    (acc, user) => {
+      if (!acc.find((business) => business.id === user.businessId)) {
+        acc.push({
+          id: user.businessId,
+          name: user.businessName,
+        });
+      }
+      return acc;
+    },
+    [] as { id: string; name: string }[],
   );
 
   const impersonateUser = (userId: string) => {
