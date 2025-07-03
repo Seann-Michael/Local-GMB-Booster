@@ -66,6 +66,9 @@ interface UserDetail {
   plan: "Free" | "Pro" | "Enterprise";
 }
 
+type SortKey = keyof UserDetail;
+type SortDirection = "asc" | "desc" | null;
+
 export default function UserManagement() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -74,6 +77,8 @@ export default function UserManagement() {
   const [businessFilter, setBusinessFilter] = useState("all");
   const [selectedUser, setSelectedUser] = useState<UserDetail | null>(null);
   const [showUserDetail, setShowUserDetail] = useState(false);
+  const [sortKey, setSortKey] = useState<SortKey | null>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>(null);
 
   // Mock users data
   const allUsers: UserDetail[] = [
