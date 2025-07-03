@@ -157,6 +157,27 @@ export default function Settings() {
               { date: "2023-12-15", amount: "$29.00", status: "Paid" },
               { date: "2023-11-15", amount: "$29.00", status: "Paid" },
             ],
+            features: [
+              "Unlimited projects",
+              "Up to 50 team members",
+              "Advanced analytics",
+              "Custom integrations",
+              "Priority support",
+              "50GB storage",
+            ],
+          },
+          integrations: {
+            ghlApiKey: "",
+            googleMyBusinessUrl: "",
+          },
+          company: {
+            stats: {
+              storage: "2.4GB",
+              users: 12,
+              photos: 1247,
+              videos: 89,
+              projects: 34,
+            },
           },
         };
   });
