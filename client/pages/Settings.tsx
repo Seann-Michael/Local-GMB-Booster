@@ -1088,6 +1088,58 @@ export default function Settings() {
           {activeTab === "integrations" && (
             <div className="space-y-6">
               <Card>
+                <CardHeader>
+                  <CardTitle>RSS Feed</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium">Enable RSS Feed</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Generate an RSS feed of your latest projects
+                      </p>
+                    </div>
+                    <Switch
+                      checked={settingsData.rss?.enabled || false}
+                      onCheckedChange={(checked) =>
+                        setSettingsData((prev) => ({
+                          ...prev,
+                          rss: { ...prev.rss, enabled: checked },
+                        }))
+                      }
+                    />
+                  </div>
+                  {settingsData.rss?.enabled && (
+                    <div className="space-y-2">
+                      <Label>RSS Feed URL</Label>
+                      <div className="flex gap-2">
+                        <Input
+                          value="https://projectlens.app/feed/rss"
+                          readOnly
+                          className="bg-muted"
+                        />
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            navigator.clipboard.writeText(
+                              "https://projectlens.app/feed/rss",
+                            );
+                            toast.success("RSS URL copied to clipboard");
+                          }}
+                        >
+                          Copy
+                        </Button>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Include public projects in RSS feed
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              <Card>
                 <CardHeader className="flex flex-row items-center justify-between">
                   <CardTitle>Webhooks</CardTitle>
                   <Button onClick={addWebhook} className="gap-2">

@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Camera, Plus, Settings, Images, Search, Bell } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Camera, Plus, Settings, Search, Bell, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 
@@ -9,7 +10,6 @@ export function Header() {
   const location = useLocation();
   const isAddProject = location.pathname === "/add-project";
   const isSettings = location.pathname === "/settings";
-  const isGallery = location.pathname === "/gallery";
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -27,7 +27,7 @@ export function Header() {
         </Link>
 
         <div className="flex items-center gap-2">
-          {!isAddProject && !isSettings && !isGallery && (
+          {!isAddProject && !isSettings && (
             <Link to="/add-project">
               <Button size="sm" className="gap-2">
                 <Plus className="h-4 w-4" />
@@ -78,9 +78,19 @@ export function Header() {
             </Button>
           </Link>
 
-          <Link to="/gallery">
-            <Button variant="ghost" size="icon">
-              <Images className="h-5 w-5" />
+          {/* User Profile */}
+          <Link to="/profile">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 rounded-full"
+            >
+              <Avatar className="h-8 w-8">
+                <AvatarImage src="" />
+                <AvatarFallback className="text-xs">
+                  <User className="h-4 w-4" />
+                </AvatarFallback>
+              </Avatar>
             </Button>
           </Link>
 
