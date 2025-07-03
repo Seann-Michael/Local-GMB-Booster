@@ -25,35 +25,25 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { SuperAdminLayout } from "@/components/SuperAdminLayout";
 import {
-  Shield,
-  ArrowLeft,
   Users,
   Activity,
   Database,
-  Building2,
   Eye,
-  BarChart3,
   Camera,
   Video,
   FolderOpen,
-  DollarSign,
-  Calendar,
-  Clock,
-  Mail,
-  Phone,
   Search,
-  Filter,
   Download,
   RefreshCw,
   LogIn,
-  Trash2,
-  Edit,
-  TrendingUp,
-  TrendingDown,
+  ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
 } from "lucide-react";
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 interface UserDetail {
