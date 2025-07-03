@@ -770,7 +770,7 @@ export default function Settings() {
                   <div className="flex justify-between items-center">
                     <div>
                       <h3 className="font-semibold">
-                        ProjectLens {settingsData.subscription.plan}
+                        Local GMB Booster {settingsData.subscription.plan}
                       </h3>
                       <p className="text-sm text-muted-foreground">
                         Status:{" "}
