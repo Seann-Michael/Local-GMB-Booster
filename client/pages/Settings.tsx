@@ -104,7 +104,15 @@ export default function Settings() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [webhookUrl, setWebhookUrl] = useState("");
+  const [webhooks, setWebhooks] = useState([
+    {
+      id: "1",
+      name: "Project Updates",
+      url: "",
+      events: ["project_created", "project_completed"],
+      active: false,
+    },
+  ]);
   const [rssEnabled, setRssEnabled] = useState(false);
 
   const handleInputChange = (
@@ -246,15 +254,14 @@ export default function Settings() {
         <div className="max-w-4xl mx-auto">
           <div className="flex space-x-1 bg-muted p-1 rounded-lg mb-6">
             {[
-              { id: "profile", label: "Profile", icon: Users },
-              { id: "users", label: "Users", icon: Users },
+              { id: "business", label: "Business Profile", icon: Users },
+              { id: "user", label: "User Profile", icon: Users },
+              { id: "users", label: "Team Management", icon: Users },
               { id: "subscription", label: "Subscription", icon: CreditCard },
-              { id: "integrations", label: "Integrations", icon: Globe },
-              {
-                id: "image-settings",
-                label: "Image Settings",
-                icon: ImageIcon,
-              },
+              { id: "location", label: "Location Settings", icon: MapPin },
+              { id: "camera", label: "Camera Settings", icon: Camera },
+              { id: "upload", label: "Upload Settings", icon: Upload },
+              { id: "webhooks", label: "Webhooks", icon: Webhook },
               { id: "advanced", label: "Advanced", icon: Shield },
             ].map((tab) => (
               <button
