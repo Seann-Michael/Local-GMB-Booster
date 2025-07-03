@@ -23,7 +23,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { SuperAdminLayout } from "@/components/SuperAdminLayout";
 import {
@@ -217,31 +216,18 @@ export default function UserManagement() {
     },
   ];
 
-  const filteredUsers = sortedUsers.filter((user) => {
-    const matchesSearch =
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.businessName.toLowerCase().includes(searchTerm.toLowerCase());
-
-    const matchesStatus =
-      statusFilter === "all" ||
-      user.status.toLowerCase() === statusFilter.toLowerCase();
-    const matchesRole = roleFilter === "all" || user.role === roleFilter;
-    const matchesBusiness =
-      businessFilter === "all" || user.businessId === businessFilter;
-
-    return matchesSearch && matchesStatus && matchesRole && matchesBusiness;
-  });
-
-  const uniqueBusinesses = allUsers.reduce((acc, user) => {
-    if (!acc.find(business => business.id === user.businessId)) {
-      acc.push({
-        id: user.businessId,
-        name: user.businessName,
-      });
-    }
-    return acc;
-  }, [] as { id: string; name: string }[]);
+  const uniqueBusinesses = allUsers.reduce(
+    (acc, user) => {
+      if (!acc.find((business) => business.id === user.businessId)) {
+        acc.push({
+          id: user.businessId,
+          name: user.businessName,
+        });
+      }
+      return acc;
+    },
+    [] as { id: string; name: string }[],
+  );
 
   const handleSort = (key: SortKey) => {
     if (sortKey === key) {
@@ -284,15 +270,31 @@ export default function UserManagement() {
     return 0;
   });
 
+  const filteredUsers = sortedUsers.filter((user) => {
+    const matchesSearch =
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.businessName.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === "all" ||
+      user.status.toLowerCase() === statusFilter.toLowerCase();
+    const matchesRole = roleFilter === "all" || user.role === roleFilter;
+    const matchesBusiness =
+      businessFilter === "all" || user.businessId === businessFilter;
+
+    return matchesSearch && matchesStatus && matchesRole && matchesBusiness;
+  });
+
   const impersonateUser = (userId: string) => {
     const user = allUsers.find((u) => u.id === userId);
     if (user) {
       toast.success(`Signing in as ${user.name}...`);
-      // Store current super admin session for easy return
-      const currentUser = { id: "superadmin", role: "superadmin" };
-      localStorage.setItem("superadmin_session", JSON.stringify(currentUser));
+      localStorage.setItem(
+        "superadmin_session",
+        JSON.stringify({ id: "superadmin", role: "superadmin" }),
+      );
 
-      // Set impersonated user
       const impersonatedUser = {
         id: userId,
         name: user.name,
@@ -322,7 +324,8 @@ export default function UserManagement() {
       title="User Management"
       breadcrumbs={[{ label: "User Management" }]}
     >
-      <div className="space-y-6">{/* Summary Cards */}
+      <div className="space-y-6">
+        {/* Summary Cards */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardContent className="p-6">
@@ -380,66 +383,8 @@ export default function UserManagement() {
           </Card>
         </div>
 
-        {/* Summary Cards */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Users</p>
-                  <p className="text-2xl font-bold">{totalUsers}</p>
-                </div>
-                <Users className="h-8 w-8 text-muted-foreground" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Active Users</p>
-                  <p className="text-2xl font-bold">{activeUsers}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {((activeUsers / totalUsers) * 100).toFixed(1)}% active
-                  </p>
-                </div>
-                <Activity className="h-8 w-8 text-muted-foreground" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Photos</p>
-                  <p className="text-2xl font-bold">
-                    {totalPhotos.toLocaleString()}
-                  </p>
-                </div>
-                <Camera className="h-8 w-8 text-muted-foreground" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">
-                    Total Projects
-                  </p>
-                  <p className="text-2xl font-bold">{totalProjects}</p>
-                </div>
-                <FolderOpen className="h-8 w-8 text-muted-foreground" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
         {/* Filters and Search */}
-        <Card className="mb-6">
+        <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle>All Users ({filteredUsers.length})</CardTitle>
@@ -491,6 +436,14 @@ export default function UserManagement() {
                     ))}
                   </SelectContent>
                 </Select>
+                <Button variant="outline" size="sm" className="gap-2">
+                  <Download className="h-4 w-4" />
+                  Export
+                </Button>
+                <Button variant="outline" size="sm" className="gap-2">
+                  <RefreshCw className="h-4 w-4" />
+                  Refresh
+                </Button>
               </div>
             </div>
           </CardHeader>
@@ -498,14 +451,77 @@ export default function UserManagement() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>User</TableHead>
-                  <TableHead>Business</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort("name")}
+                      className="h-auto p-0 font-semibold gap-1"
+                    >
+                      User
+                      {getSortIcon("name")}
+                    </Button>
+                  </TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort("businessName")}
+                      className="h-auto p-0 font-semibold gap-1"
+                    >
+                      Business
+                      {getSortIcon("businessName")}
+                    </Button>
+                  </TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort("role")}
+                      className="h-auto p-0 font-semibold gap-1"
+                    >
+                      Role
+                      {getSortIcon("role")}
+                    </Button>
+                  </TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort("status")}
+                      className="h-auto p-0 font-semibold gap-1"
+                    >
+                      Status
+                      {getSortIcon("status")}
+                    </Button>
+                  </TableHead>
                   <TableHead>Content</TableHead>
-                  <TableHead>Storage</TableHead>
-                  <TableHead>Activity</TableHead>
-                  <TableHead>Last Login</TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort("storageUsed")}
+                      className="h-auto p-0 font-semibold gap-1"
+                    >
+                      Storage
+                      {getSortIcon("storageUsed")}
+                    </Button>
+                  </TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort("activityLevel")}
+                      className="h-auto p-0 font-semibold gap-1"
+                    >
+                      Activity
+                      {getSortIcon("activityLevel")}
+                    </Button>
+                  </TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort("lastLogin")}
+                      className="h-auto p-0 font-semibold gap-1"
+                    >
+                      Last Login
+                      {getSortIcon("lastLogin")}
+                    </Button>
+                  </TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -758,6 +774,6 @@ export default function UserManagement() {
           </DialogContent>
         </Dialog>
       </div>
-    </div>
+    </SuperAdminLayout>
   );
 }
