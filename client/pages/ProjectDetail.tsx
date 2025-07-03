@@ -1536,7 +1536,9 @@ export default function ProjectDetail() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {project.activityLog && project.activityLog.length > 0 ? (
+                    {project.activityLog &&
+                    Array.isArray(project.activityLog) &&
+                    project.activityLog.length > 0 ? (
                       project.activityLog.map((entry) => (
                         <div
                           key={entry.id}
