@@ -564,20 +564,38 @@ export default function BusinessDetail() {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label>Admin Name</Label>
+                  <Label>Admin First Name</Label>
                   {isEditing ? (
                     <Input
-                      value={businessData.admin}
+                      value={businessData.adminFirstName}
                       onChange={(e) =>
                         setBusinessData((prev) => ({
                           ...prev,
-                          admin: e.target.value,
+                          adminFirstName: e.target.value,
                         }))
                       }
                     />
                   ) : (
                     <p className="text-sm p-2 bg-muted rounded">
-                      {businessData.admin}
+                      {businessData.adminFirstName}
+                    </p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label>Admin Last Name</Label>
+                  {isEditing ? (
+                    <Input
+                      value={businessData.adminLastName}
+                      onChange={(e) =>
+                        setBusinessData((prev) => ({
+                          ...prev,
+                          adminLastName: e.target.value,
+                        }))
+                      }
+                    />
+                  ) : (
+                    <p className="text-sm p-2 bg-muted rounded">
+                      {businessData.adminLastName}
                     </p>
                   )}
                 </div>
