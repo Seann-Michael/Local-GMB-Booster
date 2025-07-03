@@ -472,7 +472,7 @@ export default function ProjectDetail() {
   };
 
   const editTask = (taskId: string, updatedTask: Partial<Task>) => {
-    if (!project) return;
+    if (!project || !project.tasks) return;
 
     const updatedTasks = project.tasks.map((task) =>
       task.id === taskId ? { ...task, ...updatedTask } : task,
