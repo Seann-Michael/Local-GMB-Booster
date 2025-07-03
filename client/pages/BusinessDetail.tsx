@@ -264,6 +264,44 @@ export default function BusinessDetail() {
     },
   ]);
 
+  const [timestampedNotes, setTimestampedNotes] = useState<TimestampedNote[]>([
+    {
+      id: "1",
+      note: "Great customer, always pays on time. Upgraded to Pro plan after 2 months.",
+      timestamp: "2024-01-15T10:30:00Z",
+      adminUser: "Admin User",
+    },
+    {
+      id: "2",
+      note: "Customer requested additional storage. Considering Enterprise upgrade.",
+      timestamp: "2024-01-10T14:15:00Z",
+      adminUser: "Admin User",
+    },
+  ]);
+
+  const [technicalDetails] = useState<TechnicalDetail[]>([
+    {
+      id: "1",
+      userId: "1",
+      userName: "John Smith",
+      device: "iPhone 15 Pro",
+      browser: "Safari 17.1",
+      ipAddress: "192.168.1.100",
+      lastLogin: "2 hours ago",
+      location: "Springfield, IL",
+    },
+    {
+      id: "2",
+      userId: "2",
+      userName: "Jane Smith",
+      device: "MacBook Pro",
+      browser: "Chrome 120.0",
+      ipAddress: "192.168.1.101",
+      lastLogin: "1 day ago",
+      location: "Springfield, IL",
+    },
+  ]);
+
   const handleSaveBusiness = () => {
     setIsEditing(false);
     toast.success("Business details updated successfully");
