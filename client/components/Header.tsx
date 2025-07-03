@@ -68,7 +68,22 @@ export function Header() {
         </Link>
 
         <div className="flex items-center gap-2">
-          {!isAddProject && !isSettings && (
+          {isImpersonated && (
+            <div className="flex items-center gap-2 px-3 py-1 bg-yellow-100 text-yellow-800 rounded-lg text-sm">
+              <Shield className="h-4 w-4" />
+              Impersonating User
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={returnToSuperAdmin}
+                className="h-auto p-1 text-yellow-800 hover:text-yellow-900"
+              >
+                Return to Super Admin
+              </Button>
+            </div>
+          )}
+
+          {!isAddProject && !isSettings && !isImpersonated && (
             <Link to="/add-project">
               <Button size="sm" className="gap-2">
                 <Plus className="h-4 w-4" />
