@@ -91,6 +91,22 @@ const App = () => (
             }
           />
           <Route
+            path="/super-admin/business/:businessId"
+            element={
+              <ProtectedRoute>
+                <BusinessDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/super-admin/users"
+            element={
+              <ProtectedRoute>
+                <UserManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/notifications"
             element={
               <ProtectedRoute>
