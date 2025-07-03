@@ -114,6 +114,24 @@ interface TechnicalDetail {
   location: string;
 }
 
+interface Invoice {
+  id: string;
+  invoiceNumber: string;
+  date: string;
+  amount: number;
+  status: "paid" | "pending" | "overdue";
+  dueDate: string;
+}
+
+interface Payment {
+  id: string;
+  date: string;
+  amount: number;
+  method: string;
+  transactionId: string;
+  status: "completed" | "pending" | "failed";
+}
+
 export default function BusinessDetail() {
   const { businessId } = useParams();
   const navigate = useNavigate();
