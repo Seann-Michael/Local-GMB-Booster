@@ -1193,6 +1193,67 @@ export default function Settings() {
           {/* Integrations Tab */}
           {activeTab === "integrations" && (
             <div className="space-y-6">
+              {/* API Integrations */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Key className="h-5 w-5" />
+                    API Integrations
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="ghlApiKey">GHL API Key</Label>
+                    <Input
+                      id="ghlApiKey"
+                      type="password"
+                      placeholder="Enter your GHL API key"
+                      value={settingsData.integrations?.ghlApiKey || ""}
+                      onChange={(e) =>
+                        setSettingsData((prev) => ({
+                          ...prev,
+                          integrations: {
+                            ...prev.integrations,
+                            ghlApiKey: e.target.value,
+                          },
+                        }))
+                      }
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Used to sync leads and contacts with GoHighLevel
+                    </p>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-2">
+                    <Label htmlFor="googleMyBusinessUrl">
+                      Google My Business Profile URL
+                    </Label>
+                    <Input
+                      id="googleMyBusinessUrl"
+                      placeholder="https://business.google.com/dashboard/your-business"
+                      value={
+                        settingsData.integrations?.googleMyBusinessUrl || ""
+                      }
+                      onChange={(e) =>
+                        setSettingsData((prev) => ({
+                          ...prev,
+                          integrations: {
+                            ...prev.integrations,
+                            googleMyBusinessUrl: e.target.value,
+                          },
+                        }))
+                      }
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Link to automatically post project updates to your Google
+                      My Business profile
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
               <Card>
                 <CardHeader>
                   <CardTitle>RSS Feed</CardTitle>
