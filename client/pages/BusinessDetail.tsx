@@ -131,7 +131,8 @@ export default function BusinessDetail() {
   const [businessData, setBusinessData] = useState({
     id: businessId || "1",
     name: "Smith Construction LLC",
-    admin: "John Smith",
+    adminFirstName: "John",
+    adminLastName: "Smith",
     email: "john@smithconstruction.com",
     phone: "(555) 123-4567",
     address: "123 Main St, Springfield, IL 62701",
@@ -143,9 +144,18 @@ export default function BusinessDetail() {
     photos: 1247,
     videos: 89,
     projects: 34,
+    reviewsRequested: 156,
     storage: "2.4GB",
     storageLimit: "50GB",
     revenue: 348,
+    billingDate: "15th of each month",
+    lastFourCard: "4532",
+    planDetails: {
+      currentPlan: "Pro",
+      monthlyPrice: 29,
+      features: ["Unlimited Projects", "50GB Storage", "Priority Support"],
+      nextBilling: "2024-02-15",
+    },
   });
 
   const [users, setUsers] = useState<BusinessUser[]>([
