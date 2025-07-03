@@ -369,6 +369,37 @@ export default function AddProject() {
                 </div>
               </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="startDate">Project Start Date</Label>
+                  <Input
+                    id="startDate"
+                    type="date"
+                    value={formData.startDate}
+                    onChange={(e) =>
+                      handleInputChange("startDate", e.target.value)
+                    }
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Auto-populated with today's date
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="completionDate">
+                    Expected Completion Date{" "}
+                    <span className="text-muted-foreground">(Optional)</span>
+                  </Label>
+                  <Input
+                    id="completionDate"
+                    type="date"
+                    value={formData.completionDate}
+                    onChange={(e) =>
+                      handleInputChange("completionDate", e.target.value)
+                    }
+                  />
+                </div>
+              </div>
+
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="customerName">Customer Name</Label>
