@@ -38,6 +38,11 @@ interface Project {
   primaryPhotoId?: string;
   createdAt: string;
   updatedAt?: string;
+  status?: string;
+  completedDate?: string;
+  startDate?: string;
+  completionDate?: string;
+  assignedUsers?: string[];
 }
 
 export default function Index() {
