@@ -105,6 +105,24 @@ interface FinancialRecord {
   status: "completed" | "pending" | "failed";
 }
 
+interface TimestampedNote {
+  id: string;
+  note: string;
+  timestamp: string;
+  adminUser: string;
+}
+
+interface TechnicalDetail {
+  id: string;
+  userId: string;
+  userName: string;
+  device: string;
+  browser: string;
+  ipAddress: string;
+  lastLogin: string;
+  location: string;
+}
+
 export default function BusinessDetail() {
   const { businessId } = useParams();
   const navigate = useNavigate();
