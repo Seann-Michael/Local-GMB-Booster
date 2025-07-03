@@ -84,7 +84,11 @@ interface Webhook {
 
 export default function Settings() {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [activeTab, setActiveTab] = useState("business");
+  const currentUser = getCurrentUser();
+  const isSuperAdmin = currentUser?.role === "superadmin";
+  const [activeTab, setActiveTab] = useState(
+    isSuperAdmin ? "business" : "business",
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [showAddUser, setShowAddUser] = useState(false);
