@@ -61,6 +61,8 @@ import {
   Smartphone,
   Monitor,
   MapPin,
+  MessageSquare,
+  CreditCard,
 } from "lucide-react";
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
