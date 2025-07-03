@@ -24,6 +24,11 @@ import {
   Clock,
   User,
   MessageSquare,
+  Video,
+  HardDrive,
+  FileText,
+  Calendar,
+  UserPlus,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -80,10 +85,12 @@ interface Project {
   additionalPhones?: string[];
   keywords: string[];
   photos: TaggedPhoto[] | string[];
+  videos?: TaggedPhoto[];
   documents: ProjectDocument[];
   tasks: Task[];
   checklist: ChecklistItem[];
   primaryPhotoId?: string;
+  notes?: string;
   createdAt: string;
   updatedAt: string;
   status?: string;
@@ -98,6 +105,16 @@ export default function ProjectDetail() {
   const [project, setProject] = useState<Project | null>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("overview");
+  const [selectedPhotos, setSelectedPhotos] = useState<number[]>([]);
+  const [showAddTask, setShowAddTask] = useState(false);
+  const [showAddChecklist, setShowAddChecklist] = useState(false);
+  const [notes, setNotes] = useState("");
+  const [newTask, setNewTask] = useState({
+    title: "",
+    assignedTo: "",
+    dueDate: "",
+  });
+  const [newChecklistItem, setNewChecklistItem] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -105,6 +122,7 @@ export default function ProjectDetail() {
     const foundProject = projects.find((p: Project) => p.id === id);
     if (foundProject) {
       setProject(foundProject);
+      setNotes(foundProject.notes || "");
     }
   }, [id]);
 
@@ -237,6 +255,114 @@ export default function ProjectDetail() {
       setProject(updatedProject);
       toast.success("Photo removed successfully");
     }
+  };
+
+  const togglePhotoSelection = (index: number) => {
+    setSelectedPhotos((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
+    );
+  };
+
+  const selectAllPhotos = () => {
+    setSelectedPhotos(
+      selectedPhotos.length === project?.photos.length
+        ? []
+        : Array.from({ length: project?.photos.length || 0 }, (_, i) => i),
+    );
+  };
+
+  const downloadSelectedPhotos = () => {
+    if (!project || selectedPhotos.length === 0) return;
+
+    selectedPhotos.forEach((index) => {
+      const photo = project.photos[index];
+      const photoUrl = getPhotoUrl(photo);
+      downloadPhoto(photoUrl, index);
+    });
+    toast.success(`Downloaded ${selectedPhotos.length} photos`);
+    setSelectedPhotos([]);
+  };
+
+  const addTask = () => {
+    if (!project || !newTask.title.trim()) return;
+
+    const task = {
+      id: Date.now().toString(),
+      ...newTask,
+      completed: false,
+      createdAt: new Date().toISOString(),
+    };
+
+    const updatedProject = {
+      ...project,
+      tasks: [...(project.tasks || []), task],
+    };
+
+    updateProject(updatedProject);
+    setNewTask({ title: "", assignedTo: "", dueDate: "" });
+    setShowAddTask(false);
+    toast.success("Task added successfully");
+  };
+
+  const toggleTask = (taskId: string) => {
+    if (!project) return;
+
+    const updatedTasks = project.tasks?.map((task) =>
+      task.id === taskId ? { ...task, completed: !task.completed } : task,
+    );
+
+    updateProject({ ...project, tasks: updatedTasks });
+  };
+
+  const addChecklistItem = () => {
+    if (!project || !newChecklistItem.trim()) return;
+
+    const item = {
+      id: Date.now().toString(),
+      title: newChecklistItem,
+      completed: false,
+    };
+
+    const updatedProject = {
+      ...project,
+      checklist: [...(project.checklist || []), item],
+    };
+
+    updateProject(updatedProject);
+    setNewChecklistItem("");
+    setShowAddChecklist(false);
+    toast.success("Checklist item added");
+  };
+
+  const toggleChecklistItem = (itemId: string) => {
+    if (!project) return;
+
+    const updatedChecklist = project.checklist?.map((item) =>
+      item.id === itemId ? { ...item, completed: !item.completed } : item,
+    );
+
+    updateProject({ ...project, checklist: updatedChecklist });
+  };
+
+  const updateProject = (updatedProject: Project) => {
+    const projects = JSON.parse(localStorage.getItem("projects") || "[]");
+    const updatedProjects = projects.map((p: Project) =>
+      p.id === project?.id ? updatedProject : p,
+    );
+    localStorage.setItem("projects", JSON.stringify(updatedProjects));
+    setProject(updatedProject);
+  };
+
+  const saveNotes = () => {
+    if (!project) return;
+    updateProject({ ...project, notes });
+    toast.success("Notes saved");
+  };
+
+  const shareProject = () => {
+    const publicUrl = `${window.location.origin}/public/project/${project?.id}`;
+    navigator.clipboard.writeText(publicUrl);
+    toast.success("Public project link copied to clipboard");
   };
 
   if (!project) {
