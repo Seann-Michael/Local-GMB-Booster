@@ -33,9 +33,19 @@ interface Project {
 }
 
 export default function Index() {
+  const navigate = useNavigate();
+  const currentUser = getCurrentUser();
   const [projects, setProjects] = useState<Project[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
+
+  // Redirect super admin users to super admin dashboard
+  useEffect(() => {
+    if (currentUser?.role === "superadmin" && !currentUser?.isImpersonated) {
+      navigate("/super-admin", { replace: true });
+      return;
+    }
+  }, [currentUser, navigate]);
 
   useEffect(() => {
     // Load projects from localStorage
