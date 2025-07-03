@@ -27,13 +27,23 @@ import { toast } from "sonner";
 
 export function Header() {
   const location = useLocation();
+  const navigate = useNavigate();
   const isAddProject = location.pathname === "/add-project";
   const isSettings = location.pathname === "/settings";
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
+  const currentUser = getCurrentUser();
+  const showSuperAdmin = isSuperAdmin();
+
   // Mock notification count
   const notificationCount = 3;
+
+  const handleSignOut = () => {
+    signOut();
+    toast.success("Signed out successfully");
+    navigate("/signin", { replace: true });
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
