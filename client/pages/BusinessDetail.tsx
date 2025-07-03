@@ -27,7 +27,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
 import {
@@ -42,14 +41,10 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
-  Shield,
-  ArrowLeft,
   Users,
   Activity,
   Database,
   Building2,
-  Eye,
-  BarChart3,
   Edit,
   Trash2,
   Camera,
@@ -58,21 +53,17 @@ import {
   DollarSign,
   Calendar,
   Clock,
-  Mail,
-  Phone,
-  MapPin,
-  CreditCard,
-  AlertTriangle,
-  CheckCircle2,
-  TrendingUp,
-  TrendingDown,
   Save,
   X,
   Plus,
   LogIn,
+  Key,
+  Smartphone,
+  Monitor,
+  MapPin,
 } from "lucide-react";
-import { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 interface BusinessUser {
@@ -131,7 +122,8 @@ export default function BusinessDetail() {
   const [selectedUser, setSelectedUser] = useState<BusinessUser | null>(null);
   const [newNote, setNewNote] = useState("");
   const [showPasswordChange, setShowPasswordChange] = useState(false);
-  const [passwordChangeUser, setPasswordChangeUser] = useState<BusinessUser | null>(null);
+  const [passwordChangeUser, setPasswordChangeUser] =
+    useState<BusinessUser | null>(null);
   const [newPassword, setNewPassword] = useState("");
   const [newUsername, setNewUsername] = useState("");
 
@@ -154,8 +146,6 @@ export default function BusinessDetail() {
     storage: "2.4GB",
     storageLimit: "50GB",
     revenue: 348,
-    notes:
-      "Great customer, always pays on time. Upgraded to Pro plan after 2 months.",
   });
 
   const [users, setUsers] = useState<BusinessUser[]>([
@@ -299,6 +289,16 @@ export default function BusinessDetail() {
       lastLogin: "1 day ago",
       location: "Springfield, IL",
     },
+    {
+      id: "3",
+      userId: "3",
+      userName: "Mike Johnson",
+      device: "Samsung Galaxy S24",
+      browser: "Chrome Mobile 120.0",
+      ipAddress: "192.168.1.102",
+      lastLogin: "1 week ago",
+      location: "Springfield, IL",
+    },
   ]);
 
   const handleSaveBusiness = () => {
@@ -320,7 +320,21 @@ export default function BusinessDetail() {
     const user = users.find((u) => u.id === userId);
     if (user) {
       toast.success(`Signing in as ${user.name}...`);
-      // Implementation would be similar to business impersonation
+      localStorage.setItem(
+        "superadmin_session",
+        JSON.stringify({ id: "superadmin", role: "superadmin" }),
+      );
+
+      const impersonatedUser = {
+        id: userId,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        isImpersonated: true,
+      };
+
+      localStorage.setItem("auth_user", JSON.stringify(impersonatedUser));
+      navigate("/", { replace: true });
     }
   };
 
@@ -374,43 +388,41 @@ export default function BusinessDetail() {
       ]}
     >
       <div className="space-y-6">
-        <div className="flex justify-end">
-          <div className="flex gap-2">{/* Action buttons moved here */}
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              onClick={() => impersonateUser("1")}
-              className="gap-2"
-            >
-              <LogIn className="h-4 w-4" />
-              Sign In As Admin
+        {/* Action Buttons */}
+        <div className="flex justify-end gap-2">
+          <Button
+            variant="outline"
+            onClick={() => impersonateUser("1")}
+            className="gap-2"
+          >
+            <LogIn className="h-4 w-4" />
+            Sign In As Admin
+          </Button>
+          {!isEditing ? (
+            <Button onClick={() => setIsEditing(true)} className="gap-2">
+              <Edit className="h-4 w-4" />
+              Edit Business
             </Button>
-            {!isEditing ? (
-              <Button onClick={() => setIsEditing(true)} className="gap-2">
-                <Edit className="h-4 w-4" />
-                Edit Business
+          ) : (
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setIsEditing(false)}
+                className="gap-2"
+              >
+                <X className="h-4 w-4" />
+                Cancel
               </Button>
-            ) : (
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setIsEditing(false)}
-                  className="gap-2"
-                >
-                  <X className="h-4 w-4" />
-                  Cancel
-                </Button>
-                <Button onClick={handleSaveBusiness} className="gap-2">
-                  <Save className="h-4 w-4" />
-                  Save Changes
-                </Button>
-              </div>
-            )}
-          </div>
+              <Button onClick={handleSaveBusiness} className="gap-2">
+                <Save className="h-4 w-4" />
+                Save Changes
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Business Overview Cards */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-6">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -465,7 +477,7 @@ export default function BusinessDetail() {
           </Card>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-2 mb-6">
+        <div className="grid gap-6 lg:grid-cols-2">
           {/* Business Details */}
           <Card>
             <CardHeader>
@@ -609,32 +621,10 @@ export default function BusinessDetail() {
                 </div>
               </div>
 
-              <Separator />
-
-              <div className="space-y-2">
-                <Label>Internal Notes</Label>
-                {isEditing ? (
-                  <Textarea
-                    value={businessData.notes}
-                    onChange={(e) =>
-                      setBusinessData((prev) => ({
-                        ...prev,
-                        notes: e.target.value,
-                      }))
-                    }
-                    rows={3}
-                  />
-                ) : (
-                  <p className="text-sm p-2 bg-muted rounded">
-                    {businessData.notes}
-                  </p>
-                )}
-              </div>
-
               {businessData.status === "Active" && (
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button variant="destructive" className="w-full gap-2">
+                    <Button variant="destructive" className="w-full gap-2 mt-4">
                       <X className="h-4 w-4" />
                       Cancel Plan
                     </Button>
@@ -708,8 +698,92 @@ export default function BusinessDetail() {
           </Card>
         </div>
 
+        {/* Timestamped Notes */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Internal Notes</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex gap-2">
+              <Textarea
+                placeholder="Add an internal note..."
+                value={newNote}
+                onChange={(e) => setNewNote(e.target.value)}
+                className="flex-1"
+              />
+              <Button onClick={addTimestampedNote} className="gap-2">
+                <Plus className="h-4 w-4" />
+                Add Note
+              </Button>
+            </div>
+            <div className="space-y-3">
+              {timestampedNotes.map((note) => (
+                <div key={note.id} className="p-3 border rounded-lg">
+                  <p className="text-sm">{note.note}</p>
+                  <div className="flex justify-between items-center mt-2 text-xs text-muted-foreground">
+                    <span>By: {note.adminUser}</span>
+                    <span>{new Date(note.timestamp).toLocaleString()}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Technical Details */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Technical Details</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>User</TableHead>
+                  <TableHead>Device</TableHead>
+                  <TableHead>Browser</TableHead>
+                  <TableHead>IP Address</TableHead>
+                  <TableHead>Location</TableHead>
+                  <TableHead>Last Login</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {technicalDetails.map((detail) => (
+                  <TableRow key={detail.id}>
+                    <TableCell className="font-medium">
+                      {detail.userName}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        {detail.device.includes("iPhone") ||
+                        detail.device.includes("Samsung") ? (
+                          <Smartphone className="h-4 w-4" />
+                        ) : (
+                          <Monitor className="h-4 w-4" />
+                        )}
+                        {detail.device}
+                      </div>
+                    </TableCell>
+                    <TableCell>{detail.browser}</TableCell>
+                    <TableCell className="font-mono text-sm">
+                      {detail.ipAddress}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <MapPin className="h-3 w-3" />
+                        {detail.location}
+                      </div>
+                    </TableCell>
+                    <TableCell>{detail.lastLogin}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
         {/* User Management */}
-        <Card className="mb-6">
+        <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle>User Management ({users.length})</CardTitle>
@@ -791,6 +865,19 @@ export default function BusinessDetail() {
                         </Button>
                         <Button
                           variant="ghost"
+                          size="sm"
+                          onClick={() => {
+                            setPasswordChangeUser(user);
+                            setNewUsername(user.email);
+                            setShowPasswordChange(true);
+                          }}
+                          className="gap-1"
+                        >
+                          <Key className="h-3 w-3" />
+                          Credentials
+                        </Button>
+                        <Button
+                          variant="ghost"
                           size="icon"
                           onClick={() => handleDeleteUser(user.id)}
                         >
@@ -837,7 +924,57 @@ export default function BusinessDetail() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Password/Username Change Dialog */}
+        <Dialog open={showPasswordChange} onOpenChange={setShowPasswordChange}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Change User Credentials</DialogTitle>
+            </DialogHeader>
+            {passwordChangeUser && (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>User</Label>
+                  <p className="text-sm p-2 bg-muted rounded">
+                    {passwordChangeUser.name}
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <Label>Username/Email</Label>
+                  <Input
+                    value={newUsername}
+                    onChange={(e) => setNewUsername(e.target.value)}
+                    placeholder="Enter new username/email"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>New Password</Label>
+                  <Input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Enter new password"
+                  />
+                </div>
+              </div>
+            )}
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setShowPasswordChange(false)}
+              >
+                Cancel
+              </Button>
+              <Button onClick={handleUsernameChange} disabled={!newUsername}>
+                Update Username
+              </Button>
+              <Button onClick={handlePasswordChange} disabled={!newPassword}>
+                Update Password
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
-    </div>
+    </SuperAdminLayout>
   );
 }
