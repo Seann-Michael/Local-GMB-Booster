@@ -112,8 +112,104 @@ export default function Index() {
     }
   }, []);
 
+  const applyFilters = () => {
+    let filtered = projects;
+
+    // Search query filter
+    if (searchQuery.trim() !== "") {
+      filtered = filtered.filter(
+        (project) =>
+          project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          project.description
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          project.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          project.keywords.some((keyword) =>
+            keyword.toLowerCase().includes(searchQuery.toLowerCase()),
+          ),
+      );
+    }
+
+    // Date filters
+    if (filters.startDate) {
+      filtered = filtered.filter(
+        (project) =>
+          new Date(project.startDate || project.createdAt) >=
+          new Date(filters.startDate),
+      );
+    }
+
+    if (filters.endDate) {
+      filtered = filtered.filter(
+        (project) =>
+          new Date(project.completionDate || project.createdAt) <=
+          new Date(filters.endDate),
+      );
+    }
+
+    // Status filter
+    if (filters.status !== "all") {
+      filtered = filtered.filter(
+        (project) => (project.status || "active") === filters.status,
+      );
+    }
+
+    // Assigned user filter
+    if (filters.assignedUser !== "all") {
+      filtered = filtered.filter((project) =>
+        project.assignedUsers?.includes(filters.assignedUser),
+      );
+    }
+
+    // Tags filter
+    if (filters.tags.trim() !== "") {
+      const searchTags = filters.tags
+        .toLowerCase()
+        .split(",")
+        .map((t) => t.trim());
+      filtered = filtered.filter((project) =>
+        searchTags.some((tag) =>
+          project.keywords.some((keyword) =>
+            keyword.toLowerCase().includes(tag),
+          ),
+        ),
+      );
+    }
+
+    setFilteredProjects(filtered);
+  };
+
   useEffect(() => {
-    if (searchQuery.trim() === "") {
+    applyFilters();
+  }, [projects, searchQuery, filters]);
+
+  const clearFilters = () => {
+    setFilters({
+      startDate: "",
+      endDate: "",
+      status: "all",
+      assignedUser: "all",
+      tags: "",
+    });
+    setSearchQuery("");
+  };
+
+  const markProjectIncomplete = (projectId: string) => {
+    const updatedProjects = projects.map((project) =>
+      project.id === projectId
+        ? { ...project, status: "active", completedDate: undefined }
+        : project,
+    );
+    setProjects(updatedProjects);
+    localStorage.setItem("projects", JSON.stringify(updatedProjects));
+    toast.success("Project marked as incomplete");
+  };
+
+  useEffect(() => {
+    if (
+      searchQuery.trim() === "" &&
+      Object.values(filters).every((v) => v === "" || v === "all")
+    ) {
       setFilteredProjects(projects);
     } else {
       const filtered = projects.filter(
