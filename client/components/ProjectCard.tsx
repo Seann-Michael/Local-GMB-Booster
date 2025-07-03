@@ -3,14 +3,28 @@ import { Card, CardContent } from "@/components/ui/card";
 import { CalendarDays, MapPin, Images } from "lucide-react";
 import { Link } from "react-router-dom";
 
+interface TaggedPhoto {
+  url: string;
+  tags: string[];
+  uploadedAt: string;
+  uploadedBy: string;
+  isPrimary?: boolean;
+}
+
 interface Project {
   id: string;
   name: string;
   description: string;
   address: string;
+  customerPhone: string;
   keywords: string[];
-  photos: string[];
+  photos: TaggedPhoto[] | string[];
+  documents?: any[];
+  tasks?: any[];
+  checklist?: any[];
+  primaryPhotoId?: string;
   createdAt: string;
+  updatedAt?: string;
 }
 
 interface ProjectCardProps {
@@ -18,16 +32,62 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
+  const getPrimaryPhoto = () => {
+    if (project.photos.length === 0) return null;
+
+    // Find primary photo or use first photo
+    const primaryPhoto = project.photos.find(
+      (photo: any) => typeof photo === "object" && photo.isPrimary,
+    );
+
+    if (primaryPhoto && typeof primaryPhoto === "object") {
+      return primaryPhoto;
+    }
+
+    // Return first photo
+    const firstPhoto = project.photos[0];
+    return typeof firstPhoto === "string"
+      ? {
+          url: firstPhoto,
+          uploadedAt: project.createdAt,
+          uploadedBy: "Unknown",
+        }
+      : firstPhoto;
+  };
+
+  const getPhotoUrl = (photo: any) => {
+    return typeof photo === "string" ? photo : photo?.url;
+  };
+
+  const primaryPhoto = getPrimaryPhoto();
+
   return (
     <Link to={`/project/${project.id}`}>
       <Card className="group overflow-hidden transition-all hover:shadow-lg hover:shadow-primary/5">
         <div className="aspect-video relative overflow-hidden bg-muted">
-          {project.photos.length > 0 ? (
-            <img
-              src={project.photos[0]}
-              alt={project.name}
-              className="h-full w-full object-cover transition-transform group-hover:scale-105"
-            />
+          {primaryPhoto ? (
+            <>
+              <img
+                src={getPhotoUrl(primaryPhoto)}
+                alt={project.name}
+                className="h-full w-full object-cover transition-transform group-hover:scale-105"
+              />
+              {/* Photo metadata overlay */}
+              <div className="absolute bottom-2 left-2 flex flex-col gap-1">
+                {typeof primaryPhoto === "object" &&
+                  primaryPhoto.uploadedAt && (
+                    <div className="rounded-full bg-black/70 px-2 py-1 text-xs text-white">
+                      {new Date(primaryPhoto.uploadedAt).toLocaleDateString()}
+                    </div>
+                  )}
+                {typeof primaryPhoto === "object" &&
+                  primaryPhoto.uploadedBy && (
+                    <div className="rounded-full bg-black/70 px-2 py-1 text-xs text-white">
+                      By {primaryPhoto.uploadedBy}
+                    </div>
+                  )}
+              </div>
+            </>
           ) : (
             <div className="flex h-full w-full items-center justify-center">
               <Images className="h-12 w-12 text-muted-foreground/50" />
