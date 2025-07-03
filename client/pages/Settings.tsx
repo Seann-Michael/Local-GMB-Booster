@@ -62,6 +62,7 @@ import {
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import { getCurrentUser } from "@/lib/auth";
 
 interface User {
   id: string;
