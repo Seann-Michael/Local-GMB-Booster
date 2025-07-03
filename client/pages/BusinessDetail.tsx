@@ -386,6 +386,20 @@ export default function BusinessDetail() {
     toast.success("Note added successfully");
   };
 
+  const editNote = (noteId: string, newText: string) => {
+    setTimestampedNotes((prev) =>
+      prev.map((note) =>
+        note.id === noteId ? { ...note, note: newText } : note,
+      ),
+    );
+    toast.success("Note updated successfully");
+  };
+
+  const deleteNote = (noteId: string) => {
+    setTimestampedNotes((prev) => prev.filter((note) => note.id !== noteId));
+    toast.success("Note deleted successfully");
+  };
+
   const handlePasswordChange = () => {
     if (!passwordChangeUser || !newPassword) return;
 
