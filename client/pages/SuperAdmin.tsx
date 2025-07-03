@@ -1,40 +1,13 @@
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { SuperAdminLayout } from "@/components/SuperAdminLayout";
 import {
   Shield,
   Users,
   Activity,
   Database,
   Building2,
-  Eye,
   BarChart3,
   Server,
-  Key,
   TrendingUp,
   TrendingDown,
   Camera,
@@ -44,23 +17,10 @@ import {
   UserPlus,
   UserMinus,
   Crown,
-  LogIn,
-  ArrowUpRight,
-  ArrowDownRight,
   Clock,
-  Wifi,
-  AlertTriangle,
   CheckCircle2,
-  XCircle,
-  Search,
-  Filter,
-  Download,
-  RefreshCw,
 } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
-import { getCurrentUser, signOut } from "@/lib/auth";
 
 interface Business {
   id: string;
