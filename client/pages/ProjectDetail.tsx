@@ -398,7 +398,7 @@ export default function ProjectDetail() {
   };
 
   const editNote = (noteId: string, newContent: string) => {
-    if (!project || !newContent.trim()) return;
+    if (!project || !project.notes || !newContent.trim()) return;
 
     const updatedNotes = project.notes.map((note) =>
       note.id === noteId
