@@ -641,7 +641,13 @@ export default function SuperAdmin() {
               </TableHeader>
               <TableBody>
                 {filteredBusinesses.map((business) => (
-                  <TableRow key={business.id}>
+                  <TableRow
+                    key={business.id}
+                    className="cursor-pointer hover:bg-muted/50"
+                    onClick={() =>
+                      navigate(`/super-admin/business/${business.id}`)
+                    }
+                  >
                     <TableCell>
                       <div>
                         <div className="font-medium">{business.name}</div>
@@ -652,6 +658,21 @@ export default function SuperAdmin() {
                           {business.email}
                         </div>
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={
+                          business.status === "Active"
+                            ? "default"
+                            : business.status === "Trial"
+                              ? "secondary"
+                              : business.status === "Suspended"
+                                ? "destructive"
+                                : "outline"
+                        }
+                      >
+                        {business.status}
+                      </Badge>
                     </TableCell>
                     <TableCell>
                       <Badge
@@ -697,10 +718,24 @@ export default function SuperAdmin() {
                       <div className="font-medium">${business.revenue}</div>
                     </TableCell>
                     <TableCell>
+                      <div className="text-sm">
+                        {new Date(business.signupDate).toLocaleDateString()}
+                      </div>
+                      {business.canceledDate && (
+                        <div className="text-xs text-red-600">
+                          Canceled:{" "}
+                          {new Date(business.canceledDate).toLocaleDateString()}
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>
                       <div className="text-sm">{business.lastActivity}</div>
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center gap-1">
+                      <div
+                        className="flex items-center gap-1"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <Button
                           variant="ghost"
                           size="sm"
@@ -710,7 +745,13 @@ export default function SuperAdmin() {
                           <LogIn className="h-3 w-3" />
                           Sign In As
                         </Button>
-                        <Button variant="ghost" size="icon">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() =>
+                            navigate(`/super-admin/business/${business.id}`)
+                          }
+                        >
                           <Eye className="h-4 w-4" />
                         </Button>
                       </div>
