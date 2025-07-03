@@ -940,6 +940,56 @@ export default function Settings() {
             </div>
           )}
 
+          {/* Company Tags Tab */}
+          {activeTab === "tags" && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Company Tags</CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Create and manage tags to organize your photos and projects
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Enter new tag..."
+                    value={newTag}
+                    onChange={(e) => setNewTag(e.target.value)}
+                    onKeyPress={(e) => e.key === "Enter" && addTag()}
+                  />
+                  <Button onClick={addTag} className="gap-2">
+                    <Plus className="h-4 w-4" />
+                    Add Tag
+                  </Button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {tags.map((tag, index) => (
+                    <Badge
+                      key={index}
+                      variant="secondary"
+                      className="flex items-center gap-2 px-3 py-1"
+                    >
+                      {tag}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-4 w-4 p-0 hover:bg-destructive hover:text-destructive-foreground"
+                        onClick={() => removeTag(tag)}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    </Badge>
+                  ))}
+                </div>
+                {tags.length === 0 && (
+                  <p className="text-sm text-muted-foreground text-center py-8">
+                    No tags created yet. Add your first tag to get started.
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
           {/* Notifications Tab */}
           {activeTab === "notifications" && (
             <Card>
