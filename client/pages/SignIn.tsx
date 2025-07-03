@@ -59,7 +59,9 @@ export default function SignIn() {
             </div>
           </div>
           <div>
-            <CardTitle className="text-2xl">Welcome to ProjectLens</CardTitle>
+            <CardTitle className="text-2xl">
+              Welcome to Local GMB Booster
+            </CardTitle>
             <p className="text-muted-foreground mt-2">
               Sign in to manage your construction projects
             </p>
