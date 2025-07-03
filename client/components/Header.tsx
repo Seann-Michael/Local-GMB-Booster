@@ -35,14 +35,26 @@ export function Header() {
 
   const currentUser = getCurrentUser();
   const showSuperAdmin = isSuperAdmin();
+  const isImpersonated = currentUser?.isImpersonated;
 
   // Mock notification count
   const notificationCount = 3;
 
   const handleSignOut = () => {
     signOut();
+    localStorage.removeItem("superadmin_session");
     toast.success("Signed out successfully");
     navigate("/signin", { replace: true });
+  };
+
+  const returnToSuperAdmin = () => {
+    const superAdminSession = localStorage.getItem("superadmin_session");
+    if (superAdminSession) {
+      localStorage.setItem("auth_user", superAdminSession);
+      localStorage.removeItem("superadmin_session");
+      navigate("/super-admin", { replace: true });
+      toast.success("Returned to Super Admin");
+    }
   };
 
   return (
