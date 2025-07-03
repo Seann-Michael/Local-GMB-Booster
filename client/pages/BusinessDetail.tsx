@@ -325,6 +325,47 @@ export default function BusinessDetail() {
     }
   };
 
+  const addTimestampedNote = () => {
+    if (!newNote.trim()) return;
+
+    const note: TimestampedNote = {
+      id: Date.now().toString(),
+      note: newNote,
+      timestamp: new Date().toISOString(),
+      adminUser: "Current Admin",
+    };
+
+    setTimestampedNotes((prev) => [note, ...prev]);
+    setNewNote("");
+    toast.success("Note added successfully");
+  };
+
+  const handlePasswordChange = () => {
+    if (!passwordChangeUser || !newPassword) return;
+
+    toast.success(`Password updated for ${passwordChangeUser.name}`);
+    setShowPasswordChange(false);
+    setNewPassword("");
+    setPasswordChangeUser(null);
+  };
+
+  const handleUsernameChange = () => {
+    if (!passwordChangeUser || !newUsername) return;
+
+    setUsers((prev) =>
+      prev.map((user) =>
+        user.id === passwordChangeUser.id
+          ? { ...user, email: newUsername }
+          : user,
+      ),
+    );
+
+    toast.success(`Username updated for ${passwordChangeUser.name}`);
+    setShowPasswordChange(false);
+    setNewUsername("");
+    setPasswordChangeUser(null);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Super Admin Header */}
