@@ -30,6 +30,54 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
 
+interface TaggedPhoto {
+  url: string;
+  tags: string[];
+  uploadedAt: string;
+  uploadedBy: string;
+  isPrimary?: boolean;
+}
+
+interface Document {
+  id: string;
+  name: string;
+  url: string;
+  type: string;
+  uploadedAt: string;
+  uploadedBy: string;
+}
+
+interface Task {
+  id: string;
+  title: string;
+  completed: boolean;
+  assignedTo?: string;
+  dueDate?: string;
+  createdAt: string;
+}
+
+interface ChecklistItem {
+  id: string;
+  title: string;
+  completed: boolean;
+}
+
+interface Project {
+  id: string;
+  name: string;
+  description: string;
+  address: string;
+  customerPhone: string;
+  keywords: string[];
+  photos: TaggedPhoto[] | string[];
+  documents: Document[];
+  tasks: Task[];
+  checklist: ChecklistItem[];
+  primaryPhotoId?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export default function ProjectDetail() {
   const { id } = useParams();
   const navigate = useNavigate();

@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Camera, Plus, Settings } from "lucide-react";
+import { Camera, Plus, Settings, Images } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 export function Header() {
   const location = useLocation();
   const isAddProject = location.pathname === "/add-project";
   const isSettings = location.pathname === "/settings";
+  const isGallery = location.pathname === "/gallery";
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -18,7 +19,7 @@ export function Header() {
         </Link>
 
         <div className="flex items-center gap-2">
-          {!isAddProject && !isSettings && (
+          {!isAddProject && !isSettings && !isGallery && (
             <Link to="/add-project">
               <Button size="sm" className="gap-2">
                 <Plus className="h-4 w-4" />
@@ -26,6 +27,12 @@ export function Header() {
               </Button>
             </Link>
           )}
+
+          <Link to="/gallery">
+            <Button variant="ghost" size="icon">
+              <Images className="h-5 w-5" />
+            </Button>
+          </Link>
 
           <Link to="/settings">
             <Button variant="ghost" size="icon">
