@@ -9,7 +9,20 @@ export interface User {
 export function getCurrentUser(): User | null {
   try {
     const userStr = localStorage.getItem("auth_user");
-    return userStr ? JSON.parse(userStr) : null;
+    if (userStr) {
+      return JSON.parse(userStr);
+    } else {
+      // Initialize with default user for demo
+      const defaultUser: User = {
+        id: "1",
+        name: "John Smith",
+        email: "john@smithconstruction.com",
+        role: "admin",
+      };
+      localStorage.setItem("auth_user", JSON.stringify(defaultUser));
+      localStorage.setItem("auth_token", "demo_token_" + Date.now());
+      return defaultUser;
+    }
   } catch {
     return null;
   }
