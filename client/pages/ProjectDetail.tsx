@@ -567,6 +567,7 @@ export default function ProjectDetail() {
   const deleteChecklistItem = (itemId: string) => {
     if (
       !project ||
+      !project.checklist ||
       !confirm("Are you sure you want to delete this checklist item?")
     )
       return;
