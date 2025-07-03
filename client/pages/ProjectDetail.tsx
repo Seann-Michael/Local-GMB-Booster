@@ -14,26 +14,28 @@ import {
   Download,
   ExternalLink,
   Images,
+  MoreVertical,
+  Plus,
+  Phone,
+  Star,
 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
-
-interface Project {
-  id: string;
-  name: string;
-  description: string;
-  address: string;
-  keywords: string[];
-  photos: string[];
-  createdAt: string;
-}
 
 export default function ProjectDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [project, setProject] = useState<Project | null>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
+  const [showAddPhotos, setShowAddPhotos] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const projects = JSON.parse(localStorage.getItem("projects") || "[]");
@@ -71,6 +73,64 @@ export default function ProjectDetail() {
     a.href = photoUrl;
     a.download = `${project?.name}-photo-${index + 1}.jpg`;
     a.click();
+  };
+
+  const requestGoogleReview = () => {
+    if (!project?.customerPhone) {
+      toast.error("Customer phone number is required to request a review");
+      return;
+    }
+
+    const message = `Hi! We've completed your ${project.name} project. We'd greatly appreciate if you could leave us a Google review. Here's the link: [Your Google Business Link]`;
+    const phoneUrl = `sms:${project.customerPhone}?body=${encodeURIComponent(message)}`;
+    window.open(phoneUrl);
+    toast.success("Review request message prepared!");
+  };
+
+  const addMorePhotos = (files: FileList | null) => {
+    if (!files || !project) return;
+
+    const newPhotos: TaggedPhoto[] = [];
+    Array.from(files).forEach((file) => {
+      if (file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (e.target?.result) {
+            newPhotos.push({
+              url: e.target.result as string,
+              tags: [],
+            });
+
+            if (newPhotos.length === files.length) {
+              const updatedProject = {
+                ...project,
+                photos: [...(project.photos || []), ...newPhotos],
+              };
+
+              // Update localStorage
+              const projects = JSON.parse(
+                localStorage.getItem("projects") || "[]",
+              );
+              const updatedProjects = projects.map((p: Project) =>
+                p.id === project.id ? updatedProject : p,
+              );
+              localStorage.setItem("projects", JSON.stringify(updatedProjects));
+              setProject(updatedProject);
+              toast.success(`Added ${newPhotos.length} new photo(s)`);
+            }
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  };
+
+  const getPhotoUrl = (photo: TaggedPhoto | string): string => {
+    return typeof photo === "string" ? photo : photo.url;
+  };
+
+  const getPhotoTags = (photo: TaggedPhoto | string): string[] => {
+    return typeof photo === "string" ? [] : photo.tags;
   };
 
   if (!project) {
@@ -117,6 +177,39 @@ export default function ProjectDetail() {
               <span>{project.address}</span>
             </div>
           </div>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <Edit className="h-4 w-4" />
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <MoreVertical className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={handleShare}>
+                  <Share className="h-4 w-4 mr-2" />
+                  Share Project
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  Upload to Website
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  Post to Google My Business
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={handleDelete}
+                  className="text-destructive focus:text-destructive"
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete Project
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-3">
@@ -129,89 +222,97 @@ export default function ProjectDetail() {
                   <Images className="h-5 w-5" />
                   Photos ({project.photos.length})
                 </CardTitle>
-                <div className="text-sm text-muted-foreground">
-                  {new Date(project.createdAt).toLocaleDateString("en-US", {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <Plus className="h-4 w-4" />
+                    Add Photos
+                  </Button>
+                  <div className="text-sm text-muted-foreground">
+                    {new Date(project.createdAt).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => addMorePhotos(e.target.files)}
+                />
                 {project.photos.length > 0 ? (
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {project.photos.map((photo, index) => (
-                      <div
-                        key={index}
-                        className="group relative aspect-square cursor-pointer overflow-hidden rounded-lg bg-muted"
-                        onClick={() => setSelectedPhoto(photo)}
-                      >
-                        <img
-                          src={photo}
-                          alt={`Photo ${index + 1}`}
-                          className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-                        <Button
-                          variant="secondary"
-                          size="icon"
-                          className="absolute top-2 right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            downloadPhoto(photo, index);
-                          }}
+                    {project.photos.map((photo, index) => {
+                      const photoUrl = getPhotoUrl(photo);
+                      const photoTags = getPhotoTags(photo);
+                      return (
+                        <div
+                          key={index}
+                          className="group relative aspect-square cursor-pointer overflow-hidden rounded-lg bg-muted"
+                          onClick={() => setSelectedPhoto(photoUrl)}
                         >
-                          <Download className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    ))}
+                          <img
+                            src={photoUrl}
+                            alt={`Photo ${index + 1}`}
+                            className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                          {photoTags.length > 0 && (
+                            <div className="absolute bottom-1 left-1 flex flex-wrap gap-1">
+                              {photoTags.slice(0, 2).map((tag, tagIndex) => (
+                                <Badge
+                                  key={tagIndex}
+                                  variant="secondary"
+                                  className="text-xs"
+                                >
+                                  {tag}
+                                </Badge>
+                              ))}
+                              {photoTags.length > 2 && (
+                                <Badge variant="outline" className="text-xs">
+                                  +{photoTags.length - 2}
+                                </Badge>
+                              )}
+                            </div>
+                          )}
+                          <Button
+                            variant="secondary"
+                            size="icon"
+                            className="absolute top-2 right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              downloadPhoto(photoUrl, index);
+                            }}
+                          >
+                            <Download className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      );
+                    })}
                   </div>
                 ) : (
                   <div className="text-center py-12 text-muted-foreground">
                     <Images className="h-12 w-12 mx-auto mb-4 opacity-50" />
                     <p>No photos uploaded yet</p>
+                    <Button
+                      variant="outline"
+                      className="mt-4 gap-2"
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      <Plus className="h-4 w-4" />
+                      Add First Photo
+                    </Button>
                   </div>
                 )}
-              </CardContent>
-            </Card>
-
-            {/* Action Buttons */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Actions</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-3">
-                  <Button variant="outline" className="gap-2">
-                    <Edit className="h-4 w-4" />
-                    Edit Project
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="gap-2"
-                    onClick={handleShare}
-                  >
-                    <Share className="h-4 w-4" />
-                    Share
-                  </Button>
-                  <Button variant="outline" className="gap-2">
-                    <ExternalLink className="h-4 w-4" />
-                    Upload to Website
-                  </Button>
-                  <Button variant="outline" className="gap-2">
-                    <ExternalLink className="h-4 w-4" />
-                    Post to Google My Business
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="gap-2 text-destructive hover:text-destructive"
-                    onClick={handleDelete}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                    Delete Project
-                  </Button>
-                </div>
               </CardContent>
             </Card>
           </div>
@@ -254,6 +355,30 @@ export default function ProjectDetail() {
                     {project.address}
                   </p>
                 </div>
+
+                {project.customerPhone && (
+                  <>
+                    <Separator />
+                    <div>
+                      <h4 className="font-medium mb-2 flex items-center gap-2">
+                        <Phone className="h-4 w-4" />
+                        Customer
+                      </h4>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        {project.customerPhone}
+                      </p>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="gap-2 w-full"
+                        onClick={requestGoogleReview}
+                      >
+                        <Star className="h-4 w-4" />
+                        Request Google Review
+                      </Button>
+                    </div>
+                  </>
+                )}
 
                 {project.keywords.length > 0 && (
                   <>
