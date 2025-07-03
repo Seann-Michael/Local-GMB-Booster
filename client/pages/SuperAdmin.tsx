@@ -628,11 +628,13 @@ export default function SuperAdmin() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Business</TableHead>
+                  <TableHead>Status</TableHead>
                   <TableHead>Plan</TableHead>
                   <TableHead>Users</TableHead>
                   <TableHead>Content</TableHead>
                   <TableHead>Storage</TableHead>
                   <TableHead>Revenue</TableHead>
+                  <TableHead>Signup Date</TableHead>
                   <TableHead>Last Activity</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
