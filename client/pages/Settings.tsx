@@ -333,7 +333,7 @@ export default function Settings() {
         {/* Sticky Tab Navigation */}
         <div className="sticky top-16 z-40 bg-background border-b mb-6">
           <div className="max-w-6xl mx-auto">
-            <div className="flex overflow-x-auto scrollbar-hide pb-1">
+            <div className="flex overflow-x-auto scrollbar-hide pb-1 relative">
               <div className="flex space-x-1 min-w-max px-4 py-3">
                 {[
                   { id: "business", label: "Business Profile", icon: Users },
@@ -360,8 +360,13 @@ export default function Settings() {
                   >
                     <tab.icon className="h-4 w-4" />
                     {tab.label}
+                    <ArrowRight className="h-3 w-3 opacity-50" />
                   </button>
                 ))}
+              </div>
+              {/* Scroll indicator arrows */}
+              <div className="absolute right-0 top-0 bottom-0 flex items-center bg-gradient-to-l from-background to-transparent w-8 pointer-events-none">
+                <ArrowRight className="h-4 w-4 text-muted-foreground ml-auto" />
               </div>
             </div>
 
