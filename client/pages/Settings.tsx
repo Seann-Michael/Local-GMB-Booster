@@ -348,7 +348,7 @@ export default function Settings() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="phone">Phone</Label>
+                      <Label htmlFor="phone">Mobile Phone</Label>
                       <Input
                         id="phone"
                         value={profileData.phone}
