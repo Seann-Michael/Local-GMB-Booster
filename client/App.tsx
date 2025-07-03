@@ -14,6 +14,7 @@ import Settings from "./pages/Settings";
 import SuperAdmin from "./pages/SuperAdmin";
 import Notifications from "./pages/Notifications";
 import Profile from "./pages/Profile";
+import PublicProject from "./pages/PublicProject";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/super-admin" element={<SuperAdmin />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/public/project/:id" element={<PublicProject />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
