@@ -469,56 +469,65 @@ export default function BusinessDetail() {
         </div>
 
         {/* Business Overview Cards */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
           <Card>
-            <CardContent className="p-6">
+            <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Users</p>
-                  <p className="text-2xl font-bold">{businessData.users}</p>
+                  <p className="text-xs text-muted-foreground">Photos</p>
+                  <p className="text-xl font-bold">{businessData.photos}</p>
                 </div>
-                <Users className="h-8 w-8 text-muted-foreground" />
+                <Camera className="h-6 w-6 text-muted-foreground" />
               </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="p-6">
+            <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">
-                    Total Projects
+                  <p className="text-xs text-muted-foreground">Videos</p>
+                  <p className="text-xl font-bold">{businessData.videos}</p>
+                </div>
+                <Video className="h-6 w-6 text-muted-foreground" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground">Projects</p>
+                  <p className="text-xl font-bold">{businessData.projects}</p>
+                </div>
+                <FolderOpen className="h-6 w-6 text-muted-foreground" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-muted-foreground">Reviews</p>
+                  <p className="text-xl font-bold">
+                    {businessData.reviewsRequested}
                   </p>
-                  <p className="text-2xl font-bold">{businessData.projects}</p>
                 </div>
-                <FolderOpen className="h-8 w-8 text-muted-foreground" />
+                <MessageSquare className="h-6 w-6 text-muted-foreground" />
               </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="p-6">
+            <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">Storage Used</p>
-                  <p className="text-2xl font-bold">{businessData.storage}</p>
-                  <p className="text-xs text-muted-foreground">
-                    of {businessData.storageLimit}
-                  </p>
+                  <p className="text-xs text-muted-foreground">Revenue</p>
+                  <p className="text-xl font-bold">${businessData.revenue}</p>
                 </div>
-                <Database className="h-8 w-8 text-muted-foreground" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Revenue</p>
-                  <p className="text-2xl font-bold">${businessData.revenue}</p>
-                </div>
-                <DollarSign className="h-8 w-8 text-muted-foreground" />
+                <DollarSign className="h-6 w-6 text-muted-foreground" />
               </div>
             </CardContent>
           </Card>
