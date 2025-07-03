@@ -18,6 +18,7 @@ import {
   Plus,
   Phone,
   Star,
+  X,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -131,6 +132,27 @@ export default function ProjectDetail() {
 
   const getPhotoTags = (photo: TaggedPhoto | string): string[] => {
     return typeof photo === "string" ? [] : photo.tags;
+  };
+
+  const removePhoto = (index: number) => {
+    if (!project) return;
+
+    if (confirm("Are you sure you want to remove this photo?")) {
+      const updatedPhotos = project.photos.filter((_, i) => i !== index);
+      const updatedProject = {
+        ...project,
+        photos: updatedPhotos,
+      };
+
+      // Update localStorage
+      const projects = JSON.parse(localStorage.getItem("projects") || "[]");
+      const updatedProjects = projects.map((p: Project) =>
+        p.id === project.id ? updatedProject : p,
+      );
+      localStorage.setItem("projects", JSON.stringify(updatedProjects));
+      setProject(updatedProject);
+      toast.success("Photo removed successfully");
+    }
   };
 
   if (!project) {
@@ -284,17 +306,30 @@ export default function ProjectDetail() {
                               )}
                             </div>
                           )}
-                          <Button
-                            variant="secondary"
-                            size="icon"
-                            className="absolute top-2 right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              downloadPhoto(photoUrl, index);
-                            }}
-                          >
-                            <Download className="h-3 w-3" />
-                          </Button>
+                          <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <Button
+                              variant="secondary"
+                              size="icon"
+                              className="h-6 w-6"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                downloadPhoto(photoUrl, index);
+                              }}
+                            >
+                              <Download className="h-3 w-3" />
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              size="icon"
+                              className="h-6 w-6"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                removePhoto(index);
+                              }}
+                            >
+                              <Trash2 className="h-3 w-3" />
+                            </Button>
+                          </div>
                         </div>
                       );
                     })}
