@@ -4,6 +4,7 @@ export interface User {
   email: string;
   role: "admin" | "editor" | "viewer" | "superadmin";
   avatar?: string;
+  isImpersonated?: boolean;
 }
 
 export function getCurrentUser(): User | null {
