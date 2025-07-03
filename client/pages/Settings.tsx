@@ -221,8 +221,31 @@ export default function Settings() {
     toast.success("Data exported successfully!");
   };
 
-  const testWebhook = async () => {
-    if (!webhookUrl) {
+  const addWebhook = () => {
+    const newWebhook = {
+      id: Date.now().toString(),
+      name: "New Webhook",
+      url: "",
+      events: [],
+      active: false,
+    };
+    setWebhooks((prev) => [...prev, newWebhook]);
+  };
+
+  const updateWebhook = (id: string, updates: any) => {
+    setWebhooks((prev) =>
+      prev.map((webhook) =>
+        webhook.id === id ? { ...webhook, ...updates } : webhook,
+      ),
+    );
+  };
+
+  const removeWebhook = (id: string) => {
+    setWebhooks((prev) => prev.filter((webhook) => webhook.id !== id));
+  };
+
+  const testWebhook = async (webhook: any) => {
+    if (!webhook.url) {
       toast.error("Please enter a webhook URL");
       return;
     }
@@ -279,20 +302,20 @@ export default function Settings() {
             ))}
           </div>
 
-          {/* Profile Tab */}
-          {activeTab === "profile" && (
+          {/* Business Profile Tab */}
+          {activeTab === "business" && (
             <form onSubmit={handleSave} className="space-y-6">
               {/* Profile Section */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Profile Information</CardTitle>
+                  <CardTitle>Business Information</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="flex items-center gap-4">
                     <Avatar className="h-20 w-20">
                       <AvatarImage src={profileData.avatar} />
                       <AvatarFallback className="text-lg">
-                        {profileData.name
+                        {profileData.company
                           .split(" ")
                           .map((n: string) => n[0])
                           .join("")}
@@ -307,10 +330,10 @@ export default function Settings() {
                         onClick={() => fileInputRef.current?.click()}
                       >
                         <Camera className="h-4 w-4" />
-                        Change Photo
+                        Upload Logo
                       </Button>
                       <p className="text-sm text-muted-foreground mt-1">
-                        JPG, PNG up to 2MB
+                        Business logo - JPG, PNG up to 2MB
                       </p>
                     </div>
                     <input
