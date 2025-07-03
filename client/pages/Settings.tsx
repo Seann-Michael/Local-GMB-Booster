@@ -705,6 +705,63 @@ export default function Settings() {
           {/* Subscription Tab */}
           {activeTab === "subscription" && (
             <div className="space-y-6">
+              {/* Company Stats */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BarChart3 className="h-5 w-5" />
+                    Company Statistics
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div className="text-center p-3 border rounded-lg">
+                      <Database className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />
+                      <div className="text-2xl font-bold">
+                        {settingsData.company.stats.storage}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Storage Used
+                      </div>
+                    </div>
+                    <div className="text-center p-3 border rounded-lg">
+                      <Users className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />
+                      <div className="text-2xl font-bold">
+                        {settingsData.company.stats.users}
+                      </div>
+                      <div className="text-sm text-muted-foreground">Users</div>
+                    </div>
+                    <div className="text-center p-3 border rounded-lg">
+                      <ImageIcon className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />
+                      <div className="text-2xl font-bold">
+                        {settingsData.company.stats.photos}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Photos
+                      </div>
+                    </div>
+                    <div className="text-center p-3 border rounded-lg">
+                      <Camera className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />
+                      <div className="text-2xl font-bold">
+                        {settingsData.company.stats.videos}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Videos
+                      </div>
+                    </div>
+                    <div className="text-center p-3 border rounded-lg">
+                      <Globe className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />
+                      <div className="text-2xl font-bold">
+                        {settingsData.company.stats.projects}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Projects
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
               <Card>
                 <CardHeader>
                   <CardTitle>Current Subscription</CardTitle>
@@ -727,6 +784,25 @@ export default function Settings() {
                       /month
                     </Badge>
                   </div>
+
+                  {/* Plan Features */}
+                  <div className="bg-muted p-4 rounded-lg">
+                    <h4 className="font-medium mb-3">Plan Features</h4>
+                    <ul className="space-y-2">
+                      {settingsData.subscription.features.map(
+                        (feature, index) => (
+                          <li
+                            key={index}
+                            className="flex items-center gap-2 text-sm"
+                          >
+                            <div className="h-1.5 w-1.5 bg-primary rounded-full"></div>
+                            {feature}
+                          </li>
+                        ),
+                      )}
+                    </ul>
+                  </div>
+
                   <Separator />
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
