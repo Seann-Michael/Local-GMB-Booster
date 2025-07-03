@@ -5,15 +5,70 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Header } from "@/components/Header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowLeft, Camera, Save, Download, Upload } from "lucide-react";
+import {
+  ArrowLeft,
+  Camera,
+  Save,
+  Download,
+  Upload,
+  Users,
+  Plus,
+  Trash2,
+  Globe,
+  Rss,
+  Webhook,
+  CreditCard,
+  Image as ImageIcon,
+  MapPin,
+  Clock,
+  Shield,
+} from "lucide-react";
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: "admin" | "editor" | "viewer";
+  avatar?: string;
+  createdAt: string;
+}
+
 export default function Settings() {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [activeTab, setActiveTab] = useState("profile");
+  const [users, setUsers] = useState<User[]>(() => {
+    const saved = localStorage.getItem("users");
+    return saved
+      ? JSON.parse(saved)
+      : [
+          {
+            id: "1",
+            name: "John Smith",
+            email: "john@smithconstruction.com",
+            role: "admin" as const,
+            createdAt: new Date().toISOString(),
+          },
+        ];
+  });
+  const [newUser, setNewUser] = useState({
+    name: "",
+    email: "",
+    role: "viewer" as "admin" | "editor" | "viewer",
+  });
+
   const [profileData, setProfileData] = useState(() => {
     const saved = localStorage.getItem("userProfile");
     return saved
@@ -34,10 +89,23 @@ export default function Settings() {
             website: false,
             googleBusiness: false,
           },
+          imageSettings: {
+            watermark: false,
+            timestamp: false,
+            gpsLocation: false,
+            watermarkText: "Smith Construction LLC",
+          },
+          subscription: {
+            plan: "Pro",
+            status: "active",
+            nextBilling: "2024-02-15",
+          },
         };
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [webhookUrl, setWebhookUrl] = useState("");
+  const [rssEnabled, setRssEnabled] = useState(false);
 
   const handleInputChange = (
     field: string,
@@ -94,12 +162,42 @@ export default function Settings() {
     }
   };
 
+  const addUser = () => {
+    if (!newUser.name || !newUser.email) {
+      toast.error("Name and email are required");
+      return;
+    }
+
+    const user: User = {
+      id: Date.now().toString(),
+      ...newUser,
+      createdAt: new Date().toISOString(),
+    };
+
+    const updatedUsers = [...users, user];
+    setUsers(updatedUsers);
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+    setNewUser({ name: "", email: "", role: "viewer" });
+    toast.success("User added successfully!");
+  };
+
+  const removeUser = (userId: string) => {
+    if (confirm("Are you sure you want to remove this user?")) {
+      const updatedUsers = users.filter((u) => u.id !== userId);
+      setUsers(updatedUsers);
+      localStorage.setItem("users", JSON.stringify(updatedUsers));
+      toast.success("User removed successfully!");
+    }
+  };
+
   const exportData = () => {
     const projects = localStorage.getItem("projects") || "[]";
     const profile = localStorage.getItem("userProfile") || "{}";
+    const userData = localStorage.getItem("users") || "[]";
     const data = {
       profile: JSON.parse(profile),
       projects: JSON.parse(projects),
+      users: JSON.parse(userData),
       exportDate: new Date().toISOString(),
     };
 
@@ -113,6 +211,21 @@ export default function Settings() {
     a.click();
     URL.revokeObjectURL(url);
     toast.success("Data exported successfully!");
+  };
+
+  const testWebhook = async () => {
+    if (!webhookUrl) {
+      toast.error("Please enter a webhook URL");
+      return;
+    }
+
+    try {
+      // Simulate webhook test
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      toast.success("Webhook test successful!");
+    } catch (error) {
+      toast.error("Webhook test failed");
+    }
   };
 
   return (
