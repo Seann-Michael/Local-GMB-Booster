@@ -5,7 +5,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Header } from "@/components/Header";
-import { ArrowLeft, Save, Sparkles, Lightbulb } from "lucide-react";
+import {
+  ArrowLeft,
+  Save,
+  Sparkles,
+  Lightbulb,
+  Plus,
+  Trash2,
+} from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -33,7 +40,11 @@ export default function EditProject() {
     name: "",
     description: "",
     address: "",
-    customerPhone: "",
+    gpsLat: "",
+    gpsLng: "",
+    customerName: "",
+    mobilePhone: "",
+    additionalPhones: [""],
     keywords: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,7 +59,11 @@ export default function EditProject() {
         name: project.name,
         description: project.description,
         address: project.address,
-        customerPhone: project.customerPhone || "",
+        gpsLat: project.gpsLat || "",
+        gpsLng: project.gpsLng || "",
+        customerName: project.customerName || "",
+        mobilePhone: project.mobilePhone || project.customerPhone || "",
+        additionalPhones: project.additionalPhones || [""],
         keywords: project.keywords.join(", "),
       });
     }
@@ -59,6 +74,51 @@ export default function EditProject() {
       ...prev,
       [field]: value,
     }));
+  };
+
+  const handleAdditionalPhoneChange = (index: number, value: string) => {
+    setFormData((prev) => {
+      const newPhones = [...prev.additionalPhones];
+      newPhones[index] = value;
+      return {
+        ...prev,
+        additionalPhones: newPhones,
+      };
+    });
+  };
+
+  const addPhoneField = () => {
+    setFormData((prev) => ({
+      ...prev,
+      additionalPhones: [...prev.additionalPhones, ""],
+    }));
+  };
+
+  const removePhoneField = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      additionalPhones: prev.additionalPhones.filter((_, i) => i !== index),
+    }));
+  };
+
+  const simulateGooglePlaces = (input: string) => {
+    if (input.length > 3) {
+      const mockCoordinates = {
+        lat: 40.7128 + (Math.random() - 0.5) * 0.1,
+        lng: -74.006 + (Math.random() - 0.5) * 0.1,
+      };
+
+      if (input.toLowerCase().includes("main")) {
+        mockCoordinates.lat = 40.7589;
+        mockCoordinates.lng = -73.9851;
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        gpsLat: mockCoordinates.lat.toFixed(6),
+        gpsLng: mockCoordinates.lng.toFixed(6),
+      }));
+    }
   };
 
   const enhanceDescription = async () => {
@@ -250,28 +310,117 @@ export default function EditProject() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="address">Address</Label>
+                  <Label htmlFor="address">
+                    Address{" "}
+                    <span className="text-muted-foreground">(Optional)</span>
+                  </Label>
                   <Input
                     id="address"
-                    placeholder="Enter project address"
+                    placeholder="Start typing address..."
                     value={formData.address}
+                    onChange={(e) => {
+                      handleInputChange("address", e.target.value);
+                      simulateGooglePlaces(e.target.value);
+                    }}
+                    className="w-full"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Address will auto-complete using Google Places API
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="gpsLat">GPS Latitude</Label>
+                    <Input
+                      id="gpsLat"
+                      placeholder="40.7128"
+                      value={formData.gpsLat}
+                      onChange={(e) =>
+                        handleInputChange("gpsLat", e.target.value)
+                      }
+                      className="bg-muted"
+                      readOnly
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="gpsLng">GPS Longitude</Label>
+                    <Input
+                      id="gpsLng"
+                      placeholder="-74.0060"
+                      value={formData.gpsLng}
+                      onChange={(e) =>
+                        handleInputChange("gpsLng", e.target.value)
+                      }
+                      className="bg-muted"
+                      readOnly
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="customerName">Customer Name</Label>
+                  <Input
+                    id="customerName"
+                    placeholder="Enter customer full name"
+                    value={formData.customerName}
                     onChange={(e) =>
-                      handleInputChange("address", e.target.value)
+                      handleInputChange("customerName", e.target.value)
                     }
                   />
                 </div>
+
                 <div className="space-y-2">
-                  <Label htmlFor="customerPhone">Customer Phone</Label>
+                  <Label htmlFor="mobilePhone">Mobile Phone</Label>
                   <Input
-                    id="customerPhone"
+                    id="mobilePhone"
                     placeholder="(555) 123-4567"
-                    value={formData.customerPhone}
+                    value={formData.mobilePhone}
                     onChange={(e) =>
-                      handleInputChange("customerPhone", e.target.value)
+                      handleInputChange("mobilePhone", e.target.value)
                     }
                   />
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label>Additional Phone Numbers</Label>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={addPhoneField}
+                      className="gap-2"
+                    >
+                      <Plus className="h-4 w-4" />
+                      Add Phone
+                    </Button>
+                  </div>
+                  {formData.additionalPhones.map((phone, index) => (
+                    <div key={index} className="flex gap-2">
+                      <Input
+                        placeholder="(555) 123-4567"
+                        value={phone}
+                        onChange={(e) =>
+                          handleAdditionalPhoneChange(index, e.target.value)
+                        }
+                      />
+                      {formData.additionalPhones.length > 1 && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          onClick={() => removePhoneField(index)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
                 </div>
               </div>
 
