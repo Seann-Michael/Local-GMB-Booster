@@ -36,6 +36,8 @@ export default function AddProject() {
     mobilePhone: "",
     additionalPhones: [""],
     keywords: "",
+    startDate: new Date().toISOString().split("T")[0], // Auto-populated with today
+    completionDate: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isEnhancingDescription, setIsEnhancingDescription] = useState(false);

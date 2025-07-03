@@ -154,6 +154,57 @@ export default function Index() {
               ))}
             </div>
           )}
+
+          {/* Company Gallery Section */}
+          {filteredProjects.length > 0 && (
+            <div className="mt-12">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-xl font-bold">Recent Photos</h2>
+                  <p className="text-muted-foreground">
+                    Latest photos from all projects
+                  </p>
+                </div>
+                <Link to="/gallery">
+                  <Button variant="outline" size="sm">
+                    View All
+                  </Button>
+                </Link>
+              </div>
+
+              <div className="flex gap-4 overflow-x-auto pb-4">
+                {projects
+                  .slice(0, 10)
+                  .map((project) =>
+                    project.photos
+                      .map((photo, photoIndex) => {
+                        const photoUrl =
+                          typeof photo === "string" ? photo : photo.url;
+                        return (
+                          <Link
+                            key={`${project.id}-${photoIndex}`}
+                            to={`/project/${project.id}`}
+                            className="flex-shrink-0"
+                          >
+                            <div className="w-32 h-32 rounded-lg overflow-hidden bg-muted hover:shadow-lg transition-shadow">
+                              <img
+                                src={photoUrl}
+                                alt={`Photo from ${project.name}`}
+                                className="w-full h-full object-cover hover:scale-105 transition-transform"
+                              />
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-1 truncate w-32">
+                              {project.name}
+                            </p>
+                          </Link>
+                        );
+                      })
+                      .slice(0, 1),
+                  )
+                  .slice(0, 8)}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
