@@ -3,29 +3,139 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import { Header } from "@/components/Header";
 import { PhotoCapture } from "@/components/PhotoCapture";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Save, Sparkles, Lightbulb } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
+interface TaggedPhoto {
+  url: string;
+  tags: string[];
+}
+
 export default function AddProject() {
   const navigate = useNavigate();
-  const [photos, setPhotos] = useState<string[]>([]);
+  const [photos, setPhotos] = useState<TaggedPhoto[]>([]);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     address: "",
+    customerPhone: "",
     keywords: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isEnhancingDescription, setIsEnhancingDescription] = useState(false);
+  const [suggestedKeywords, setSuggestedKeywords] = useState<string[]>([]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
+  };
+
+  const handlePhotosChange = (photoUrls: string[]) => {
+    const newPhotos = photoUrls.map((url) => ({
+      url,
+      tags: [],
+    }));
+    setPhotos(newPhotos);
+  };
+
+  const enhanceDescription = async () => {
+    if (!formData.description.trim()) {
+      toast.error("Please enter a description first");
+      return;
+    }
+
+    setIsEnhancingDescription(true);
+    try {
+      // Simulate AI enhancement
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      const enhanced = generateEnhancedDescription(
+        formData.description,
+        formData.name,
+      );
+      setFormData((prev) => ({ ...prev, description: enhanced }));
+      toast.success("Description enhanced!");
+    } catch (error) {
+      toast.error("Failed to enhance description");
+    } finally {
+      setIsEnhancingDescription(false);
+    }
+  };
+
+  const generateKeywordSuggestions = async () => {
+    if (!formData.name && !formData.description) {
+      toast.error("Please enter project name or description first");
+      return;
+    }
+
+    try {
+      // Simulate AI keyword generation
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      const suggestions = generateKeywords(formData.name, formData.description);
+      setSuggestedKeywords(suggestions);
+      toast.success("Keywords suggested!");
+    } catch (error) {
+      toast.error("Failed to generate keywords");
+    }
+  };
+
+  const addKeywordFromSuggestion = (keyword: string) => {
+    const currentKeywords = formData.keywords
+      .split(",")
+      .map((k) => k.trim())
+      .filter(Boolean);
+    if (!currentKeywords.includes(keyword)) {
+      const newKeywords = [...currentKeywords, keyword].join(", ");
+      setFormData((prev) => ({ ...prev, keywords: newKeywords }));
+    }
+    setSuggestedKeywords((prev) => prev.filter((k) => k !== keyword));
+  };
+
+  const generateEnhancedDescription = (
+    original: string,
+    projectName: string,
+  ): string => {
+    // Simple AI simulation - in production, this would call an actual AI service
+    const templates = [
+      `Professional ${projectName.toLowerCase()} featuring ${original}. This comprehensive project showcases exceptional craftsmanship and attention to detail, delivering outstanding results that exceed client expectations.`,
+      `Expert ${projectName.toLowerCase()} project completed with precision and care. ${original} The work demonstrates superior quality construction techniques and modern design principles.`,
+      `High-quality ${projectName.toLowerCase()} transformation including ${original}. This project represents our commitment to excellence and delivers lasting value through skilled workmanship.`,
+    ];
+    return templates[Math.floor(Math.random() * templates.length)];
+  };
+
+  const generateKeywords = (name: string, description: string): string[] => {
+    // Simple keyword generation simulation
+    const commonKeywords = [
+      "renovation",
+      "remodel",
+      "construction",
+      "professional",
+      "quality",
+    ];
+    const contextKeywords = [];
+
+    const text = (name + " " + description).toLowerCase();
+    if (text.includes("kitchen"))
+      contextKeywords.push("kitchen", "cabinets", "countertops");
+    if (text.includes("bathroom"))
+      contextKeywords.push("bathroom", "tiles", "fixtures");
+    if (text.includes("floor"))
+      contextKeywords.push("flooring", "hardwood", "installation");
+    if (text.includes("paint"))
+      contextKeywords.push("painting", "interior", "exterior");
+    if (text.includes("roof"))
+      contextKeywords.push("roofing", "shingles", "repair");
+
+    return [...commonKeywords, ...contextKeywords].slice(0, 6);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -109,29 +219,75 @@ export default function AddProject() {
 
               <div className="space-y-2">
                 <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  placeholder="Describe the project"
-                  value={formData.description}
-                  onChange={(e) =>
-                    handleInputChange("description", e.target.value)
-                  }
-                  rows={3}
-                />
+                <div className="relative">
+                  <Textarea
+                    id="description"
+                    placeholder="Describe the project"
+                    value={formData.description}
+                    onChange={(e) =>
+                      handleInputChange("description", e.target.value)
+                    }
+                    rows={3}
+                  />
+                  {formData.description && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="absolute top-2 right-2 gap-2"
+                      onClick={enhanceDescription}
+                      disabled={isEnhancingDescription}
+                    >
+                      {isEnhancingDescription ? (
+                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                      ) : (
+                        <Sparkles className="h-4 w-4" />
+                      )}
+                      {isEnhancingDescription ? "Enhancing..." : "AI Enhance"}
+                    </Button>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="address">Address</Label>
+                  <Input
+                    id="address"
+                    placeholder="Enter project address"
+                    value={formData.address}
+                    onChange={(e) =>
+                      handleInputChange("address", e.target.value)
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="customerPhone">Customer Phone</Label>
+                  <Input
+                    id="customerPhone"
+                    placeholder="(555) 123-4567"
+                    value={formData.customerPhone}
+                    onChange={(e) =>
+                      handleInputChange("customerPhone", e.target.value)
+                    }
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="address">Address</Label>
-                <Input
-                  id="address"
-                  placeholder="Enter project address"
-                  value={formData.address}
-                  onChange={(e) => handleInputChange("address", e.target.value)}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="keywords">Keywords</Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="keywords">Keywords</Label>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="gap-2"
+                    onClick={generateKeywordSuggestions}
+                  >
+                    <Lightbulb className="h-4 w-4" />
+                    Suggest Keywords
+                  </Button>
+                </div>
                 <Input
                   id="keywords"
                   placeholder="renovation, bathroom, kitchen (comma separated)"
@@ -140,6 +296,23 @@ export default function AddProject() {
                     handleInputChange("keywords", e.target.value)
                   }
                 />
+                {suggestedKeywords.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    <span className="text-sm text-muted-foreground mr-2">
+                      Suggestions:
+                    </span>
+                    {suggestedKeywords.map((keyword) => (
+                      <Badge
+                        key={keyword}
+                        variant="outline"
+                        className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                        onClick={() => addKeywordFromSuggestion(keyword)}
+                      >
+                        + {keyword}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
                 <p className="text-sm text-muted-foreground">
                   Separate keywords with commas to help organize your projects
                 </p>
@@ -152,7 +325,10 @@ export default function AddProject() {
               <CardTitle>Project Photos</CardTitle>
             </CardHeader>
             <CardContent>
-              <PhotoCapture photos={photos} onPhotosChange={setPhotos} />
+              <PhotoCapture
+                photos={photos.map((p) => p.url)}
+                onPhotosChange={handlePhotosChange}
+              />
             </CardContent>
           </Card>
 
