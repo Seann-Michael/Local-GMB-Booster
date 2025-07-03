@@ -2,9 +2,28 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Camera, Plus, Settings, Search, Bell, User } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Camera,
+  Plus,
+  Settings,
+  Search,
+  Bell,
+  User,
+  LogOut,
+  Shield,
+} from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { getCurrentUser, signOut, isSuperAdmin } from "@/lib/auth";
+import { toast } from "sonner";
 
 export function Header() {
   const location = useLocation();
