@@ -5,7 +5,8 @@ import { Header } from "@/components/Header";
 import { ProjectCard } from "@/components/ProjectCard";
 import { FolderOpen, Plus, Search } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { getCurrentUser } from "@/lib/auth";
 
 interface TaggedPhoto {
   url: string;
