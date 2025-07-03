@@ -42,7 +42,7 @@ interface TaggedPhoto {
   isPrimary?: boolean;
 }
 
-interface Document {
+interface ProjectDocument {
   id: string;
   name: string;
   url: string;
@@ -79,12 +79,16 @@ interface Project {
   additionalPhones?: string[];
   keywords: string[];
   photos: TaggedPhoto[] | string[];
-  documents: Document[];
+  documents: ProjectDocument[];
   tasks: Task[];
   checklist: ChecklistItem[];
   primaryPhotoId?: string;
   createdAt: string;
   updatedAt: string;
+  status?: string;
+  completedDate?: string;
+  startDate?: string;
+  completionDate?: string;
 }
 
 export default function ProjectDetail() {
