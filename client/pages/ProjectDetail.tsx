@@ -526,10 +526,10 @@ export default function ProjectDetail() {
   };
 
   const toggleChecklistItem = (itemId: string) => {
-    if (!project) return;
+    if (!project || !project.checklist) return;
 
     const user = getCurrentUser();
-    const updatedChecklist = project.checklist?.map((item) =>
+    const updatedChecklist = project.checklist.map((item) =>
       item.id === itemId
         ? {
             ...item,
