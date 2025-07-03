@@ -296,36 +296,41 @@ export default function BusinessDetail() {
     },
   ]);
 
-  const [technicalDetails] = useState<TechnicalDetail[]>([
+  const [invoices] = useState<Invoice[]>([
     {
       id: "1",
-      userId: "1",
-      userName: "John Smith",
-      device: "iPhone 15 Pro",
-      browser: "Safari 17.1",
-      ipAddress: "192.168.1.100",
-      lastLogin: "2 hours ago",
-      location: "Springfield, IL",
+      invoiceNumber: "INV-2024-001",
+      date: "2024-01-15",
+      amount: 29.0,
+      status: "paid",
+      dueDate: "2024-01-30",
     },
     {
       id: "2",
-      userId: "2",
-      userName: "Jane Smith",
-      device: "MacBook Pro",
-      browser: "Chrome 120.0",
-      ipAddress: "192.168.1.101",
-      lastLogin: "1 day ago",
-      location: "Springfield, IL",
+      invoiceNumber: "INV-2023-012",
+      date: "2023-12-15",
+      amount: 29.0,
+      status: "paid",
+      dueDate: "2023-12-30",
+    },
+  ]);
+
+  const [payments] = useState<Payment[]>([
+    {
+      id: "1",
+      date: "2024-01-15",
+      amount: 29.0,
+      method: "Credit Card ****4532",
+      transactionId: "txn_1234567890",
+      status: "completed",
     },
     {
-      id: "3",
-      userId: "3",
-      userName: "Mike Johnson",
-      device: "Samsung Galaxy S24",
-      browser: "Chrome Mobile 120.0",
-      ipAddress: "192.168.1.102",
-      lastLogin: "1 week ago",
-      location: "Springfield, IL",
+      id: "2",
+      date: "2023-12-15",
+      amount: 29.0,
+      method: "Credit Card ****4532",
+      transactionId: "txn_0987654321",
+      status: "completed",
     },
   ]);
 
