@@ -67,7 +67,12 @@ interface Project {
   name: string;
   description: string;
   address: string;
-  customerPhone: string;
+  gpsLat?: string;
+  gpsLng?: string;
+  customerName?: string;
+  customerPhone?: string;
+  mobilePhone?: string;
+  additionalPhones?: string[];
   keywords: string[];
   photos: TaggedPhoto[] | string[];
   documents: Document[];
@@ -125,13 +130,17 @@ export default function ProjectDetail() {
   };
 
   const requestGoogleReview = () => {
-    if (!project?.customerPhone) {
-      toast.error("Customer phone number is required to request a review");
+    const phone = project?.mobilePhone || project?.customerPhone;
+    if (!phone) {
+      toast.error(
+        "Customer mobile phone number is required to request a review",
+      );
       return;
     }
 
-    const message = `Hi! We've completed your ${project.name} project. We'd greatly appreciate if you could leave us a Google review. Here's the link: [Your Google Business Link]`;
-    const phoneUrl = `sms:${project.customerPhone}?body=${encodeURIComponent(message)}`;
+    const customerName = project?.customerName || "Customer";
+    const message = `Hi ${customerName}! We've completed your ${project.name} project. We'd greatly appreciate if you could leave us a Google review. Here's the link: [Your Google Business Link]`;
+    const phoneUrl = `sms:${phone}?body=${encodeURIComponent(message)}`;
     window.open(phoneUrl);
     toast.success("Review request message prepared!");
   };
@@ -441,22 +450,75 @@ export default function ProjectDetail() {
                   </p>
                 </div>
 
-                {project.customerPhone && (
+                {(project.customerName ||
+                  project.mobilePhone ||
+                  project.customerPhone ||
+                  (project.additionalPhones &&
+                    project.additionalPhones.length > 0)) && (
                   <>
                     <Separator />
                     <div>
                       <h4 className="font-medium mb-2 flex items-center gap-2">
                         <Phone className="h-4 w-4" />
-                        Customer
+                        Customer Information
                       </h4>
-                      <p className="text-sm text-muted-foreground mb-2">
-                        {project.customerPhone}
-                      </p>
+
+                      {project.customerName && (
+                        <div className="mb-2">
+                          <p className="text-xs text-muted-foreground">Name</p>
+                          <p className="text-sm font-medium">
+                            {project.customerName}
+                          </p>
+                        </div>
+                      )}
+
+                      {(project.mobilePhone || project.customerPhone) && (
+                        <div className="mb-2">
+                          <p className="text-xs text-muted-foreground">
+                            Mobile Phone
+                          </p>
+                          <p className="text-sm">
+                            {project.mobilePhone || project.customerPhone}
+                          </p>
+                        </div>
+                      )}
+
+                      {project.additionalPhones &&
+                        project.additionalPhones.filter((phone) => phone.trim())
+                          .length > 0 && (
+                          <div className="mb-3">
+                            <p className="text-xs text-muted-foreground">
+                              Additional Numbers
+                            </p>
+                            {project.additionalPhones
+                              .filter((phone) => phone.trim())
+                              .map((phone, index) => (
+                                <p key={index} className="text-sm">
+                                  {phone}
+                                </p>
+                              ))}
+                          </div>
+                        )}
+
+                      {project.gpsLat && project.gpsLng && (
+                        <div className="mb-3">
+                          <p className="text-xs text-muted-foreground">
+                            GPS Coordinates
+                          </p>
+                          <p className="text-sm font-mono text-xs">
+                            {project.gpsLat}, {project.gpsLng}
+                          </p>
+                        </div>
+                      )}
+
                       <Button
                         variant="outline"
                         size="sm"
                         className="gap-2 w-full"
                         onClick={requestGoogleReview}
+                        disabled={
+                          !project.mobilePhone && !project.customerPhone
+                        }
                       >
                         <Star className="h-4 w-4" />
                         Request Google Review
