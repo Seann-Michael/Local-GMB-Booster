@@ -59,26 +59,18 @@ interface UserDetail {
 export default function SuperAdmin() {
   // Mock data for comprehensive analytics
   const systemStats = {
-    totalUsers: 1247,
-    totalBusinesses: 89,
-    totalPhotos: 45623,
-    totalVideos: 3456,
-    totalProjects: 2890,
-    totalStorage: "1.2TB",
-    activeUsers: 234,
-    revenue: 89240,
-    freeTrials: 23,
-    paidUsers: 66,
-    avgLifetime: "14.5 months",
+    systemHealth: 98.5,
+    apiHealth: 99.2,
+    serverLoad: 67,
     newSignupsToday: 12,
     newSignupsWeek: 67,
     newSignupsMonth: 289,
     canceledToday: 2,
     canceledWeek: 8,
     canceledMonth: 23,
-    systemHealth: 98.5,
-    apiHealth: 99.2,
-    serverLoad: 67,
+    freeTrials: 23,
+    paidUsers: 66,
+    avgLifetime: "14.5 months",
   };
 
   const trends = {
@@ -87,141 +79,6 @@ export default function SuperAdmin() {
     cancellations: { value: 15.2, isPositive: false },
     newSignups: { value: 23.1, isPositive: true },
   };
-
-  const mockBusinesses: Business[] = [
-    {
-      id: "1",
-      name: "Smith Construction LLC",
-      admin: "John Smith",
-      email: "john@smithconstruction.com",
-      users: 8,
-      photos: 1247,
-      videos: 89,
-      projects: 34,
-      storage: "2.4GB",
-      plan: "Pro",
-      status: "Active",
-      lastActivity: "2 hours ago",
-      signupDate: "2023-08-15",
-      revenue: 348,
-    },
-    {
-      id: "2",
-      name: "Premier Renovations",
-      admin: "Sarah Johnson",
-      email: "sarah@premierrenovations.com",
-      users: 12,
-      photos: 2156,
-      videos: 156,
-      projects: 67,
-      storage: "4.1GB",
-      plan: "Enterprise",
-      status: "Active",
-      lastActivity: "1 hour ago",
-      signupDate: "2023-06-22",
-      revenue: 1197,
-    },
-    {
-      id: "3",
-      name: "Quick Fix Contractors",
-      admin: "Mike Wilson",
-      email: "mike@quickfixcontractors.com",
-      users: 3,
-      photos: 423,
-      videos: 12,
-      projects: 18,
-      storage: "890MB",
-      plan: "Free",
-      status: "Trial",
-      lastActivity: "1 day ago",
-      signupDate: "2024-01-10",
-      revenue: 0,
-    },
-    {
-      id: "4",
-      name: "Elite Roofing Solutions",
-      admin: "David Rodriguez",
-      email: "david@eliteroofing.com",
-      users: 15,
-      photos: 3892,
-      videos: 234,
-      projects: 89,
-      storage: "7.2GB",
-      plan: "Enterprise",
-      status: "Active",
-      lastActivity: "30 minutes ago",
-      signupDate: "2023-03-12",
-      revenue: 1595,
-    },
-    {
-      id: "5",
-      name: "Budget Builders",
-      admin: "Lisa Chen",
-      email: "lisa@budgetbuilders.com",
-      users: 4,
-      photos: 156,
-      videos: 8,
-      projects: 12,
-      storage: "340MB",
-      plan: "Free",
-      status: "Suspended",
-      lastActivity: "2 weeks ago",
-      signupDate: "2023-11-08",
-      revenue: 0,
-    },
-  ];
-
-  const impersonateUser = (businessId: string) => {
-    // Simulate user impersonation
-    toast.success(
-      `Signing in as ${mockBusinesses.find((b) => b.id === businessId)?.admin}...`,
-    );
-
-    // Store current super admin session for easy return
-    localStorage.setItem("superadmin_session", JSON.stringify(currentUser));
-
-    // Set impersonated user
-    const targetBusiness = mockBusinesses.find((b) => b.id === businessId);
-    if (targetBusiness) {
-      const impersonatedUser = {
-        id: businessId,
-        name: targetBusiness.admin,
-        email: targetBusiness.email,
-        role: "admin",
-        isImpersonated: true,
-      };
-
-      localStorage.setItem("auth_user", JSON.stringify(impersonatedUser));
-      navigate("/", { replace: true });
-    }
-  };
-
-  const returnToSuperAdmin = () => {
-    const superAdminSession = localStorage.getItem("superadmin_session");
-    if (superAdminSession) {
-      localStorage.setItem("auth_user", superAdminSession);
-      localStorage.removeItem("superadmin_session");
-      navigate("/super-admin", { replace: true });
-      toast.success("Returned to Super Admin");
-    }
-  };
-
-  const handleSignOut = () => {
-    signOut();
-    localStorage.removeItem("superadmin_session");
-    toast.success("Signed out successfully");
-    navigate("/signin", { replace: true });
-  };
-
-  const filteredBusinesses = mockBusinesses.filter((business) => {
-    const matchesSearch =
-      business.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      business.admin.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      business.email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus =
-      statusFilter === "all" || business.status.toLowerCase() === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
 
   return (
     <div className="min-h-screen bg-background">
