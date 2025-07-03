@@ -926,7 +926,40 @@ export default function BusinessDetail() {
             <div className="space-y-3">
               {timestampedNotes.map((note) => (
                 <div key={note.id} className="p-3 border rounded-lg">
-                  <p className="text-sm">{note.note}</p>
+                  <div className="flex justify-between items-start">
+                    <p className="text-sm flex-1">{note.note}</p>
+                    <div className="flex gap-1 ml-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          const newText = prompt("Edit note:", note.note);
+                          if (newText !== null && newText.trim()) {
+                            editNote(note.id, newText.trim());
+                          }
+                        }}
+                        className="h-6 w-6 p-0"
+                      >
+                        <Edit className="h-3 w-3" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          if (
+                            confirm(
+                              "Are you sure you want to delete this note?",
+                            )
+                          ) {
+                            deleteNote(note.id);
+                          }
+                        }}
+                        className="h-6 w-6 p-0 hover:bg-destructive hover:text-destructive-foreground"
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  </div>
                   <div className="flex justify-between items-center mt-2 text-xs text-muted-foreground">
                     <span>By: {note.adminUser}</span>
                     <span>{new Date(note.timestamp).toLocaleString()}</span>
