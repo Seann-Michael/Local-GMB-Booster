@@ -1,9 +1,17 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Header } from "@/components/Header";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { AppLayout } from "@/components/AppLayout";
 import { ProjectCard } from "@/components/ProjectCard";
-import { FolderOpen, Plus, Search } from "lucide-react";
+import { FolderOpen, Plus, Search, Filter, X, RotateCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCurrentUser } from "@/lib/auth";
