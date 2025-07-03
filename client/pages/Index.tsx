@@ -51,6 +51,21 @@ export default function Index() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState({
+    startDate: "",
+    endDate: "",
+    status: "all",
+    assignedUser: "all",
+    tags: "",
+  });
+
+  // Mock users for filtering
+  const users = [
+    { id: "1", name: "John Smith" },
+    { id: "2", name: "Jane Doe" },
+    { id: "3", name: "Mike Johnson" },
+  ];
 
   // Redirect super admin users to super admin dashboard
   useEffect(() => {
