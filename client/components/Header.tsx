@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { Camera, Plus } from "lucide-react";
+import { Camera, Plus, Settings } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 export function Header() {
   const location = useLocation();
   const isAddProject = location.pathname === "/add-project";
+  const isSettings = location.pathname === "/settings";
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -16,14 +17,22 @@ export function Header() {
           <span className="text-xl font-semibold">ProjectLens</span>
         </Link>
 
-        {!isAddProject && (
-          <Link to="/add-project">
-            <Button size="sm" className="gap-2">
-              <Plus className="h-4 w-4" />
-              Add Project
+        <div className="flex items-center gap-2">
+          {!isAddProject && !isSettings && (
+            <Link to="/add-project">
+              <Button size="sm" className="gap-2">
+                <Plus className="h-4 w-4" />
+                Add Project
+              </Button>
+            </Link>
+          )}
+
+          <Link to="/settings">
+            <Button variant="ghost" size="icon">
+              <Settings className="h-5 w-5" />
             </Button>
           </Link>
-        )}
+        </div>
       </div>
     </header>
   );
