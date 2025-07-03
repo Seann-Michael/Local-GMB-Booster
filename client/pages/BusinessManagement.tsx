@@ -440,11 +440,14 @@ export default function BusinessManagement() {
                     <div className="text-sm">
                       {new Date(business.signupDate).toLocaleDateString()}
                     </div>
-                    {business.canceledDate && (
-                      <div className="text-xs text-red-600">
-                        Canceled:{" "}
+                  </TableCell>
+                  <TableCell>
+                    {business.canceledDate ? (
+                      <div className="text-sm text-red-600">
                         {new Date(business.canceledDate).toLocaleDateString()}
                       </div>
+                    ) : (
+                      <div className="text-sm text-muted-foreground">-</div>
                     )}
                   </TableCell>
                   <TableCell>
