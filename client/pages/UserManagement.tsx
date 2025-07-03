@@ -246,6 +246,47 @@ export default function UserManagement() {
     [] as { id: string; name: string }[],
   );
 
+  const handleSort = (key: SortKey) => {
+    if (sortKey === key) {
+      setSortDirection(
+        sortDirection === "asc"
+          ? "desc"
+          : sortDirection === "desc"
+            ? null
+            : "asc",
+      );
+    } else {
+      setSortKey(key);
+      setSortDirection("asc");
+    }
+  };
+
+  const getSortIcon = (key: SortKey) => {
+    if (sortKey !== key) return <ArrowUpDown className="h-4 w-4" />;
+    if (sortDirection === "asc") return <ArrowUp className="h-4 w-4" />;
+    if (sortDirection === "desc") return <ArrowDown className="h-4 w-4" />;
+    return <ArrowUpDown className="h-4 w-4" />;
+  };
+
+  const sortedUsers = [...allUsers].sort((a, b) => {
+    if (!sortKey || !sortDirection) return 0;
+
+    const aVal = a[sortKey];
+    const bVal = b[sortKey];
+
+    if (typeof aVal === "string" && typeof bVal === "string") {
+      return sortDirection === "asc"
+        ? aVal.localeCompare(bVal)
+        : bVal.localeCompare(aVal);
+    }
+
+    if (typeof aVal === "number" && typeof bVal === "number") {
+      return sortDirection === "asc" ? aVal - bVal : bVal - aVal;
+    }
+
+    return 0;
+  });
+
   const impersonateUser = (userId: string) => {
     const user = allUsers.find((u) => u.id === userId);
     if (user) {
