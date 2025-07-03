@@ -644,10 +644,68 @@ export default function ProjectDetail() {
             {activeTab === "tasks" && (
               <div className="space-y-6">
                 <Card>
-                  <CardHeader>
+                  <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle>Tasks</CardTitle>
+                    <Button
+                      onClick={() => setShowAddTask(true)}
+                      size="sm"
+                      className="gap-2"
+                    >
+                      <Plus className="h-4 w-4" />
+                      Add Task
+                    </Button>
                   </CardHeader>
                   <CardContent>
+                    {showAddTask && (
+                      <div className="border rounded-lg p-4 mb-4 space-y-3">
+                        <Input
+                          placeholder="Task title"
+                          value={newTask.title}
+                          onChange={(e) =>
+                            setNewTask((prev) => ({
+                              ...prev,
+                              title: e.target.value,
+                            }))
+                          }
+                        />
+                        <div className="grid grid-cols-2 gap-2">
+                          <Input
+                            placeholder="Assigned to"
+                            value={newTask.assignedTo}
+                            onChange={(e) =>
+                              setNewTask((prev) => ({
+                                ...prev,
+                                assignedTo: e.target.value,
+                              }))
+                            }
+                          />
+                          <Input
+                            type="date"
+                            placeholder="Due date"
+                            value={newTask.dueDate}
+                            onChange={(e) =>
+                              setNewTask((prev) => ({
+                                ...prev,
+                                dueDate: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
+                        <div className="flex gap-2">
+                          <Button onClick={addTask} size="sm">
+                            Add Task
+                          </Button>
+                          <Button
+                            onClick={() => setShowAddTask(false)}
+                            variant="outline"
+                            size="sm"
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+
                     <div className="space-y-3">
                       {project.tasks && project.tasks.length > 0 ? (
                         project.tasks.map((task: any) => (
@@ -659,8 +717,8 @@ export default function ProjectDetail() {
                               <input
                                 type="checkbox"
                                 checked={task.completed}
+                                onChange={() => toggleTask(task.id)}
                                 className="rounded"
-                                readOnly
                               />
                               <div>
                                 <p
@@ -669,13 +727,14 @@ export default function ProjectDetail() {
                                   {task.title}
                                 </p>
                                 {task.assignedTo && (
-                                  <p className="text-sm text-muted-foreground">
-                                    Assigned to: {task.assignedTo}
+                                  <p className="text-sm text-muted-foreground flex items-center gap-1">
+                                    <UserPlus className="h-3 w-3" />
+                                    {task.assignedTo}
                                   </p>
                                 )}
                                 {task.dueDate && (
-                                  <p className="text-sm text-muted-foreground">
-                                    Due:{" "}
+                                  <p className="text-sm text-muted-foreground flex items-center gap-1">
+                                    <Calendar className="h-3 w-3" />
                                     {new Date(
                                       task.dueDate,
                                     ).toLocaleDateString()}
@@ -696,10 +755,40 @@ export default function ProjectDetail() {
                 </Card>
 
                 <Card>
-                  <CardHeader>
+                  <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle>Checklists</CardTitle>
+                    <Button
+                      onClick={() => setShowAddChecklist(true)}
+                      size="sm"
+                      className="gap-2"
+                    >
+                      <Plus className="h-4 w-4" />
+                      Add Item
+                    </Button>
                   </CardHeader>
                   <CardContent>
+                    {showAddChecklist && (
+                      <div className="border rounded-lg p-4 mb-4 space-y-3">
+                        <Input
+                          placeholder="Checklist item"
+                          value={newChecklistItem}
+                          onChange={(e) => setNewChecklistItem(e.target.value)}
+                        />
+                        <div className="flex gap-2">
+                          <Button onClick={addChecklistItem} size="sm">
+                            Add Item
+                          </Button>
+                          <Button
+                            onClick={() => setShowAddChecklist(false)}
+                            variant="outline"
+                            size="sm"
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+
                     <div className="space-y-3">
                       {project.checklist && project.checklist.length > 0 ? (
                         project.checklist.map((item: any) => (
@@ -710,8 +799,8 @@ export default function ProjectDetail() {
                             <input
                               type="checkbox"
                               checked={item.completed}
+                              onChange={() => toggleChecklistItem(item.id)}
                               className="rounded"
-                              readOnly
                             />
                             <span
                               className={
