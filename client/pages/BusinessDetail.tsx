@@ -729,50 +729,181 @@ export default function BusinessDetail() {
             </CardContent>
           </Card>
 
-          {/* Financial Summary */}
+          {/* Plan Details */}
           <Card>
             <CardHeader>
-              <CardTitle>Financial Summary</CardTitle>
+              <CardTitle>Plan Details</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm">Total Revenue</span>
-                  <span className="font-bold">${businessData.revenue}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm">Monthly Revenue</span>
-                  <span className="font-bold">$29</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm">Customer Since</span>
-                  <span className="text-sm">
-                    {new Date(businessData.signupDate).toLocaleDateString()}
-                  </span>
-                </div>
-                <Separator />
-                <div className="space-y-2">
-                  <h4 className="font-medium">Recent Transactions</h4>
-                  {financialHistory.slice(0, 3).map((record) => (
-                    <div
-                      key={record.id}
-                      className="flex justify-between text-sm"
-                    >
-                      <span>{record.description}</span>
-                      <span
-                        className={
-                          record.type === "credit" ? "text-green-600" : ""
-                        }
-                      >
-                        ${Math.abs(record.amount).toFixed(2)}
-                      </span>
-                    </div>
+            <CardContent className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm">Current Plan</span>
+                <Badge variant="default">
+                  {businessData.planDetails.currentPlan}
+                </Badge>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm">Monthly Price</span>
+                <span className="font-bold">
+                  ${businessData.planDetails.monthlyPrice}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm">Billing Date</span>
+                <span className="text-sm">{businessData.billingDate}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm">Next Billing</span>
+                <span className="text-sm">
+                  {new Date(
+                    businessData.planDetails.nextBilling,
+                  ).toLocaleDateString()}
+                </span>
+              </div>
+              <Separator />
+              <div className="space-y-2">
+                <h4 className="font-medium">Plan Features</h4>
+                <ul className="space-y-1">
+                  {businessData.planDetails.features.map((feature, index) => (
+                    <li key={index} className="text-sm flex items-center gap-2">
+                      <div className="h-1.5 w-1.5 bg-primary rounded-full"></div>
+                      {feature}
+                    </li>
                   ))}
+                </ul>
+              </div>
+              {/* Plan Change Controls for Super Admin */}
+              <Separator />
+              <div className="space-y-2">
+                <Label>Change Plan</Label>
+                <Select
+                  value={businessData.plan}
+                  onValueChange={(value) =>
+                    setBusinessData((prev) => ({ ...prev, plan: value }))
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Free">Free</SelectItem>
+                    <SelectItem value="Pro">Pro</SelectItem>
+                    <SelectItem value="Enterprise">Enterprise</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Payment Method</Label>
+                <div className="flex items-center justify-between p-2 border rounded">
+                  <div className="flex items-center gap-2">
+                    <CreditCard className="h-4 w-4" />
+                    <span className="text-sm">
+                      **** **** **** {businessData.lastFourCard}
+                    </span>
+                  </div>
+                  <Button variant="outline" size="sm">
+                    Update
+                  </Button>
                 </div>
               </div>
             </CardContent>
           </Card>
         </div>
+
+        {/* Invoices Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Invoices</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Invoice #</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Due Date</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {invoices.map((invoice) => (
+                  <TableRow key={invoice.id}>
+                    <TableCell className="font-medium">
+                      {invoice.invoiceNumber}
+                    </TableCell>
+                    <TableCell>
+                      {new Date(invoice.date).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>${invoice.amount.toFixed(2)}</TableCell>
+                    <TableCell>
+                      {new Date(invoice.dueDate).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={
+                          invoice.status === "paid"
+                            ? "default"
+                            : invoice.status === "pending"
+                              ? "secondary"
+                              : "destructive"
+                        }
+                      >
+                        {invoice.status}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
+        {/* Payments Table */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Payment Details</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Method</TableHead>
+                  <TableHead>Transaction ID</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {payments.map((payment) => (
+                  <TableRow key={payment.id}>
+                    <TableCell>
+                      {new Date(payment.date).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>${payment.amount.toFixed(2)}</TableCell>
+                    <TableCell>{payment.method}</TableCell>
+                    <TableCell className="font-mono text-sm">
+                      {payment.transactionId}
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={
+                          payment.status === "completed"
+                            ? "default"
+                            : payment.status === "pending"
+                              ? "secondary"
+                              : "destructive"
+                        }
+                      >
+                        {payment.status}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
 
         {/* Timestamped Notes */}
         <Card>
