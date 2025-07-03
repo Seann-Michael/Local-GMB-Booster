@@ -1306,7 +1306,7 @@ export default function Settings() {
                       <Label>RSS Feed URL</Label>
                       <div className="flex gap-2">
                         <Input
-                          value="https://projectlens.app/feed/rss"
+                          value="https://localgmbbooster.app/feed/rss"
                           readOnly
                           className="bg-muted"
                         />
@@ -1315,7 +1315,7 @@ export default function Settings() {
                           size="sm"
                           onClick={() => {
                             navigator.clipboard.writeText(
-                              "https://projectlens.app/feed/rss",
+                              "https://localgmbbooster.app/feed/rss",
                             );
                             toast.success("RSS URL copied to clipboard");
                           }}
