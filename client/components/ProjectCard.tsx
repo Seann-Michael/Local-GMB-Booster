@@ -39,10 +39,14 @@ interface Project {
   primaryPhotoId?: string;
   createdAt: string;
   updatedAt?: string;
+  status?: string;
+  completedDate?: string;
 }
 
 interface ProjectCardProps {
   project: Project;
+  onDelete?: () => void;
+  onMarkIncomplete?: () => void;
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
