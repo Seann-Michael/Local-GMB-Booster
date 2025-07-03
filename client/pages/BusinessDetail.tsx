@@ -131,8 +131,7 @@ export default function BusinessDetail() {
   const [selectedUser, setSelectedUser] = useState<BusinessUser | null>(null);
   const [newNote, setNewNote] = useState("");
   const [showPasswordChange, setShowPasswordChange] = useState(false);
-  const [passwordChangeUser, setPasswordChangeUser] =
-    useState<BusinessUser | null>(null);
+  const [passwordChangeUser, setPasswordChangeUser] = useState<BusinessUser | null>(null);
   const [newPassword, setNewPassword] = useState("");
   const [newUsername, setNewUsername] = useState("");
 
@@ -367,37 +366,16 @@ export default function BusinessDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Super Admin Header */}
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between px-4">
-          <div className="flex items-center space-x-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-destructive">
-              <Shield className="h-5 w-5 text-destructive-foreground" />
-            </div>
-            <span className="text-xl font-semibold">Super Admin Portal</span>
-          </div>
-        </div>
-      </header>
-
-      <div className="container px-4 py-6">
-        <div className="flex items-center gap-4 mb-6">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate("/super-admin")}
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <div className="flex-1">
-            <h1 className="text-3xl font-bold flex items-center gap-2">
-              <Building2 className="h-8 w-8" />
-              {businessData.name}
-            </h1>
-            <p className="text-muted-foreground">
-              Business management and analytics
-            </p>
-          </div>
+    <SuperAdminLayout
+      title={businessData.name}
+      breadcrumbs={[
+        { label: "Business Management", href: "/super-admin/businesses" },
+        { label: businessData.name },
+      ]}
+    >
+      <div className="space-y-6">
+        <div className="flex justify-end">
+          <div className="flex gap-2">{/* Action buttons moved here */}
           <div className="flex gap-2">
             <Button
               variant="outline"
