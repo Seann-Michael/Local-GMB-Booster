@@ -105,17 +105,6 @@ interface TimestampedNote {
   adminUser: string;
 }
 
-interface TechnicalDetail {
-  id: string;
-  userId: string;
-  userName: string;
-  device: string;
-  browser: string;
-  ipAddress: string;
-  lastLogin: string;
-  location: string;
-}
-
 interface Invoice {
   id: string;
   invoiceNumber: string;
@@ -666,30 +655,6 @@ export default function BusinessDetail() {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label>Plan</Label>
-                  {isEditing ? (
-                    <Select
-                      value={businessData.plan}
-                      onValueChange={(value) =>
-                        setBusinessData((prev) => ({ ...prev, plan: value }))
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Free">Free</SelectItem>
-                        <SelectItem value="Pro">Pro</SelectItem>
-                        <SelectItem value="Enterprise">Enterprise</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  ) : (
-                    <p className="text-sm p-2 bg-muted rounded">
-                      {businessData.plan}
-                    </p>
-                  )}
-                </div>
-                <div className="space-y-2">
                   <Label>Signup Date</Label>
                   <p className="text-sm p-2 bg-muted rounded">
                     {new Date(businessData.signupDate).toLocaleDateString()}
@@ -771,7 +736,6 @@ export default function BusinessDetail() {
                   ))}
                 </ul>
               </div>
-              {/* Plan Change Controls for Super Admin */}
               <Separator />
               <div className="space-y-2">
                 <Label>Change Plan</Label>
@@ -967,58 +931,6 @@ export default function BusinessDetail() {
                 </div>
               ))}
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Technical Details */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Technical Details</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>User</TableHead>
-                  <TableHead>Device</TableHead>
-                  <TableHead>Browser</TableHead>
-                  <TableHead>IP Address</TableHead>
-                  <TableHead>Location</TableHead>
-                  <TableHead>Last Login</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {technicalDetails.map((detail) => (
-                  <TableRow key={detail.id}>
-                    <TableCell className="font-medium">
-                      {detail.userName}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        {detail.device.includes("iPhone") ||
-                        detail.device.includes("Samsung") ? (
-                          <Smartphone className="h-4 w-4" />
-                        ) : (
-                          <Monitor className="h-4 w-4" />
-                        )}
-                        {detail.device}
-                      </div>
-                    </TableCell>
-                    <TableCell>{detail.browser}</TableCell>
-                    <TableCell className="font-mono text-sm">
-                      {detail.ipAddress}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1">
-                        <MapPin className="h-3 w-3" />
-                        {detail.location}
-                      </div>
-                    </TableCell>
-                    <TableCell>{detail.lastLogin}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
           </CardContent>
         </Card>
 
