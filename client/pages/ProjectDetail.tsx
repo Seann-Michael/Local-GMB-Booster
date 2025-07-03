@@ -549,7 +549,7 @@ export default function ProjectDetail() {
   };
 
   const editChecklistItem = (itemId: string, newTitle: string) => {
-    if (!project || !newTitle.trim()) return;
+    if (!project || !project.checklist || !newTitle.trim()) return;
 
     const updatedChecklist = project.checklist.map((item) =>
       item.id === itemId ? { ...item, title: newTitle } : item,
