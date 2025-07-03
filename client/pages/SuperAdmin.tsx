@@ -313,6 +313,15 @@ export default function SuperAdmin() {
             </p>
           </div>
           <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              onClick={() => navigate("/super-admin/users")}
+            >
+              <Users className="h-4 w-4" />
+              User Management
+            </Button>
             <Button variant="outline" size="sm" className="gap-2">
               <Download className="h-4 w-4" />
               Export Report
