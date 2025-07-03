@@ -19,6 +19,10 @@ import {
   Phone,
   Star,
   X,
+  CheckCircle,
+  Clock,
+  User,
+  MessageSquare,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -89,6 +93,7 @@ export default function ProjectDetail() {
   const [project, setProject] = useState<Project | null>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const [showAddPhotos, setShowAddPhotos] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -132,9 +137,7 @@ export default function ProjectDetail() {
   const requestGoogleReview = () => {
     const phone = project?.mobilePhone || project?.customerPhone;
     if (!phone) {
-      toast.error(
-        "Customer mobile phone number is required to request a review",
-      );
+      toast.error("Customer mobile phone number is required to request a review");
       return;
     }
 
@@ -293,11 +296,74 @@ export default function ProjectDetail() {
           </div>
         </div>
 
+        {/* Project Status and Completion */}
+        {project.status !== 'completed' && (
+          <Card className="mb-6">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium">Project Status</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Started: {new Date(project.startDate || project.createdAt).toLocaleDateString()}
+                    {project.completionDate && (
+                      <span> • Expected: {new Date(project.completionDate).toLocaleDateString()}</span>
+                    )}
+                  </p>
+                </div>
+                <Button onClick={markProjectCompleted} className="gap-2">
+                  <CheckCircle className="h-4 w-4" />
+                  Mark Completed
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {project.status === 'completed' && (
+          <Card className="mb-6 border-green-200 bg-green-50">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-green-600" />
+                <div>
+                  <h3 className="font-medium text-green-800">Project Completed</h3>
+                  <p className="text-sm text-green-700">
+                    Completed on {new Date(project.completedDate).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Tabs */}
+        <div className="border-b mb-6">
+          <div className="flex space-x-1">
+            {[
+              { id: 'overview', label: 'Overview' },
+              { id: 'tasks', label: 'Tasks & Checklists' },
+              { id: 'activity', label: 'Activity Log' }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                  activeTab === tab.id
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="grid gap-6 lg:grid-cols-3">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Project Photos */}
-            <Card>
+            {/* Overview Tab */}
+            {activeTab === 'overview' && (
+              <Card>
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
                   <Images className="h-5 w-5" />
@@ -450,11 +516,7 @@ export default function ProjectDetail() {
                   </p>
                 </div>
 
-                {(project.customerName ||
-                  project.mobilePhone ||
-                  project.customerPhone ||
-                  (project.additionalPhones &&
-                    project.additionalPhones.length > 0)) && (
+                {(project.customerName || project.mobilePhone || project.customerPhone || (project.additionalPhones && project.additionalPhones.length > 0)) && (
                   <>
                     <Separator />
                     <div>
@@ -466,45 +528,31 @@ export default function ProjectDetail() {
                       {project.customerName && (
                         <div className="mb-2">
                           <p className="text-xs text-muted-foreground">Name</p>
-                          <p className="text-sm font-medium">
-                            {project.customerName}
-                          </p>
+                          <p className="text-sm font-medium">{project.customerName}</p>
                         </div>
                       )}
 
                       {(project.mobilePhone || project.customerPhone) && (
                         <div className="mb-2">
-                          <p className="text-xs text-muted-foreground">
-                            Mobile Phone
-                          </p>
-                          <p className="text-sm">
-                            {project.mobilePhone || project.customerPhone}
-                          </p>
+                          <p className="text-xs text-muted-foreground">Mobile Phone</p>
+                          <p className="text-sm">{project.mobilePhone || project.customerPhone}</p>
                         </div>
                       )}
 
-                      {project.additionalPhones &&
-                        project.additionalPhones.filter((phone) => phone.trim())
-                          .length > 0 && (
-                          <div className="mb-3">
-                            <p className="text-xs text-muted-foreground">
-                              Additional Numbers
-                            </p>
-                            {project.additionalPhones
-                              .filter((phone) => phone.trim())
-                              .map((phone, index) => (
-                                <p key={index} className="text-sm">
-                                  {phone}
-                                </p>
-                              ))}
-                          </div>
-                        )}
+                      {project.additionalPhones && project.additionalPhones.filter(phone => phone.trim()).length > 0 && (
+                        <div className="mb-3">
+                          <p className="text-xs text-muted-foreground">Additional Numbers</p>
+                          {project.additionalPhones
+                            .filter(phone => phone.trim())
+                            .map((phone, index) => (
+                              <p key={index} className="text-sm">{phone}</p>
+                            ))}
+                        </div>
+                      )}
 
                       {project.gpsLat && project.gpsLng && (
                         <div className="mb-3">
-                          <p className="text-xs text-muted-foreground">
-                            GPS Coordinates
-                          </p>
+                          <p className="text-xs text-muted-foreground">GPS Coordinates</p>
                           <p className="text-sm font-mono text-xs">
                             {project.gpsLat}, {project.gpsLng}
                           </p>
@@ -516,9 +564,7 @@ export default function ProjectDetail() {
                         size="sm"
                         className="gap-2 w-full"
                         onClick={requestGoogleReview}
-                        disabled={
-                          !project.mobilePhone && !project.customerPhone
-                        }
+                        disabled={!project.mobilePhone && !project.customerPhone}
                       >
                         <Star className="h-4 w-4" />
                         Request Google Review
