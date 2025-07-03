@@ -326,6 +326,27 @@ export default function Settings() {
     }
   };
 
+  const addTag = () => {
+    if (!newTag.trim()) return;
+    if (tags.includes(newTag.trim())) {
+      toast.error("Tag already exists");
+      return;
+    }
+
+    const updatedTags = [...tags, newTag.trim()];
+    setTags(updatedTags);
+    localStorage.setItem("companyTags", JSON.stringify(updatedTags));
+    setNewTag("");
+    toast.success("Tag added successfully");
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    const updatedTags = tags.filter((tag) => tag !== tagToRemove);
+    setTags(updatedTags);
+    localStorage.setItem("companyTags", JSON.stringify(updatedTags));
+    toast.success("Tag removed successfully");
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
