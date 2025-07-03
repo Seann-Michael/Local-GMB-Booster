@@ -15,6 +15,7 @@ import { FolderOpen, Plus, Search, Filter, X, RotateCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCurrentUser } from "@/lib/auth";
+import { toast } from "sonner";
 
 interface TaggedPhoto {
   url: string;
@@ -91,9 +92,12 @@ export default function Index() {
           description:
             "Complete kitchen remodel with new cabinets, countertops, and appliances",
           address: "123 Main Street, Anytown, USA",
+          customerPhone: "(555) 123-4567",
           keywords: ["kitchen", "renovation", "cabinets", "countertops"],
           photos: ["/placeholder.svg"],
           createdAt: new Date(Date.now() - 86400000).toISOString(),
+          status: "active",
+          assignedUsers: ["1"],
         },
         {
           id: "demo-2",
@@ -101,9 +105,13 @@ export default function Index() {
           description:
             "Modern bathroom renovation with walk-in shower and new fixtures",
           address: "456 Oak Avenue, Somewhere, USA",
+          customerPhone: "(555) 987-6543",
           keywords: ["bathroom", "shower", "fixtures", "modern"],
           photos: ["/placeholder.svg"],
           createdAt: new Date(Date.now() - 172800000).toISOString(),
+          status: "completed",
+          completedDate: new Date(Date.now() - 86400000).toISOString(),
+          assignedUsers: ["2"],
         },
       ];
       setProjects(demoProjects);
@@ -205,51 +213,137 @@ export default function Index() {
     toast.success("Project marked as incomplete");
   };
 
-  useEffect(() => {
-    if (
-      searchQuery.trim() === "" &&
-      Object.values(filters).every((v) => v === "" || v === "all")
-    ) {
-      setFilteredProjects(projects);
-    } else {
-      const filtered = projects.filter(
-        (project) =>
-          project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          project.description
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase()) ||
-          project.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          project.keywords.some((keyword) =>
-            keyword.toLowerCase().includes(searchQuery.toLowerCase()),
-          ),
-      );
-      setFilteredProjects(filtered);
-    }
-  }, [searchQuery, projects]);
-
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-
+    <AppLayout>
       <div className="container px-4 py-6">
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">My Projects</h1>
-              <p className="text-muted-foreground">
-                Manage and organize your job site photos
-              </p>
-            </div>
-            <Link to="/add-project" className="sm:hidden">
-              <Button className="w-full gap-2">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-3xl font-bold">Projects</h1>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={() => setShowFilters(!showFilters)}
+              className="gap-2"
+            >
+              <Filter className="h-4 w-4" />
+              Filters
+            </Button>
+            <Link to="/add-project">
+              <Button className="gap-2">
                 <Plus className="h-4 w-4" />
-                Add New Project
+                Add Project
               </Button>
             </Link>
           </div>
+        </div>
 
-          <div className="relative max-w-md">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        {/* Filters Section */}
+        {showFilters && (
+          <Card className="mb-6">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle>Filter Projects</CardTitle>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={clearFilters}>
+                    <RotateCcw className="h-4 w-4 mr-2" />
+                    Clear
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowFilters(false)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div className="space-y-2">
+                  <Label>Start Date</Label>
+                  <Input
+                    type="date"
+                    value={filters.startDate}
+                    onChange={(e) =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        startDate: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>End Date</Label>
+                  <Input
+                    type="date"
+                    value={filters.endDate}
+                    onChange={(e) =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        endDate: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Status</Label>
+                  <Select
+                    value={filters.status}
+                    onValueChange={(value) =>
+                      setFilters((prev) => ({ ...prev, status: value }))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Status</SelectItem>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="completed">Completed</SelectItem>
+                      <SelectItem value="on-hold">On Hold</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Assigned User</Label>
+                  <Select
+                    value={filters.assignedUser}
+                    onValueChange={(value) =>
+                      setFilters((prev) => ({ ...prev, assignedUser: value }))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Users</SelectItem>
+                      {users.map((user) => (
+                        <SelectItem key={user.id} value={user.id}>
+                          {user.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Tags</Label>
+                  <Input
+                    placeholder="kitchen, bathroom..."
+                    value={filters.tags}
+                    onChange={(e) =>
+                      setFilters((prev) => ({ ...prev, tags: e.target.value }))
+                    }
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Search Bar */}
+        <div className="flex items-center gap-4 mb-6">
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search projects..."
               value={searchQuery}
@@ -257,91 +351,53 @@ export default function Index() {
               className="pl-10"
             />
           </div>
-
-          {filteredProjects.length === 0 ? (
-            <Card className="border-dashed">
-              <CardContent className="flex flex-col items-center justify-center py-12">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted">
-                  <FolderOpen className="h-10 w-10 text-muted-foreground" />
-                </div>
-                <h3 className="mt-4 text-lg font-semibold">
-                  {searchQuery ? "No projects found" : "No projects yet"}
-                </h3>
-                <p className="mb-6 text-sm text-muted-foreground text-center max-w-sm">
-                  {searchQuery
-                    ? "Try adjusting your search terms"
-                    : "Create your first project to start organizing your job site photos"}
-                </p>
-                {!searchQuery && (
-                  <Link to="/add-project">
-                    <Button className="gap-2">
-                      <Plus className="h-4 w-4" />
-                      Add Your First Project
-                    </Button>
-                  </Link>
-                )}
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {filteredProjects.map((project) => (
-                <ProjectCard key={project.id} project={project} />
-              ))}
-            </div>
-          )}
-
-          {/* Company Gallery Section */}
-          {filteredProjects.length > 0 && (
-            <div className="mt-12">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h2 className="text-xl font-bold">Recent Photos</h2>
-                  <p className="text-muted-foreground">
-                    Latest photos from all projects
-                  </p>
-                </div>
-                <Link to="/gallery">
-                  <Button variant="outline" size="sm">
-                    View All
-                  </Button>
-                </Link>
-              </div>
-
-              <div className="flex gap-4 overflow-x-auto pb-4">
-                {projects
-                  .slice(0, 10)
-                  .map((project) =>
-                    project.photos
-                      .map((photo, photoIndex) => {
-                        const photoUrl =
-                          typeof photo === "string" ? photo : photo.url;
-                        return (
-                          <Link
-                            key={`${project.id}-${photoIndex}`}
-                            to={`/project/${project.id}`}
-                            className="flex-shrink-0"
-                          >
-                            <div className="w-32 h-32 rounded-lg overflow-hidden bg-muted hover:shadow-lg transition-shadow">
-                              <img
-                                src={photoUrl}
-                                alt={`Photo from ${project.name}`}
-                                className="w-full h-full object-cover hover:scale-105 transition-transform"
-                              />
-                            </div>
-                            <p className="text-xs text-muted-foreground mt-1 truncate w-32">
-                              {project.name}
-                            </p>
-                          </Link>
-                        );
-                      })
-                      .slice(0, 1),
-                  )
-                  .slice(0, 8)}
-              </div>
-            </div>
-          )}
         </div>
+
+        {filteredProjects.length === 0 ? (
+          <Card className="text-center py-12">
+            <CardContent>
+              <FolderOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">No projects found</h3>
+              <p className="text-muted-foreground mb-4">
+                {searchQuery.trim() ||
+                Object.values(filters).some((v) => v !== "" && v !== "all")
+                  ? "No projects match your search or filters."
+                  : "Get started by creating your first project."}
+              </p>
+              <Link to="/add-project">
+                <Button className="gap-2">
+                  <Plus className="h-4 w-4" />
+                  Add Project
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {filteredProjects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                onDelete={() => {
+                  const updatedProjects = projects.filter(
+                    (p) => p.id !== project.id,
+                  );
+                  setProjects(updatedProjects);
+                  localStorage.setItem(
+                    "projects",
+                    JSON.stringify(updatedProjects),
+                  );
+                }}
+                onMarkIncomplete={
+                  project.status === "completed"
+                    ? () => markProjectIncomplete(project.id)
+                    : undefined
+                }
+              />
+            ))}
+          </div>
+        )}
       </div>
-    </div>
+    </AppLayout>
   );
 }
