@@ -49,7 +49,11 @@ interface ProjectCardProps {
   onMarkIncomplete?: () => void;
 }
 
-export function ProjectCard({ project }: ProjectCardProps) {
+export function ProjectCard({
+  project,
+  onDelete,
+  onMarkIncomplete,
+}: ProjectCardProps) {
   const getPrimaryPhoto = () => {
     if (project.photos.length === 0) return null;
 
