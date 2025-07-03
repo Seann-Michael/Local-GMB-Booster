@@ -1,351 +1,689 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Header } from "@/components/Header";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Shield,
   Users,
   Activity,
   Database,
-  Settings,
+  Building2,
   Eye,
   BarChart3,
   Server,
   Key,
+  TrendingUp,
+  TrendingDown,
+  Camera,
+  Video,
+  FolderOpen,
+  DollarSign,
+  UserPlus,
+  UserMinus,
+  Crown,
+  LogIn,
+  ArrowUpRight,
+  ArrowDownRight,
+  Clock,
+  Wifi,
+  AlertTriangle,
+  CheckCircle2,
+  XCircle,
+  Search,
+  Filter,
+  Download,
+  RefreshCw,
 } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { getCurrentUser, signOut } from "@/lib/auth";
+
+interface Business {
+  id: string;
+  name: string;
+  admin: string;
+  email: string;
+  users: number;
+  photos: number;
+  videos: number;
+  projects: number;
+  storage: string;
+  plan: "Free" | "Pro" | "Enterprise";
+  status: "Active" | "Trial" | "Suspended";
+  lastActivity: string;
+  signupDate: string;
+  revenue: number;
+}
+
+interface UserDetail {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  business: string;
+  lastLogin: string;
+  totalLogins: number;
+  photosUploaded: number;
+  videosUploaded: number;
+  projectsCreated: number;
+  storageUsed: string;
+  accountAge: string;
+  activityLevel: "High" | "Medium" | "Low";
+}
 
 export default function SuperAdmin() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [credentials, setCredentials] = useState({
-    username: "",
-    password: "",
-  });
+  const navigate = useNavigate();
+  const currentUser = getCurrentUser();
+  const [selectedUser, setSelectedUser] = useState<UserDetail | null>(null);
+  const [showUserDetail, setShowUserDetail] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
 
-  // Mock admin data
-  const adminStats = {
-    totalUsers: 45,
-    activeProjects: 234,
-    totalPhotos: 1567,
-    storageUsed: "2.4 GB",
-    monthlyUploads: 89,
-    systemHealth: "Excellent",
+  // Mock data for comprehensive analytics
+  const systemStats = {
+    totalUsers: 1247,
+    totalBusinesses: 89,
+    totalPhotos: 45623,
+    totalVideos: 3456,
+    totalProjects: 2890,
+    totalStorage: "1.2TB",
+    activeUsers: 234,
+    revenue: 89240,
+    freeTrials: 23,
+    paidUsers: 66,
+    avgLifetime: "14.5 months",
+    newSignupsToday: 12,
+    newSignupsWeek: 67,
+    newSignupsMonth: 289,
+    canceledToday: 2,
+    canceledWeek: 8,
+    canceledMonth: 23,
+    systemHealth: 98.5,
+    apiHealth: 99.2,
+    serverLoad: 67,
   };
 
-  const recentActivity = [
-    { user: "John Smith", action: "Created project", time: "2 minutes ago" },
-    {
-      user: "Sarah Johnson",
-      action: "Uploaded 5 photos",
-      time: "15 minutes ago",
-    },
-    {
-      user: "Mike Wilson",
-      action: "Requested Google review",
-      time: "1 hour ago",
-    },
-    {
-      user: "Lisa Brown",
-      action: "Updated project details",
-      time: "2 hours ago",
-    },
-  ];
+  const trends = {
+    users: { value: 12.5, isPositive: true },
+    revenue: { value: 8.3, isPositive: true },
+    cancellations: { value: 15.2, isPositive: false },
+    newSignups: { value: 23.1, isPositive: true },
+  };
 
-  const systemUsers = [
+  const mockBusinesses: Business[] = [
     {
-      id: 1,
-      name: "John Smith",
+      id: "1",
+      name: "Smith Construction LLC",
+      admin: "John Smith",
       email: "john@smithconstruction.com",
-      role: "Admin",
+      users: 8,
+      photos: 1247,
+      videos: 89,
+      projects: 34,
+      storage: "2.4GB",
+      plan: "Pro",
       status: "Active",
-      lastLogin: "Today",
+      lastActivity: "2 hours ago",
+      signupDate: "2023-08-15",
+      revenue: 348,
     },
     {
-      id: 2,
-      name: "Sarah Johnson",
-      email: "sarah@renovations.com",
-      role: "Editor",
+      id: "2",
+      name: "Premier Renovations",
+      admin: "Sarah Johnson",
+      email: "sarah@premierrenovations.com",
+      users: 12,
+      photos: 2156,
+      videos: 156,
+      projects: 67,
+      storage: "4.1GB",
+      plan: "Enterprise",
       status: "Active",
-      lastLogin: "Yesterday",
+      lastActivity: "1 hour ago",
+      signupDate: "2023-06-22",
+      revenue: 1197,
     },
     {
-      id: 3,
-      name: "Mike Wilson",
-      email: "mike@contractingpro.com",
-      role: "Viewer",
-      status: "Inactive",
-      lastLogin: "1 week ago",
+      id: "3",
+      name: "Quick Fix Contractors",
+      admin: "Mike Wilson",
+      email: "mike@quickfixcontractors.com",
+      users: 3,
+      photos: 423,
+      videos: 12,
+      projects: 18,
+      storage: "890MB",
+      plan: "Free",
+      status: "Trial",
+      lastActivity: "1 day ago",
+      signupDate: "2024-01-10",
+      revenue: 0,
     },
   ];
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
+  const impersonateUser = (businessId: string) => {
+    // Simulate user impersonation
+    toast.success(
+      `Signing in as ${mockBusinesses.find((b) => b.id === businessId)?.admin}...`,
+    );
 
-    // Simple demo authentication
-    if (
-      credentials.username === "superadmin" &&
-      credentials.password === "admin123"
-    ) {
-      setIsAuthenticated(true);
-      toast.success("Super Admin access granted!");
-    } else {
-      toast.error("Invalid credentials");
+    // Store current super admin session for easy return
+    localStorage.setItem("superadmin_session", JSON.stringify(currentUser));
+
+    // Set impersonated user
+    const targetBusiness = mockBusinesses.find((b) => b.id === businessId);
+    if (targetBusiness) {
+      const impersonatedUser = {
+        id: businessId,
+        name: targetBusiness.admin,
+        email: targetBusiness.email,
+        role: "admin",
+        isImpersonated: true,
+      };
+
+      localStorage.setItem("auth_user", JSON.stringify(impersonatedUser));
+      navigate("/", { replace: true });
     }
   };
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <div className="flex justify-center mb-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary">
-                <Shield className="h-6 w-6 text-primary-foreground" />
-              </div>
-            </div>
-            <CardTitle>Super Admin Access</CardTitle>
-            <p className="text-sm text-muted-foreground">
-              Enter your super admin credentials to continue
-            </p>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
-                <Input
-                  id="username"
-                  value={credentials.username}
-                  onChange={(e) =>
-                    setCredentials((prev) => ({
-                      ...prev,
-                      username: e.target.value,
-                    }))
-                  }
-                  placeholder="superadmin"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={credentials.password}
-                  onChange={(e) =>
-                    setCredentials((prev) => ({
-                      ...prev,
-                      password: e.target.value,
-                    }))
-                  }
-                  placeholder="Enter password"
-                  required
-                />
-              </div>
-              <Button type="submit" className="w-full">
-                Access Super Admin
-              </Button>
-            </form>
-            <div className="mt-4 p-3 bg-muted rounded-lg text-xs text-muted-foreground">
-              <strong>Demo Credentials:</strong>
-              <br />
-              Username: superadmin
-              <br />
-              Password: admin123
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  const returnToSuperAdmin = () => {
+    const superAdminSession = localStorage.getItem("superadmin_session");
+    if (superAdminSession) {
+      localStorage.setItem("auth_user", superAdminSession);
+      localStorage.removeItem("superadmin_session");
+      navigate("/super-admin", { replace: true });
+      toast.success("Returned to Super Admin");
+    }
+  };
+
+  const handleSignOut = () => {
+    signOut();
+    localStorage.removeItem("superadmin_session");
+    toast.success("Signed out successfully");
+    navigate("/signin", { replace: true });
+  };
+
+  const filteredBusinesses = mockBusinesses.filter((business) => {
+    const matchesSearch =
+      business.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      business.admin.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      business.email.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || business.status.toLowerCase() === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      {/* Super Admin Header */}
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-16 items-center justify-between px-4">
+          <div className="flex items-center space-x-2">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-destructive">
+              <Shield className="h-5 w-5 text-destructive-foreground" />
+            </div>
+            <span className="text-xl font-semibold">Super Admin Portal</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {currentUser?.isImpersonated && (
+              <Button
+                variant="outline"
+                onClick={returnToSuperAdmin}
+                className="gap-2"
+              >
+                <Shield className="h-4 w-4" />
+                Return to Super Admin
+              </Button>
+            )}
+
+            <Button variant="outline" onClick={handleSignOut}>
+              Sign Out
+            </Button>
+          </div>
+        </div>
+      </header>
 
       <div className="container px-4 py-6">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold flex items-center gap-2">
               <Shield className="h-8 w-8" />
-              Super Admin Dashboard
+              Local GMB Booster Analytics
             </h1>
             <p className="text-muted-foreground">
-              System management and monitoring
+              System analytics, user management, and business intelligence
             </p>
           </div>
-          <Button variant="outline" onClick={() => setIsAuthenticated(false)}>
-            Logout
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" className="gap-2">
+              <Download className="h-4 w-4" />
+              Export Report
+            </Button>
+            <Button variant="outline" size="sm" className="gap-2">
+              <RefreshCw className="h-4 w-4" />
+              Refresh Data
+            </Button>
+          </div>
         </div>
 
-        {/* System Overview */}
+        {/* Key Metrics Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-6">
           <Card>
             <CardContent className="p-6">
-              <div className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-primary" />
+              <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Total Users</p>
-                  <p className="text-2xl font-bold">{adminStats.totalUsers}</p>
+                  <p className="text-2xl font-bold">
+                    {systemStats.totalUsers.toLocaleString()}
+                  </p>
+                  <div className="flex items-center text-sm mt-1">
+                    {trends.users.isPositive ? (
+                      <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
+                    ) : (
+                      <TrendingDown className="h-4 w-4 text-red-600 mr-1" />
+                    )}
+                    <span
+                      className={
+                        trends.users.isPositive
+                          ? "text-green-600"
+                          : "text-red-600"
+                      }
+                    >
+                      {trends.users.value}%
+                    </span>
+                  </div>
                 </div>
+                <Users className="h-8 w-8 text-muted-foreground" />
               </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="p-6">
-              <div className="flex items-center gap-2">
-                <Activity className="h-5 w-5 text-primary" />
+              <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">
-                    Active Projects
+                    Total Businesses
                   </p>
                   <p className="text-2xl font-bold">
-                    {adminStats.activeProjects}
+                    {systemStats.totalBusinesses}
                   </p>
+                  <div className="flex items-center text-sm mt-1">
+                    <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
+                    <span className="text-green-600">8.3%</span>
+                  </div>
                 </div>
+                <Building2 className="h-8 w-8 text-muted-foreground" />
               </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="p-6">
-              <div className="flex items-center gap-2">
-                <Database className="h-5 w-5 text-primary" />
+              <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">Storage Used</p>
-                  <p className="text-2xl font-bold">{adminStats.storageUsed}</p>
+                  <p className="text-sm text-muted-foreground">
+                    Monthly Revenue
+                  </p>
+                  <p className="text-2xl font-bold">
+                    ${systemStats.revenue.toLocaleString()}
+                  </p>
+                  <div className="flex items-center text-sm mt-1">
+                    {trends.revenue.isPositive ? (
+                      <TrendingUp className="h-4 w-4 text-green-600 mr-1" />
+                    ) : (
+                      <TrendingDown className="h-4 w-4 text-red-600 mr-1" />
+                    )}
+                    <span
+                      className={
+                        trends.revenue.isPositive
+                          ? "text-green-600"
+                          : "text-red-600"
+                      }
+                    >
+                      {trends.revenue.value}%
+                    </span>
+                  </div>
                 </div>
+                <DollarSign className="h-8 w-8 text-muted-foreground" />
               </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="p-6">
-              <div className="flex items-center gap-2">
-                <Server className="h-5 w-5 text-green-600" />
+              <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">System Health</p>
-                  <p className="text-2xl font-bold text-green-600">
-                    {adminStats.systemHealth}
+                  <p className="text-2xl font-bold">
+                    {systemStats.systemHealth}%
                   </p>
+                  <div className="flex items-center text-sm mt-1">
+                    <CheckCircle2 className="h-4 w-4 text-green-600 mr-1" />
+                    <span className="text-green-600">Excellent</span>
+                  </div>
+                </div>
+                <Server className="h-8 w-8 text-muted-foreground" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Financial Analytics Row */}
+        <div className="grid gap-6 md:grid-cols-4 mb-6">
+          <Card>
+            <CardContent className="p-4">
+              <div className="text-center">
+                <Crown className="h-6 w-6 mx-auto mb-2 text-yellow-600" />
+                <div className="text-lg font-bold">{systemStats.paidUsers}</div>
+                <div className="text-sm text-muted-foreground">Paid Users</div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="text-center">
+                <Clock className="h-6 w-6 mx-auto mb-2 text-blue-600" />
+                <div className="text-lg font-bold">
+                  {systemStats.freeTrials}
+                </div>
+                <div className="text-sm text-muted-foreground">Free Trials</div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="text-center">
+                <UserPlus className="h-6 w-6 mx-auto mb-2 text-green-600" />
+                <div className="text-lg font-bold">
+                  {systemStats.newSignupsMonth}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  New This Month
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="text-center">
+                <UserMinus className="h-6 w-6 mx-auto mb-2 text-red-600" />
+                <div className="text-lg font-bold">
+                  {systemStats.canceledMonth}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  Canceled This Month
                 </div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-2">
-          {/* User Management */}
+        {/* System Health Dashboard */}
+        <div className="grid gap-6 md:grid-cols-3 mb-6">
           <Card>
             <CardHeader>
-              <CardTitle>User Management</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <Server className="h-5 w-5" />
+                System Status
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {systemUsers.map((user) => (
-                  <div
-                    key={user.id}
-                    className="flex items-center justify-between p-3 border rounded-lg"
-                  >
-                    <div>
-                      <h4 className="font-medium">{user.name}</h4>
-                      <p className="text-sm text-muted-foreground">
-                        {user.email}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Last login: {user.lastLogin}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge
-                        variant={
-                          user.role === "Admin" ? "default" : "secondary"
-                        }
-                      >
-                        {user.role}
-                      </Badge>
-                      <Badge
-                        variant={
-                          user.status === "Active" ? "default" : "secondary"
-                        }
-                      >
-                        {user.status}
-                      </Badge>
-                      <Button variant="ghost" size="icon">
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+            <CardContent className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">API Health</span>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-600" />
+                  <span className="text-sm font-medium">
+                    {systemStats.apiHealth}%
+                  </span>
+                </div>
               </div>
-              <Button variant="outline" className="w-full mt-4">
-                View All Users
-              </Button>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Server Load</span>
+                <div className="flex items-center gap-2">
+                  <div className="h-2 w-16 bg-muted rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-green-600 rounded-full"
+                      style={{ width: `${systemStats.serverLoad}%` }}
+                    />
+                  </div>
+                  <span className="text-sm font-medium">
+                    {systemStats.serverLoad}%
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Database</span>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-600" />
+                  <span className="text-sm font-medium">Online</span>
+                </div>
+              </div>
             </CardContent>
           </Card>
 
-          {/* Recent Activity */}
           <Card>
             <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <BarChart3 className="h-5 w-5" />
+                Usage Statistics
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {recentActivity.map((activity, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-3 p-3 border rounded-lg"
-                  >
-                    <Activity className="h-4 w-4 text-muted-foreground" />
-                    <div className="flex-1">
-                      <p className="text-sm">
-                        <span className="font-medium">{activity.user}</span>{" "}
-                        {activity.action}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {activity.time}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+            <CardContent className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Total Photos</span>
+                <span className="text-sm font-medium">
+                  {systemStats.totalPhotos.toLocaleString()}
+                </span>
               </div>
-              <Button variant="outline" className="w-full mt-4">
-                View Full Activity Log
-              </Button>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Total Videos</span>
+                <span className="text-sm font-medium">
+                  {systemStats.totalVideos.toLocaleString()}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Total Projects</span>
+                <span className="text-sm font-medium">
+                  {systemStats.totalProjects.toLocaleString()}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Storage Used</span>
+                <span className="text-sm font-medium">
+                  {systemStats.totalStorage}
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Activity className="h-5 w-5" />
+                User Activity
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Active Users</span>
+                <span className="text-sm font-medium">
+                  {systemStats.activeUsers}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Avg. User Lifetime</span>
+                <span className="text-sm font-medium">
+                  {systemStats.avgLifetime}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">New Today</span>
+                <span className="text-sm font-medium text-green-600">
+                  +{systemStats.newSignupsToday}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Canceled Today</span>
+                <span className="text-sm font-medium text-red-600">
+                  -{systemStats.canceledToday}
+                </span>
+              </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* System Controls */}
-        <Card className="mt-6">
+        {/* Business Management Table */}
+        <Card>
           <CardHeader>
-            <CardTitle>System Controls</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle>Business Management</CardTitle>
+              <div className="flex gap-2">
+                <div className="relative">
+                  <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search businesses..."
+                    className="pl-8 w-64"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="w-32">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Status</SelectItem>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="trial">Trial</SelectItem>
+                    <SelectItem value="suspended">Suspended</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <Button variant="outline" className="gap-2">
-                <Database className="h-4 w-4" />
-                Backup Database
-              </Button>
-              <Button variant="outline" className="gap-2">
-                <Settings className="h-4 w-4" />
-                System Settings
-              </Button>
-              <Button variant="outline" className="gap-2">
-                <BarChart3 className="h-4 w-4" />
-                Analytics
-              </Button>
-              <Button variant="outline" className="gap-2">
-                <Key className="h-4 w-4" />
-                API Keys
-              </Button>
-            </div>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Business</TableHead>
+                  <TableHead>Plan</TableHead>
+                  <TableHead>Users</TableHead>
+                  <TableHead>Content</TableHead>
+                  <TableHead>Storage</TableHead>
+                  <TableHead>Revenue</TableHead>
+                  <TableHead>Last Activity</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredBusinesses.map((business) => (
+                  <TableRow key={business.id}>
+                    <TableCell>
+                      <div>
+                        <div className="font-medium">{business.name}</div>
+                        <div className="text-sm text-muted-foreground">
+                          {business.admin}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {business.email}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={
+                          business.plan === "Enterprise"
+                            ? "default"
+                            : business.plan === "Pro"
+                              ? "secondary"
+                              : "outline"
+                        }
+                      >
+                        {business.plan}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-center">
+                        <div className="font-medium">{business.users}</div>
+                        <div className="text-xs text-muted-foreground">
+                          users
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-1 text-xs">
+                          <Camera className="h-3 w-3" />
+                          {business.photos}
+                        </div>
+                        <div className="flex items-center gap-1 text-xs">
+                          <Video className="h-3 w-3" />
+                          {business.videos}
+                        </div>
+                        <div className="flex items-center gap-1 text-xs">
+                          <FolderOpen className="h-3 w-3" />
+                          {business.projects}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="font-medium">{business.storage}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="font-medium">${business.revenue}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-sm">{business.lastActivity}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => impersonateUser(business.id)}
+                          className="gap-1"
+                        >
+                          <LogIn className="h-3 w-3" />
+                          Sign In As
+                        </Button>
+                        <Button variant="ghost" size="icon">
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
       </div>
