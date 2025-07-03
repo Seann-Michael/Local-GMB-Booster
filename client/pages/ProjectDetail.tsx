@@ -104,6 +104,33 @@ export default function ProjectDetail() {
     }
   }, [id]);
 
+  const getPhotoUrl = (photo: TaggedPhoto | string): string => {
+    return typeof photo === 'string' ? photo : photo.url;
+  };
+
+  const getPhotoTags = (photo: TaggedPhoto | string): string[] => {
+    return typeof photo === 'string' ? [] : photo.tags;
+  };
+
+  const markProjectCompleted = () => {
+    if (!project) return;
+
+    const updatedProject = {
+      ...project,
+      completedDate: new Date().toISOString().split('T')[0],
+      status: 'completed'
+    };
+
+    // Update localStorage
+    const projects = JSON.parse(localStorage.getItem("projects") || "[]");
+    const updatedProjects = projects.map((p: Project) =>
+      p.id === project.id ? updatedProject : p
+    );
+    localStorage.setItem("projects", JSON.stringify(updatedProjects));
+    setProject(updatedProject);
+    toast.success("Project marked as completed!");
+  };
+
   const handleDelete = () => {
     if (confirm("Are you sure you want to delete this project?")) {
       const projects = JSON.parse(localStorage.getItem("projects") || "[]");
@@ -475,7 +502,7 @@ export default function ProjectDetail() {
                 )}
               </CardContent>
             </Card>
-          </div>
+            )}
 
           {/* Sidebar */}
           <div className="space-y-6">
