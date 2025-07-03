@@ -146,12 +146,7 @@ export default function ProjectDetail() {
       status: "completed",
     };
 
-    const projects = JSON.parse(localStorage.getItem("projects") || "[]");
-    const updatedProjects = projects.map((p: Project) =>
-      p.id === project.id ? updatedProject : p,
-    );
-    localStorage.setItem("projects", JSON.stringify(updatedProjects));
-    setProject(updatedProject);
+    updateProject(updatedProject);
     toast.success("Project marked as completed!");
   };
 
@@ -166,16 +161,7 @@ export default function ProjectDetail() {
   };
 
   const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: project?.name,
-        text: project?.description,
-        url: window.location.href,
-      });
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      toast.success("Project link copied to clipboard");
-    }
+    shareProject();
   };
 
   const downloadPhoto = (photoUrl: string, index: number) => {
@@ -223,14 +209,7 @@ export default function ProjectDetail() {
                 photos: [...(project.photos || []), ...newPhotos],
               };
 
-              const projects = JSON.parse(
-                localStorage.getItem("projects") || "[]",
-              );
-              const updatedProjects = projects.map((p: Project) =>
-                p.id === project.id ? updatedProject : p,
-              );
-              localStorage.setItem("projects", JSON.stringify(updatedProjects));
-              setProject(updatedProject);
+              updateProject(updatedProject);
               toast.success(`Added ${newPhotos.length} new photo(s)`);
             }
           }
@@ -250,21 +229,14 @@ export default function ProjectDetail() {
         photos: updatedPhotos,
       };
 
-      const projects = JSON.parse(localStorage.getItem("projects") || "[]");
-      const updatedProjects = projects.map((p: Project) =>
-        p.id === project.id ? updatedProject : p,
-      );
-      localStorage.setItem("projects", JSON.stringify(updatedProjects));
-      setProject(updatedProject);
+      updateProject(updatedProject);
       toast.success("Photo removed successfully");
     }
   };
 
   const togglePhotoSelection = (index: number) => {
     setSelectedPhotos((prev) =>
-      prev.includes(index)
-        ? prev.filter((i) => i !== index)
-        : [...prev, index],
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
     );
   };
 
@@ -375,6 +347,7 @@ export default function ProjectDetail() {
       <div className="min-h-screen bg-background">
         <Header />
         <div className="container px-4 py-6">
+          <Breadcrumb />
           <div className="flex items-center gap-4 mb-6">
             <Link to="/">
               <Button variant="ghost" size="icon">
@@ -531,185 +504,191 @@ export default function ProjectDetail() {
           <div className="lg:col-span-2 space-y-6">
             {/* Overview Tab */}
             {activeTab === "overview" && (
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle className="flex items-center gap-2">
-                    <Images className="h-5 w-5" />
-                    Photos ({project.photos.length})
-                    {selectedPhotos.length > 0 && (
-                      <Badge variant="secondary">
-                        {selectedPhotos.length} selected
-                      </Badge>
-                    )}
-                  </CardTitle>
-                  <div className="flex items-center gap-2">
-                    {selectedPhotos.length > 0 && (
-                      <>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={downloadSelectedPhotos}
-                          className="gap-2"
-                        >
-                          <Download className="h-4 w-4" />
-                          Download
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={shareProject}
-                          className="gap-2"
-                        >
-                          <Share className="h-4 w-4" />
-                          Share
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={selectAllPhotos}
-                        >
-                          {selectedPhotos.length === project.photos.length
-                            ? "Deselect All"
-                            : "Select All"}
-                        </Button>
-                      </>
-                    )}
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="gap-2"
-                      onClick={() => fileInputRef.current?.click()}
-                    >
-                      <Plus className="h-4 w-4" />
-                      Add Photos
-                    </Button>
-                    <div className="text-sm text-muted-foreground">
-                      {new Date(project.createdAt).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => addMorePhotos(e.target.files)}
-                  />
-                  {project.photos.length > 0 ? (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                      {project.photos.map((photo, index) => {
-                        const photoUrl = getPhotoUrl(photo);
-                        const photoTags = getPhotoTags(photo);
-                        return (
-                          <div
-                            key={index}
-                            className={`group relative aspect-square cursor-pointer overflow-hidden rounded-lg bg-muted ${
-                              selectedPhotos.includes(index) ? "ring-2 ring-primary" : ""
-                            }`}
-                            onClick={() => setSelectedPhoto(photoUrl)}
+              <>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between">
+                    <CardTitle className="flex items-center gap-2">
+                      <Images className="h-5 w-5" />
+                      Photos ({project.photos.length})
+                      {selectedPhotos.length > 0 && (
+                        <Badge variant="secondary">
+                          {selectedPhotos.length} selected
+                        </Badge>
+                      )}
+                    </CardTitle>
+                    <div className="flex items-center gap-2">
+                      {selectedPhotos.length > 0 && (
+                        <>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={downloadSelectedPhotos}
+                            className="gap-2"
                           >
-                            <img
-                              src={photoUrl}
-                              alt={`Photo ${index + 1}`}
-                              className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                            />
-                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-
-                            {/* Selection checkbox */}
-                            <div className="absolute top-2 left-2">
-                              <Checkbox
-                                checked={selectedPhotos.includes(index)}
-                                onCheckedChange={() => togglePhotoSelection(index)}
-                                className="bg-white/80 border-white"
-                                onClick={(e) => e.stopPropagation()}
-                              />
-                            </div>
-                            {photoTags.length > 0 && (
-                              <div className="absolute bottom-1 left-1 flex flex-wrap gap-1">
-                                {photoTags.slice(0, 2).map((tag, tagIndex) => (
-                                  <Badge
-                                    key={tagIndex}
-                                    variant="secondary"
-                                    className="text-xs"
-                                  >
-                                    {tag}
-                                  </Badge>
-                                ))}
-                                {photoTags.length > 2 && (
-                                  <Badge variant="outline" className="text-xs">
-                                    +{photoTags.length - 2}
-                                  </Badge>
-                                )}
-                              </div>
-                            )}
-                            <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                              <Button
-                                variant="secondary"
-                                size="icon"
-                                className="h-6 w-6"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  downloadPhoto(photoUrl, index);
-                                }}
-                              >
-                                <Download className="h-3 w-3" />
-                              </Button>
-                              <Button
-                                variant="destructive"
-                                size="icon"
-                                className="h-6 w-6"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  removePhoto(index);
-                                }}
-                              >
-                                <Trash2 className="h-3 w-3" />
-                              </Button>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <div className="text-center py-12 text-muted-foreground">
-                      <Images className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                      <p>No photos uploaded yet</p>
+                            <Download className="h-4 w-4" />
+                            Download
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={shareProject}
+                            className="gap-2"
+                          >
+                            <Share className="h-4 w-4" />
+                            Share
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={selectAllPhotos}
+                          >
+                            {selectedPhotos.length === project.photos.length
+                              ? "Deselect All"
+                              : "Select All"}
+                          </Button>
+                        </>
+                      )}
                       <Button
                         variant="outline"
-                        className="mt-4 gap-2"
+                        size="sm"
+                        className="gap-2"
                         onClick={() => fileInputRef.current?.click()}
                       >
                         <Plus className="h-4 w-4" />
-                        Add First Photo
+                        Add Photos
                       </Button>
                     </div>
-                  )}
-                </CardContent>
-              </Card>
+                  </CardHeader>
+                  <CardContent>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => addMorePhotos(e.target.files)}
+                    />
+                    {project.photos.length > 0 ? (
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {project.photos.map((photo, index) => {
+                          const photoUrl = getPhotoUrl(photo);
+                          const photoTags = getPhotoTags(photo);
+                          return (
+                            <div
+                              key={index}
+                              className={`group relative aspect-square cursor-pointer overflow-hidden rounded-lg bg-muted ${
+                                selectedPhotos.includes(index)
+                                  ? "ring-2 ring-primary"
+                                  : ""
+                              }`}
+                              onClick={() => setSelectedPhoto(photoUrl)}
+                            >
+                              <img
+                                src={photoUrl}
+                                alt={`Photo ${index + 1}`}
+                                className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                              />
+                              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
 
-              {/* Notes Section */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Project Notes</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Textarea
-                    placeholder="Add notes about this project..."
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                    rows={4}
-                    className="mb-3"
-                  />
-                  <Button onClick={saveNotes} size="sm">
-                    Save Notes
-                  </Button>
-                </CardContent>
-              </Card>
+                              {/* Selection checkbox */}
+                              <div className="absolute top-2 left-2">
+                                <Checkbox
+                                  checked={selectedPhotos.includes(index)}
+                                  onCheckedChange={() =>
+                                    togglePhotoSelection(index)
+                                  }
+                                  className="bg-white/80 border-white"
+                                  onClick={(e) => e.stopPropagation()}
+                                />
+                              </div>
+
+                              {photoTags.length > 0 && (
+                                <div className="absolute bottom-1 left-1 flex flex-wrap gap-1">
+                                  {photoTags
+                                    .slice(0, 2)
+                                    .map((tag, tagIndex) => (
+                                      <Badge
+                                        key={tagIndex}
+                                        variant="secondary"
+                                        className="text-xs"
+                                      >
+                                        {tag}
+                                      </Badge>
+                                    ))}
+                                  {photoTags.length > 2 && (
+                                    <Badge
+                                      variant="outline"
+                                      className="text-xs"
+                                    >
+                                      +{photoTags.length - 2}
+                                    </Badge>
+                                  )}
+                                </div>
+                              )}
+                              <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <Button
+                                  variant="secondary"
+                                  size="icon"
+                                  className="h-6 w-6"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    downloadPhoto(photoUrl, index);
+                                  }}
+                                >
+                                  <Download className="h-3 w-3" />
+                                </Button>
+                                <Button
+                                  variant="destructive"
+                                  size="icon"
+                                  className="h-6 w-6"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    removePhoto(index);
+                                  }}
+                                >
+                                  <Trash2 className="h-3 w-3" />
+                                </Button>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="text-center py-12 text-muted-foreground">
+                        <Images className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <p>No photos uploaded yet</p>
+                        <Button
+                          variant="outline"
+                          className="mt-4 gap-2"
+                          onClick={() => fileInputRef.current?.click()}
+                        >
+                          <Plus className="h-4 w-4" />
+                          Add First Photo
+                        </Button>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                {/* Notes Section */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Project Notes</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <Textarea
+                      placeholder="Add notes about this project..."
+                      value={notes}
+                      onChange={(e) => setNotes(e.target.value)}
+                      rows={4}
+                      className="mb-3"
+                    />
+                    <Button onClick={saveNotes} size="sm">
+                      Save Notes
+                    </Button>
+                  </CardContent>
+                </Card>
+              </>
             )}
 
             {/* Tasks & Checklists Tab */}
@@ -1117,14 +1096,18 @@ export default function ProjectDetail() {
                     <Video className="h-3 w-3" />
                     Videos
                   </span>
-                  <span className="font-medium">{project.videos?.length || 0}</span>
+                  <span className="font-medium">
+                    {project.videos?.length || 0}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground flex items-center gap-1">
                     <FileText className="h-3 w-3" />
                     Documents
                   </span>
-                  <span className="font-medium">{project.documents?.length || 0}</span>
+                  <span className="font-medium">
+                    {project.documents?.length || 0}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground flex items-center gap-1">
@@ -1132,7 +1115,11 @@ export default function ProjectDetail() {
                     Media Storage
                   </span>
                   <span className="font-medium">
-                    {((project.photos.length + (project.videos?.length || 0)) * 2.5).toFixed(1)} MB
+                    {(
+                      (project.photos.length + (project.videos?.length || 0)) *
+                      2.5
+                    ).toFixed(1)}{" "}
+                    MB
                   </span>
                 </div>
                 <div className="flex justify-between">
