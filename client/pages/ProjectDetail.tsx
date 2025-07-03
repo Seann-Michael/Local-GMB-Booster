@@ -413,7 +413,11 @@ export default function ProjectDetail() {
   };
 
   const deleteNote = (noteId: string) => {
-    if (!project || !confirm("Are you sure you want to delete this note?"))
+    if (
+      !project ||
+      !project.notes ||
+      !confirm("Are you sure you want to delete this note?")
+    )
       return;
 
     const updatedNotes = project.notes.filter((note) => note.id !== noteId);
