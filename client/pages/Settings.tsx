@@ -343,16 +343,36 @@ export default function Settings() {
                 {[
                   { id: "business", label: "Business Profile", icon: Users },
                   { id: "team", label: "Team Management", icon: Users },
-                  {
-                    id: "subscription",
-                    label: "Subscription",
-                    icon: CreditCard,
-                  },
-                  { id: "notifications", label: "Notifications", icon: Bell },
-                  { id: "location", label: "Location Settings", icon: MapPin },
-                  { id: "media", label: "Media Settings", icon: Camera },
-                  { id: "upload", label: "Upload Settings", icon: Upload },
-                  { id: "integrations", label: "Integrations", icon: Webhook },
+                  ...(!isSuperAdmin
+                    ? [
+                        {
+                          id: "subscription",
+                          label: "Subscription",
+                          icon: CreditCard,
+                        },
+                        {
+                          id: "notifications",
+                          label: "Notifications",
+                          icon: Bell,
+                        },
+                        {
+                          id: "location",
+                          label: "Location Settings",
+                          icon: MapPin,
+                        },
+                        { id: "media", label: "Media Settings", icon: Camera },
+                        {
+                          id: "upload",
+                          label: "Upload Settings",
+                          icon: Upload,
+                        },
+                        {
+                          id: "integrations",
+                          label: "Integrations",
+                          icon: Webhook,
+                        },
+                      ]
+                    : []),
                 ].map((tab) => (
                   <button
                     key={tab.id}
