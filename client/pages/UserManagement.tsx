@@ -217,7 +217,7 @@ export default function UserManagement() {
     },
   ];
 
-  const filteredUsers = allUsers.filter((user) => {
+  const filteredUsers = sortedUsers.filter((user) => {
     const matchesSearch =
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
