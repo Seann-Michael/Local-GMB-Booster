@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Header } from "@/components/Header";
+import { Breadcrumb } from "@/components/Breadcrumb";
 import {
   ArrowLeft,
   Images,
@@ -88,6 +89,7 @@ export default function Gallery() {
       <Header />
 
       <div className="container px-4 py-6">
+        <Breadcrumb />
         <div className="flex items-center gap-4 mb-6">
           <Link to="/">
             <Button variant="ghost" size="icon">

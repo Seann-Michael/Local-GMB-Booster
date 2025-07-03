@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Header } from "@/components/Header";
+import { Breadcrumb } from "@/components/Breadcrumb";
 import { PhotoCapture } from "@/components/PhotoCapture";
 import {
   ArrowLeft,
@@ -260,6 +261,7 @@ export default function AddProject() {
       <Header />
 
       <div className="container px-4 py-6">
+        <Breadcrumb />
         <div className="flex items-center gap-4 mb-6">
           <Link to="/">
             <Button variant="ghost" size="icon">
