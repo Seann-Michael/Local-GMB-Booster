@@ -33,6 +33,7 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   ArrowLeft,
+  ArrowRight,
   Camera,
   Save,
   Download,
@@ -54,6 +55,9 @@ import {
   Edit,
   Eye,
   X,
+  BarChart3,
+  Database,
+  Key,
 } from "lucide-react";
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
