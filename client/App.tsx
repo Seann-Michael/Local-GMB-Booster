@@ -13,6 +13,8 @@ import EditProject from "./pages/EditProject";
 import Gallery from "./pages/Gallery";
 import Settings from "./pages/Settings";
 import SuperAdmin from "./pages/SuperAdmin";
+import BusinessDetail from "./pages/BusinessDetail";
+import UserManagement from "./pages/UserManagement";
 import Notifications from "./pages/Notifications";
 import Profile from "./pages/Profile";
 import PublicProject from "./pages/PublicProject";
