@@ -129,6 +129,12 @@ export default function BusinessDetail() {
   const [isEditing, setIsEditing] = useState(false);
   const [showAddUser, setShowAddUser] = useState(false);
   const [selectedUser, setSelectedUser] = useState<BusinessUser | null>(null);
+  const [newNote, setNewNote] = useState("");
+  const [showPasswordChange, setShowPasswordChange] = useState(false);
+  const [passwordChangeUser, setPasswordChangeUser] =
+    useState<BusinessUser | null>(null);
+  const [newPassword, setNewPassword] = useState("");
+  const [newUsername, setNewUsername] = useState("");
 
   // Mock business data
   const [businessData, setBusinessData] = useState({
