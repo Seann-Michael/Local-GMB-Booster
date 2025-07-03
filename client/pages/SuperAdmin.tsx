@@ -57,13 +57,6 @@ interface UserDetail {
 }
 
 export default function SuperAdmin() {
-  const navigate = useNavigate();
-  const currentUser = getCurrentUser();
-  const [selectedUser, setSelectedUser] = useState<UserDetail | null>(null);
-  const [showUserDetail, setShowUserDetail] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-
   // Mock data for comprehensive analytics
   const systemStats = {
     totalUsers: 1247,
