@@ -121,6 +121,61 @@ export function ProjectCard({
               {project.photos.length}
             </div>
           )}
+
+          {/* Status Badge */}
+          {project.status && (
+            <div className="absolute top-2 left-2">
+              <Badge
+                variant={
+                  project.status === "completed"
+                    ? "default"
+                    : project.status === "active"
+                      ? "secondary"
+                      : "outline"
+                }
+                className="flex items-center gap-1"
+              >
+                {project.status === "completed" && (
+                  <CheckCircle className="h-3 w-3" />
+                )}
+                {project.status}
+              </Badge>
+            </div>
+          )}
+
+          {/* Actions Menu */}
+          {(onDelete || onMarkIncomplete) && (
+            <div className="absolute top-2 right-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0 bg-black/50 hover:bg-black/70 text-white"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <MoreVertical className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {onMarkIncomplete && (
+                    <DropdownMenuItem onClick={onMarkIncomplete}>
+                      <RotateCcw className="mr-2 h-4 w-4" />
+                      Mark Incomplete
+                    </DropdownMenuItem>
+                  )}
+                  {onDelete && (
+                    <DropdownMenuItem
+                      onClick={onDelete}
+                      className="text-destructive"
+                    >
+                      Delete Project
+                    </DropdownMenuItem>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          )}
         </div>
 
         <CardContent className="p-4">
