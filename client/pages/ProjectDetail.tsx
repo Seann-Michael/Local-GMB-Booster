@@ -485,7 +485,11 @@ export default function ProjectDetail() {
   };
 
   const deleteTask = (taskId: string) => {
-    if (!project || !confirm("Are you sure you want to delete this task?"))
+    if (
+      !project ||
+      !project.tasks ||
+      !confirm("Are you sure you want to delete this task?")
+    )
       return;
 
     const task = project.tasks.find((t) => t.id === taskId);
