@@ -7,13 +7,29 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Header } from "@/components/Header";
+import { Breadcrumb } from "@/components/Breadcrumb";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   ArrowLeft,
@@ -32,6 +48,12 @@ import {
   MapPin,
   Clock,
   Shield,
+  Bell,
+  ToggleLeft,
+  ToggleRight,
+  Edit,
+  Eye,
+  X,
 } from "lucide-react";
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
@@ -41,14 +63,28 @@ interface User {
   id: string;
   name: string;
   email: string;
+  phone?: string;
   role: "admin" | "editor" | "viewer";
   avatar?: string;
   createdAt: string;
 }
 
+interface Webhook {
+  id: string;
+  name: string;
+  url: string;
+  events: string[];
+  active: boolean;
+}
+
 export default function Settings() {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [activeTab, setActiveTab] = useState("profile");
+  const [activeTab, setActiveTab] = useState("business");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [showAddUser, setShowAddUser] = useState(false);
+  const [showEditUser, setShowEditUser] = useState(false);
+
   const [users, setUsers] = useState<User[]>(() => {
     const saved = localStorage.getItem("users");
     return saved
@@ -58,53 +94,74 @@ export default function Settings() {
             id: "1",
             name: "John Smith",
             email: "john@smithconstruction.com",
+            phone: "(555) 123-4567",
             role: "admin" as const,
             createdAt: new Date().toISOString(),
           },
         ];
   });
+
   const [newUser, setNewUser] = useState({
     name: "",
     email: "",
+    phone: "",
     role: "viewer" as "admin" | "editor" | "viewer",
   });
 
-  const [profileData, setProfileData] = useState(() => {
-    const saved = localStorage.getItem("userProfile");
+  const [businessData, setBusiness] = useState(() => {
+    const saved = localStorage.getItem("businessProfile");
     return saved
       ? JSON.parse(saved)
       : {
-          name: "John Smith",
-          email: "john@smithconstruction.com",
-          company: "Smith Construction LLC",
+          logo: "",
+          name: "Smith Construction LLC",
+          email: "contact@smithconstruction.com",
           phone: "(555) 123-4567",
-          bio: "Professional contractor specializing in residential renovations and custom builds.",
-          avatar: "",
+        };
+  });
+
+  const [settingsData, setSettingsData] = useState(() => {
+    const saved = localStorage.getItem("appSettings");
+    return saved
+      ? JSON.parse(saved)
+      : {
           notifications: {
             email: true,
             push: false,
             weekly: true,
           },
-          integrations: {
-            website: false,
-            googleBusiness: false,
+          location: {
+            gpsEnabled: true,
+            useAddressForDirections: true,
+            mapProvider: "google",
+            distanceUnits: "miles",
           },
-          imageSettings: {
-            watermark: false,
-            timestamp: false,
-            gpsLocation: false,
-            watermarkText: "Smith Construction LLC",
+          media: {
+            imageQuality: "high",
+            videoQuality: "hd",
+            imageAspect: "16:9",
+            timestampEnabled: true,
+            gpsStampEnabled: false,
+          },
+          upload: {
+            autoUpload: false,
+            compressionEnabled: true,
+            maxFileSize: "10MB",
           },
           subscription: {
             plan: "Pro",
             status: "active",
             nextBilling: "2024-02-15",
+            billingHistory: [
+              { date: "2024-01-15", amount: "$29.00", status: "Paid" },
+              { date: "2023-12-15", amount: "$29.00", status: "Paid" },
+              { date: "2023-11-15", amount: "$29.00", status: "Paid" },
+            ],
           },
         };
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [webhooks, setWebhooks] = useState([
+  const [webhooks, setWebhooks] = useState<Webhook[]>([
     {
       id: "1",
       name: "Project Updates",
@@ -113,39 +170,29 @@ export default function Settings() {
       active: false,
     },
   ]);
-  const [rssEnabled, setRssEnabled] = useState(false);
 
-  const handleInputChange = (
-    field: string,
-    value: string | boolean,
-    nested?: string,
-  ) => {
-    setProfileData((prev: any) => {
-      if (nested) {
-        return {
-          ...prev,
-          [nested]: {
-            ...prev[nested],
-            [field]: value,
-          },
-        };
-      }
-      return {
+  const [promoCode, setPromoCode] = useState("");
+
+  const handleInputChange = (section: string, field: string, value: any) => {
+    if (section === "business") {
+      setBusiness((prev: any) => ({ ...prev, [field]: value }));
+    } else {
+      setSettingsData((prev: any) => ({
         ...prev,
-        [field]: value,
-      };
-    });
+        [section]: { ...prev[section], [field]: value },
+      }));
+    }
   };
 
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
         if (e.target?.result) {
-          setProfileData((prev: any) => ({
+          setBusiness((prev: any) => ({
             ...prev,
-            avatar: e.target?.result as string,
+            logo: e.target?.result as string,
           }));
         }
       };
@@ -153,15 +200,13 @@ export default function Settings() {
     }
   };
 
-  const handleSave = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSave = async () => {
     setIsSubmitting(true);
-
     try {
-      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      localStorage.setItem("userProfile", JSON.stringify(profileData));
+      localStorage.setItem("businessProfile", JSON.stringify(businessData));
+      localStorage.setItem("appSettings", JSON.stringify(settingsData));
+      localStorage.setItem("users", JSON.stringify(users));
       toast.success("Settings saved successfully!");
     } catch (error) {
       toast.error("Failed to save settings");
@@ -182,47 +227,32 @@ export default function Settings() {
       createdAt: new Date().toISOString(),
     };
 
-    const updatedUsers = [...users, user];
-    setUsers(updatedUsers);
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
-    setNewUser({ name: "", email: "", role: "viewer" });
+    setUsers((prev) => [...prev, user]);
+    setNewUser({ name: "", email: "", phone: "", role: "viewer" });
+    setShowAddUser(false);
     toast.success("User added successfully!");
+  };
+
+  const updateUser = () => {
+    if (!editingUser) return;
+
+    setUsers((prev) =>
+      prev.map((user) => (user.id === editingUser.id ? editingUser : user)),
+    );
+    setEditingUser(null);
+    setShowEditUser(false);
+    toast.success("User updated successfully!");
   };
 
   const removeUser = (userId: string) => {
     if (confirm("Are you sure you want to remove this user?")) {
-      const updatedUsers = users.filter((u) => u.id !== userId);
-      setUsers(updatedUsers);
-      localStorage.setItem("users", JSON.stringify(updatedUsers));
+      setUsers((prev) => prev.filter((u) => u.id !== userId));
       toast.success("User removed successfully!");
     }
   };
 
-  const exportData = () => {
-    const projects = localStorage.getItem("projects") || "[]";
-    const profile = localStorage.getItem("userProfile") || "{}";
-    const userData = localStorage.getItem("users") || "[]";
-    const data = {
-      profile: JSON.parse(profile),
-      projects: JSON.parse(projects),
-      users: JSON.parse(userData),
-      exportDate: new Date().toISOString(),
-    };
-
-    const blob = new Blob([JSON.stringify(data, null, 2)], {
-      type: "application/json",
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `projectlens-backup-${new Date().toISOString().split("T")[0]}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast.success("Data exported successfully!");
-  };
-
   const addWebhook = () => {
-    const newWebhook = {
+    const newWebhook: Webhook = {
       id: Date.now().toString(),
       name: "New Webhook",
       url: "",
@@ -232,7 +262,7 @@ export default function Settings() {
     setWebhooks((prev) => [...prev, newWebhook]);
   };
 
-  const updateWebhook = (id: string, updates: any) => {
+  const updateWebhook = (id: string, updates: Partial<Webhook>) => {
     setWebhooks((prev) =>
       prev.map((webhook) =>
         webhook.id === id ? { ...webhook, ...updates } : webhook,
@@ -244,18 +274,18 @@ export default function Settings() {
     setWebhooks((prev) => prev.filter((webhook) => webhook.id !== id));
   };
 
-  const testWebhook = async (webhook: any) => {
-    if (!webhook.url) {
-      toast.error("Please enter a webhook URL");
+  const applyPromoCode = () => {
+    if (!promoCode.trim()) {
+      toast.error("Please enter a promo code");
       return;
     }
 
-    try {
-      // Simulate webhook test
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      toast.success("Webhook test successful!");
-    } catch (error) {
-      toast.error("Webhook test failed");
+    // Simulate promo code validation
+    if (promoCode.toUpperCase() === "SAVE20") {
+      toast.success("Promo code applied! 20% discount for next billing cycle.");
+      setPromoCode("");
+    } else {
+      toast.error("Invalid promo code");
     }
   };
 
@@ -273,340 +303,233 @@ export default function Settings() {
           <h1 className="text-2xl font-bold">Settings</h1>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="max-w-4xl mx-auto">
-          <div className="flex space-x-1 bg-muted p-1 rounded-lg mb-6">
-            {[
-              { id: "business", label: "Business Profile", icon: Users },
-              { id: "user", label: "User Profile", icon: Users },
-              { id: "users", label: "Team Management", icon: Users },
-              { id: "subscription", label: "Subscription", icon: CreditCard },
-              { id: "location", label: "Location Settings", icon: MapPin },
-              { id: "camera", label: "Camera Settings", icon: Camera },
-              { id: "upload", label: "Upload Settings", icon: Upload },
-              { id: "webhooks", label: "Webhooks", icon: Webhook },
-              { id: "advanced", label: "Advanced", icon: Shield },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeTab === tab.id
-                    ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                <tab.icon className="h-4 w-4" />
-                {tab.label}
-              </button>
-            ))}
-          </div>
+        <Breadcrumb />
 
+        {/* Sticky Tab Navigation */}
+        <div className="sticky top-16 z-40 bg-background border-b mb-6">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex overflow-x-auto scrollbar-hide pb-1">
+              <div className="flex space-x-1 min-w-max px-4 py-3">
+                {[
+                  { id: "business", label: "Business Profile", icon: Users },
+                  { id: "team", label: "Team Management", icon: Users },
+                  {
+                    id: "subscription",
+                    label: "Subscription",
+                    icon: CreditCard,
+                  },
+                  { id: "notifications", label: "Notifications", icon: Bell },
+                  { id: "location", label: "Location Settings", icon: MapPin },
+                  { id: "media", label: "Media Settings", icon: Camera },
+                  { id: "upload", label: "Upload Settings", icon: Upload },
+                  { id: "integrations", label: "Integrations", icon: Webhook },
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
+                      activeTab === tab.id
+                        ? "bg-primary text-primary-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    }`}
+                  >
+                    <tab.icon className="h-4 w-4" />
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Sticky Save/Cancel Buttons */}
+            <div className="flex justify-end gap-4 px-4 py-3 border-t bg-background">
+              <Link to="/">
+                <Button variant="outline">Cancel</Button>
+              </Link>
+              <Button
+                onClick={handleSave}
+                disabled={isSubmitting}
+                className="gap-2 min-w-32"
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="h-4 w-4" />
+                    Save Changes
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-4xl mx-auto space-y-6">
           {/* Business Profile Tab */}
           {activeTab === "business" && (
-            <form onSubmit={handleSave} className="space-y-6">
-              {/* Profile Section */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Business Information</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="flex items-center gap-4">
-                    <Avatar className="h-20 w-20">
-                      <AvatarImage src={profileData.avatar} />
-                      <AvatarFallback className="text-lg">
-                        {profileData.company
-                          .split(" ")
-                          .map((n: string) => n[0])
-                          .join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        className="gap-2"
-                        onClick={() => fileInputRef.current?.click()}
-                      >
-                        <Camera className="h-4 w-4" />
-                        Upload Logo
-                      </Button>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        Business logo - JPG, PNG up to 2MB
-                      </p>
-                    </div>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={handleAvatarChange}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Full Name</Label>
-                      <Input
-                        id="name"
-                        value={profileData.name}
-                        onChange={(e) =>
-                          handleInputChange("name", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={profileData.email}
-                        onChange={(e) =>
-                          handleInputChange("email", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="company">Company</Label>
-                      <Input
-                        id="company"
-                        value={profileData.company}
-                        onChange={(e) =>
-                          handleInputChange("company", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Mobile Phone</Label>
-                      <Input
-                        id="phone"
-                        value={profileData.phone}
-                        onChange={(e) =>
-                          handleInputChange("phone", e.target.value)
-                        }
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="bio">Bio</Label>
-                    <Textarea
-                      id="bio"
-                      placeholder="Tell us about your business..."
-                      value={profileData.bio}
-                      onChange={(e) => handleInputChange("bio", e.target.value)}
-                      rows={3}
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Notifications */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Notifications</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Email Notifications</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Receive updates about your projects via email
-                      </p>
-                    </div>
-                    <Switch
-                      checked={profileData.notifications.email}
-                      onCheckedChange={(checked) =>
-                        handleInputChange("email", checked, "notifications")
-                      }
-                    />
-                  </div>
-                  <Separator />
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Push Notifications</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Get notified on your device
-                      </p>
-                    </div>
-                    <Switch
-                      checked={profileData.notifications.push}
-                      onCheckedChange={(checked) =>
-                        handleInputChange("push", checked, "notifications")
-                      }
-                    />
-                  </div>
-                  <Separator />
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Weekly Summary</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Get a weekly report of your project activity
-                      </p>
-                    </div>
-                    <Switch
-                      checked={profileData.notifications.weekly}
-                      onCheckedChange={(checked) =>
-                        handleInputChange("weekly", checked, "notifications")
-                      }
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Integrations */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Integrations</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Website Sync</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Automatically sync projects to your website
-                      </p>
-                    </div>
-                    <Switch
-                      checked={profileData.integrations.website}
-                      onCheckedChange={(checked) =>
-                        handleInputChange("website", checked, "integrations")
-                      }
-                    />
-                  </div>
-                  <Separator />
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Google My Business</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Share project photos to Google My Business
-                      </p>
-                    </div>
-                    <Switch
-                      checked={profileData.integrations.googleBusiness}
-                      onCheckedChange={(checked) =>
-                        handleInputChange(
-                          "googleBusiness",
-                          checked,
-                          "integrations",
-                        )
-                      }
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Data Export */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Data Management</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Export Data</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Download all your projects and profile data
-                      </p>
-                    </div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Business Information</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <Avatar className="h-20 w-20">
+                    <AvatarImage src={businessData.logo} />
+                    <AvatarFallback className="text-lg">
+                      {businessData.name
+                        .split(" ")
+                        .map((n: string) => n[0])
+                        .join("")}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
                     <Button
                       type="button"
                       variant="outline"
                       size="sm"
-                      onClick={exportData}
                       className="gap-2"
+                      onClick={() => fileInputRef.current?.click()}
                     >
-                      <Download className="h-4 w-4" />
-                      Export
+                      <Camera className="h-4 w-4" />
+                      Upload Logo
                     </Button>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Business logo - JPG, PNG up to 2MB
+                    </p>
                   </div>
-                </CardContent>
-              </Card>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleLogoChange}
+                  />
+                </div>
 
-              <div className="flex justify-end gap-4">
-                <Link to="/">
-                  <Button variant="outline">Cancel</Button>
-                </Link>
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="gap-2 min-w-32"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                      Saving...
-                    </>
-                  ) : (
-                    <>
-                      <Save className="h-4 w-4" />
-                      Save Changes
-                    </>
-                  )}
-                </Button>
-              </div>
-            </form>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="businessName">Business Name</Label>
+                    <Input
+                      id="businessName"
+                      value={businessData.name}
+                      onChange={(e) =>
+                        handleInputChange("business", "name", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="businessEmail">Business Email</Label>
+                    <Input
+                      id="businessEmail"
+                      type="email"
+                      value={businessData.email}
+                      onChange={(e) =>
+                        handleInputChange("business", "email", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="businessPhone">Business Phone</Label>
+                    <Input
+                      id="businessPhone"
+                      value={businessData.phone}
+                      onChange={(e) =>
+                        handleInputChange("business", "phone", e.target.value)
+                      }
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           )}
 
-          {/* Users Management Tab */}
-          {activeTab === "users" && (
+          {/* Team Management Tab */}
+          {activeTab === "team" && (
             <div className="space-y-6">
               <Card>
-                <CardHeader>
-                  <CardTitle>Add New User</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <Input
-                      placeholder="Full Name"
-                      value={newUser.name}
-                      onChange={(e) =>
-                        setNewUser((prev) => ({
-                          ...prev,
-                          name: e.target.value,
-                        }))
-                      }
-                    />
-                    <Input
-                      placeholder="Email Address"
-                      type="email"
-                      value={newUser.email}
-                      onChange={(e) =>
-                        setNewUser((prev) => ({
-                          ...prev,
-                          email: e.target.value,
-                        }))
-                      }
-                    />
-                    <div className="flex gap-2">
-                      <Select
-                        value={newUser.role}
-                        onValueChange={(value: any) =>
-                          setNewUser((prev) => ({ ...prev, role: value }))
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="viewer">Viewer</SelectItem>
-                          <SelectItem value="editor">Editor</SelectItem>
-                          <SelectItem value="admin">Admin</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <Button onClick={addUser} className="gap-2">
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <CardTitle>Team Members ({users.length})</CardTitle>
+                  <Dialog open={showAddUser} onOpenChange={setShowAddUser}>
+                    <DialogTrigger asChild>
+                      <Button className="gap-2">
                         <Plus className="h-4 w-4" />
-                        Add
+                        Add User
                       </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Current Users ({users.length})</CardTitle>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Add New User</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Name</Label>
+                          <Input
+                            value={newUser.name}
+                            onChange={(e) =>
+                              setNewUser((prev) => ({
+                                ...prev,
+                                name: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Email</Label>
+                          <Input
+                            type="email"
+                            value={newUser.email}
+                            onChange={(e) =>
+                              setNewUser((prev) => ({
+                                ...prev,
+                                email: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Phone</Label>
+                          <Input
+                            value={newUser.phone}
+                            onChange={(e) =>
+                              setNewUser((prev) => ({
+                                ...prev,
+                                phone: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Role</Label>
+                          <Select
+                            value={newUser.role}
+                            onValueChange={(value: any) =>
+                              setNewUser((prev) => ({ ...prev, role: value }))
+                            }
+                          >
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="viewer">Viewer</SelectItem>
+                              <SelectItem value="editor">Editor</SelectItem>
+                              <SelectItem value="admin">Admin</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            variant="outline"
+                            onClick={() => setShowAddUser(false)}
+                          >
+                            Cancel
+                          </Button>
+                          <Button onClick={addUser}>Add User</Button>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
@@ -630,6 +553,11 @@ export default function Settings() {
                             <p className="text-sm text-muted-foreground">
                               {user.email}
                             </p>
+                            {user.phone && (
+                              <p className="text-sm text-muted-foreground">
+                                {user.phone}
+                              </p>
+                            )}
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
@@ -640,6 +568,16 @@ export default function Settings() {
                           >
                             {user.role}
                           </Badge>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => {
+                              setEditingUser(user);
+                              setShowEditUser(true);
+                            }}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
                           {user.role !== "admin" && (
                             <Button
                               variant="ghost"
@@ -655,6 +593,82 @@ export default function Settings() {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Edit User Dialog */}
+              <Dialog open={showEditUser} onOpenChange={setShowEditUser}>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Edit User</DialogTitle>
+                  </DialogHeader>
+                  {editingUser && (
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>Name</Label>
+                        <Input
+                          value={editingUser.name}
+                          onChange={(e) =>
+                            setEditingUser((prev) =>
+                              prev ? { ...prev, name: e.target.value } : null,
+                            )
+                          }
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Email</Label>
+                        <Input
+                          type="email"
+                          value={editingUser.email}
+                          onChange={(e) =>
+                            setEditingUser((prev) =>
+                              prev ? { ...prev, email: e.target.value } : null,
+                            )
+                          }
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Phone</Label>
+                        <Input
+                          value={editingUser.phone || ""}
+                          onChange={(e) =>
+                            setEditingUser((prev) =>
+                              prev ? { ...prev, phone: e.target.value } : null,
+                            )
+                          }
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Role</Label>
+                        <Select
+                          value={editingUser.role}
+                          onValueChange={(value: any) =>
+                            setEditingUser((prev) =>
+                              prev ? { ...prev, role: value } : null,
+                            )
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="viewer">Viewer</SelectItem>
+                            <SelectItem value="editor">Editor</SelectItem>
+                            <SelectItem value="admin">Admin</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          variant="outline"
+                          onClick={() => setShowEditUser(false)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button onClick={updateUser}>Update User</Button>
+                      </div>
+                    </div>
+                  )}
+                </DialogContent>
+              </Dialog>
             </div>
           )}
 
@@ -669,274 +683,497 @@ export default function Settings() {
                   <div className="flex justify-between items-center">
                     <div>
                       <h3 className="font-semibold">
-                        ProjectLens {profileData.subscription.plan}
+                        ProjectLens {settingsData.subscription.plan}
                       </h3>
                       <p className="text-sm text-muted-foreground">
                         Status:{" "}
                         <span className="font-medium text-green-600">
-                          {profileData.subscription.status}
+                          {settingsData.subscription.status}
                         </span>
                       </p>
                     </div>
                     <Badge variant="outline">
-                      ${profileData.subscription.plan === "Pro" ? "29" : "9"}
+                      ${settingsData.subscription.plan === "Pro" ? "29" : "9"}
                       /month
                     </Badge>
                   </div>
                   <Separator />
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <h4 className="font-medium mb-2">Features Included</h4>
-                      <ul className="text-sm text-muted-foreground space-y-1">
-                        <li>• Unlimited projects</li>
-                        <li>• AI description enhancement</li>
-                        <li>• Photo tagging & organization</li>
-                        <li>• Customer management</li>
-                        <li>• Review request automation</li>
-                        {profileData.subscription.plan === "Pro" && (
-                          <>
-                            <li>• Advanced integrations</li>
-                            <li>• Webhooks & RSS feeds</li>
-                            <li>• Custom watermarks</li>
-                          </>
-                        )}
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-medium mb-2">Billing Information</h4>
+                      <h4 className="font-medium mb-2">Next Billing</h4>
                       <p className="text-sm text-muted-foreground">
-                        Next billing:{" "}
                         {new Date(
-                          profileData.subscription.nextBilling,
+                          settingsData.subscription.nextBilling,
                         ).toLocaleDateString()}
                       </p>
-                      <div className="flex gap-2 mt-4">
-                        <Button variant="outline" size="sm">
-                          Manage Billing
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          Cancel Subscription
+                    </div>
+                    <div className="space-y-2">
+                      <h4 className="font-medium">Promo Code</h4>
+                      <div className="flex gap-2">
+                        <Input
+                          placeholder="Enter promo code"
+                          value={promoCode}
+                          onChange={(e) => setPromoCode(e.target.value)}
+                        />
+                        <Button onClick={applyPromoCode} variant="outline">
+                          Apply
                         </Button>
                       </div>
                     </div>
                   </div>
+                  <div className="flex gap-2 mt-4">
+                    <Button variant="outline" size="sm">
+                      Manage Billing
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-destructive hover:text-destructive"
+                    >
+                      Cancel Subscription
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Billing History</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Amount</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {settingsData.subscription.billingHistory.map(
+                        (bill: any, index: number) => (
+                          <TableRow key={index}>
+                            <TableCell>
+                              {new Date(bill.date).toLocaleDateString()}
+                            </TableCell>
+                            <TableCell>{bill.amount}</TableCell>
+                            <TableCell>
+                              <Badge
+                                variant={
+                                  bill.status === "Paid"
+                                    ? "default"
+                                    : "destructive"
+                                }
+                              >
+                                {bill.status}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              <Button variant="ghost" size="sm">
+                                <Download className="h-4 w-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ),
+                      )}
+                    </TableBody>
+                  </Table>
                 </CardContent>
               </Card>
             </div>
           )}
 
-          {/* Image Settings Tab */}
-          {activeTab === "image-settings" && (
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Image Processing</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Add Watermark</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Automatically add your company watermark to all photos
-                      </p>
-                    </div>
-                    <Switch
-                      checked={profileData.imageSettings.watermark}
-                      onCheckedChange={(checked) =>
-                        handleInputChange("watermark", checked, "imageSettings")
-                      }
-                    />
+          {/* Notifications Tab */}
+          {activeTab === "notifications" && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Notification Preferences</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium">Email Notifications</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Receive updates about your projects via email
+                    </p>
                   </div>
+                  <Switch
+                    checked={settingsData.notifications.email}
+                    onCheckedChange={(checked) =>
+                      handleInputChange("notifications", "email", checked)
+                    }
+                  />
+                </div>
+                <Separator />
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium">Push Notifications</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Get notified on your device
+                    </p>
+                  </div>
+                  <Switch
+                    checked={settingsData.notifications.push}
+                    onCheckedChange={(checked) =>
+                      handleInputChange("notifications", "push", checked)
+                    }
+                  />
+                </div>
+                <Separator />
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium">Weekly Summary</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Get a weekly report of your project activity
+                    </p>
+                  </div>
+                  <Switch
+                    checked={settingsData.notifications.weekly}
+                    onCheckedChange={(checked) =>
+                      handleInputChange("notifications", "weekly", checked)
+                    }
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
-                  {profileData.imageSettings.watermark && (
-                    <div className="space-y-2">
-                      <Label htmlFor="watermarkText">Watermark Text</Label>
-                      <Input
-                        id="watermarkText"
-                        placeholder="Your Company Name"
-                        value={profileData.imageSettings.watermarkText}
-                        onChange={(e) =>
-                          handleInputChange(
-                            "watermarkText",
-                            e.target.value,
-                            "imageSettings",
-                          )
-                        }
-                      />
-                    </div>
-                  )}
+          {/* Location Settings Tab */}
+          {activeTab === "location" && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Location Settings</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium">GPS Enabled</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Enable GPS tracking for projects
+                    </p>
+                  </div>
+                  <Switch
+                    checked={settingsData.location.gpsEnabled}
+                    onCheckedChange={(checked) =>
+                      handleInputChange("location", "gpsEnabled", checked)
+                    }
+                  />
+                </div>
+                <Separator />
+                <div className="space-y-2">
+                  <Label>Directions</Label>
+                  <Select
+                    value={
+                      settingsData.location.useAddressForDirections
+                        ? "address"
+                        : "gps"
+                    }
+                    onValueChange={(value) =>
+                      handleInputChange(
+                        "location",
+                        "useAddressForDirections",
+                        value === "address",
+                      )
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="address">Use Address</SelectItem>
+                      <SelectItem value="gps">Use GPS Coordinates</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Map Provider</Label>
+                  <Select
+                    value={settingsData.location.mapProvider}
+                    onValueChange={(value) =>
+                      handleInputChange("location", "mapProvider", value)
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="google">Google Maps</SelectItem>
+                      <SelectItem value="apple">Apple Maps</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>Distance Units</Label>
+                  <Select
+                    value={settingsData.location.distanceUnits}
+                    onValueChange={(value) =>
+                      handleInputChange("location", "distanceUnits", value)
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="miles">Miles</SelectItem>
+                      <SelectItem value="kilometers">Kilometers</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
-                  <Separator />
-
+          {/* Media Settings Tab */}
+          {activeTab === "media" && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Media Settings</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Image Quality</Label>
+                    <Select
+                      value={settingsData.media.imageQuality}
+                      onValueChange={(value) =>
+                        handleInputChange("media", "imageQuality", value)
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="low">Low</SelectItem>
+                        <SelectItem value="medium">Medium</SelectItem>
+                        <SelectItem value="high">High</SelectItem>
+                        <SelectItem value="ultra">Ultra</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Video Quality</Label>
+                    <Select
+                      value={settingsData.media.videoQuality}
+                      onValueChange={(value) =>
+                        handleInputChange("media", "videoQuality", value)
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="480p">480p</SelectItem>
+                        <SelectItem value="720p">720p</SelectItem>
+                        <SelectItem value="hd">1080p (HD)</SelectItem>
+                        <SelectItem value="4k">4K</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Image Aspect Ratio</Label>
+                    <Select
+                      value={settingsData.media.imageAspect}
+                      onValueChange={(value) =>
+                        handleInputChange("media", "imageAspect", value)
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="4:3">4:3</SelectItem>
+                        <SelectItem value="16:9">16:9</SelectItem>
+                        <SelectItem value="1:1">1:1 (Square)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <Separator />
+                <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="font-medium">Timestamp</h4>
+                      <h4 className="font-medium">Timestamp on Photos</h4>
                       <p className="text-sm text-muted-foreground">
                         Add date and time to photos
                       </p>
                     </div>
                     <Switch
-                      checked={profileData.imageSettings.timestamp}
+                      checked={settingsData.media.timestampEnabled}
                       onCheckedChange={(checked) =>
-                        handleInputChange("timestamp", checked, "imageSettings")
+                        handleInputChange("media", "timestampEnabled", checked)
                       }
                     />
                   </div>
-
-                  <Separator />
-
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="font-medium">GPS Location</h4>
+                      <h4 className="font-medium">GPS Coordinates on Photos</h4>
                       <p className="text-sm text-muted-foreground">
-                        Embed location data in photos
+                        Stamp GPS coordinates on photos
                       </p>
                     </div>
                     <Switch
-                      checked={profileData.imageSettings.gpsLocation}
+                      checked={settingsData.media.gpsStampEnabled}
                       onCheckedChange={(checked) =>
-                        handleInputChange(
-                          "gpsLocation",
-                          checked,
-                          "imageSettings",
-                        )
+                        handleInputChange("media", "gpsStampEnabled", checked)
                       }
                     />
                   </div>
-                </CardContent>
-              </Card>
-            </div>
+                </div>
+              </CardContent>
+            </Card>
           )}
 
-          {/* Advanced/Integrations Tab */}
+          {/* Upload Settings Tab */}
+          {activeTab === "upload" && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Upload Settings</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium">Auto Upload</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Automatically upload photos when taken
+                    </p>
+                  </div>
+                  <Switch
+                    checked={settingsData.upload.autoUpload}
+                    onCheckedChange={(checked) =>
+                      handleInputChange("upload", "autoUpload", checked)
+                    }
+                  />
+                </div>
+                <Separator />
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-medium">Compression</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Compress images to save storage space
+                    </p>
+                  </div>
+                  <Switch
+                    checked={settingsData.upload.compressionEnabled}
+                    onCheckedChange={(checked) =>
+                      handleInputChange("upload", "compressionEnabled", checked)
+                    }
+                  />
+                </div>
+                <Separator />
+                <div className="space-y-2">
+                  <Label>Maximum File Size</Label>
+                  <Select
+                    value={settingsData.upload.maxFileSize}
+                    onValueChange={(value) =>
+                      handleInputChange("upload", "maxFileSize", value)
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="5MB">5MB</SelectItem>
+                      <SelectItem value="10MB">10MB</SelectItem>
+                      <SelectItem value="25MB">25MB</SelectItem>
+                      <SelectItem value="50MB">50MB</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Integrations Tab */}
           {activeTab === "integrations" && (
             <div className="space-y-6">
               <Card>
-                <CardHeader>
-                  <CardTitle>Business Integrations</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Website Sync</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Automatically sync projects to your website
-                      </p>
-                    </div>
-                    <Switch
-                      checked={profileData.integrations.website}
-                      onCheckedChange={(checked) =>
-                        handleInputChange("website", checked, "integrations")
-                      }
-                    />
-                  </div>
-                  <Separator />
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Google My Business</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Share project photos to Google My Business
-                      </p>
-                    </div>
-                    <Switch
-                      checked={profileData.integrations.googleBusiness}
-                      onCheckedChange={(checked) =>
-                        handleInputChange(
-                          "googleBusiness",
-                          checked,
-                          "integrations",
-                        )
-                      }
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-
-          {/* Advanced Tab */}
-          {activeTab === "advanced" && (
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
+                <CardHeader className="flex flex-row items-center justify-between">
                   <CardTitle>Webhooks</CardTitle>
+                  <Button onClick={addWebhook} className="gap-2">
+                    <Plus className="h-4 w-4" />
+                    Add Webhook
+                  </Button>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="webhook">Webhook URL</Label>
-                    <div className="flex gap-2">
-                      <Input
-                        id="webhook"
-                        placeholder="https://your-site.com/webhook"
-                        value={webhookUrl}
-                        onChange={(e) => setWebhookUrl(e.target.value)}
-                      />
-                      <Button variant="outline" onClick={testWebhook}>
-                        Test
-                      </Button>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Receive notifications when projects are created or updated
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>RSS Feed</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Enable RSS Feed</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Generate an RSS feed of your latest projects
-                      </p>
-                    </div>
-                    <Switch
-                      checked={rssEnabled}
-                      onCheckedChange={setRssEnabled}
-                    />
-                  </div>
-                  {rssEnabled && (
-                    <div className="space-y-2">
-                      <Label>RSS Feed URL</Label>
-                      <div className="flex gap-2">
+                <CardContent>
+                  <div className="space-y-4">
+                    {webhooks.map((webhook) => (
+                      <div
+                        key={webhook.id}
+                        className="border rounded-lg p-4 space-y-3"
+                      >
+                        <div className="flex items-center justify-between">
+                          <Input
+                            placeholder="Webhook name"
+                            value={webhook.name}
+                            onChange={(e) =>
+                              updateWebhook(webhook.id, {
+                                name: e.target.value,
+                              })
+                            }
+                            className="max-w-xs"
+                          />
+                          <div className="flex items-center gap-2">
+                            <Switch
+                              checked={webhook.active}
+                              onCheckedChange={(checked) =>
+                                updateWebhook(webhook.id, { active: checked })
+                              }
+                            />
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => removeWebhook(webhook.id)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
                         <Input
-                          value="https://projectlens.app/feed/rss"
-                          readOnly
-                          className="bg-muted"
+                          placeholder="https://your-site.com/webhook"
+                          value={webhook.url}
+                          onChange={(e) =>
+                            updateWebhook(webhook.id, { url: e.target.value })
+                          }
                         />
-                        <Button variant="outline" size="sm">
-                          Copy
-                        </Button>
+                        <div>
+                          <Label className="text-sm font-medium">
+                            Trigger Events
+                          </Label>
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            {[
+                              "project_created",
+                              "project_completed",
+                              "photo_uploaded",
+                              "task_assigned",
+                              "user_added",
+                            ].map((event) => (
+                              <Badge
+                                key={event}
+                                variant={
+                                  webhook.events.includes(event)
+                                    ? "default"
+                                    : "outline"
+                                }
+                                className="cursor-pointer"
+                                onClick={() => {
+                                  const newEvents = webhook.events.includes(
+                                    event,
+                                  )
+                                    ? webhook.events.filter((e) => e !== event)
+                                    : [...webhook.events, event];
+                                  updateWebhook(webhook.id, {
+                                    events: newEvents,
+                                  });
+                                }}
+                              >
+                                {event.replace("_", " ")}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Data Management</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium">Export All Data</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Download all projects, users, and settings
-                      </p>
-                    </div>
-                    <Button
-                      variant="outline"
-                      onClick={exportData}
-                      className="gap-2"
-                    >
-                      <Download className="h-4 w-4" />
-                      Export
-                    </Button>
+                    ))}
                   </div>
                 </CardContent>
               </Card>
