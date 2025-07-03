@@ -340,6 +340,16 @@ export default function BusinessManagement() {
                 <TableHead>
                   <Button
                     variant="ghost"
+                    onClick={() => handleSort("canceledDate")}
+                    className="h-auto p-0 font-semibold gap-1"
+                  >
+                    Cancel Date
+                    {getSortIcon("canceledDate")}
+                  </Button>
+                </TableHead>
+                <TableHead>
+                  <Button
+                    variant="ghost"
                     onClick={() => handleSort("lastActivity")}
                     className="h-auto p-0 font-semibold gap-1"
                   >
