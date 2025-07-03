@@ -1410,7 +1410,9 @@ export default function ProjectDetail() {
                     )}
 
                     <div className="space-y-3">
-                      {project.checklist && project.checklist.length > 0 ? (
+                      {project.checklist &&
+                      Array.isArray(project.checklist) &&
+                      project.checklist.length > 0 ? (
                         project.checklist.map((item) => (
                           <div
                             key={item.id}
