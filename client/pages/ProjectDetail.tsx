@@ -2,6 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Header } from "@/components/Header";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import {
@@ -259,7 +262,9 @@ export default function ProjectDetail() {
 
   const togglePhotoSelection = (index: number) => {
     setSelectedPhotos((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
+      prev.includes(index)
+        ? prev.filter((i) => i !== index)
+        : [...prev, index],
     );
   };
 
@@ -531,8 +536,44 @@ export default function ProjectDetail() {
                   <CardTitle className="flex items-center gap-2">
                     <Images className="h-5 w-5" />
                     Photos ({project.photos.length})
+                    {selectedPhotos.length > 0 && (
+                      <Badge variant="secondary">
+                        {selectedPhotos.length} selected
+                      </Badge>
+                    )}
                   </CardTitle>
                   <div className="flex items-center gap-2">
+                    {selectedPhotos.length > 0 && (
+                      <>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={downloadSelectedPhotos}
+                          className="gap-2"
+                        >
+                          <Download className="h-4 w-4" />
+                          Download
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={shareProject}
+                          className="gap-2"
+                        >
+                          <Share className="h-4 w-4" />
+                          Share
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={selectAllPhotos}
+                        >
+                          {selectedPhotos.length === project.photos.length
+                            ? "Deselect All"
+                            : "Select All"}
+                        </Button>
+                      </>
+                    )}
                     <Button
                       variant="outline"
                       size="sm"
@@ -567,7 +608,9 @@ export default function ProjectDetail() {
                         return (
                           <div
                             key={index}
-                            className="group relative aspect-square cursor-pointer overflow-hidden rounded-lg bg-muted"
+                            className={`group relative aspect-square cursor-pointer overflow-hidden rounded-lg bg-muted ${
+                              selectedPhotos.includes(index) ? "ring-2 ring-primary" : ""
+                            }`}
                             onClick={() => setSelectedPhoto(photoUrl)}
                           >
                             <img
@@ -576,6 +619,16 @@ export default function ProjectDetail() {
                               className="h-full w-full object-cover transition-transform group-hover:scale-105"
                             />
                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+
+                            {/* Selection checkbox */}
+                            <div className="absolute top-2 left-2">
+                              <Checkbox
+                                checked={selectedPhotos.includes(index)}
+                                onCheckedChange={() => togglePhotoSelection(index)}
+                                className="bg-white/80 border-white"
+                                onClick={(e) => e.stopPropagation()}
+                              />
+                            </div>
                             {photoTags.length > 0 && (
                               <div className="absolute bottom-1 left-1 flex flex-wrap gap-1">
                                 {photoTags.slice(0, 2).map((tag, tagIndex) => (
@@ -636,6 +689,25 @@ export default function ProjectDetail() {
                       </Button>
                     </div>
                   )}
+                </CardContent>
+              </Card>
+
+              {/* Notes Section */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Project Notes</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Textarea
+                    placeholder="Add notes about this project..."
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    rows={4}
+                    className="mb-3"
+                  />
+                  <Button onClick={saveNotes} size="sm">
+                    Save Notes
+                  </Button>
                 </CardContent>
               </Card>
             )}
@@ -1045,18 +1117,14 @@ export default function ProjectDetail() {
                     <Video className="h-3 w-3" />
                     Videos
                   </span>
-                  <span className="font-medium">
-                    {project.videos?.length || 0}
-                  </span>
+                  <span className="font-medium">{project.videos?.length || 0}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground flex items-center gap-1">
                     <FileText className="h-3 w-3" />
                     Documents
                   </span>
-                  <span className="font-medium">
-                    {project.documents?.length || 0}
-                  </span>
+                  <span className="font-medium">{project.documents?.length || 0}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground flex items-center gap-1">
@@ -1064,11 +1132,7 @@ export default function ProjectDetail() {
                     Media Storage
                   </span>
                   <span className="font-medium">
-                    {(
-                      (project.photos.length + (project.videos?.length || 0)) *
-                      2.5
-                    ).toFixed(1)}{" "}
-                    MB
+                    {((project.photos.length + (project.videos?.length || 0)) * 2.5).toFixed(1)} MB
                   </span>
                 </div>
                 <div className="flex justify-between">
