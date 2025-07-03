@@ -11,6 +11,7 @@ import ProjectDetail from "./pages/ProjectDetail";
 import EditProject from "./pages/EditProject";
 import Gallery from "./pages/Gallery";
 import Settings from "./pages/Settings";
+import SuperAdmin from "./pages/SuperAdmin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/project/:id/edit" element={<EditProject />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/super-admin" element={<SuperAdmin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
