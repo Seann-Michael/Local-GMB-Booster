@@ -1026,7 +1026,9 @@ export default function ProjectDetail() {
                   )}
 
                   <div className="space-y-4">
-                    {project.notes && project.notes.length > 0 ? (
+                    {project.notes &&
+                    Array.isArray(project.notes) &&
+                    project.notes.length > 0 ? (
                       project.notes.map((note) => (
                         <div key={note.id} className="border rounded-lg p-4">
                           <div className="flex items-start justify-between mb-2">
