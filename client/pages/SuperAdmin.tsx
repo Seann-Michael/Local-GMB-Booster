@@ -73,9 +73,10 @@ interface Business {
   projects: number;
   storage: string;
   plan: "Free" | "Pro" | "Enterprise";
-  status: "Active" | "Trial" | "Suspended";
+  status: "Active" | "Trial" | "Suspended" | "Canceled";
   lastActivity: string;
   signupDate: string;
+  canceledDate?: string;
   revenue: number;
 }
 
