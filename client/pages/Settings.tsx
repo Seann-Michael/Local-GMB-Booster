@@ -343,17 +343,14 @@ export default function Settings() {
                 {[
                   { id: "business", label: "Business Profile", icon: Users },
                   { id: "team", label: "Team Management", icon: Users },
+                  { id: "tags", label: "Company Tags", icon: Badge },
+                  { id: "notifications", label: "Notifications", icon: Bell },
                   ...(!isSuperAdmin
                     ? [
                         {
                           id: "subscription",
                           label: "Subscription",
                           icon: CreditCard,
-                        },
-                        {
-                          id: "notifications",
-                          label: "Notifications",
-                          icon: Bell,
                         },
                         {
                           id: "location",
