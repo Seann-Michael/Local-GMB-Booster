@@ -283,7 +283,7 @@ export function SuperAdminLayout({
                         Businesses
                       </p>
                       <p className="text-lg font-bold">
-                        {currentStats.totalBusinesses}
+                        {currentStats?.totalBusinesses || "0"}
                       </p>
                     </div>
                     <Building2 className="h-6 w-6 text-muted-foreground" />
