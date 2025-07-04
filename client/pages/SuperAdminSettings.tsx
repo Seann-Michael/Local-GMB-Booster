@@ -1365,38 +1365,25 @@ export default function SuperAdminSettings() {
                   <div className="space-y-4">
                     <h4 className="font-medium">Beta Features</h4>
                     <div className="space-y-3">
-                      {[
-                        {
-                          name: "AI Voice Assistant",
-                          description: "Voice-powered content creation",
-                          access: "10 Beta Users",
-                        },
-                        {
-                          name: "Advanced Automation",
-                          description: "Complex workflow automation",
-                          access: "5 Enterprise Clients",
-                        },
-                      ].map((beta, index) => (
-                        <div key={index} className="p-3 border rounded-lg">
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <div className="font-medium">{beta.name}</div>
-                              <div className="text-sm text-muted-foreground">
-                                {beta.description}
-                              </div>
-                              <div className="text-xs text-blue-600">
-                                {beta.access}
-                              </div>
+                      <div className="p-3 border rounded-lg">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="font-medium">Enhanced Gallery</div>
+                            <div className="text-sm text-muted-foreground">
+                              Advanced image management features
                             </div>
-                            <div className="flex gap-2">
-                              <Button variant="outline" size="sm">
-                                Manage Access
-                              </Button>
-                              <Switch />
+                            <div className="text-xs text-blue-600">
+                              15 Beta Users
                             </div>
                           </div>
+                          <div className="flex gap-2">
+                            <Button variant="outline" size="sm">
+                              Manage Access
+                            </Button>
+                            <Switch />
+                          </div>
                         </div>
-                      ))}
+                      </div>
                     </div>
                   </div>
 
@@ -1419,175 +1406,6 @@ export default function SuperAdminSettings() {
                           <Button variant="outline" size="sm">
                             <Pause className="h-4 w-4" />
                           </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Automation & Defaults */}
-            {activeTab === "automation" && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Automation & Default Settings</CardTitle>
-                  <CardDescription>
-                    Configure system automation, templates, and default
-                    behaviors
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="space-y-4">
-                    <h4 className="font-medium">AI Prompt Templates</h4>
-                    <div className="space-y-3">
-                      {[
-                        {
-                          name: "Blog Post Writer",
-                          usage: "1,234 times",
-                          type: "Content Creation",
-                        },
-                        {
-                          name: "Social Media Posts",
-                          usage: "856 times",
-                          type: "Marketing",
-                        },
-                        {
-                          name: "Email Subject Lines",
-                          usage: "432 times",
-                          type: "Email Marketing",
-                        },
-                      ].map((template, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center justify-between p-3 border rounded-lg"
-                        >
-                          <div>
-                            <div className="font-medium">{template.name}</div>
-                            <div className="text-sm text-muted-foreground">
-                              {template.type} • Used {template.usage}
-                            </div>
-                          </div>
-                          <div className="flex gap-2">
-                            <Button variant="outline" size="sm">
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button variant="outline" size="sm">
-                              <Copy className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  <div className="space-y-4">
-                    <h4 className="font-medium">Scheduled Tasks</h4>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 border rounded-lg">
-                        <div>
-                          <div className="font-medium">
-                            Daily Blog Post Creation
-                          </div>
-                          <div className="text-sm text-muted-foreground">
-                            Runs every day at 9:00 AM
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">
-                            Active
-                          </span>
-                          <Button variant="outline" size="sm">
-                            <Settings className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between p-3 border rounded-lg">
-                        <div>
-                          <div className="font-medium">
-                            Weekly Analytics Report
-                          </div>
-                          <div className="text-sm text-muted-foreground">
-                            Runs every Monday at 8:00 AM
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">
-                            Active
-                          </span>
-                          <Button variant="outline" size="sm">
-                            <Settings className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  <div className="space-y-4">
-                    <h4 className="font-medium">
-                      Notification System Settings
-                    </h4>
-                    <div className="grid gap-4 md:grid-cols-3">
-                      <div className="space-y-3">
-                        <h5 className="font-medium">Email Notifications</h5>
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <Label className="text-sm">Welcome emails</Label>
-                            <Switch defaultChecked />
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <Label className="text-sm">Payment reminders</Label>
-                            <Switch defaultChecked />
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <Label className="text-sm">Feature updates</Label>
-                            <Switch />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="space-y-3">
-                        <h5 className="font-medium">SMS Notifications</h5>
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <Label className="text-sm">Security alerts</Label>
-                            <Switch defaultChecked />
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <Label className="text-sm">
-                              System maintenance
-                            </Label>
-                            <Switch defaultChecked />
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <Label className="text-sm">
-                              Marketing messages
-                            </Label>
-                            <Switch />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="space-y-3">
-                        <h5 className="font-medium">Push Notifications</h5>
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <Label className="text-sm">New features</Label>
-                            <Switch defaultChecked />
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <Label className="text-sm">Account updates</Label>
-                            <Switch defaultChecked />
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <Label className="text-sm">Reminders</Label>
-                            <Switch />
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -1645,24 +1463,63 @@ export default function SuperAdminSettings() {
                   <Separator />
 
                   <div className="space-y-4">
-                    <h4 className="font-medium">IP & Device Restrictions</h4>
-                    <div className="space-y-3">
+                    <h4 className="font-medium">IP Access Control</h4>
+                    <div className="grid gap-4 md:grid-cols-2">
                       <div className="space-y-2">
-                        <Label>Allowed IP Addresses (Staff/Admins)</Label>
+                        <Label>Whitelist IP Addresses</Label>
                         <Textarea
                           placeholder="192.168.1.0/24&#10;10.0.0.0/16&#10;203.0.113.0/24"
                           rows={3}
                         />
                         <p className="text-sm text-muted-foreground">
-                          One IP range per line. Leave empty to allow all IPs.
+                          Allowed IP ranges for admin access. One per line.
                         </p>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Blacklist IP Addresses</Label>
+                        <Textarea
+                          placeholder="192.168.2.0/24&#10;Bad actor IPs"
+                          rows={3}
+                        />
+                        <p className="text-sm text-muted-foreground">
+                          Blocked IP ranges. One per line.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">White Label Settings</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label>Allow White Label Access</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Enable white labeling features for enterprise
+                            clients
+                          </p>
+                        </div>
+                        <Switch defaultChecked />
                       </div>
 
                       <div className="flex items-center justify-between">
                         <div className="space-y-0.5">
-                          <Label>Device Registration Required</Label>
+                          <Label>Custom Domain Support</Label>
                           <p className="text-sm text-muted-foreground">
-                            Require device registration for admin access
+                            Allow clients to use custom domains
+                          </p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label>Hide Platform Branding</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Allow clients to hide platform branding
                           </p>
                         </div>
                         <Switch />
@@ -2078,81 +1935,6 @@ export default function SuperAdminSettings() {
                       <div className="space-y-2">
                         <Label>Sales Email</Label>
                         <Input placeholder="sales@yourplatform.com" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  <div className="space-y-4">
-                    <h4 className="font-medium">
-                      Default Auto-Posting Settings
-                    </h4>
-
-                    <div className="space-y-3">
-                      <div className="p-3 border rounded-lg">
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-3">
-                            <Globe className="h-5 w-5 text-blue-600" />
-                            <span className="font-medium">
-                              Google My Business
-                            </span>
-                          </div>
-                          <Switch defaultChecked />
-                        </div>
-                        <div className="text-sm text-muted-foreground">
-                          Default auto-posting behavior for new business
-                          accounts
-                        </div>
-                      </div>
-
-                      <div className="p-3 border rounded-lg">
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-3">
-                            <MessageSquare className="h-5 w-5 text-blue-500" />
-                            <span className="font-medium">Facebook Pages</span>
-                          </div>
-                          <Switch />
-                        </div>
-                        <div className="text-sm text-muted-foreground">
-                          Enable Facebook posting for new accounts by default
-                        </div>
-                      </div>
-
-                      <div className="p-3 border rounded-lg">
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-3">
-                            <Camera className="h-5 w-5 text-pink-500" />
-                            <span className="font-medium">Instagram</span>
-                          </div>
-                          <Switch />
-                        </div>
-                        <div className="text-sm text-muted-foreground">
-                          Enable Instagram posting for new accounts by default
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  <div className="space-y-4">
-                    <h4 className="font-medium">Social Media Templates</h4>
-                    <div className="space-y-3">
-                      <div className="space-y-2">
-                        <Label>Default Post Template</Label>
-                        <Textarea
-                          placeholder="🎉 Check out our latest project! #business #success"
-                          rows={3}
-                        />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label>Project Completion Template</Label>
-                        <Textarea
-                          placeholder="✅ Another successful project completed! We're proud to deliver quality results for our clients. #projectcomplete #quality"
-                          rows={3}
-                        />
                       </div>
                     </div>
                   </div>
@@ -2732,38 +2514,6 @@ export default function SuperAdminSettings() {
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                         <span className="text-sm font-medium">Connected</span>
-                      </div>
-                    </Card>
-
-                    <Card className="p-4">
-                      <div className="flex items-center gap-3 mb-2">
-                        <Database className="h-5 w-5 text-purple-500" />
-                        <h4 className="font-medium">Google Analytics</h4>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        Analytics integration for advanced reporting
-                      </p>
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                        <span className="text-sm font-medium">
-                          Pending Setup
-                        </span>
-                      </div>
-                    </Card>
-
-                    <Card className="p-4">
-                      <div className="flex items-center gap-3 mb-2">
-                        <Mail className="h-5 w-5 text-green-500" />
-                        <h4 className="font-medium">Mailchimp</h4>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        Email marketing and automation platform
-                      </p>
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                        <span className="text-sm font-medium">
-                          Not Connected
-                        </span>
                       </div>
                     </Card>
 
