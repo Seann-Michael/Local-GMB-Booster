@@ -110,14 +110,26 @@ export default function AgencyAdmin() {
           <div>
             <h1 className="text-3xl font-bold">Agency Dashboard</h1>
             <p className="text-muted-foreground">
-              Manage your clients and track your performance
+              Manage your clients and admin users
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Link to="/agency-admin/clients/add">
+            <Button
+              variant="outline"
+              onClick={() => setHideMetrics(!hideMetrics)}
+              className="gap-2"
+            >
+              {hideMetrics ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
+              {hideMetrics ? "Show Metrics" : "Hide Metrics"}
+            </Button>
+            <Link to="/agency-admin/admin-users/add">
               <Button className="gap-2">
                 <UserPlus className="h-4 w-4" />
-                Add Client
+                Add Admin User
               </Button>
             </Link>
             <Link to="/agency-admin/settings">
