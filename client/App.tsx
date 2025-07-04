@@ -38,6 +38,9 @@ import AgencyAdminUserDetail from "./pages/AgencyAdminUserDetail";
 import AgencyAdminUserEdit from "./pages/AgencyAdminUserEdit";
 import SuperAdminAgencyManagement from "./pages/SuperAdminAgencyManagement";
 import SuperAdminSettings from "./pages/SuperAdminSettings";
+import SignUp from "./pages/SignUp";
+import ForgotPassword from "./pages/ForgotPassword";
+import Support from "./pages/Support";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +52,8 @@ const App = () => (
         <Routes>
           {/* Public routes */}
           <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/public/project/:id" element={<PublicProject />} />
 
           {/* Protected routes */}
@@ -145,6 +150,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/support"
+            element={
+              <ProtectedRoute>
+                <Support />
               </ProtectedRoute>
             }
           />
