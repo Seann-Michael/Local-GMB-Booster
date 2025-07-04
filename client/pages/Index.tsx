@@ -261,25 +261,40 @@ export default function Index() {
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-3xl font-bold">Projects</h1>
           <div className="flex items-center gap-2">
-            {/* Project Sort Dropdown */}
-            <div className="flex items-center gap-2">
-              <Label className="text-sm text-muted-foreground">Sort:</Label>
-              <Select
-                value={projectSort}
-                onValueChange={(
-                  value: "all" | "starred" | "my-projects" | "archived",
-                ) => setProjectSort(value)}
+            {/* Project Sort Buttons */}
+            <div className="flex items-center gap-1 border rounded-lg p-1">
+              <Button
+                variant={projectSort === "all" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setProjectSort("all")}
+                className="text-xs"
               >
-                <SelectTrigger className="w-40">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All</SelectItem>
-                  <SelectItem value="starred">Starred</SelectItem>
-                  <SelectItem value="my-projects">My Projects</SelectItem>
-                  <SelectItem value="archived">Archived</SelectItem>
-                </SelectContent>
-              </Select>
+                All
+              </Button>
+              <Button
+                variant={projectSort === "starred" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setProjectSort("starred")}
+                className="text-xs"
+              >
+                Starred
+              </Button>
+              <Button
+                variant={projectSort === "my-projects" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setProjectSort("my-projects")}
+                className="text-xs"
+              >
+                My Projects
+              </Button>
+              <Button
+                variant={projectSort === "archived" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setProjectSort("archived")}
+                className="text-xs"
+              >
+                Archived
+              </Button>
             </div>
 
             <Button
