@@ -140,77 +140,81 @@ export default function AgencyAdmin() {
           </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Total Clients
-              </CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {clientStats.totalClients}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                {clientStats.activeClients} active, {clientStats.pendingClients}{" "}
-                pending
-              </p>
-            </CardContent>
-          </Card>
+        {/* Stats Cards - Conditionally visible */}
+        {!hideMetrics && (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Total Clients
+                </CardTitle>
+                <Building2 className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {clientStats.totalClients}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {clientStats.activeClients} active,{" "}
+                  {clientStats.pendingClients} pending
+                </p>
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Monthly Commission
-              </CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                ${revenueStats.monthlyRevenue.toFixed(0)}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                {revenueStats.commissionRate}% commission rate
-              </p>
-            </CardContent>
-          </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Admin Users
+                </CardTitle>
+                <Users className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {agencyPlan.currentUsers}/{agencyPlan.maxUsers}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {agencyPlan.maxUsers - agencyPlan.currentUsers} remaining
+                  slots
+                </p>
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Projected Annual
-              </CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                ${revenueStats.projectedRevenue.toFixed(0)}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Based on current active clients
-              </p>
-            </CardContent>
-          </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Monthly Cost
+                </CardTitle>
+                <DollarSign className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  $
+                  {(agencyPlan.currentUsers * agencyPlan.pricePerUser).toFixed(
+                    0,
+                  )}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  ${agencyPlan.pricePerUser}/user per month
+                </p>
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Avg Client Value
-              </CardTitle>
-              <BarChart3 className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                ${revenueStats.averageClientValue.toFixed(0)}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Monthly plan value
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Plan Status
+                </CardTitle>
+                <Shield className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{agencyPlan.name}</div>
+                <p className="text-xs text-muted-foreground">
+                  Up to {agencyPlan.maxUsers} admin users
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
         {/* Quick Actions */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
