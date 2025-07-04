@@ -404,25 +404,6 @@ export default function Gallery() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Thumbnail Size</Label>
-                  <Select
-                    value={filters.thumbnailSize}
-                    onValueChange={(value: "small" | "medium" | "large") =>
-                      updateFilter("thumbnailSize", value)
-                    }
-                  >
-                    <SelectTrigger className="w-32">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="small">Small</SelectItem>
-                      <SelectItem value="medium">Medium</SelectItem>
-                      <SelectItem value="large">Large</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
                   <Label>View</Label>
                   <Select value="grid">
                     <SelectTrigger className="w-32">
@@ -491,42 +472,6 @@ export default function Gallery() {
                       <RadioGroupItem value="videos" id="videos" />
                       <Label htmlFor="videos" className="text-sm">
                         Videos Only
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-
-                {/* Photo Size */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-medium">Photo Size</Label>
-                  <RadioGroup
-                    value={filters.photoSize}
-                    onValueChange={(
-                      value: "all" | "small" | "medium" | "large",
-                    ) => updateFilter("photoSize", value)}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="all" id="size-all" />
-                      <Label htmlFor="size-all" className="text-sm">
-                        All
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="small" id="small" />
-                      <Label htmlFor="small" className="text-sm">
-                        Small
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="medium" id="medium" />
-                      <Label htmlFor="medium" className="text-sm">
-                        Medium
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="large" id="large" />
-                      <Label htmlFor="large" className="text-sm">
-                        Large
                       </Label>
                     </div>
                   </RadioGroup>
