@@ -30,6 +30,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getCurrentUser, signOut } from "@/lib/auth";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 interface AgencyAdminLayoutProps {
   children: ReactNode;
@@ -195,6 +196,11 @@ export function AgencyAdminLayout({ children }: AgencyAdminLayoutProps) {
                 <Building2 className="h-3 w-3 mr-1" />
                 Agency Partner
               </Badge>
+
+              {/* Breadcrumbs - hidden on mobile */}
+              <div className="hidden lg:block">
+                <Breadcrumbs />
+              </div>
             </div>
 
             <div className="flex items-center gap-1 md:gap-2">
