@@ -32,6 +32,7 @@ import AgencyBusinessOwners from "./pages/AgencyBusinessOwners";
 import AgencyAdminUsers from "./pages/AgencyAdminUsers";
 import AgencySettings from "./pages/AgencySettings";
 import AgencyBusinessOwnerDetail from "./pages/AgencyBusinessOwnerDetail";
+import AgencyBusinessOwnerEdit from "./pages/AgencyBusinessOwnerEdit";
 import SuperAdminAgencyManagement from "./pages/SuperAdminAgencyManagement";
 
 const queryClient = new QueryClient();
@@ -214,6 +215,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <AgencyBusinessOwnerDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/agency-admin/business-owners/:id/edit"
+            element={
+              <ProtectedRoute>
+                <AgencyBusinessOwnerEdit />
               </ProtectedRoute>
             }
           />
