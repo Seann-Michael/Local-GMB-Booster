@@ -311,7 +311,7 @@ export function SuperAdminLayout({
                     <div>
                       <p className="text-xs text-muted-foreground">Videos</p>
                       <p className="text-lg font-bold">
-                        {currentStats.totalVideos.toLocaleString()}
+                        {currentStats?.totalVideos?.toLocaleString() || "0"}
                       </p>
                     </div>
                     <Video className="h-6 w-6 text-muted-foreground" />
@@ -325,7 +325,7 @@ export function SuperAdminLayout({
                     <div>
                       <p className="text-xs text-muted-foreground">Reviews</p>
                       <p className="text-lg font-bold">
-                        {currentStats.totalReviews.toLocaleString()}
+                        {currentStats?.totalReviews?.toLocaleString() || "0"}
                       </p>
                     </div>
                     <MessageSquare className="h-6 w-6 text-muted-foreground" />
@@ -339,7 +339,7 @@ export function SuperAdminLayout({
                     <div>
                       <p className="text-xs text-muted-foreground">API Calls</p>
                       <p className="text-lg font-bold">
-                        {currentStats.totalApiCalls.toLocaleString()}
+                        {currentStats?.totalApiCalls?.toLocaleString() || "0"}
                       </p>
                     </div>
                     <Activity className="h-6 w-6 text-muted-foreground" />
@@ -353,7 +353,7 @@ export function SuperAdminLayout({
                     <div>
                       <p className="text-xs text-muted-foreground">Webhooks</p>
                       <p className="text-lg font-bold">
-                        {currentStats.totalWebhooks.toLocaleString()}
+                        {currentStats?.totalWebhooks?.toLocaleString() || "0"}
                       </p>
                     </div>
                     <Webhook className="h-6 w-6 text-muted-foreground" />
@@ -367,7 +367,7 @@ export function SuperAdminLayout({
                     <div>
                       <p className="text-xs text-muted-foreground">Revenue</p>
                       <p className="text-lg font-bold">
-                        ${currentStats.revenue.toLocaleString()}
+                        ${currentStats?.revenue?.toLocaleString() || "0"}
                       </p>
                     </div>
                     <DollarSign className="h-6 w-6 text-muted-foreground" />
