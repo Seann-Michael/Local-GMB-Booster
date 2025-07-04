@@ -134,6 +134,11 @@ export default function SuperAdminSettings() {
     enableInvoicing: true,
     paymentGateway: "stripe",
     enableSubscriptions: true,
+
+    // AI Settings
+    openaiApiKey: "",
+    openaiOrganization: "",
+    enableAiFeatures: true,
   });
 
   const [activeTab, setActiveTab] = useState("system");
