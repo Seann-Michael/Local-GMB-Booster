@@ -23,6 +23,7 @@ import SignIn from "./pages/SignIn";
 import NotFound from "./pages/NotFound";
 import AgencyAdmin from "./pages/AgencyAdmin";
 import AgencyClientManagement from "./pages/AgencyClientManagement";
+import AddAgencyClient from "./pages/AddAgencyClient";
 
 const queryClient = new QueryClient();
 
