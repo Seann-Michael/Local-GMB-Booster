@@ -252,10 +252,6 @@ export default function BusinessManagement() {
                 </SelectContent>
               </Select>
               <Button variant="outline" size="sm" className="gap-2">
-                <Download className="h-4 w-4" />
-                Export
-              </Button>
-              <Button variant="outline" size="sm" className="gap-2">
                 <RefreshCw className="h-4 w-4" />
                 Refresh
               </Button>
