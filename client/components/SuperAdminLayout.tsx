@@ -45,8 +45,8 @@ import { cn } from "@/lib/utils";
 
 interface SuperAdminLayoutProps {
   children: ReactNode;
-  title: string;
-  breadcrumbs: Array<{ label: string; href?: string }>;
+  title?: string;
+  breadcrumbs?: Array<{ label: string; href?: string }>;
 }
 
 export function SuperAdminLayout({
