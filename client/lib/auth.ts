@@ -49,6 +49,11 @@ export function isSuperAdmin(): boolean {
   return user?.role === "superadmin";
 }
 
+export function isAgencyAdmin(): boolean {
+  const user = getCurrentUser();
+  return user?.role === "agency";
+}
+
 export function requireAuth(): boolean {
   if (!isAuthenticated()) {
     return false;
