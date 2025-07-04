@@ -43,6 +43,7 @@ import SignUp from "./pages/SignUp";
 import ForgotPassword from "./pages/ForgotPassword";
 import Support from "./pages/Support";
 import AdminSupport from "./pages/AdminSupport";
+import Roadmap from "./pages/Roadmap";
 
 const queryClient = new QueryClient();
 
@@ -168,6 +169,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <AdminSupport />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/roadmap"
+            element={
+              <ProtectedRoute>
+                <Roadmap />
               </ProtectedRoute>
             }
           />
