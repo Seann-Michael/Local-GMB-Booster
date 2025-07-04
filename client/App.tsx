@@ -299,6 +299,14 @@ const App = () => (
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/super-admin/staff"
+            element={
+              <ProtectedRoute>
+                <SuperAdminStaff />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Legacy/manual route redirects */}
           <Route path="/users" element={<Navigate to="/settings" replace />} />
