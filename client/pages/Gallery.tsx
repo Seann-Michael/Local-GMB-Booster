@@ -78,6 +78,7 @@ export default function Gallery() {
     tagFilterMode: "or",
     mediaType: "all",
     photoSize: "all",
+    thumbnailSize: "medium",
     sortOrder: "newest",
   });
 
