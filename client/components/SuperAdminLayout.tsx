@@ -297,7 +297,7 @@ export function SuperAdminLayout({
                     <div>
                       <p className="text-xs text-muted-foreground">Photos</p>
                       <p className="text-lg font-bold">
-                        {currentStats.totalPhotos.toLocaleString()}
+                        {currentStats?.totalPhotos?.toLocaleString() || "0"}
                       </p>
                     </div>
                     <Camera className="h-6 w-6 text-muted-foreground" />
