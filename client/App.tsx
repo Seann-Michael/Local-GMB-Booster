@@ -34,6 +34,8 @@ import AgencySettings from "./pages/AgencySettings";
 import AgencyBusinessOwnerDetail from "./pages/AgencyBusinessOwnerDetail";
 import AgencyBusinessOwnerEdit from "./pages/AgencyBusinessOwnerEdit";
 import AddAgencyAdminUser from "./pages/AddAgencyAdminUser";
+import AgencyAdminUserDetail from "./pages/AgencyAdminUserDetail";
+import AgencyAdminUserEdit from "./pages/AgencyAdminUserEdit";
 import SuperAdminAgencyManagement from "./pages/SuperAdminAgencyManagement";
 import SuperAdminSettings from "./pages/SuperAdminSettings";
 
@@ -248,7 +250,7 @@ const App = () => (
             path="/agency-admin/admin-users/:id"
             element={
               <ProtectedRoute>
-                <div>Admin User Detail - Coming Soon</div>
+                <AgencyAdminUserDetail />
               </ProtectedRoute>
             }
           />
@@ -256,7 +258,7 @@ const App = () => (
             path="/agency-admin/admin-users/:id/edit"
             element={
               <ProtectedRoute>
-                <div>Admin User Edit - Coming Soon</div>
+                <AgencyAdminUserEdit />
               </ProtectedRoute>
             }
           />
