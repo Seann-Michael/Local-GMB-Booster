@@ -42,6 +42,7 @@ import SuperAdminStaff from "./pages/SuperAdminStaff";
 import SignUp from "./pages/SignUp";
 import ForgotPassword from "./pages/ForgotPassword";
 import Support from "./pages/Support";
+import AdminSupport from "./pages/AdminSupport";
 
 const queryClient = new QueryClient();
 
@@ -159,6 +160,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <Support />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin-support"
+            element={
+              <ProtectedRoute>
+                <AdminSupport />
               </ProtectedRoute>
             }
           />
