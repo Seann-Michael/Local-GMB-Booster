@@ -1895,5 +1895,3 @@ export default function ProjectDetail() {
     </AppLayout>
   );
 }
-
-export default ProjectDetail;
