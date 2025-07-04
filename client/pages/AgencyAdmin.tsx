@@ -279,7 +279,7 @@ export default function AgencyAdmin() {
                 Billing & Payments
               </CardTitle>
               <CardDescription>
-                Manage billing and commission payments
+                Manage billing and user accounts
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -290,10 +290,10 @@ export default function AgencyAdmin() {
                     View Billing
                   </Button>
                 </Link>
-                <Link to="/agency-admin/commission">
+                <Link to="/agency-admin/business-owners">
                   <Button variant="outline" className="w-full gap-2">
                     <TrendingUp className="h-4 w-4" />
-                    Commission Details
+                    Business Management
                   </Button>
                 </Link>
               </div>
