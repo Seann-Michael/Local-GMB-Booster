@@ -187,6 +187,11 @@ export function AppLayout({ children }: AppLayoutProps) {
                 <span className="font-semibold text-lg">GMB Booster</span>
               </div>
 
+              {/* Breadcrumbs - hidden on mobile */}
+              <div className="hidden lg:block">
+                <Breadcrumbs />
+              </div>
+
               {isImpersonated && (
                 <div className="flex items-center gap-2 px-3 py-1 bg-yellow-100 text-yellow-800 rounded-lg text-sm">
                   <Shield className="h-4 w-4" />
