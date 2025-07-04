@@ -26,6 +26,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { AppLayout } from "@/components/AppLayout";
 import {
   Save,
@@ -39,6 +46,17 @@ import {
   AlertCircle,
   Clock,
   Camera,
+  Globe,
+  Rss,
+  Webhook,
+  Plus,
+  Trash2,
+  Edit,
+  Download,
+  Brain,
+  Settings as SettingsIcon,
+  MapPin,
+  TrendingUp,
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -67,18 +85,44 @@ interface BusinessSettings {
   passwordRequirements: string;
   sessionTimeout: number;
 
+  // AI Settings
+  aiPrompt: string;
+  enableAiRewriting: boolean;
+
   // Billing Settings
   billingContact: string;
   billingEmail: string;
   autoRenewal: boolean;
+
+  // Company Settings
+  stats: {
+    totalUsers: number;
+    totalProjects: number;
+  };
+
+  // Subscription
+  subscription: {
+    plan: string;
+    status: string;
+    nextBilling: string;
+    features: string[];
+  };
+}
+
+interface UserData {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  active: boolean;
 }
 
 interface BillingHistory {
   id: string;
   date: string;
+  description: string;
   amount: number;
   status: "paid" | "pending" | "failed";
-  description: string;
 }
 
 export default function Settings() {
@@ -108,21 +152,58 @@ export default function Settings() {
     passwordRequirements: "strong",
     sessionTimeout: 30,
 
+    // AI Settings
+    aiPrompt:
+      "Please rewrite this project description to be more engaging and professional while maintaining all the key details and technical specifications.",
+    enableAiRewriting: true,
+
     // Billing Settings
     billingContact: "Joe Smith",
     billingEmail: "billing@joespizza.com",
     autoRenewal: true,
+
+    // Company Settings
+    stats: {
+      totalUsers: 5,
+      totalProjects: 23,
+    },
+
+    // Subscription
+    subscription: {
+      plan: "Pro",
+      status: "Active",
+      nextBilling: "2024-04-15",
+      features: [
+        "Unlimited projects",
+        "Advanced photo management",
+        "Client project sharing",
+        "Priority support",
+        "AI-powered descriptions",
+      ],
+    },
   });
 
   const [activeTab, setActiveTab] = useState("general");
   const [isLoading, setIsLoading] = useState(false);
+  const [users, setUsers] = useState<UserData[]>([]);
   const [billingHistory, setBillingHistory] = useState<BillingHistory[]>([]);
+  const [tags, setTags] = useState<string[]>([
+    "Kitchen",
+    "Bathroom",
+    "Roofing",
+    "Flooring",
+    "Painting",
+  ]);
+  const [newTag, setNewTag] = useState("");
 
   const tabs = [
     { id: "general", label: "General", icon: Building2 },
+    { id: "users", label: "Users", icon: Users },
+    { id: "ai", label: "AI Settings", icon: Brain },
     { id: "notifications", label: "Notifications", icon: Bell },
     { id: "security", label: "Security", icon: Shield },
     { id: "billing", label: "Billing", icon: CreditCard },
+    { id: "integrations", label: "Integrations", icon: Webhook },
   ];
 
   const timezones = [
@@ -143,6 +224,31 @@ export default function Settings() {
     const savedSettings = localStorage.getItem("business_settings");
     if (savedSettings) {
       setSettings(JSON.parse(savedSettings));
+    }
+
+    // Load users
+    const savedUsers = JSON.parse(localStorage.getItem("users") || "[]");
+    if (savedUsers.length === 0) {
+      const defaultUsers = [
+        {
+          id: "1",
+          name: "Joe Smith",
+          email: "joe@joespizza.com",
+          role: "Owner",
+          active: true,
+        },
+        {
+          id: "2",
+          name: "Sarah Manager",
+          email: "sarah@joespizza.com",
+          role: "Manager",
+          active: true,
+        },
+      ];
+      setUsers(defaultUsers);
+      localStorage.setItem("users", JSON.stringify(defaultUsers));
+    } else {
+      setUsers(savedUsers);
     }
 
     // Load billing history
@@ -170,6 +276,12 @@ export default function Settings() {
       },
     ];
     setBillingHistory(sampleHistory);
+
+    // Load tags
+    const savedTags = localStorage.getItem("companyTags");
+    if (savedTags) {
+      setTags(JSON.parse(savedTags));
+    }
   }, []);
 
   const handleSave = async () => {
@@ -180,6 +292,8 @@ export default function Settings() {
 
       // Save to localStorage
       localStorage.setItem("business_settings", JSON.stringify(settings));
+      localStorage.setItem("users", JSON.stringify(users));
+      localStorage.setItem("companyTags", JSON.stringify(tags));
 
       toast({
         title: "Settings Saved",
@@ -214,6 +328,17 @@ export default function Settings() {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const addTag = () => {
+    if (newTag.trim() && !tags.includes(newTag.trim())) {
+      setTags([...tags, newTag.trim()]);
+      setNewTag("");
+    }
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    setTags(tags.filter((tag) => tag !== tagToRemove));
   };
 
   const getStatusBadge = (status: string) => {
@@ -462,6 +587,152 @@ export default function Settings() {
                       </Select>
                     </div>
                   </div>
+
+                  {/* Project Tags */}
+                  <div className="space-y-2">
+                    <Label>Project Tags</Label>
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      {tags.map((tag) => (
+                        <Badge key={tag} variant="secondary" className="gap-1">
+                          {tag}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-4 w-4 p-0 hover:bg-destructive hover:text-destructive-foreground"
+                            onClick={() => removeTag(tag)}
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </Badge>
+                      ))}
+                    </div>
+                    <div className="flex gap-2">
+                      <Input
+                        value={newTag}
+                        onChange={(e) => setNewTag(e.target.value)}
+                        placeholder="Add new tag"
+                        onKeyPress={(e) => e.key === "Enter" && addTag()}
+                      />
+                      <Button onClick={addTag} variant="outline">
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Users Tab */}
+            {activeTab === "users" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>User Management</CardTitle>
+                  <CardDescription>
+                    Manage users who have access to your business account
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="rounded-md border">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Email</TableHead>
+                          <TableHead>Role</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {users.map((user) => (
+                          <TableRow key={user.id}>
+                            <TableCell className="font-medium">
+                              {user.name}
+                            </TableCell>
+                            <TableCell>{user.email}</TableCell>
+                            <TableCell>
+                              <Badge variant="outline">{user.role}</Badge>
+                            </TableCell>
+                            <TableCell>
+                              <Badge
+                                variant={user.active ? "default" : "secondary"}
+                              >
+                                {user.active ? "Active" : "Inactive"}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              <Button variant="ghost" size="sm">
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                  <Button className="mt-4 gap-2">
+                    <Plus className="h-4 w-4" />
+                    Add User
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* AI Settings Tab */}
+            {activeTab === "ai" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>AI Settings</CardTitle>
+                  <CardDescription>
+                    Configure AI-powered features for your projects
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label htmlFor="enableAiRewriting">
+                        Enable AI Rewriting
+                      </Label>
+                      <p className="text-sm text-muted-foreground">
+                        Allow AI to help rewrite and improve project
+                        descriptions
+                      </p>
+                    </div>
+                    <Switch
+                      id="enableAiRewriting"
+                      checked={settings.enableAiRewriting}
+                      onCheckedChange={(checked) =>
+                        updateSetting("enableAiRewriting", checked)
+                      }
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="aiPrompt">AI Rewriting Prompt</Label>
+                    <Textarea
+                      id="aiPrompt"
+                      value={settings.aiPrompt}
+                      onChange={(e) =>
+                        updateSetting("aiPrompt", e.target.value)
+                      }
+                      placeholder="Enter the prompt that will guide AI when rewriting project descriptions..."
+                      rows={4}
+                    />
+                    <p className="text-sm text-muted-foreground">
+                      This prompt will be sent to the AI along with the original
+                      project description to guide the rewriting process.
+                    </p>
+                  </div>
+
+                  <div className="bg-muted p-4 rounded-lg">
+                    <h4 className="font-medium mb-2">AI Features</h4>
+                    <ul className="space-y-1 text-sm">
+                      <li>• Automatic project description enhancement</li>
+                      <li>• Professional language improvement</li>
+                      <li>• Technical detail preservation</li>
+                      <li>• Customizable writing style</li>
+                    </ul>
+                  </div>
                 </CardContent>
               </Card>
             )}
@@ -636,9 +907,65 @@ export default function Settings() {
               </Card>
             )}
 
-            {/* Billing Settings */}
+            {/* Billing Settings - Identical to Agency Billing */}
             {activeTab === "billing" && (
               <div className="space-y-6">
+                {/* Current Plan Overview */}
+                <div className="grid gap-4 md:grid-cols-3">
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">
+                        Current Plan
+                      </CardTitle>
+                      <Shield className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold">
+                        {settings.subscription.plan}
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {settings.stats.totalUsers} users
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">
+                        Monthly Total
+                      </CardTitle>
+                      <DollarSign className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold">$29</div>
+                      <p className="text-xs text-muted-foreground">
+                        Next bill:{" "}
+                        {new Date(
+                          settings.subscription.nextBilling,
+                        ).toLocaleDateString()}
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">
+                        Status
+                      </CardTitle>
+                      <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold">
+                        {settings.subscription.status}
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Auto-renewal{" "}
+                        {settings.autoRenewal ? "enabled" : "disabled"}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+
                 <Card>
                   <CardHeader>
                     <CardTitle>Billing Information</CardTitle>
@@ -702,11 +1029,13 @@ export default function Settings() {
                   <CardContent className="space-y-4">
                     <div className="flex justify-between items-center">
                       <div>
-                        <h3 className="font-semibold">Local GMB Booster Pro</h3>
+                        <h3 className="font-semibold">
+                          Local GMB Booster {settings.subscription.plan}
+                        </h3>
                         <p className="text-sm text-muted-foreground">
                           Status:{" "}
                           <span className="font-medium text-green-600">
-                            Active
+                            {settings.subscription.status}
                           </span>
                         </p>
                       </div>
@@ -716,29 +1045,28 @@ export default function Settings() {
                     <div className="bg-muted p-4 rounded-lg">
                       <h4 className="font-medium mb-3">Plan Features</h4>
                       <ul className="space-y-2">
-                        <li className="flex items-center gap-2 text-sm">
-                          <div className="h-1.5 w-1.5 bg-primary rounded-full"></div>
-                          Unlimited projects
-                        </li>
-                        <li className="flex items-center gap-2 text-sm">
-                          <div className="h-1.5 w-1.5 bg-primary rounded-full"></div>
-                          Advanced photo management
-                        </li>
-                        <li className="flex items-center gap-2 text-sm">
-                          <div className="h-1.5 w-1.5 bg-primary rounded-full"></div>
-                          Client project sharing
-                        </li>
-                        <li className="flex items-center gap-2 text-sm">
-                          <div className="h-1.5 w-1.5 bg-primary rounded-full"></div>
-                          Priority support
-                        </li>
+                        {settings.subscription.features.map(
+                          (feature, index) => (
+                            <li
+                              key={index}
+                              className="flex items-center gap-2 text-sm"
+                            >
+                              <div className="h-1.5 w-1.5 bg-primary rounded-full"></div>
+                              {feature}
+                            </li>
+                          ),
+                        )}
                       </ul>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
                         <h4 className="font-medium mb-2">Next Billing</h4>
-                        <p className="text-muted-foreground">April 1, 2024</p>
+                        <p className="text-muted-foreground">
+                          {new Date(
+                            settings.subscription.nextBilling,
+                          ).toLocaleDateString()}
+                        </p>
                       </div>
                       <div>
                         <h4 className="font-medium mb-2">Payment Method</h4>
@@ -794,6 +1122,73 @@ export default function Settings() {
                   </CardContent>
                 </Card>
               </div>
+            )}
+
+            {/* Integrations Tab */}
+            {activeTab === "integrations" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Integrations</CardTitle>
+                  <CardDescription>
+                    Connect your business with external services
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <Card className="p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Globe className="h-5 w-5 text-blue-500" />
+                        <h4 className="font-medium">Website Integration</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Embed project galleries on your website
+                      </p>
+                      <Button variant="outline" size="sm">
+                        Configure
+                      </Button>
+                    </Card>
+
+                    <Card className="p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Rss className="h-5 w-5 text-orange-500" />
+                        <h4 className="font-medium">RSS Feed</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Syndicate your project updates
+                      </p>
+                      <Button variant="outline" size="sm">
+                        Enable
+                      </Button>
+                    </Card>
+
+                    <Card className="p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Webhook className="h-5 w-5 text-purple-500" />
+                        <h4 className="font-medium">Webhooks</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Receive real-time notifications
+                      </p>
+                      <Button variant="outline" size="sm">
+                        Setup
+                      </Button>
+                    </Card>
+
+                    <Card className="p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Camera className="h-5 w-5 text-green-500" />
+                        <h4 className="font-medium">Photo Backup</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Automatic cloud backup
+                      </p>
+                      <Button variant="outline" size="sm">
+                        Connect
+                      </Button>
+                    </Card>
+                  </div>
+                </CardContent>
+              </Card>
             )}
           </div>
         </div>
