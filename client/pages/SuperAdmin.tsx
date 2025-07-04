@@ -210,11 +210,11 @@ export default function SuperAdmin() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {currentData.activeUsers.toLocaleString()}
+                {hideMetrics ? "***" : currentData.activeUsers.toLocaleString()}
               </div>
               <p className="text-xs text-muted-foreground flex items-center">
                 <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
-                +12% from last period
+                {hideMetrics ? "Hidden" : "+12% from last period"}
               </p>
             </CardContent>
           </Card>
@@ -228,11 +228,13 @@ export default function SuperAdmin() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {currentData.dailyActiveUsers.toLocaleString()}
+                {hideMetrics
+                  ? "***"
+                  : currentData.dailyActiveUsers.toLocaleString()}
               </div>
               <p className="text-xs text-muted-foreground flex items-center">
                 <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
-                +8% from last period
+                {hideMetrics ? "Hidden" : "+8% from last period"}
               </p>
             </CardContent>
           </Card>
@@ -244,11 +246,11 @@ export default function SuperAdmin() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {currentData.newSignups.toLocaleString()}
+                {hideMetrics ? "***" : currentData.newSignups.toLocaleString()}
               </div>
               <p className="text-xs text-muted-foreground flex items-center">
                 <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
-                +23% from last period
+                {hideMetrics ? "Hidden" : "+23% from last period"}
               </p>
             </CardContent>
           </Card>
@@ -262,11 +264,11 @@ export default function SuperAdmin() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {currentData.userRetention}%
+                {hideMetrics ? "***%" : `${currentData.userRetention}%`}
               </div>
               <p className="text-xs text-muted-foreground flex items-center">
                 <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
-                +5.2% from last period
+                {hideMetrics ? "Hidden" : "+5.2% from last period"}
               </p>
             </CardContent>
           </Card>
