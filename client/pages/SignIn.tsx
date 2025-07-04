@@ -57,7 +57,15 @@ export default function SignIn() {
         localStorage.setItem("auth_token", "mock_jwt_token_" + Date.now());
 
         toast.success("Welcome back!");
-        navigate(from, { replace: true });
+
+        // Redirect based on user role
+        if (user.role === "agency") {
+          navigate("/agency-admin", { replace: true });
+        } else if (user.role === "superadmin") {
+          navigate("/super-admin", { replace: true });
+        } else {
+          navigate(from, { replace: true });
+        }
       } else {
         toast.error("Please enter your email and password");
       }
