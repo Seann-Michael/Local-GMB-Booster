@@ -289,6 +289,11 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
         </header>
 
+        {/* Breadcrumbs for mobile */}
+        <div className="lg:hidden bg-background border-b p-4">
+          <Breadcrumbs />
+        </div>
+
         {/* Page Content */}
         <main className="flex-1 overflow-auto pb-16 md:pb-0">{children}</main>
 
