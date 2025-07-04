@@ -132,6 +132,10 @@ const App = () => (
             }
           />
 
+          {/* Legacy/manual route redirects */}
+          <Route path="/users" element={<Navigate to="/" replace />} />
+          <Route path="/photos" element={<Navigate to="/gallery" replace />} />
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
