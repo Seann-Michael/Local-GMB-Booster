@@ -189,6 +189,22 @@ const App = () => (
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/agency-admin/billing"
+            element={
+              <ProtectedRoute>
+                <AgencyBilling />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/agency-admin/business-owners"
+            element={
+              <ProtectedRoute>
+                <AgencyBusinessOwners />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Legacy/manual route redirects */}
           <Route path="/users" element={<Navigate to="/settings" replace />} />
