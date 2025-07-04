@@ -802,7 +802,7 @@ export default function ProjectDetail() {
                   <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle className="flex items-center gap-2">
                       <Images className="h-5 w-5" />
-                      Photos ({project.photos.length})
+                      Photos & Video ({project.photos.length})
                       {selectedPhotos.length > 0 && (
                         <Badge variant="secondary">
                           {selectedPhotos.length} selected
@@ -848,7 +848,7 @@ export default function ProjectDetail() {
                         onClick={() => fileInputRef.current?.click()}
                       >
                         <Plus className="h-4 w-4" />
-                        Add Photos
+                        Add Media
                       </Button>
                     </div>
                   </CardHeader>
