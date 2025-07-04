@@ -81,6 +81,11 @@ interface SuperAdminSettings {
   enableInvoicing: boolean;
   paymentGateway: string;
   enableSubscriptions: boolean;
+
+  // AI Settings
+  openaiApiKey: string;
+  openaiOrganization: string;
+  enableAiFeatures: boolean;
 }
 
 export default function SuperAdminSettings() {
