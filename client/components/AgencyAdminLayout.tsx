@@ -64,16 +64,16 @@ export function AgencyAdminLayout({ children }: AgencyAdminLayoutProps) {
       active: location.pathname.startsWith("/agency-admin/clients"),
     },
     {
+      label: "Business Owners",
+      href: "/agency-admin/business-owners",
+      icon: Building2,
+      active: location.pathname.startsWith("/agency-admin/business-owners"),
+    },
+    {
       label: "Analytics",
       href: "/agency-admin/analytics",
       icon: BarChart3,
       active: location.pathname === "/agency-admin/analytics",
-    },
-    {
-      label: "Reports",
-      href: "/agency-admin/reports",
-      icon: FileText,
-      active: location.pathname === "/agency-admin/reports",
     },
     {
       label: "Billing",
@@ -82,10 +82,10 @@ export function AgencyAdminLayout({ children }: AgencyAdminLayoutProps) {
       active: location.pathname.startsWith("/agency-admin/billing"),
     },
     {
-      label: "Commission",
-      href: "/agency-admin/commission",
-      icon: DollarSign,
-      active: location.pathname === "/agency-admin/commission",
+      label: "Admin Users",
+      href: "/agency-admin/admin-users",
+      icon: Users,
+      active: location.pathname.startsWith("/agency-admin/admin-users"),
     },
   ];
 
