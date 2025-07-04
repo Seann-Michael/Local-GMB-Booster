@@ -34,7 +34,16 @@ import { useState } from "react";
 
 export default function SuperAdmin() {
   const [timeFrame, setTimeFrame] = useState("30d");
-  const [hideMetrics, setHideMetrics] = useState(true); // Default: metrics hidden
+  const [hideMetrics, setHideMetrics] = useState(() => {
+    const saved = localStorage.getItem("super_admin_hide_metrics");
+    return saved ? JSON.parse(saved) : true; // Default: metrics hidden
+  });
+
+  const toggleMetrics = () => {
+    const newValue = !hideMetrics;
+    setHideMetrics(newValue);
+    localStorage.setItem("super_admin_hide_metrics", JSON.stringify(newValue));
+  };
 
   // Mock analytics data based on time frame
   const analyticsData = {
@@ -161,7 +170,7 @@ export default function SuperAdmin() {
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
-              onClick={() => setHideMetrics(!hideMetrics)}
+              onClick={toggleMetrics}
               className="gap-2"
             >
               {hideMetrics ? (
@@ -194,9 +203,8 @@ export default function SuperAdmin() {
           </div>
         </div>
 
-        {/* Key Performance Metrics - Conditionally visible */}
-        {!hideMetrics && (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {/* Key Performance Metrics - Always visible, values conditionally hidden */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
