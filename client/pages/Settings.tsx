@@ -32,6 +32,17 @@ import {
   Globe,
   Camera,
   Upload,
+  FolderOpen,
+  Plus,
+  Trash2,
+  Edit,
+  Download,
+  Webhook,
+  Key,
+  Tag,
+  Image,
+  Video,
+  FileText,
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
@@ -54,6 +65,31 @@ interface BusinessSettings {
   timezone: string;
   currency: string;
   dateFormat: string;
+
+  // Project Settings
+  autoPostFacebook: boolean;
+  autoPostGoogleMyBusiness: boolean;
+  autoPostRssFeed: boolean;
+  aiPromptForDescriptions: boolean;
+
+  // Integration Settings
+  facebookConnected: boolean;
+  googleMyBusinessConnected: boolean;
+  goHighLevelApiKey: string;
+  webhooks: Array<{
+    id: string;
+    name: string;
+    url: string;
+    events: string[];
+    active: boolean;
+  }>;
+
+  // Tags
+  businessTags: Array<{
+    id: string;
+    name: string;
+    color: string;
+  }>;
 
   // Notification Settings
   emailNotifications: boolean;
@@ -91,6 +127,33 @@ export default function Settings() {
     timezone: "America/New_York",
     currency: "USD",
     dateFormat: "MM/DD/YYYY",
+
+    // Project Settings
+    autoPostFacebook: false,
+    autoPostGoogleMyBusiness: true,
+    autoPostRssFeed: false,
+    aiPromptForDescriptions: true,
+
+    // Integration Settings
+    facebookConnected: false,
+    googleMyBusinessConnected: true,
+    goHighLevelApiKey: "",
+    webhooks: [
+      {
+        id: "1",
+        name: "Project Completion",
+        url: "https://example.com/webhook",
+        events: ["project.completed", "project.created"],
+        active: true,
+      },
+    ],
+
+    // Tags
+    businessTags: [
+      { id: "1", name: "Pizza", color: "#ef4444" },
+      { id: "2", name: "Italian", color: "#3b82f6" },
+      { id: "3", name: "Delivery", color: "#10b981" },
+    ],
 
     // Notification Settings
     emailNotifications: true,
@@ -161,6 +224,10 @@ export default function Settings() {
 
   const tabs = [
     { id: "general", label: "General", icon: Building2 },
+    { id: "projects", label: "Projects", icon: FolderOpen },
+    { id: "integrations", label: "Integrations", icon: Globe },
+    { id: "tags", label: "Tags", icon: MapPin },
+    { id: "media", label: "Media", icon: Camera },
     { id: "notifications", label: "Notifications", icon: Bell },
     { id: "security", label: "Security", icon: Shield },
     { id: "billing", label: "Billing", icon: CreditCard },

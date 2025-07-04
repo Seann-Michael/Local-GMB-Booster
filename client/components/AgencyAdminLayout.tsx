@@ -197,13 +197,6 @@ export function AgencyAdminLayout({ children }: AgencyAdminLayoutProps) {
                 <Search className="h-5 w-5" />
               </Button>
 
-              {/* Settings */}
-              <Link to="/agency-admin/settings">
-                <Button variant="ghost" size="icon">
-                  <Settings className="h-4 w-4 md:h-5 md:w-5" />
-                </Button>
-              </Link>
-
               {/* Notifications */}
               <Link to="/agency-admin/notifications">
                 <Button variant="ghost" size="icon" className="relative">

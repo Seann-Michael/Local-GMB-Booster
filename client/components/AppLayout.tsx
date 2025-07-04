@@ -196,13 +196,6 @@ export function AppLayout({ children }: AppLayoutProps) {
                 <Search className="h-5 w-5" />
               </Button>
 
-              {/* Settings */}
-              <Link to="/settings">
-                <Button variant="ghost" size="icon">
-                  <Settings className="h-4 w-4 md:h-5 md:w-5" />
-                </Button>
-              </Link>
-
               {/* Notifications */}
               <Link to="/notifications">
                 <Button variant="ghost" size="icon" className="relative">

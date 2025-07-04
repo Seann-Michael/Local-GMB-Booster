@@ -196,13 +196,6 @@ export function SuperAdminLayout({
                 <Search className="h-5 w-5" />
               </Button>
 
-              {/* Settings */}
-              <Link to="/super-admin/settings">
-                <Button variant="ghost" size="icon">
-                  <Settings className="h-4 w-4 md:h-5 md:w-5" />
-                </Button>
-              </Link>
-
               {/* Notifications */}
               <div className="relative">
                 <Button variant="ghost" size="icon">
