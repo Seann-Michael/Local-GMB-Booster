@@ -53,6 +53,9 @@ interface Project {
   startDate?: string;
   completionDate?: string;
   assignedUsers?: string[];
+  starred?: boolean;
+  archived?: boolean;
+  createdBy?: string;
 }
 
 export default function Index() {
@@ -63,6 +66,9 @@ export default function Index() {
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
   const [showFilters, setShowFilters] = useState(false);
   const [hideMetrics, setHideMetrics] = useState(true); // Default: metrics hidden
+  const [projectSort, setProjectSort] = useState<
+    "all" | "starred" | "my-projects" | "archived"
+  >("all");
   const [filters, setFilters] = useState({
     startDate: "",
     endDate: "",
@@ -108,6 +114,9 @@ export default function Index() {
           createdAt: new Date(Date.now() - 86400000).toISOString(),
           status: "active",
           assignedUsers: ["1"],
+          starred: true,
+          archived: false,
+          createdBy: currentUser?.id || "1",
         },
         {
           id: "demo-2",
@@ -122,6 +131,9 @@ export default function Index() {
           status: "completed",
           completedDate: new Date(Date.now() - 86400000).toISOString(),
           assignedUsers: ["2"],
+          starred: false,
+          archived: false,
+          createdBy: "2",
         },
       ];
       setProjects(demoProjects);
@@ -132,6 +144,26 @@ export default function Index() {
 
   const applyFilters = () => {
     let filtered = projects;
+
+    // Project sort filter (applied first)
+    switch (projectSort) {
+      case "starred":
+        filtered = filtered.filter((project) => project.starred === true);
+        break;
+      case "my-projects":
+        filtered = filtered.filter(
+          (project) => project.createdBy === currentUser?.id,
+        );
+        break;
+      case "archived":
+        filtered = filtered.filter((project) => project.archived === true);
+        break;
+      case "all":
+      default:
+        // Show all non-archived projects by default
+        filtered = filtered.filter((project) => project.archived !== true);
+        break;
+    }
 
     // Search query filter
     if (searchQuery.trim() !== "") {
@@ -199,7 +231,7 @@ export default function Index() {
 
   useEffect(() => {
     applyFilters();
-  }, [projects, searchQuery, filters]);
+  }, [projects, searchQuery, filters, projectSort]);
 
   const clearFilters = () => {
     setFilters({
@@ -229,6 +261,27 @@ export default function Index() {
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-3xl font-bold">Projects</h1>
           <div className="flex items-center gap-2">
+            {/* Project Sort Dropdown */}
+            <div className="flex items-center gap-2">
+              <Label className="text-sm text-muted-foreground">Sort:</Label>
+              <Select
+                value={projectSort}
+                onValueChange={(
+                  value: "all" | "starred" | "my-projects" | "archived",
+                ) => setProjectSort(value)}
+              >
+                <SelectTrigger className="w-40">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="starred">Starred</SelectItem>
+                  <SelectItem value="my-projects">My Projects</SelectItem>
+                  <SelectItem value="archived">Archived</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             <Button
               variant="outline"
               onClick={() => setHideMetrics(!hideMetrics)}
