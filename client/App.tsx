@@ -170,6 +170,14 @@ const App = () => (
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/agency-admin/analytics"
+            element={
+              <ProtectedRoute>
+                <AgencyAnalytics />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Legacy/manual route redirects */}
           <Route path="/users" element={<Navigate to="/settings" replace />} />
