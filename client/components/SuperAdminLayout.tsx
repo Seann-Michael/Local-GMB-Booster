@@ -117,6 +117,12 @@ export function SuperAdminLayout({
       icon: Building2,
       active: location.pathname === "/super-admin/businesses",
     },
+    {
+      label: "Agency Management",
+      href: "/super-admin/agencies",
+      icon: Shield,
+      active: location.pathname.startsWith("/super-admin/agencies"),
+    },
   ];
 
   const handleSignOut = () => {
