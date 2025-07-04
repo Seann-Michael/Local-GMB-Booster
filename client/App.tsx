@@ -245,6 +245,22 @@ const App = () => (
             }
           />
           <Route
+            path="/agency-admin/admin-users/:id"
+            element={
+              <ProtectedRoute>
+                <div>Admin User Detail - Coming Soon</div>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/agency-admin/admin-users/:id/edit"
+            element={
+              <ProtectedRoute>
+                <div>Admin User Edit - Coming Soon</div>
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/agency-admin/settings"
             element={
               <ProtectedRoute>
