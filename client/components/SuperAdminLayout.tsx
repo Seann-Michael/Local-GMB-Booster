@@ -96,7 +96,8 @@ export function SuperAdminLayout({
     },
   };
 
-  const currentStats = usageStats[timeFrame as keyof typeof usageStats];
+  const currentStats =
+    usageStats[timeFrame as keyof typeof usageStats] || usageStats["30d"];
 
   const sidebarItems = [
     {
