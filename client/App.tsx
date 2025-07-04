@@ -134,6 +134,24 @@ const App = () => (
             }
           />
 
+          {/* Agency Admin Routes */}
+          <Route
+            path="/agency-admin"
+            element={
+              <ProtectedRoute>
+                <AgencyAdmin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/agency-admin/clients"
+            element={
+              <ProtectedRoute>
+                <AgencyClientManagement />
+              </ProtectedRoute>
+            }
+          />
+
           {/* Legacy/manual route redirects */}
           <Route path="/users" element={<Navigate to="/settings" replace />} />
           <Route path="/photos" element={<Navigate to="/gallery" replace />} />
