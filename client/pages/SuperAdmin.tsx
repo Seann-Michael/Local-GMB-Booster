@@ -168,11 +168,7 @@ export default function SuperAdmin() {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              onClick={toggleMetrics}
-              className="gap-2"
-            >
+            <Button variant="outline" onClick={toggleMetrics} className="gap-2">
               {hideMetrics ? (
                 <EyeOff className="h-4 w-4" />
               ) : (
@@ -205,79 +201,76 @@ export default function SuperAdmin() {
 
         {/* Key Performance Metrics - Always visible, values conditionally hidden */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Active Users
-                </CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {currentData.activeUsers.toLocaleString()}
-                </div>
-                <p className="text-xs text-muted-foreground flex items-center">
-                  <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
-                  +12% from last period
-                </p>
-              </CardContent>
-            </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Active Users
+              </CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {currentData.activeUsers.toLocaleString()}
+              </div>
+              <p className="text-xs text-muted-foreground flex items-center">
+                <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
+                +12% from last period
+              </p>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Daily Active Users
-                </CardTitle>
-                <Activity className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {currentData.dailyActiveUsers.toLocaleString()}
-                </div>
-                <p className="text-xs text-muted-foreground flex items-center">
-                  <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
-                  +8% from last period
-                </p>
-              </CardContent>
-            </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Daily Active Users
+              </CardTitle>
+              <Activity className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {currentData.dailyActiveUsers.toLocaleString()}
+              </div>
+              <p className="text-xs text-muted-foreground flex items-center">
+                <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
+                +8% from last period
+              </p>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  New Signups
-                </CardTitle>
-                <UserPlus className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {currentData.newSignups.toLocaleString()}
-                </div>
-                <p className="text-xs text-muted-foreground flex items-center">
-                  <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
-                  +23% from last period
-                </p>
-              </CardContent>
-            </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">New Signups</CardTitle>
+              <UserPlus className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {currentData.newSignups.toLocaleString()}
+              </div>
+              <p className="text-xs text-muted-foreground flex items-center">
+                <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
+                +23% from last period
+              </p>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  User Retention
-                </CardTitle>
-                <TrendingUp className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {currentData.userRetention}%
-                </div>
-                <p className="text-xs text-muted-foreground flex items-center">
-                  <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
-                  +5.2% from last period
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        )}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                User Retention
+              </CardTitle>
+              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {currentData.userRetention}%
+              </div>
+              <p className="text-xs text-muted-foreground flex items-center">
+                <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
+                +5.2% from last period
+              </p>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Analytics Charts */}
         <div className="grid gap-6 lg:grid-cols-2">
