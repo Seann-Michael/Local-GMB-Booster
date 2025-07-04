@@ -291,6 +291,11 @@ export function AgencyAdminLayout({ children }: AgencyAdminLayoutProps) {
           </div>
         </header>
 
+        {/* Breadcrumbs for mobile */}
+        <div className="lg:hidden bg-background border-b p-4">
+          <Breadcrumbs />
+        </div>
+
         {/* Page Content */}
         <main className="flex-1 overflow-auto p-6 pb-16 md:pb-6">
           {children}
