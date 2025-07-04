@@ -76,12 +76,6 @@ export function AppLayout({ children }: AppLayoutProps) {
       icon: Camera,
       active: location.pathname === "/photos",
     },
-    {
-      label: "Users",
-      href: "/users",
-      icon: Users,
-      active: location.pathname === "/users",
-    },
   ];
 
   return (
