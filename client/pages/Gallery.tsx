@@ -186,11 +186,6 @@ export default function Gallery() {
       filtered = filtered.filter((photo) => photo.type === "video");
     }
 
-    // Photo size filtering
-    if (filters.photoSize !== "all") {
-      filtered = filtered.filter((photo) => photo.size === filters.photoSize);
-    }
-
     // Sorting
     filtered.sort((a, b) => {
       const dateA = new Date(a.uploadedAt).getTime();
