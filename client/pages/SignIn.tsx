@@ -27,12 +27,31 @@ export default function SignIn() {
 
       // Mock authentication - in real app, validate against API
       if (email && password) {
-        const user = {
-          id: "1",
-          name: "John Smith",
-          email: email,
-          role: email === "superadmin@projectlens.com" ? "superadmin" : "admin",
-        };
+        let user;
+        if (email === "superadmin@projectlens.com") {
+          user = {
+            id: "1",
+            name: "Super Admin",
+            email: email,
+            role: "superadmin",
+          };
+        } else if (email === "agency@marketingfirm.com") {
+          user = {
+            id: "2",
+            name: "Marketing Agency",
+            email: email,
+            role: "agency",
+            agencyId: "agency-001",
+            agencyName: "Digital Marketing Pro",
+          };
+        } else {
+          user = {
+            id: "3",
+            name: "John Smith",
+            email: email,
+            role: "admin",
+          };
+        }
 
         localStorage.setItem("auth_user", JSON.stringify(user));
         localStorage.setItem("auth_token", "mock_jwt_token_" + Date.now());
