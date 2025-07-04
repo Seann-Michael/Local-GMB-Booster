@@ -51,6 +51,7 @@ interface FilterState {
   tagFilterMode: "or" | "and";
   mediaType: "all" | "photos" | "videos";
   photoSize: "all" | "small" | "medium" | "large";
+  thumbnailSize: "small" | "medium" | "large";
   sortOrder: "newest" | "oldest";
 }
 
