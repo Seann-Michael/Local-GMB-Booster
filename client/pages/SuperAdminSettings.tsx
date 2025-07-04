@@ -171,6 +171,7 @@ export default function SuperAdminSettings() {
     { id: "security", label: "Security", icon: Shield },
     { id: "email", label: "Email", icon: Mail },
     { id: "notifications", label: "Notifications", icon: Bell },
+    { id: "ai", label: "AI Settings", icon: BarChart3 },
     { id: "financial", label: "Financial", icon: DollarSign },
     { id: "database", label: "Database", icon: Database },
   ];
@@ -721,6 +722,94 @@ export default function SuperAdminSettings() {
                         }
                       />
                     </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* AI Settings */}
+            {activeTab === "ai" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>AI Configuration</CardTitle>
+                  <CardDescription>
+                    Configure AI services and API keys for the platform
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-0.5">
+                      <Label htmlFor="enableAiFeatures">
+                        Enable AI Features
+                      </Label>
+                      <p className="text-sm text-muted-foreground">
+                        Allow AI-powered features across the platform
+                      </p>
+                    </div>
+                    <Switch
+                      id="enableAiFeatures"
+                      checked={settings.enableAiFeatures}
+                      onCheckedChange={(checked) =>
+                        updateSetting("enableAiFeatures", checked)
+                      }
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="openaiApiKey">OpenAI API Key</Label>
+                    <Input
+                      id="openaiApiKey"
+                      type="password"
+                      value={settings.openaiApiKey}
+                      onChange={(e) =>
+                        updateSetting("openaiApiKey", e.target.value)
+                      }
+                      placeholder="sk-..."
+                    />
+                    <p className="text-sm text-muted-foreground">
+                      Your OpenAI API key for AI-powered features. Keep this
+                      secure and never share it.
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="openaiOrganization">
+                      OpenAI Organization ID (Optional)
+                    </Label>
+                    <Input
+                      id="openaiOrganization"
+                      value={settings.openaiOrganization}
+                      onChange={(e) =>
+                        updateSetting("openaiOrganization", e.target.value)
+                      }
+                      placeholder="org-..."
+                    />
+                    <p className="text-sm text-muted-foreground">
+                      Optional organization ID for OpenAI API usage tracking
+                    </p>
+                  </div>
+
+                  <div className="bg-muted p-4 rounded-lg">
+                    <h4 className="font-medium mb-2">AI Features</h4>
+                    <ul className="space-y-1 text-sm">
+                      <li>• Project description enhancement</li>
+                      <li>• Content generation and improvement</li>
+                      <li>• Smart categorization and tagging</li>
+                      <li>• Automated image analysis</li>
+                    </ul>
+                  </div>
+
+                  <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Shield className="h-4 w-4 text-yellow-600" />
+                      <h4 className="font-medium text-yellow-800">
+                        Security Notice
+                      </h4>
+                    </div>
+                    <p className="text-sm text-yellow-700">
+                      API keys are encrypted and stored securely. Only super
+                      administrators can view and modify these settings.
+                    </p>
                   </div>
                 </CardContent>
               </Card>
