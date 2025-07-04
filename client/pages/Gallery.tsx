@@ -672,12 +672,28 @@ export default function Gallery() {
                           to={`/project/${photo.projectId}`}
                           className="block hover:text-primary transition-colors"
                         >
-                          <h3 className="font-semibold text-sm mb-1 line-clamp-1">
+                          <h3
+                            className={`font-semibold mb-1 line-clamp-1 ${
+                              filters.thumbnailSize === "small"
+                                ? "text-xs"
+                                : filters.thumbnailSize === "large"
+                                  ? "text-base"
+                                  : "text-sm"
+                            }`}
+                          >
                             {photo.projectName}
                           </h3>
                         </Link>
 
-                        <div className="space-y-2 text-xs text-muted-foreground">
+                        <div
+                          className={`text-muted-foreground ${
+                            filters.thumbnailSize === "small"
+                              ? "space-y-1 text-xs"
+                              : filters.thumbnailSize === "large"
+                                ? "space-y-3 text-sm"
+                                : "space-y-2 text-xs"
+                          }`}
+                        >
                           <div className="flex items-center gap-1">
                             <MapPin className="h-3 w-3" />
                             <span className="line-clamp-1">
@@ -697,19 +713,37 @@ export default function Gallery() {
                         </div>
 
                         {photo.tags.length > 0 && (
-                          <div className="flex flex-wrap gap-1 mt-2">
-                            {photo.tags.slice(0, 2).map((tag, tagIndex) => (
-                              <Badge
-                                key={tagIndex}
-                                variant="outline"
-                                className="text-xs"
-                              >
-                                {tag}
-                              </Badge>
-                            ))}
-                            {photo.tags.length > 2 && (
+                          <div
+                            className={`flex flex-wrap gap-1 ${
+                              filters.thumbnailSize === "small"
+                                ? "mt-1"
+                                : "mt-2"
+                            }`}
+                          >
+                            {photo.tags
+                              .slice(
+                                0,
+                                filters.thumbnailSize === "small" ? 1 : 2,
+                              )
+                              .map((tag, tagIndex) => (
+                                <Badge
+                                  key={tagIndex}
+                                  variant="outline"
+                                  className={
+                                    filters.thumbnailSize === "small"
+                                      ? "text-xs"
+                                      : "text-xs"
+                                  }
+                                >
+                                  {tag}
+                                </Badge>
+                              ))}
+                            {photo.tags.length >
+                              (filters.thumbnailSize === "small" ? 1 : 2) && (
                               <Badge variant="outline" className="text-xs">
-                                +{photo.tags.length - 2}
+                                +
+                                {photo.tags.length -
+                                  (filters.thumbnailSize === "small" ? 1 : 2)}
                               </Badge>
                             )}
                           </div>
