@@ -231,6 +231,18 @@ export default function Index() {
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
+              onClick={() => setHideMetrics(!hideMetrics)}
+              className="gap-2"
+            >
+              {hideMetrics ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
+              {hideMetrics ? "Show Metrics" : "Hide Metrics"}
+            </Button>
+            <Button
+              variant="outline"
               onClick={() => setShowFilters(!showFilters)}
               className="gap-2"
             >
