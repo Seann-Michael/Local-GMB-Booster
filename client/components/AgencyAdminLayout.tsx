@@ -266,7 +266,15 @@ export function AgencyAdminLayout({ children }: AgencyAdminLayoutProps) {
                       <span>Profile</span>
                     </Link>
                   </DropdownMenuItem>
-                  {/* Settings moved to gear icon in header */}
+                  <DropdownMenuItem asChild>
+                    <Link
+                      to="/agency-admin/settings"
+                      className="flex items-center"
+                    >
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>Settings</span>
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut}>
                     <LogOut className="mr-2 h-4 w-4" />
