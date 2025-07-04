@@ -404,7 +404,9 @@ export default function Gallery() {
                   <Label>Thumbnail Size</Label>
                   <Select
                     value={filters.thumbnailSize}
-                    onValueChange={(value: 'small' | 'medium' | 'large') => updateFilter('thumbnailSize', value)}
+                    onValueChange={(value: "small" | "medium" | "large") =>
+                      updateFilter("thumbnailSize", value)
+                    }
                   >
                     <SelectTrigger className="w-32">
                       <SelectValue />
@@ -589,22 +591,24 @@ export default function Gallery() {
                   <h2 className="text-lg font-semibold">{date}</h2>
                 </div>
 
-                <div className={`grid gap-6 ${
-                  filters.thumbnailSize === 'small'
-                    ? 'sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6'
-                    : filters.thumbnailSize === 'large'
-                    ? 'sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3'
-                    : 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
-                }`}
+                <div
+                  className={`grid gap-6 ${
+                    filters.thumbnailSize === "small"
+                      ? "sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
+                      : filters.thumbnailSize === "large"
+                        ? "sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3"
+                        : "sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                  }`}
+                >
                   {datePhotos.map((photo, index) => (
                     <Card key={`${date}-${index}`} className="overflow-hidden">
                       <div
                         className={`relative cursor-pointer group ${
-                          filters.thumbnailSize === 'small'
-                            ? 'aspect-square'
-                            : filters.thumbnailSize === 'large'
-                            ? 'aspect-[4/3]'
-                            : 'aspect-square'
+                          filters.thumbnailSize === "small"
+                            ? "aspect-square"
+                            : filters.thumbnailSize === "large"
+                              ? "aspect-[4/3]"
+                              : "aspect-square"
                         }`}
                         onClick={() => setSelectedPhoto(photo.url)}
                       >
@@ -652,11 +656,15 @@ export default function Gallery() {
                           <Download className="h-3 w-3" />
                         </Button>
                       </div>
-                <CardContent className={`${
-                  filters.thumbnailSize === 'small' ? 'p-2'
-                  : filters.thumbnailSize === 'large' ? 'p-6'
-                  : 'p-4'
-                }`}>
+                      <CardContent
+                        className={`${
+                          filters.thumbnailSize === "small"
+                            ? "p-2"
+                            : filters.thumbnailSize === "large"
+                              ? "p-6"
+                              : "p-4"
+                        }`}
+                      >
                         <Link
                           to={`/project/${photo.projectId}`}
                           className="block hover:text-primary transition-colors"
