@@ -1,6 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Header } from "@/components/Header";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import {
@@ -11,6 +22,9 @@ import {
   MapPin,
   Download,
   Star,
+  ChevronDown,
+  Filter,
+  SlidersHorizontal,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -24,21 +38,81 @@ interface PhotoWithMetadata {
   uploadedBy: string;
   tags: string[];
   isPrimary?: boolean;
+  type: "photo" | "video";
+  size: "small" | "medium" | "large";
+}
+
+interface FilterState {
+  startDate: string;
+  endDate: string;
+  selectedProject: string;
+  selectedUser: string;
+  selectedTags: string[];
+  tagFilterMode: "or" | "and";
+  mediaType: "all" | "photos" | "videos";
+  photoSize: "all" | "small" | "medium" | "large";
+  sortOrder: "newest" | "oldest";
 }
 
 export default function Gallery() {
   const [photos, setPhotos] = useState<PhotoWithMetadata[]>([]);
+  const [filteredPhotos, setFilteredPhotos] = useState<PhotoWithMetadata[]>([]);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
+  const [showFilters, setShowFilters] = useState(false);
+
+  // Available filter options
+  const [projects, setProjects] = useState<Array<{ id: string; name: string }>>(
+    [],
+  );
+  const [users, setUsers] = useState<string[]>([]);
+  const [allTags, setAllTags] = useState<string[]>([]);
+
+  // Filter state
+  const [filters, setFilters] = useState<FilterState>({
+    startDate: "",
+    endDate: "",
+    selectedProject: "all",
+    selectedUser: "all",
+    selectedTags: [],
+    tagFilterMode: "or",
+    mediaType: "all",
+    photoSize: "all",
+    sortOrder: "newest",
+  });
 
   useEffect(() => {
-    const projects = JSON.parse(localStorage.getItem("projects") || "[]");
+    const projectsData = JSON.parse(localStorage.getItem("projects") || "[]");
     const allPhotos: PhotoWithMetadata[] = [];
+    const projectOptions: Array<{ id: string; name: string }> = [];
+    const userSet = new Set<string>();
+    const tagSet = new Set<string>();
 
-    projects.forEach((project: any) => {
+    projectsData.forEach((project: any) => {
+      projectOptions.push({ id: project.id, name: project.name });
+
       if (project.photos && project.photos.length > 0) {
         project.photos.forEach((photo: any) => {
           const photoUrl = typeof photo === "string" ? photo : photo.url;
           const photoData = typeof photo === "string" ? {} : photo;
+
+          // Determine file type and size based on URL or data
+          const isVideo =
+            photoUrl.includes(".mp4") ||
+            photoUrl.includes(".mov") ||
+            photoUrl.includes(".webm");
+          const fileSize =
+            photoData.size ||
+            (Math.random() > 0.6
+              ? "large"
+              : Math.random() > 0.3
+                ? "medium"
+                : "small");
+
+          const uploadedBy = photoData.uploadedBy || "John Doe";
+          userSet.add(uploadedBy);
+
+          const photoTags = photoData.tags || [];
+          photoTags.forEach((tag: string) => tagSet.add(tag));
 
           allPhotos.push({
             url: photoUrl,
@@ -46,21 +120,84 @@ export default function Gallery() {
             projectName: project.name,
             projectAddress: project.address,
             uploadedAt: photoData.uploadedAt || project.createdAt,
-            uploadedBy: photoData.uploadedBy || "Unknown User",
-            tags: photoData.tags || [],
+            uploadedBy: uploadedBy,
+            tags: photoTags,
             isPrimary: photoData.isPrimary || false,
+            type: isVideo ? "video" : "photo",
+            size: fileSize as "small" | "medium" | "large",
           });
         });
       }
     });
 
-    // Sort by most recent first
-    allPhotos.sort(
-      (a, b) =>
-        new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime(),
-    );
+    setProjects(projectOptions);
+    setUsers(Array.from(userSet));
+    setAllTags(Array.from(tagSet));
     setPhotos(allPhotos);
   }, []);
+
+  // Apply filters whenever photos or filters change
+  useEffect(() => {
+    let filtered = [...photos];
+
+    // Date filtering
+    if (filters.startDate) {
+      filtered = filtered.filter(
+        (photo) => new Date(photo.uploadedAt) >= new Date(filters.startDate),
+      );
+    }
+    if (filters.endDate) {
+      filtered = filtered.filter(
+        (photo) => new Date(photo.uploadedAt) <= new Date(filters.endDate),
+      );
+    }
+
+    // Project filtering
+    if (filters.selectedProject !== "all") {
+      filtered = filtered.filter(
+        (photo) => photo.projectId === filters.selectedProject,
+      );
+    }
+
+    // User filtering
+    if (filters.selectedUser !== "all") {
+      filtered = filtered.filter(
+        (photo) => photo.uploadedBy === filters.selectedUser,
+      );
+    }
+
+    // Tag filtering
+    if (filters.selectedTags.length > 0) {
+      filtered = filtered.filter((photo) => {
+        if (filters.tagFilterMode === "and") {
+          return filters.selectedTags.every((tag) => photo.tags.includes(tag));
+        } else {
+          return filters.selectedTags.some((tag) => photo.tags.includes(tag));
+        }
+      });
+    }
+
+    // Media type filtering
+    if (filters.mediaType === "photos") {
+      filtered = filtered.filter((photo) => photo.type === "photo");
+    } else if (filters.mediaType === "videos") {
+      filtered = filtered.filter((photo) => photo.type === "video");
+    }
+
+    // Photo size filtering
+    if (filters.photoSize !== "all") {
+      filtered = filtered.filter((photo) => photo.size === filters.photoSize);
+    }
+
+    // Sorting
+    filtered.sort((a, b) => {
+      const dateA = new Date(a.uploadedAt).getTime();
+      const dateB = new Date(b.uploadedAt).getTime();
+      return filters.sortOrder === "newest" ? dateB - dateA : dateA - dateB;
+    });
+
+    setFilteredPhotos(filtered);
+  }, [photos, filters]);
 
   const downloadPhoto = (
     photoUrl: string,
@@ -84,6 +221,33 @@ export default function Gallery() {
     });
   };
 
+  const updateFilter = (key: keyof FilterState, value: any) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const toggleTag = (tag: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      selectedTags: prev.selectedTags.includes(tag)
+        ? prev.selectedTags.filter((t) => t !== tag)
+        : [...prev.selectedTags, tag],
+    }));
+  };
+
+  const clearFilters = () => {
+    setFilters({
+      startDate: "",
+      endDate: "",
+      selectedProject: "all",
+      selectedUser: "all",
+      selectedTags: [],
+      tagFilterMode: "or",
+      mediaType: "all",
+      photoSize: "all",
+      sortOrder: "newest",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -97,112 +261,424 @@ export default function Gallery() {
             </Button>
           </Link>
           <div className="flex-1">
-            <h1 className="text-2xl font-bold">Photo Gallery</h1>
+            <h1 className="text-2xl font-bold">Photos</h1>
             <p className="text-muted-foreground">
-              Recent photos from all projects
+              {filteredPhotos.length} of {photos.length} photos
             </p>
           </div>
-          <div className="text-sm text-muted-foreground">
-            {photos.length} photos
-          </div>
+          <Button
+            variant="outline"
+            onClick={() => setShowFilters(!showFilters)}
+            className="gap-2"
+          >
+            <SlidersHorizontal className="h-4 w-4" />
+            {showFilters ? "Hide Filters" : "Show Filters"}
+          </Button>
         </div>
 
-        {photos.length === 0 ? (
+        {/* Filter Controls */}
+        {showFilters && (
+          <Card className="p-6 mb-6">
+            <div className="space-y-6">
+              {/* Top Row - Date and Basic Filters */}
+              <div className="flex flex-wrap gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="startDate">Start Date</Label>
+                  <Input
+                    id="startDate"
+                    type="date"
+                    value={filters.startDate}
+                    onChange={(e) => updateFilter("startDate", e.target.value)}
+                    className="w-auto"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="endDate">End Date</Label>
+                  <Input
+                    id="endDate"
+                    type="date"
+                    value={filters.endDate}
+                    onChange={(e) => updateFilter("endDate", e.target.value)}
+                    className="w-auto"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Projects</Label>
+                  <Select
+                    value={filters.selectedProject}
+                    onValueChange={(value) =>
+                      updateFilter("selectedProject", value)
+                    }
+                  >
+                    <SelectTrigger className="w-48">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Projects</SelectItem>
+                      {projects.map((project) => (
+                        <SelectItem key={project.id} value={project.id}>
+                          {project.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Users</Label>
+                  <Select
+                    value={filters.selectedUser}
+                    onValueChange={(value) =>
+                      updateFilter("selectedUser", value)
+                    }
+                  >
+                    <SelectTrigger className="w-48">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Users</SelectItem>
+                      {users.map((user) => (
+                        <SelectItem key={user} value={user}>
+                          {user}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Tags</Label>
+                  <Select>
+                    <SelectTrigger className="w-48">
+                      <SelectValue
+                        placeholder={
+                          filters.selectedTags.length > 0
+                            ? `${filters.selectedTags.length} selected`
+                            : "Select tags"
+                        }
+                      />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {allTags.map((tag) => (
+                        <div
+                          key={tag}
+                          className="flex items-center space-x-2 px-3 py-2"
+                        >
+                          <Checkbox
+                            id={tag}
+                            checked={filters.selectedTags.includes(tag)}
+                            onCheckedChange={() => toggleTag(tag)}
+                          />
+                          <Label htmlFor={tag} className="text-sm">
+                            {tag}
+                          </Label>
+                        </div>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>View</Label>
+                  <Select value="grid">
+                    <SelectTrigger className="w-32">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="grid">Grid</SelectItem>
+                      <SelectItem value="list">List</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Filter Options Panel */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t">
+                {/* Tag Filter Mode */}
+                {filters.selectedTags.length > 0 && (
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium">
+                      Filter Tags By
+                    </Label>
+                    <RadioGroup
+                      value={filters.tagFilterMode}
+                      onValueChange={(value: "or" | "and") =>
+                        updateFilter("tagFilterMode", value)
+                      }
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="or" id="or" />
+                        <Label htmlFor="or" className="text-sm">
+                          Or
+                        </Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="and" id="and" />
+                        <Label htmlFor="and" className="text-sm">
+                          And
+                        </Label>
+                      </div>
+                    </RadioGroup>
+                  </div>
+                )}
+
+                {/* Media Type */}
+                <div className="space-y-3">
+                  <Label className="text-sm font-medium">Type</Label>
+                  <RadioGroup
+                    value={filters.mediaType}
+                    onValueChange={(value: "all" | "photos" | "videos") =>
+                      updateFilter("mediaType", value)
+                    }
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="all" id="all" />
+                      <Label htmlFor="all" className="text-sm">
+                        All
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="photos" id="photos" />
+                      <Label htmlFor="photos" className="text-sm">
+                        Photos Only
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="videos" id="videos" />
+                      <Label htmlFor="videos" className="text-sm">
+                        Videos Only
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                {/* Photo Size */}
+                <div className="space-y-3">
+                  <Label className="text-sm font-medium">Photo Size</Label>
+                  <RadioGroup
+                    value={filters.photoSize}
+                    onValueChange={(
+                      value: "all" | "small" | "medium" | "large",
+                    ) => updateFilter("photoSize", value)}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="all" id="size-all" />
+                      <Label htmlFor="size-all" className="text-sm">
+                        All
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="small" id="small" />
+                      <Label htmlFor="small" className="text-sm">
+                        Small
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="medium" id="medium" />
+                      <Label htmlFor="medium" className="text-sm">
+                        Medium
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="large" id="large" />
+                      <Label htmlFor="large" className="text-sm">
+                        Large
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                {/* Sort Order */}
+                <div className="space-y-3">
+                  <Label className="text-sm font-medium">Order</Label>
+                  <RadioGroup
+                    value={filters.sortOrder}
+                    onValueChange={(value: "newest" | "oldest") =>
+                      updateFilter("sortOrder", value)
+                    }
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="newest" id="newest" />
+                      <Label htmlFor="newest" className="text-sm">
+                        Newest First
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="oldest" id="oldest" />
+                      <Label htmlFor="oldest" className="text-sm">
+                        Oldest First
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+              </div>
+
+              {/* Clear Filters */}
+              <div className="flex justify-end pt-4 border-t">
+                <Button variant="outline" onClick={clearFilters}>
+                  Clear All Filters
+                </Button>
+              </div>
+            </div>
+          </Card>
+        )}
+
+        {filteredPhotos.length === 0 ? (
           <Card>
             <CardContent className="py-12 text-center">
               <Images className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <h3 className="text-lg font-semibold mb-2">No photos yet</h3>
+              <h3 className="text-lg font-semibold mb-2">
+                {photos.length === 0
+                  ? "No photos yet"
+                  : "No photos match your filters"}
+              </h3>
               <p className="text-muted-foreground mb-6">
-                Start adding photos to your projects to see them here
+                {photos.length === 0
+                  ? "Start adding photos to your projects to see them here"
+                  : "Try adjusting your filters to see more results"}
               </p>
-              <Link to="/add-project">
-                <Button>Create First Project</Button>
-              </Link>
+              {photos.length === 0 ? (
+                <Link to="/add-project">
+                  <Button>Create First Project</Button>
+                </Link>
+              ) : (
+                <Button onClick={clearFilters}>Clear Filters</Button>
+              )}
             </CardContent>
           </Card>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {photos.map((photo, index) => (
-              <Card key={index} className="overflow-hidden">
-                <div
-                  className="aspect-square relative cursor-pointer group"
-                  onClick={() => setSelectedPhoto(photo.url)}
-                >
-                  <img
-                    src={photo.url}
-                    alt={`Photo from ${photo.projectName}`}
-                    className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-                  {photo.isPrimary && (
-                    <div className="absolute top-2 left-2">
-                      <Badge variant="secondary" className="gap-1">
-                        <Star className="h-3 w-3" />
-                        Primary
-                      </Badge>
-                    </div>
-                  )}
-                  <Button
-                    variant="secondary"
-                    size="icon"
-                    className="absolute top-2 right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      downloadPhoto(photo.url, photo.projectName, index);
-                    }}
-                  >
-                    <Download className="h-3 w-3" />
-                  </Button>
+          <div className="space-y-8">
+            {/* Group photos by date */}
+            {Object.entries(
+              filteredPhotos.reduce(
+                (groups, photo) => {
+                  const date = new Date(photo.uploadedAt).toLocaleDateString(
+                    "en-US",
+                    {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    },
+                  );
+                  if (!groups[date]) groups[date] = [];
+                  groups[date].push(photo);
+                  return groups;
+                },
+                {} as Record<string, PhotoWithMetadata[]>,
+              ),
+            ).map(([date, datePhotos]) => (
+              <div key={date} className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <Checkbox className="rounded" />
+                  <h2 className="text-lg font-semibold">{date}</h2>
                 </div>
-                <CardContent className="p-4">
-                  <Link
-                    to={`/project/${photo.projectId}`}
-                    className="block hover:text-primary transition-colors"
-                  >
-                    <h3 className="font-semibold text-sm mb-1 line-clamp-1">
-                      {photo.projectName}
-                    </h3>
-                  </Link>
 
-                  <div className="space-y-2 text-xs text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <MapPin className="h-3 w-3" />
-                      <span className="line-clamp-1">
-                        {photo.projectAddress}
-                      </span>
-                    </div>
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {datePhotos.map((photo, index) => (
+                    <Card key={`${date}-${index}`} className="overflow-hidden">
+                      <div
+                        className="aspect-square relative cursor-pointer group"
+                        onClick={() => setSelectedPhoto(photo.url)}
+                      >
+                        <img
+                          src={photo.url}
+                          alt={`${photo.type} from ${photo.projectName}`}
+                          className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
 
-                    <div className="flex items-center gap-1">
-                      <User className="h-3 w-3" />
-                      <span>{photo.uploadedBy}</span>
-                    </div>
+                        {/* Top badges */}
+                        <div className="absolute top-2 left-2 flex gap-1">
+                          {photo.isPrimary && (
+                            <Badge variant="secondary" className="gap-1">
+                              <Star className="h-3 w-3" />
+                              Primary
+                            </Badge>
+                          )}
+                          {photo.type === "video" && (
+                            <Badge variant="default" className="gap-1">
+                              Video
+                            </Badge>
+                          )}
+                        </div>
 
-                    <div className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
-                      <span>{formatDate(photo.uploadedAt)}</span>
-                    </div>
-                  </div>
+                        {/* Bottom badges */}
+                        <div className="absolute bottom-2 left-2">
+                          <Badge
+                            variant="outline"
+                            className="text-xs bg-black/50 text-white border-white/20"
+                          >
+                            {photo.size}
+                          </Badge>
+                        </div>
 
-                  {photo.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {photo.tags.slice(0, 2).map((tag, tagIndex) => (
-                        <Badge
-                          key={tagIndex}
-                          variant="outline"
-                          className="text-xs"
+                        <Button
+                          variant="secondary"
+                          size="icon"
+                          className="absolute top-2 right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            downloadPhoto(photo.url, photo.projectName, index);
+                          }}
                         >
-                          {tag}
-                        </Badge>
-                      ))}
-                      {photo.tags.length > 2 && (
-                        <Badge variant="outline" className="text-xs">
-                          +{photo.tags.length - 2}
-                        </Badge>
-                      )}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+                          <Download className="h-3 w-3" />
+                        </Button>
+                      </div>
+                      <CardContent className="p-4">
+                        <Link
+                          to={`/project/${photo.projectId}`}
+                          className="block hover:text-primary transition-colors"
+                        >
+                          <h3 className="font-semibold text-sm mb-1 line-clamp-1">
+                            {photo.projectName}
+                          </h3>
+                        </Link>
+
+                        <div className="space-y-2 text-xs text-muted-foreground">
+                          <div className="flex items-center gap-1">
+                            <MapPin className="h-3 w-3" />
+                            <span className="line-clamp-1">
+                              {photo.projectAddress}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-1">
+                            <User className="h-3 w-3" />
+                            <span>{photo.uploadedBy}</span>
+                          </div>
+
+                          <div className="flex items-center gap-1">
+                            <Calendar className="h-3 w-3" />
+                            <span>{formatDate(photo.uploadedAt)}</span>
+                          </div>
+                        </div>
+
+                        {photo.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mt-2">
+                            {photo.tags.slice(0, 2).map((tag, tagIndex) => (
+                              <Badge
+                                key={tagIndex}
+                                variant="outline"
+                                className="text-xs"
+                              >
+                                {tag}
+                              </Badge>
+                            ))}
+                            {photo.tags.length > 2 && (
+                              <Badge variant="outline" className="text-xs">
+                                +{photo.tags.length - 2}
+                              </Badge>
+                            )}
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         )}
