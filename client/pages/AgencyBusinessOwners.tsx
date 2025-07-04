@@ -224,10 +224,6 @@ export default function AgencyBusinessOwners() {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline" className="gap-2">
-              <Download className="h-4 w-4" />
-              Export
-            </Button>
             <Link to="/agency-admin/business-owners/add">
               <Button className="gap-2">
                 <UserPlus className="h-4 w-4" />
