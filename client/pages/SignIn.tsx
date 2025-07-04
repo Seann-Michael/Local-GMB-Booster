@@ -156,11 +156,19 @@ export default function SignIn() {
             </Button>
           </form>
 
-          <div className="mt-6 text-center">
+          <div className="mt-6 text-center space-y-3">
+            <p className="text-sm text-muted-foreground">
+              <Link
+                to="/forgot-password"
+                className="text-primary hover:underline"
+              >
+                Forgot your password?
+              </Link>
+            </p>
             <p className="text-sm text-muted-foreground">
               Don't have an account?{" "}
-              <Link to="/sign-up" className="text-primary hover:underline">
-                Sign up
+              <Link to="/signup" className="text-primary hover:underline">
+                Sign up here
               </Link>
             </p>
           </div>
