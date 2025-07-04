@@ -18,6 +18,15 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { SuperAdminLayout } from "@/components/SuperAdminLayout";
 import {
   Save,
@@ -112,6 +121,77 @@ interface SuperAdminSettings {
 }
 
 export default function SuperAdminSettings() {
+  const [showWorkspaceDialog, setShowWorkspaceDialog] = useState(false);
+  const [showPlanDialog, setShowPlanDialog] = useState(false);
+  const [showPromoDialog, setShowPromoDialog] = useState(false);
+  const [editingWorkspace, setEditingWorkspace] = useState<any>(null);
+  const [editingPlan, setEditingPlan] = useState<any>(null);
+  const [workspaces, setWorkspaces] = useState([
+    {
+      id: "1",
+      name: "Marketing Pro",
+      users: 15,
+      storage: "8.5 GB",
+      modules: ["Projects", "Gallery"],
+    },
+    {
+      id: "2",
+      name: "Sales Team",
+      users: 8,
+      storage: "3.2 GB",
+      modules: ["Projects"],
+    },
+    {
+      id: "3",
+      name: "Enterprise Corp",
+      users: 50,
+      storage: "25 GB",
+      modules: ["Projects", "Gallery"],
+    },
+  ]);
+  const [plans, setPlans] = useState([
+    {
+      id: "1",
+      name: "Starter",
+      price: "$29",
+      features: ["5 Users", "10GB Storage", "Basic Support"],
+    },
+    {
+      id: "2",
+      name: "Professional",
+      price: "$79",
+      features: [
+        "25 Users",
+        "100GB Storage",
+        "Priority Support",
+        "Advanced Features",
+      ],
+    },
+    {
+      id: "3",
+      name: "Enterprise",
+      price: "$199",
+      features: [
+        "Unlimited Users",
+        "1TB Storage",
+        "24/7 Support",
+        "Custom Integration",
+      ],
+    },
+  ]);
+  const [promoCodes, setPromoCodes] = useState([
+    {
+      id: "1",
+      name: "New Year",
+      code: "NEWYEAR2024",
+      discount: "20",
+      discountType: "%",
+      usageLimit: "100",
+      expiryDate: "2024-12-31",
+      used: 45,
+    },
+  ]);
+
   const [settings, setSettings] = useState<SuperAdminSettings>({
     // System Information
     systemName: "Local GMB Booster",
@@ -201,13 +281,11 @@ export default function SuperAdminSettings() {
 
   const tabs = [
     { id: "system", label: "System", icon: Settings },
-    { id: "users", label: "User Management", icon: User },
     { id: "workspaces", label: "Workspaces", icon: Building2 },
     { id: "billing", label: "Billing & Plans", icon: DollarSign },
     { id: "integrations", label: "Integrations", icon: Globe },
     { id: "branding", label: "Branding", icon: Camera },
     { id: "features", label: "Feature Control", icon: BarChart3 },
-    { id: "automation", label: "Automation", icon: Server },
     { id: "security", label: "Security", icon: Shield },
     { id: "monitoring", label: "Monitoring", icon: Bell },
     { id: "developer", label: "Developer", icon: Database },
@@ -386,6 +464,88 @@ export default function SuperAdminSettings() {
 
                   <Separator />
 
+                  {/* System Preferences */}
+                  <div className="space-y-4">
+                    <h4 className="font-medium">System Preferences</h4>
+                    <div className="grid gap-4 md:grid-cols-3">
+                      <div className="space-y-2">
+                        <Label htmlFor="timezone">Timezone</Label>
+                        <Select
+                          value={settings.timezone}
+                          onValueChange={(value) =>
+                            updateSetting("timezone", value)
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="America/Los_Angeles">
+                              Pacific Time
+                            </SelectItem>
+                            <SelectItem value="America/Denver">
+                              Mountain Time
+                            </SelectItem>
+                            <SelectItem value="America/Chicago">
+                              Central Time
+                            </SelectItem>
+                            <SelectItem value="America/New_York">
+                              Eastern Time
+                            </SelectItem>
+                            <SelectItem value="UTC">UTC</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="dateFormat">Date Format</Label>
+                        <Select
+                          value={settings.dateFormat}
+                          onValueChange={(value) =>
+                            updateSetting("dateFormat", value)
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="MM/DD/YYYY">
+                              MM/DD/YYYY
+                            </SelectItem>
+                            <SelectItem value="DD/MM/YYYY">
+                              DD/MM/YYYY
+                            </SelectItem>
+                            <SelectItem value="YYYY-MM-DD">
+                              YYYY-MM-DD
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="defaultCurrency">
+                          Default Currency
+                        </Label>
+                        <Select
+                          value={settings.defaultCurrency}
+                          onValueChange={(value) =>
+                            updateSetting("defaultCurrency", value)
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="USD">USD ($)</SelectItem>
+                            <SelectItem value="EUR">EUR (€)</SelectItem>
+                            <SelectItem value="GBP">GBP (£)</SelectItem>
+                            <SelectItem value="CAD">CAD (C$)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
                   {/* System Controls */}
                   <div className="space-y-4">
                     <h4 className="font-medium">System Controls</h4>
@@ -454,32 +614,23 @@ export default function SuperAdminSettings() {
 
                   <Separator />
 
-                  {/* Limits */}
+                  {/* Data Retention */}
                   <div className="space-y-4">
-                    <h4 className="font-medium">System Limits</h4>
+                    <h4 className="font-medium">Data Retention</h4>
                     <div className="grid gap-4 md:grid-cols-2">
                       <div className="space-y-2">
-                        <Label htmlFor="maxUsersPerAccount">
-                          Max Users Per Account
-                        </Label>
-                        <Input
-                          id="maxUsersPerAccount"
-                          type="number"
-                          value={settings.maxUsersPerAccount}
-                          onChange={(e) =>
-                            updateSetting(
-                              "maxUsersPerAccount",
-                              parseInt(e.target.value),
-                            )
-                          }
-                        />
+                        <Label>Active Users</Label>
+                        <Input value="Indefinite" disabled />
+                        <p className="text-sm text-muted-foreground">
+                          Data retained indefinitely for active users
+                        </p>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="dataRetentionDays">
-                          Data Retention (Days)
+                        <Label htmlFor="canceledUserRetention">
+                          Canceled Users (Days)
                         </Label>
                         <Input
-                          id="dataRetentionDays"
+                          id="canceledUserRetention"
                           type="number"
                           value={settings.dataRetentionDays}
                           onChange={(e) =>
@@ -489,97 +640,10 @@ export default function SuperAdminSettings() {
                             )
                           }
                         />
+                        <p className="text-sm text-muted-foreground">
+                          Days to retain data after account cancellation
+                        </p>
                       </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* User Management */}
-            {activeTab === "users" && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>User & Account Management</CardTitle>
-                  <CardDescription>
-                    Monitor user activity, audit trails, and account management
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="grid gap-4 md:grid-cols-3">
-                    <Card className="p-4">
-                      <div className="flex items-center gap-3 mb-2">
-                        <Users className="h-5 w-5 text-blue-500" />
-                        <h4 className="font-medium">Active Users</h4>
-                      </div>
-                      <div className="text-2xl font-bold">1,247</div>
-                      <p className="text-sm text-muted-foreground">
-                        Last 30 days
-                      </p>
-                    </Card>
-
-                    <Card className="p-4">
-                      <div className="flex items-center gap-3 mb-2">
-                        <Activity className="h-5 w-5 text-green-500" />
-                        <h4 className="font-medium">Login Sessions</h4>
-                      </div>
-                      <div className="text-2xl font-bold">3,421</div>
-                      <p className="text-sm text-muted-foreground">
-                        This month
-                      </p>
-                    </Card>
-
-                    <Card className="p-4">
-                      <div className="flex items-center gap-3 mb-2">
-                        <Eye className="h-5 w-5 text-orange-500" />
-                        <h4 className="font-medium">Audit Events</h4>
-                      </div>
-                      <div className="text-2xl font-bold">156</div>
-                      <p className="text-sm text-muted-foreground">Today</p>
-                    </Card>
-                  </div>
-
-                  <Separator />
-
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h4 className="font-medium">
-                        Activity Logs & Audit Trails
-                      </h4>
-                      <Button variant="outline" className="gap-2">
-                        <Download className="h-4 w-4" />
-                        Export Logs
-                      </Button>
-                    </div>
-
-                    <div className="rounded-md border">
-                      <table className="w-full">
-                        <thead>
-                          <tr className="border-b">
-                            <th className="p-3 text-left">User</th>
-                            <th className="p-3 text-left">Action</th>
-                            <th className="p-3 text-left">Resource</th>
-                            <th className="p-3 text-left">Timestamp</th>
-                            <th className="p-3 text-left">IP Address</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr className="border-b">
-                            <td className="p-3">john@example.com</td>
-                            <td className="p-3">Login</td>
-                            <td className="p-3">Dashboard</td>
-                            <td className="p-3">2 minutes ago</td>
-                            <td className="p-3">192.168.1.100</td>
-                          </tr>
-                          <tr className="border-b">
-                            <td className="p-3">admin@system.com</td>
-                            <td className="p-3">Updated Settings</td>
-                            <td className="p-3">System Config</td>
-                            <td className="p-3">5 minutes ago</td>
-                            <td className="p-3">10.0.0.1</td>
-                          </tr>
-                        </tbody>
-                      </table>
                     </div>
                   </div>
                 </CardContent>
@@ -599,34 +663,102 @@ export default function SuperAdminSettings() {
                 <CardContent className="space-y-6">
                   <div className="flex items-center justify-between">
                     <h4 className="font-medium">Active Workspaces</h4>
-                    <Button className="gap-2">
-                      <Plus className="h-4 w-4" />
-                      Create Workspace
-                    </Button>
+                    <Dialog
+                      open={showWorkspaceDialog}
+                      onOpenChange={setShowWorkspaceDialog}
+                    >
+                      <DialogTrigger asChild>
+                        <Button
+                          className="gap-2"
+                          onClick={() => {
+                            setEditingWorkspace(null);
+                            setShowWorkspaceDialog(true);
+                          }}
+                        >
+                          <Plus className="h-4 w-4" />
+                          Create Workspace
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>
+                            {editingWorkspace
+                              ? "Edit Workspace"
+                              : "Create New Workspace"}
+                          </DialogTitle>
+                          <DialogDescription>
+                            Configure workspace settings and module access
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="space-y-4">
+                          <div className="space-y-2">
+                            <Label>Workspace Name</Label>
+                            <Input
+                              placeholder="Enter workspace name"
+                              defaultValue={editingWorkspace?.name}
+                            />
+                          </div>
+                          <div className="grid gap-4 md:grid-cols-2">
+                            <div className="space-y-2">
+                              <Label>Storage Limit (GB)</Label>
+                              <Input type="number" defaultValue="10" />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>User Limit</Label>
+                              <Input type="number" defaultValue="5" />
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Available Modules</Label>
+                            <div className="grid gap-2">
+                              <div className="flex items-center justify-between p-2 border rounded">
+                                <span className="text-sm">Projects</span>
+                                <Switch defaultChecked />
+                              </div>
+                              <div className="flex items-center justify-between p-2 border rounded">
+                                <span className="text-sm">Gallery</span>
+                                <Switch defaultChecked />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <DialogFooter>
+                          <Button
+                            variant="outline"
+                            onClick={() => setShowWorkspaceDialog(false)}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              if (!editingWorkspace) {
+                                const newWorkspace = {
+                                  id: Date.now().toString(),
+                                  name: "New Workspace",
+                                  users: 0,
+                                  storage: "0 GB",
+                                  modules: ["Projects", "Gallery"],
+                                };
+                                setWorkspaces([...workspaces, newWorkspace]);
+                              }
+                              setShowWorkspaceDialog(false);
+                              toast.success(
+                                editingWorkspace
+                                  ? "Workspace updated!"
+                                  : "Workspace created!",
+                              );
+                            }}
+                          >
+                            {editingWorkspace ? "Update" : "Create"}
+                          </Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
                   </div>
 
                   <div className="space-y-3">
-                    {[
-                      {
-                        name: "Marketing Pro",
-                        users: 15,
-                        storage: "8.5 GB",
-                        modules: ["CRM", "AI Writer", "Forms"],
-                      },
-                      {
-                        name: "Sales Team",
-                        users: 8,
-                        storage: "3.2 GB",
-                        modules: ["CRM", "Forms"],
-                      },
-                      {
-                        name: "Enterprise Corp",
-                        users: 50,
-                        storage: "25 GB",
-                        modules: ["All Modules"],
-                      },
-                    ].map((workspace, index) => (
-                      <div key={index} className="p-4 border rounded-lg">
+                    {workspaces.map((workspace) => (
+                      <div key={workspace.id} className="p-4 border rounded-lg">
                         <div className="flex items-center justify-between">
                           <div>
                             <h5 className="font-medium">{workspace.name}</h5>
@@ -646,13 +778,38 @@ export default function SuperAdminSettings() {
                             </div>
                           </div>
                           <div className="flex items-center gap-2">
-                            <Button variant="ghost" size="sm">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                setEditingWorkspace(workspace);
+                                setShowWorkspaceDialog(true);
+                              }}
+                            >
                               <Edit className="h-4 w-4" />
                             </Button>
-                            <Button variant="ghost" size="sm">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                setEditingWorkspace(workspace);
+                                setShowWorkspaceDialog(true);
+                              }}
+                            >
                               <Settings className="h-4 w-4" />
                             </Button>
-                            <Button variant="ghost" size="sm">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                setWorkspaces(
+                                  workspaces.filter(
+                                    (w) => w.id !== workspace.id,
+                                  ),
+                                );
+                                toast.success("Workspace deleted");
+                              }}
+                            >
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
@@ -664,7 +821,7 @@ export default function SuperAdminSettings() {
                   <Separator />
 
                   <div className="space-y-4">
-                    <h4 className="font-medium">Resource Allocation</h4>
+                    <h4 className="font-medium">Default Resource Allocation</h4>
                     <div className="grid gap-4 md:grid-cols-2">
                       <div className="space-y-2">
                         <Label>Default Storage Limit (GB)</Label>
@@ -679,23 +836,15 @@ export default function SuperAdminSettings() {
 
                   <div className="space-y-4">
                     <h4 className="font-medium">Available Modules</h4>
-                    <div className="grid gap-2 md:grid-cols-3">
-                      {[
-                        "CRM",
-                        "AI Writer",
-                        "Forms",
-                        "Analytics",
-                        "Email Marketing",
-                        "Social Media",
-                      ].map((module) => (
-                        <div
-                          key={module}
-                          className="flex items-center justify-between p-2 border rounded"
-                        >
-                          <span className="text-sm">{module}</span>
-                          <Switch defaultChecked />
-                        </div>
-                      ))}
+                    <div className="grid gap-2 md:grid-cols-2">
+                      <div className="flex items-center justify-between p-2 border rounded">
+                        <span className="text-sm">Projects</span>
+                        <Switch defaultChecked />
+                      </div>
+                      <div className="flex items-center justify-between p-2 border rounded">
+                        <span className="text-sm">Gallery</span>
+                        <Switch defaultChecked />
+                      </div>
                     </div>
                   </div>
                 </CardContent>
@@ -740,45 +889,92 @@ export default function SuperAdminSettings() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <h4 className="font-medium">Pricing Tiers</h4>
-                      <Button className="gap-2">
-                        <Plus className="h-4 w-4" />
-                        Create Plan
-                      </Button>
+                      <Dialog
+                        open={showPlanDialog}
+                        onOpenChange={setShowPlanDialog}
+                      >
+                        <DialogTrigger asChild>
+                          <Button
+                            className="gap-2"
+                            onClick={() => {
+                              setEditingPlan(null);
+                              setShowPlanDialog(true);
+                            }}
+                          >
+                            <Plus className="h-4 w-4" />
+                            Create Plan
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>
+                              {editingPlan ? "Edit Plan" : "Create New Plan"}
+                            </DialogTitle>
+                            <DialogDescription>
+                              Configure plan details, pricing, and features
+                            </DialogDescription>
+                          </DialogHeader>
+                          <div className="space-y-4">
+                            <div className="grid gap-4 md:grid-cols-2">
+                              <div className="space-y-2">
+                                <Label>Plan Name</Label>
+                                <Input
+                                  placeholder="Plan name"
+                                  defaultValue={editingPlan?.name}
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label>Price</Label>
+                                <Input
+                                  placeholder="$99"
+                                  defaultValue={editingPlan?.price}
+                                />
+                              </div>
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Features (one per line)</Label>
+                              <Textarea
+                                placeholder="Feature 1&#10;Feature 2&#10;Feature 3"
+                                rows={4}
+                              />
+                            </div>
+                          </div>
+                          <DialogFooter>
+                            <Button
+                              variant="outline"
+                              onClick={() => setShowPlanDialog(false)}
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                if (!editingPlan) {
+                                  const newPlan = {
+                                    id: Date.now().toString(),
+                                    name: "New Plan",
+                                    price: "$0",
+                                    features: ["New Feature"],
+                                  };
+                                  setPlans([...plans, newPlan]);
+                                }
+                                setShowPlanDialog(false);
+                                toast.success(
+                                  editingPlan
+                                    ? "Plan updated!"
+                                    : "Plan created!",
+                                );
+                              }}
+                            >
+                              {editingPlan ? "Update" : "Create"}
+                            </Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
                     </div>
 
                     <div className="grid gap-4 md:grid-cols-3">
-                      {[
-                        {
-                          name: "Starter",
-                          price: "$29",
-                          features: [
-                            "5 Users",
-                            "10GB Storage",
-                            "Basic Support",
-                          ],
-                        },
-                        {
-                          name: "Professional",
-                          price: "$79",
-                          features: [
-                            "25 Users",
-                            "100GB Storage",
-                            "Priority Support",
-                            "Advanced Features",
-                          ],
-                        },
-                        {
-                          name: "Enterprise",
-                          price: "$199",
-                          features: [
-                            "Unlimited Users",
-                            "1TB Storage",
-                            "24/7 Support",
-                            "Custom Integration",
-                          ],
-                        },
-                      ].map((plan, index) => (
-                        <div key={index} className="p-4 border rounded-lg">
+                      {plans.map((plan) => (
+                        <div key={plan.id} className="p-4 border rounded-lg">
                           <div className="flex items-center justify-between mb-2">
                             <h5 className="font-medium">{plan.name}</h5>
                             <span className="text-lg font-bold">
@@ -786,15 +982,34 @@ export default function SuperAdminSettings() {
                             </span>
                           </div>
                           <ul className="space-y-1 text-sm text-muted-foreground">
-                            {plan.features.map((feature) => (
-                              <li key={feature}>• {feature}</li>
+                            {plan.features.map((feature, idx) => (
+                              <li key={idx}>• {feature}</li>
                             ))}
                           </ul>
                           <div className="flex gap-2 mt-3">
-                            <Button variant="outline" size="sm">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                setEditingPlan(plan);
+                                setShowPlanDialog(true);
+                              }}
+                            >
                               Edit
                             </Button>
-                            <Button variant="outline" size="sm">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                const clonedPlan = {
+                                  ...plan,
+                                  id: Date.now().toString(),
+                                  name: plan.name + " Copy",
+                                };
+                                setPlans([...plans, clonedPlan]);
+                                toast.success("Plan cloned!");
+                              }}
+                            >
                               Clone
                             </Button>
                           </div>
@@ -806,22 +1021,136 @@ export default function SuperAdminSettings() {
                   <Separator />
 
                   <div className="space-y-4">
-                    <h4 className="font-medium">Promo Codes & Discounts</h4>
-                    <div className="flex gap-4">
-                      <Input placeholder="Promo code name" />
-                      <Input placeholder="Discount %" type="number" />
-                      <Button>Create Code</Button>
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-medium">Promo Codes & Discounts</h4>
+                      <Dialog
+                        open={showPromoDialog}
+                        onOpenChange={setShowPromoDialog}
+                      >
+                        <DialogTrigger asChild>
+                          <Button className="gap-2">
+                            <Plus className="h-4 w-4" />
+                            Create Promo Code
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Create Promo Code</DialogTitle>
+                            <DialogDescription>
+                              Configure promo code details and restrictions
+                            </DialogDescription>
+                          </DialogHeader>
+                          <div className="space-y-4">
+                            <div className="grid gap-4 md:grid-cols-2">
+                              <div className="space-y-2">
+                                <Label>Promo Name</Label>
+                                <Input placeholder="Summer Sale" />
+                              </div>
+                              <div className="space-y-2">
+                                <Label>Promo Code</Label>
+                                <Input placeholder="SUMMER2024" />
+                              </div>
+                            </div>
+                            <div className="grid gap-4 md:grid-cols-3">
+                              <div className="space-y-2">
+                                <Label>Discount Amount</Label>
+                                <Input placeholder="20" type="number" />
+                              </div>
+                              <div className="space-y-2">
+                                <Label>Discount Type</Label>
+                                <Select defaultValue="%">
+                                  <SelectTrigger>
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="%">
+                                      Percentage (%)
+                                    </SelectItem>
+                                    <SelectItem value="$">
+                                      Fixed Amount ($)
+                                    </SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              <div className="space-y-2">
+                                <Label>Usage Limit</Label>
+                                <Input placeholder="100" type="number" />
+                              </div>
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Expiry Date</Label>
+                              <Input type="date" />
+                            </div>
+                          </div>
+                          <DialogFooter>
+                            <Button
+                              variant="outline"
+                              onClick={() => setShowPromoDialog(false)}
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                const newPromo = {
+                                  id: Date.now().toString(),
+                                  name: "New Promo",
+                                  code: "NEWCODE",
+                                  discount: "10",
+                                  discountType: "%",
+                                  usageLimit: "100",
+                                  expiryDate: "2024-12-31",
+                                  used: 0,
+                                };
+                                setPromoCodes([...promoCodes, newPromo]);
+                                setShowPromoDialog(false);
+                                toast.success("Promo code created!");
+                              }}
+                            >
+                              Create
+                            </Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
+
+                    <div className="space-y-3">
+                      {promoCodes.map((promo) => (
+                        <div key={promo.id} className="p-3 border rounded-lg">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <div className="font-medium">{promo.name}</div>
+                              <div className="text-sm text-muted-foreground">
+                                Code: {promo.code} • {promo.discount}
+                                {promo.discountType} off • Used: {promo.used}/
+                                {promo.usageLimit} • Expires: {promo.expiryDate}
+                              </div>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                setPromoCodes(
+                                  promoCodes.filter((p) => p.id !== promo.id),
+                                );
+                                toast.success("Promo code deleted");
+                              }}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
 
                   <div className="space-y-4">
-                    <h4 className="font-medium">Billing Overrides</h4>
-                    <div className="grid gap-2 md:grid-cols-4">
-                      <Button variant="outline">Pause Billing</Button>
-                      <Button variant="outline">Apply Credit</Button>
-                      <Button variant="outline">Force Payment</Button>
-                      <Button variant="outline">Cancel Subscription</Button>
-                    </div>
+                    <h4 className="font-medium">
+                      Account-Specific Billing Actions
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      Billing overrides are applied to specific user accounts in
+                      the User Management section.
+                    </p>
                   </div>
                 </CardContent>
               </Card>
