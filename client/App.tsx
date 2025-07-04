@@ -140,4 +140,11 @@ const App = () => (
   </QueryClientProvider>
 );
 
-createRoot(document.getElementById("root")!).render(<App />);
+// Prevent multiple createRoot calls during HMR
+const rootElement = document.getElementById("root")!;
+let root = (globalThis as any).__react_root;
+if (!root) {
+  root = createRoot(rootElement);
+  (globalThis as any).__react_root = root;
+}
+root.render(<App />);
