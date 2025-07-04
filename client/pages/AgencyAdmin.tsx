@@ -140,9 +140,8 @@ export default function AgencyAdmin() {
           </div>
         </div>
 
-        {/* Stats Cards - Conditionally visible */}
-        {!hideMetrics && (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {/* Stats Cards - Always visible, metrics conditionally hidden */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
