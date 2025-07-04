@@ -142,78 +142,82 @@ export default function AgencyAdmin() {
 
         {/* Stats Cards - Always visible, metrics conditionally hidden */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Total Clients
-                </CardTitle>
-                <Building2 className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {clientStats.totalClients}
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  {clientStats.activeClients} active,{" "}
-                  {clientStats.pendingClients} pending
-                </p>
-              </CardContent>
-            </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Total Clients
+              </CardTitle>
+              <Building2 className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {hideMetrics ? "***" : clientStats.totalClients}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {hideMetrics
+                  ? "Hidden"
+                  : `${clientStats.activeClients} active, ${clientStats.pendingClients} pending`}
+              </p>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Admin Users
-                </CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {agencyPlan.currentUsers}/{agencyPlan.maxUsers}
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  {agencyPlan.maxUsers - agencyPlan.currentUsers} remaining
-                  slots
-                </p>
-              </CardContent>
-            </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Admin Users</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {hideMetrics
+                  ? "***"
+                  : `${agencyPlan.currentUsers}/${agencyPlan.maxUsers}`}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {hideMetrics
+                  ? "Hidden"
+                  : `${agencyPlan.maxUsers - agencyPlan.currentUsers} remaining slots`}
+              </p>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Monthly Cost
-                </CardTitle>
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  $
-                  {(agencyPlan.currentUsers * agencyPlan.pricePerUser).toFixed(
-                    0,
-                  )}
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  ${agencyPlan.pricePerUser}/user per month
-                </p>
-              </CardContent>
-            </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Monthly Cost
+              </CardTitle>
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {hideMetrics
+                  ? "$***"
+                  : `$${(agencyPlan.currentUsers * agencyPlan.pricePerUser).toFixed(0)}`}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {hideMetrics
+                  ? "Hidden"
+                  : `$${agencyPlan.pricePerUser}/user per month`}
+              </p>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Plan Status
-                </CardTitle>
-                <Shield className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{agencyPlan.name}</div>
-                <p className="text-xs text-muted-foreground">
-                  Up to {agencyPlan.maxUsers} admin users
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        )}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Plan Status</CardTitle>
+              <Shield className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {hideMetrics ? "***" : agencyPlan.name}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {hideMetrics
+                  ? "Hidden"
+                  : `Up to ${agencyPlan.maxUsers} admin users`}
+              </p>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Quick Actions */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
