@@ -38,6 +38,7 @@ import AgencyAdminUserDetail from "./pages/AgencyAdminUserDetail";
 import AgencyAdminUserEdit from "./pages/AgencyAdminUserEdit";
 import SuperAdminAgencyManagement from "./pages/SuperAdminAgencyManagement";
 import SuperAdminSettings from "./pages/SuperAdminSettings";
+import SuperAdminStaff from "./pages/SuperAdminStaff";
 import SignUp from "./pages/SignUp";
 import ForgotPassword from "./pages/ForgotPassword";
 import Support from "./pages/Support";
