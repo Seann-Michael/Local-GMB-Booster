@@ -602,56 +602,417 @@ export default function Settings() {
               </Card>
             )}
 
-            {/* Billing Settings */}
+            {/* Billing - Exact clone of AgencyBilling */}
             {activeTab === "billing" && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Billing Settings</CardTitle>
-                  <CardDescription>
-                    Manage billing contacts and preferences
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="billingContact">Billing Contact</Label>
-                      <Input
-                        id="billingContact"
-                        value={settings.billingContact}
-                        onChange={(e) =>
-                          updateSetting("billingContact", e.target.value)
-                        }
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="billingEmail">Billing Email</Label>
-                      <Input
-                        id="billingEmail"
-                        type="email"
-                        value={settings.billingEmail}
-                        onChange={(e) =>
-                          updateSetting("billingEmail", e.target.value)
-                        }
-                      />
-                    </div>
+              <div className="space-y-6">
+                {/* Header for billing section */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <h2 className="text-2xl font-bold">
+                      Billing & Subscription
+                    </h2>
+                    <p className="text-muted-foreground">
+                      Manage your business plan and billing information
+                    </p>
                   </div>
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" className="gap-2">
+                      <Save className="h-4 w-4" />
+                      Download Invoice
+                    </Button>
+                    <Button className="gap-2">
+                      <Upload className="h-4 w-4" />
+                      Update Payment Method
+                    </Button>
+                  </div>
+                </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Auto-Renewal</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Automatically renew your subscription each month
+                {/* Current Plan Overview */}
+                <div className="grid gap-4 md:grid-cols-3">
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">
+                        Current Plan
+                      </CardTitle>
+                      <Shield className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold">Professional</div>
+                      <p className="text-xs text-muted-foreground">1/5 users</p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">
+                        Monthly Total
+                      </CardTitle>
+                      <CreditCard className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold">$49</div>
+                      <p className="text-xs text-muted-foreground">
+                        Next bill: Apr 15, 2024
                       </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">
+                        Available Slots
+                      </CardTitle>
+                      <User className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold">4</div>
+                      <p className="text-xs text-muted-foreground">
+                        Add more users anytime
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Pricing Breakdown */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Pricing Breakdown</CardTitle>
+                    <CardDescription>
+                      Understand how your monthly bill is calculated
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center p-3 bg-muted rounded-lg">
+                        <div>
+                          <h4 className="font-medium">Base Users (1-5)</h4>
+                          <p className="text-sm text-muted-foreground">
+                            1 users × $49/month
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <div className="font-medium">$49</div>
+                        </div>
+                      </div>
+
+                      <div className="border-t pt-4">
+                        <div className="flex justify-between items-center text-lg font-semibold">
+                          <span>Monthly Total</span>
+                          <span>$49</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          Billed monthly • Next bill date: Apr 15, 2024
+                        </p>
+                      </div>
                     </div>
-                    <Switch
-                      checked={settings.autoRenewal}
-                      onCheckedChange={(checked) =>
-                        updateSetting("autoRenewal", checked)
-                      }
-                    />
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+
+                {/* Available Plans */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Available Plans</CardTitle>
+                    <CardDescription>
+                      Upgrade or downgrade your plan based on your needs
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid gap-4 md:grid-cols-3">
+                      {/* Starter Plan */}
+                      <div className="p-6 border rounded-lg relative">
+                        <div className="space-y-4">
+                          <div>
+                            <h3 className="text-xl font-bold">Starter</h3>
+                            <div className="flex items-baseline gap-1">
+                              <span className="text-3xl font-bold">$39</span>
+                              <span className="text-sm text-muted-foreground">
+                                /user/month
+                              </span>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                              Up to 5 admin users
+                            </p>
+                          </div>
+
+                          <ul className="space-y-2">
+                            <li className="flex items-center gap-2 text-sm">
+                              <Shield className="h-4 w-4 text-green-500" />
+                              Up to 5 admin users
+                            </li>
+                            <li className="flex items-center gap-2 text-sm">
+                              <Shield className="h-4 w-4 text-green-500" />
+                              Basic client management
+                            </li>
+                            <li className="flex items-center gap-2 text-sm">
+                              <Shield className="h-4 w-4 text-green-500" />
+                              Standard support
+                            </li>
+                          </ul>
+
+                          <Button className="w-full" variant="default">
+                            Upgrade
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Professional Plan */}
+                      <div className="p-6 border rounded-lg relative border-blue-500 bg-blue-50 ring-2 ring-green-500">
+                        <div className="absolute -top-2 left-4 bg-blue-500 text-white px-2 py-1 text-xs rounded">
+                          Recommended
+                        </div>
+                        <div className="absolute -top-2 right-4 bg-green-500 text-white px-2 py-1 text-xs rounded">
+                          Current Plan
+                        </div>
+
+                        <div className="space-y-4">
+                          <div>
+                            <h3 className="text-xl font-bold">Professional</h3>
+                            <div className="flex items-baseline gap-1">
+                              <span className="text-3xl font-bold">$49</span>
+                              <span className="text-sm text-muted-foreground">
+                                /user/month
+                              </span>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                              Up to 15 admin users
+                            </p>
+                          </div>
+
+                          <ul className="space-y-2">
+                            <li className="flex items-center gap-2 text-sm">
+                              <Shield className="h-4 w-4 text-green-500" />
+                              Up to 15 admin users
+                            </li>
+                            <li className="flex items-center gap-2 text-sm">
+                              <Shield className="h-4 w-4 text-green-500" />
+                              Advanced client management
+                            </li>
+                            <li className="flex items-center gap-2 text-sm">
+                              <Shield className="h-4 w-4 text-green-500" />
+                              Priority support
+                            </li>
+                            <li className="flex items-center gap-2 text-sm">
+                              <Shield className="h-4 w-4 text-green-500" />
+                              Real-time analytics
+                            </li>
+                          </ul>
+
+                          <Button
+                            className="w-full"
+                            variant="secondary"
+                            disabled
+                          >
+                            Current Plan
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Enterprise Plan */}
+                      <div className="p-6 border rounded-lg relative">
+                        <div className="space-y-4">
+                          <div>
+                            <h3 className="text-xl font-bold">Enterprise</h3>
+                            <div className="flex items-baseline gap-1">
+                              <span className="text-3xl font-bold">$39</span>
+                              <span className="text-sm text-muted-foreground">
+                                /user/month
+                              </span>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                              Up to 50 admin users
+                            </p>
+                          </div>
+
+                          <ul className="space-y-2">
+                            <li className="flex items-center gap-2 text-sm">
+                              <Shield className="h-4 w-4 text-green-500" />
+                              Up to 50 admin users
+                            </li>
+                            <li className="flex items-center gap-2 text-sm">
+                              <Shield className="h-4 w-4 text-green-500" />
+                              Full feature access
+                            </li>
+                            <li className="flex items-center gap-2 text-sm">
+                              <Shield className="h-4 w-4 text-green-500" />
+                              24/7 priority support
+                            </li>
+                            <li className="flex items-center gap-2 text-sm">
+                              <Shield className="h-4 w-4 text-green-500" />
+                              White-label solution
+                            </li>
+                          </ul>
+
+                          <Button className="w-full" variant="default">
+                            Upgrade
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Billing History */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Billing History</CardTitle>
+                    <CardDescription>
+                      View your past invoices and payments
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="rounded-md border">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="border-b">
+                            <th className="p-3 text-left">Date</th>
+                            <th className="p-3 text-left">Description</th>
+                            <th className="p-3 text-left">Amount</th>
+                            <th className="p-3 text-left">Status</th>
+                            <th className="p-3 text-left">Invoice</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="border-b">
+                            <td className="p-3">Mar 15, 2024</td>
+                            <td className="p-3">Professional Plan - 1 User</td>
+                            <td className="p-3 font-medium">$49.00</td>
+                            <td className="p-3">
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
+                                Paid
+                              </span>
+                            </td>
+                            <td className="p-3">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="gap-2"
+                              >
+                                <Save className="h-4 w-4" />
+                                Download
+                              </Button>
+                            </td>
+                          </tr>
+                          <tr className="border-b">
+                            <td className="p-3">Feb 15, 2024</td>
+                            <td className="p-3">Professional Plan - 1 User</td>
+                            <td className="p-3 font-medium">$49.00</td>
+                            <td className="p-3">
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
+                                Paid
+                              </span>
+                            </td>
+                            <td className="p-3">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="gap-2"
+                              >
+                                <Save className="h-4 w-4" />
+                                Download
+                              </Button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td className="p-3">Jan 15, 2024</td>
+                            <td className="p-3">Professional Plan - 1 User</td>
+                            <td className="p-3 font-medium">$49.00</td>
+                            <td className="p-3">
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
+                                Paid
+                              </span>
+                            </td>
+                            <td className="p-3">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="gap-2"
+                              >
+                                <Save className="h-4 w-4" />
+                                Download
+                              </Button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Payment Information */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Payment Information</CardTitle>
+                    <CardDescription>
+                      Manage your payment methods and billing details
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-medium mb-2">Payment Method</h4>
+                          <div className="flex items-center gap-3 p-3 border rounded-lg">
+                            <CreditCard className="h-5 w-5" />
+                            <div>
+                              <p className="font-medium">•••• •••• •••• 4242</p>
+                              <p className="text-sm text-muted-foreground">
+                                Expires 12/25
+                              </p>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="ml-auto"
+                            >
+                              Update
+                            </Button>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="font-medium mb-2">Billing Address</h4>
+                          <div className="text-sm text-muted-foreground space-y-1">
+                            <p>Joe's Pizza</p>
+                            <p>123 Main St</p>
+                            <p>New York, NY 10001</p>
+                            <p>United States</p>
+                          </div>
+                          <Button variant="ghost" size="sm" className="mt-2">
+                            Update Address
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-medium mb-2">Next Payment</h4>
+                          <div className="p-3 bg-muted rounded-lg">
+                            <div className="flex justify-between items-center">
+                              <span>Amount Due:</span>
+                              <span className="font-medium">$49.00</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span>Due Date:</span>
+                              <span className="font-medium">Apr 15, 2024</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="font-medium mb-2">Auto-renewal</h4>
+                          <p className="text-sm text-muted-foreground">
+                            Your subscription will automatically renew on April
+                            15, 2024. You can cancel anytime.
+                          </p>
+                          <Button variant="outline" size="sm" className="mt-2">
+                            Manage Auto-renewal
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             )}
           </div>
         </div>
