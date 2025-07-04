@@ -261,11 +261,31 @@ export default function Gallery() {
             </Button>
           </Link>
           <div className="flex-1">
-            <h1 className="text-2xl font-bold">Photos</h1>
+            <h1 className="text-2xl font-bold">Gallery</h1>
             <p className="text-muted-foreground">
-              {filteredPhotos.length} of {photos.length} photos
+              {filteredPhotos.length} of {photos.length} items
             </p>
           </div>
+
+          {/* Sort Dropdown - Separate from filters */}
+          <div className="flex items-center gap-2">
+            <Label className="text-sm text-muted-foreground">Sort:</Label>
+            <Select
+              value={filters.sortOrder}
+              onValueChange={(value: "newest" | "oldest") =>
+                updateFilter("sortOrder", value)
+              }
+            >
+              <SelectTrigger className="w-40">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="newest">Newest First</SelectItem>
+                <SelectItem value="oldest">Oldest First</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
           <Button
             variant="outline"
             onClick={() => setShowFilters(!showFilters)}
@@ -395,7 +415,7 @@ export default function Gallery() {
               </div>
 
               {/* Filter Options Panel */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t">
                 {/* Tag Filter Mode */}
                 {filters.selectedTags.length > 0 && (
                   <div className="space-y-3">
@@ -485,30 +505,6 @@ export default function Gallery() {
                       <RadioGroupItem value="large" id="large" />
                       <Label htmlFor="large" className="text-sm">
                         Large
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-
-                {/* Sort Order */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-medium">Order</Label>
-                  <RadioGroup
-                    value={filters.sortOrder}
-                    onValueChange={(value: "newest" | "oldest") =>
-                      updateFilter("sortOrder", value)
-                    }
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="newest" id="newest" />
-                      <Label htmlFor="newest" className="text-sm">
-                        Newest First
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="oldest" id="oldest" />
-                      <Label htmlFor="oldest" className="text-sm">
-                        Oldest First
                       </Label>
                     </div>
                   </RadioGroup>
