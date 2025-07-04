@@ -114,6 +114,7 @@ export default function SignIn() {
               <p className="mt-2">
                 For super admin: superadmin@projectlens.com
               </p>
+              <p className="mt-1">For agency admin: agency@marketingfirm.com</p>
             </div>
 
             <Button type="submit" className="w-full" disabled={isSubmitting}>
