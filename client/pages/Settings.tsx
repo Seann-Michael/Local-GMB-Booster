@@ -517,6 +517,396 @@ export default function Settings() {
               </Card>
             )}
 
+            {/* Project Settings */}
+            {activeTab === "projects" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Project Settings</CardTitle>
+                  <CardDescription>
+                    Configure automatic posting and AI assistance for projects
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Auto-Posting Options</h4>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label>Auto Post to Facebook</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Automatically post completed projects to Facebook
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.autoPostFacebook}
+                        onCheckedChange={(checked) =>
+                          updateSetting("autoPostFacebook", checked)
+                        }
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label>Auto Post to Google My Business</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Automatically post completed projects to Google My
+                          Business
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.autoPostGoogleMyBusiness}
+                        onCheckedChange={(checked) =>
+                          updateSetting("autoPostGoogleMyBusiness", checked)
+                        }
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label>Auto Post to RSS Feed</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Automatically add completed projects to RSS feed
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.autoPostRssFeed}
+                        onCheckedChange={(checked) =>
+                          updateSetting("autoPostRssFeed", checked)
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">AI Assistance</h4>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label>AI Prompt for Project Descriptions</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Use AI to help generate and improve project
+                          descriptions
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.aiPromptForDescriptions}
+                        onCheckedChange={(checked) =>
+                          updateSetting("aiPromptForDescriptions", checked)
+                        }
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Integrations Settings */}
+            {activeTab === "integrations" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Integrations</CardTitle>
+                  <CardDescription>
+                    Connect external services and manage API integrations
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <Card className="p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Globe className="h-5 w-5 text-blue-500" />
+                        <h4 className="font-medium">Facebook</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Connect to Facebook for automatic posting
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div
+                            className={`w-2 h-2 rounded-full ${settings.facebookConnected ? "bg-green-500" : "bg-gray-400"}`}
+                          ></div>
+                          <span className="text-sm font-medium">
+                            {settings.facebookConnected
+                              ? "Connected"
+                              : "Not Connected"}
+                          </span>
+                        </div>
+                        <Button
+                          size="sm"
+                          variant={
+                            settings.facebookConnected ? "outline" : "default"
+                          }
+                          onClick={() =>
+                            updateSetting(
+                              "facebookConnected",
+                              !settings.facebookConnected,
+                            )
+                          }
+                        >
+                          {settings.facebookConnected
+                            ? "Disconnect"
+                            : "Connect"}
+                        </Button>
+                      </div>
+                    </Card>
+
+                    <Card className="p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <MapPin className="h-5 w-5 text-red-500" />
+                        <h4 className="font-medium">Google My Business</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Connect to Google My Business for location updates
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div
+                            className={`w-2 h-2 rounded-full ${settings.googleMyBusinessConnected ? "bg-green-500" : "bg-gray-400"}`}
+                          ></div>
+                          <span className="text-sm font-medium">
+                            {settings.googleMyBusinessConnected
+                              ? "Connected"
+                              : "Not Connected"}
+                          </span>
+                        </div>
+                        <Button
+                          size="sm"
+                          variant={
+                            settings.googleMyBusinessConnected
+                              ? "outline"
+                              : "default"
+                          }
+                          onClick={() =>
+                            updateSetting(
+                              "googleMyBusinessConnected",
+                              !settings.googleMyBusinessConnected,
+                            )
+                          }
+                        >
+                          {settings.googleMyBusinessConnected
+                            ? "Disconnect"
+                            : "Connect"}
+                        </Button>
+                      </div>
+                    </Card>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">API Keys</h4>
+                    <div className="space-y-2">
+                      <Label htmlFor="goHighLevelApiKey">
+                        GoHighLevel API Key
+                      </Label>
+                      <Input
+                        id="goHighLevelApiKey"
+                        type="password"
+                        value={settings.goHighLevelApiKey}
+                        onChange={(e) =>
+                          updateSetting("goHighLevelApiKey", e.target.value)
+                        }
+                        placeholder="Enter your GoHighLevel API key"
+                      />
+                      <p className="text-sm text-muted-foreground">
+                        Connect to GoHighLevel for CRM integration
+                      </p>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-medium">Webhooks</h4>
+                      <Button size="sm" className="gap-2">
+                        <Plus className="h-4 w-4" />
+                        Add Webhook
+                      </Button>
+                    </div>
+
+                    <div className="space-y-3">
+                      {settings.webhooks.map((webhook) => (
+                        <div key={webhook.id} className="p-3 border rounded-lg">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <Webhook className="h-4 w-4" />
+                              <div>
+                                <p className="font-medium">{webhook.name}</p>
+                                <p className="text-sm text-muted-foreground">
+                                  {webhook.url}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                  Events: {webhook.events.join(", ")}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <div
+                                className={`w-2 h-2 rounded-full ${webhook.active ? "bg-green-500" : "bg-gray-400"}`}
+                              ></div>
+                              <Button variant="ghost" size="sm">
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm">
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Tags Settings */}
+            {activeTab === "tags" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Business Tags</CardTitle>
+                  <CardDescription>
+                    Manage tags for organizing and categorizing content
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">
+                      Create and manage tags to organize your projects and
+                      content
+                    </p>
+                    <Button className="gap-2">
+                      <Plus className="h-4 w-4" />
+                      Add Tag
+                    </Button>
+                  </div>
+
+                  <div className="grid gap-3">
+                    {settings.businessTags.map((tag) => (
+                      <div
+                        key={tag.id}
+                        className="flex items-center justify-between p-3 border rounded-lg"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div
+                            className="w-4 h-4 rounded-full"
+                            style={{ backgroundColor: tag.color }}
+                          ></div>
+                          <span className="font-medium">{tag.name}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button variant="ghost" size="sm">
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm">
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="bg-muted p-4 rounded-lg">
+                    <h4 className="font-medium mb-2">Tag Usage</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Tags help organize your content and make it easier to find
+                      specific projects. You can assign multiple tags to each
+                      project for better categorization.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Media Settings */}
+            {activeTab === "media" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Media Settings</CardTitle>
+                  <CardDescription>
+                    Configure media handling and storage preferences
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <Card className="p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Image className="h-5 w-5 text-blue-500" />
+                        <h4 className="font-medium">Images</h4>
+                      </div>
+                      <div className="text-sm text-muted-foreground space-y-1">
+                        <p>Max file size: 10 MB</p>
+                        <p>Formats: JPG, PNG, WebP</p>
+                        <p>Auto-compression: Enabled</p>
+                      </div>
+                    </Card>
+
+                    <Card className="p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Video className="h-5 w-5 text-green-500" />
+                        <h4 className="font-medium">Videos</h4>
+                      </div>
+                      <div className="text-sm text-muted-foreground space-y-1">
+                        <p>Max file size: 100 MB</p>
+                        <p>Formats: MP4, WebM</p>
+                        <p>Auto-optimization: Enabled</p>
+                      </div>
+                    </Card>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Storage Management</h4>
+
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">Total Storage Used</span>
+                        <span className="text-sm font-medium">
+                          2.4 GB / 10 GB
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                          className="bg-blue-600 h-2 rounded-full"
+                          style={{ width: "24%" }}
+                        ></div>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-2">
+                      <Button variant="outline" className="gap-2">
+                        <Download className="h-4 w-4" />
+                        Export All Media
+                      </Button>
+                      <Button variant="outline" className="gap-2">
+                        <Trash2 className="h-4 w-4" />
+                        Clear Cache
+                      </Button>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Media Library</h4>
+                    <div className="bg-muted p-4 rounded-lg">
+                      <div className="flex items-center gap-3 mb-2">
+                        <FileText className="h-5 w-5" />
+                        <span className="font-medium">Recent Media</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        Your uploaded images and videos will appear here for
+                        easy access and management.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             {/* Notification Settings */}
             {activeTab === "notifications" && (
               <Card>
