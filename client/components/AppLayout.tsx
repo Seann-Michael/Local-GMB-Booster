@@ -283,7 +283,49 @@ export function AppLayout({ children }: AppLayoutProps) {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-auto">{children}</main>
+        <main className="flex-1 overflow-auto pb-16 md:pb-0">{children}</main>
+
+        {/* Mobile Bottom Navigation - Only visible on mobile */}
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t z-50">
+          <div className="flex items-center justify-around px-2 py-2">
+            {sidebarItems.map((item) => (
+              <Link key={item.href} to={item.href} className="flex-1">
+                <Button
+                  variant={item.active ? "secondary" : "ghost"}
+                  className="w-full flex flex-col items-center gap-1 h-auto py-2 px-1"
+                  size="sm"
+                >
+                  <item.icon className="h-5 w-5" />
+                  <span className="text-xs font-medium">{item.label}</span>
+                </Button>
+              </Link>
+            ))}
+
+            {/* Add Project Button */}
+            <Link to="/add-project" className="flex-1">
+              <Button
+                variant="ghost"
+                className="w-full flex flex-col items-center gap-1 h-auto py-2 px-1"
+                size="sm"
+              >
+                <Plus className="h-5 w-5" />
+                <span className="text-xs font-medium">Add</span>
+              </Button>
+            </Link>
+
+            {/* Settings Button */}
+            <Link to="/settings" className="flex-1">
+              <Button
+                variant="ghost"
+                className="w-full flex flex-col items-center gap-1 h-auto py-2 px-1"
+                size="sm"
+              >
+                <Settings className="h-5 w-5" />
+                <span className="text-xs font-medium">Settings</span>
+              </Button>
+            </Link>
+          </div>
+        </nav>
       </div>
     </div>
   );
