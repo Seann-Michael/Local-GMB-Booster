@@ -78,12 +78,6 @@ export function AppLayout({ children }: AppLayoutProps) {
       icon: Camera,
       active: location.pathname === "/gallery",
     },
-    {
-      label: "Support",
-      href: "/support",
-      icon: MessageSquare,
-      active: location.pathname === "/support",
-    },
   ];
 
   return (
@@ -263,6 +257,18 @@ export function AppLayout({ children }: AppLayoutProps) {
                     <Link to="/profile" className="flex items-center">
                       <User className="mr-2 h-4 w-4" />
                       <span>Profile</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/settings" className="flex items-center">
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>Settings</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/support" className="flex items-center">
+                      <MessageSquare className="mr-2 h-4 w-4" />
+                      <span>Support</span>
                     </Link>
                   </DropdownMenuItem>
                   {showSuperAdmin && (
