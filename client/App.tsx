@@ -31,6 +31,7 @@ import AgencyBilling from "./pages/AgencyBilling";
 import AgencyBusinessOwners from "./pages/AgencyBusinessOwners";
 import AgencyAdminUsers from "./pages/AgencyAdminUsers";
 import AgencySettings from "./pages/AgencySettings";
+import AgencyBusinessOwnerDetail from "./pages/AgencyBusinessOwnerDetail";
 import SuperAdminAgencyManagement from "./pages/SuperAdminAgencyManagement";
 
 const queryClient = new QueryClient();
@@ -209,6 +210,14 @@ const App = () => (
             }
           />
           <Route
+            path="/agency-admin/business-owners/:id"
+            element={
+              <ProtectedRoute>
+                <AgencyBusinessOwnerDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/agency-admin/admin-users"
             element={
               <ProtectedRoute>
@@ -236,6 +245,16 @@ const App = () => (
           {/* Legacy/manual route redirects */}
           <Route path="/users" element={<Navigate to="/settings" replace />} />
           <Route path="/photos" element={<Navigate to="/gallery" replace />} />
+          <Route
+            path="/agency-admin/clients"
+            element={<Navigate to="/agency-admin/business-owners" replace />}
+          />
+          <Route
+            path="/agency-admin/clients/:id"
+            element={
+              <Navigate to="/agency-admin/business-owners/:id" replace />
+            }
+          />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
