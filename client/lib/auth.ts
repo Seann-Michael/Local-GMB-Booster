@@ -2,9 +2,11 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  role: "admin" | "editor" | "viewer" | "superadmin";
+  role: "admin" | "editor" | "viewer" | "superadmin" | "agency";
   avatar?: string;
   isImpersonated?: boolean;
+  agencyId?: string;
+  agencyName?: string;
 }
 
 export function getCurrentUser(): User | null {
