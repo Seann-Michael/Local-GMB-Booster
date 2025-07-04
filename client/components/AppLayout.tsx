@@ -86,10 +86,10 @@ export function AppLayout({ children }: AppLayoutProps) {
 
   return (
     <div className="min-h-screen bg-background flex">
-      {/* Sidebar */}
+      {/* Sidebar - Hidden on mobile */}
       <div
         className={cn(
-          "bg-card border-r transition-all duration-300 flex flex-col",
+          "hidden md:flex bg-card border-r transition-all duration-300 flex-col",
           sidebarCollapsed ? "w-16" : "w-64",
         )}
       >
