@@ -35,6 +35,7 @@ import AgencyBusinessOwnerDetail from "./pages/AgencyBusinessOwnerDetail";
 import AgencyBusinessOwnerEdit from "./pages/AgencyBusinessOwnerEdit";
 import AddAgencyAdminUser from "./pages/AddAgencyAdminUser";
 import SuperAdminAgencyManagement from "./pages/SuperAdminAgencyManagement";
+import SuperAdminSettings from "./pages/SuperAdminSettings";
 
 const queryClient = new QueryClient();
 
