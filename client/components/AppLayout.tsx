@@ -177,10 +177,18 @@ export function AppLayout({ children }: AppLayoutProps) {
         <header className="bg-background border-b p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
+              {/* Mobile app title - only show on mobile */}
+              <div className="md:hidden flex items-center space-x-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+                  <Camera className="h-4 w-4 text-primary-foreground" />
+                </div>
+                <span className="font-semibold text-lg">GMB Booster</span>
+              </div>
+
               {isImpersonated && (
                 <div className="flex items-center gap-2 px-3 py-1 bg-yellow-100 text-yellow-800 rounded-lg text-sm">
                   <Shield className="h-4 w-4" />
-                  Impersonating User
+                  <span className="hidden sm:inline">Impersonating User</span>
                   <Button
                     variant="ghost"
                     size="sm"
