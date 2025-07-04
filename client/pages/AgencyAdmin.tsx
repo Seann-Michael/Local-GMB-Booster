@@ -41,6 +41,7 @@ interface RevenueStats {
 }
 
 export default function AgencyAdmin() {
+  const [hideMetrics, setHideMetrics] = useState(true); // Default: metrics hidden
   const [clientStats, setClientStats] = useState<ClientStats>({
     totalClients: 0,
     activeClients: 0,
@@ -56,6 +57,13 @@ export default function AgencyAdmin() {
   });
 
   const [recentClients, setRecentClients] = useState([]);
+  const [adminUsers, setAdminUsers] = useState([]);
+  const [agencyPlan, setAgencyPlan] = useState({
+    name: "Professional",
+    maxUsers: 10,
+    currentUsers: 3,
+    pricePerUser: 49,
+  });
 
   useEffect(() => {
     // Load agency-specific stats from localStorage or API
