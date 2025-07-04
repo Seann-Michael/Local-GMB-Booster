@@ -267,7 +267,7 @@ export function SuperAdminLayout({
                         Total Users
                       </p>
                       <p className="text-lg font-bold">
-                        {currentStats.totalUsers.toLocaleString()}
+                        {currentStats?.totalUsers?.toLocaleString() || "0"}
                       </p>
                     </div>
                     <Users className="h-6 w-6 text-muted-foreground" />
