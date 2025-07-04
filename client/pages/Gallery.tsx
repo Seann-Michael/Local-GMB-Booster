@@ -394,34 +394,52 @@ export default function Gallery() {
 
                 <div className="space-y-2">
                   <Label>Tags</Label>
-                  <Select>
-                    <SelectTrigger className="w-48">
-                      <SelectValue
-                        placeholder={
-                          filters.selectedTags.length > 0
-                            ? `${filters.selectedTags.length} selected`
-                            : "Select tags"
-                        }
-                      />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {allTags.map((tag) => (
-                        <div
-                          key={tag}
-                          className="flex items-center space-x-2 px-3 py-2"
-                        >
-                          <Checkbox
-                            id={tag}
-                            checked={filters.selectedTags.includes(tag)}
-                            onCheckedChange={() => toggleTag(tag)}
-                          />
-                          <Label htmlFor={tag} className="text-sm">
-                            {tag}
-                          </Label>
+                  <div className="w-48">
+                    <div className="border rounded-md p-2 min-h-[40px] max-h-[120px] overflow-y-auto">
+                      {filters.selectedTags.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mb-2">
+                          {filters.selectedTags.map((tag) => (
+                            <Badge
+                              key={tag}
+                              variant="default"
+                              className="text-xs cursor-pointer"
+                              onClick={() => toggleTag(tag)}
+                            >
+                              {tag} ×
+                            </Badge>
+                          ))}
                         </div>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                      )}
+                      <div className="space-y-1">
+                        {allTags
+                          .filter((tag) => !filters.selectedTags.includes(tag))
+                          .map((tag) => (
+                            <div
+                              key={tag}
+                              className="flex items-center space-x-2 p-1 hover:bg-muted rounded cursor-pointer"
+                              onClick={() => toggleTag(tag)}
+                            >
+                              <Checkbox
+                                id={tag}
+                                checked={filters.selectedTags.includes(tag)}
+                                onCheckedChange={() => toggleTag(tag)}
+                              />
+                              <Label
+                                htmlFor={tag}
+                                className="text-sm cursor-pointer"
+                              >
+                                {tag}
+                              </Label>
+                            </div>
+                          ))}
+                        {allTags.length === 0 && (
+                          <div className="text-sm text-muted-foreground p-1">
+                            No tags available
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
