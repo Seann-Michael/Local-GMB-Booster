@@ -32,6 +32,29 @@ import {
   Globe,
   Download,
   BarChart3,
+  Building2,
+  Camera,
+  FileText,
+  Plus,
+  Edit,
+  Trash2,
+  Eye,
+  Play,
+  Pause,
+  Users,
+  Key,
+  Webhook,
+  Monitor,
+  Code,
+  Palette,
+  Activity,
+  Calendar,
+  MessageSquare,
+  Phone,
+  Lock,
+  Upload,
+  Copy,
+  ExternalLink,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -178,13 +201,18 @@ export default function SuperAdminSettings() {
 
   const tabs = [
     { id: "system", label: "System", icon: Settings },
-    { id: "security", label: "Security", icon: Shield },
-    { id: "email", label: "Email", icon: Mail },
-    { id: "notifications", label: "Notifications", icon: Bell },
-    { id: "ai", label: "AI Settings", icon: BarChart3 },
+    { id: "users", label: "User Management", icon: User },
+    { id: "workspaces", label: "Workspaces", icon: Building2 },
+    { id: "billing", label: "Billing & Plans", icon: DollarSign },
     { id: "integrations", label: "Integrations", icon: Globe },
-    { id: "financial", label: "Financial", icon: DollarSign },
-    { id: "database", label: "Database", icon: Database },
+    { id: "branding", label: "Branding", icon: Camera },
+    { id: "features", label: "Feature Control", icon: BarChart3 },
+    { id: "automation", label: "Automation", icon: Server },
+    { id: "security", label: "Security", icon: Shield },
+    { id: "monitoring", label: "Monitoring", icon: Bell },
+    { id: "developer", label: "Developer", icon: Database },
+    { id: "communication", label: "Communication", icon: Mail },
+    { id: "legal", label: "Legal", icon: FileText },
   ];
 
   return (
@@ -461,6 +489,777 @@ export default function SuperAdminSettings() {
                             )
                           }
                         />
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* User Management */}
+            {activeTab === "users" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>User & Account Management</CardTitle>
+                  <CardDescription>
+                    Monitor user activity, audit trails, and account management
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid gap-4 md:grid-cols-3">
+                    <Card className="p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Users className="h-5 w-5 text-blue-500" />
+                        <h4 className="font-medium">Active Users</h4>
+                      </div>
+                      <div className="text-2xl font-bold">1,247</div>
+                      <p className="text-sm text-muted-foreground">
+                        Last 30 days
+                      </p>
+                    </Card>
+
+                    <Card className="p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Activity className="h-5 w-5 text-green-500" />
+                        <h4 className="font-medium">Login Sessions</h4>
+                      </div>
+                      <div className="text-2xl font-bold">3,421</div>
+                      <p className="text-sm text-muted-foreground">
+                        This month
+                      </p>
+                    </Card>
+
+                    <Card className="p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Eye className="h-5 w-5 text-orange-500" />
+                        <h4 className="font-medium">Audit Events</h4>
+                      </div>
+                      <div className="text-2xl font-bold">156</div>
+                      <p className="text-sm text-muted-foreground">Today</p>
+                    </Card>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-medium">
+                        Activity Logs & Audit Trails
+                      </h4>
+                      <Button variant="outline" className="gap-2">
+                        <Download className="h-4 w-4" />
+                        Export Logs
+                      </Button>
+                    </div>
+
+                    <div className="rounded-md border">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="border-b">
+                            <th className="p-3 text-left">User</th>
+                            <th className="p-3 text-left">Action</th>
+                            <th className="p-3 text-left">Resource</th>
+                            <th className="p-3 text-left">Timestamp</th>
+                            <th className="p-3 text-left">IP Address</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="border-b">
+                            <td className="p-3">john@example.com</td>
+                            <td className="p-3">Login</td>
+                            <td className="p-3">Dashboard</td>
+                            <td className="p-3">2 minutes ago</td>
+                            <td className="p-3">192.168.1.100</td>
+                          </tr>
+                          <tr className="border-b">
+                            <td className="p-3">admin@system.com</td>
+                            <td className="p-3">Updated Settings</td>
+                            <td className="p-3">System Config</td>
+                            <td className="p-3">5 minutes ago</td>
+                            <td className="p-3">10.0.0.1</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Workspace Control */}
+            {activeTab === "workspaces" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Subaccount / Workspace Control</CardTitle>
+                  <CardDescription>
+                    Manage subaccounts, allocate resources, and control module
+                    access
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-medium">Active Workspaces</h4>
+                    <Button className="gap-2">
+                      <Plus className="h-4 w-4" />
+                      Create Workspace
+                    </Button>
+                  </div>
+
+                  <div className="space-y-3">
+                    {[
+                      {
+                        name: "Marketing Pro",
+                        users: 15,
+                        storage: "8.5 GB",
+                        modules: ["CRM", "AI Writer", "Forms"],
+                      },
+                      {
+                        name: "Sales Team",
+                        users: 8,
+                        storage: "3.2 GB",
+                        modules: ["CRM", "Forms"],
+                      },
+                      {
+                        name: "Enterprise Corp",
+                        users: 50,
+                        storage: "25 GB",
+                        modules: ["All Modules"],
+                      },
+                    ].map((workspace, index) => (
+                      <div key={index} className="p-4 border rounded-lg">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h5 className="font-medium">{workspace.name}</h5>
+                            <p className="text-sm text-muted-foreground">
+                              {workspace.users} users • {workspace.storage}{" "}
+                              storage used
+                            </p>
+                            <div className="flex gap-2 mt-2">
+                              {workspace.modules.map((module) => (
+                                <span
+                                  key={module}
+                                  className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded"
+                                >
+                                  {module}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button variant="ghost" size="sm">
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              <Settings className="h-4 w-4" />
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Resource Allocation</h4>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label>Default Storage Limit (GB)</Label>
+                        <Input type="number" defaultValue="10" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>API Usage Limit (per month)</Label>
+                        <Input type="number" defaultValue="10000" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Available Modules</h4>
+                    <div className="grid gap-2 md:grid-cols-3">
+                      {[
+                        "CRM",
+                        "AI Writer",
+                        "Forms",
+                        "Analytics",
+                        "Email Marketing",
+                        "Social Media",
+                      ].map((module) => (
+                        <div
+                          key={module}
+                          className="flex items-center justify-between p-2 border rounded"
+                        >
+                          <span className="text-sm">{module}</span>
+                          <Switch defaultChecked />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Billing & Plans */}
+            {activeTab === "billing" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Billing & Plans Management</CardTitle>
+                  <CardDescription>
+                    Configure pricing tiers, subscription plans, and billing
+                    controls
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid gap-4 md:grid-cols-3">
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-2">Monthly Revenue</h4>
+                      <div className="text-2xl font-bold">$45,230</div>
+                      <p className="text-sm text-green-600">+12% this month</p>
+                    </Card>
+
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-2">Active Subscriptions</h4>
+                      <div className="text-2xl font-bold">347</div>
+                      <p className="text-sm text-blue-600">+8 new this week</p>
+                    </Card>
+
+                    <Card className="p-4">
+                      <h4 className="font-medium mb-2">Trial Accounts</h4>
+                      <div className="text-2xl font-bold">23</div>
+                      <p className="text-sm text-orange-600">
+                        5 converting soon
+                      </p>
+                    </Card>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-medium">Pricing Tiers</h4>
+                      <Button className="gap-2">
+                        <Plus className="h-4 w-4" />
+                        Create Plan
+                      </Button>
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-3">
+                      {[
+                        {
+                          name: "Starter",
+                          price: "$29",
+                          features: [
+                            "5 Users",
+                            "10GB Storage",
+                            "Basic Support",
+                          ],
+                        },
+                        {
+                          name: "Professional",
+                          price: "$79",
+                          features: [
+                            "25 Users",
+                            "100GB Storage",
+                            "Priority Support",
+                            "Advanced Features",
+                          ],
+                        },
+                        {
+                          name: "Enterprise",
+                          price: "$199",
+                          features: [
+                            "Unlimited Users",
+                            "1TB Storage",
+                            "24/7 Support",
+                            "Custom Integration",
+                          ],
+                        },
+                      ].map((plan, index) => (
+                        <div key={index} className="p-4 border rounded-lg">
+                          <div className="flex items-center justify-between mb-2">
+                            <h5 className="font-medium">{plan.name}</h5>
+                            <span className="text-lg font-bold">
+                              {plan.price}
+                            </span>
+                          </div>
+                          <ul className="space-y-1 text-sm text-muted-foreground">
+                            {plan.features.map((feature) => (
+                              <li key={feature}>• {feature}</li>
+                            ))}
+                          </ul>
+                          <div className="flex gap-2 mt-3">
+                            <Button variant="outline" size="sm">
+                              Edit
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              Clone
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Promo Codes & Discounts</h4>
+                    <div className="flex gap-4">
+                      <Input placeholder="Promo code name" />
+                      <Input placeholder="Discount %" type="number" />
+                      <Button>Create Code</Button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Billing Overrides</h4>
+                    <div className="grid gap-2 md:grid-cols-4">
+                      <Button variant="outline">Pause Billing</Button>
+                      <Button variant="outline">Apply Credit</Button>
+                      <Button variant="outline">Force Payment</Button>
+                      <Button variant="outline">Cancel Subscription</Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Branding & White Label */}
+            {activeTab === "branding" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Branding & White Label</CardTitle>
+                  <CardDescription>
+                    Customize platform appearance, logos, and branding elements
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid gap-6 md:grid-cols-2">
+                    <div className="space-y-4">
+                      <h4 className="font-medium">Platform Branding</h4>
+
+                      <div className="space-y-2">
+                        <Label>Platform Logo</Label>
+                        <div className="flex items-center gap-4">
+                          <div className="w-16 h-16 border-2 border-dashed border-muted-foreground rounded-lg flex items-center justify-center">
+                            <Camera className="h-6 w-6 text-muted-foreground" />
+                          </div>
+                          <Button variant="outline" className="gap-2">
+                            <Upload className="h-4 w-4" />
+                            Upload Logo
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Favicon</Label>
+                        <div className="flex items-center gap-4">
+                          <div className="w-8 h-8 border border-muted-foreground rounded flex items-center justify-center">
+                            <Globe className="h-4 w-4 text-muted-foreground" />
+                          </div>
+                          <Button variant="outline" size="sm">
+                            Upload Favicon
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <h4 className="font-medium">Color Scheme</h4>
+
+                      <div className="grid gap-2">
+                        <div className="flex items-center gap-3">
+                          <Label className="w-20">Primary</Label>
+                          <div className="w-8 h-8 bg-blue-600 rounded border"></div>
+                          <Input
+                            type="color"
+                            defaultValue="#2563eb"
+                            className="w-20"
+                          />
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Label className="w-20">Secondary</Label>
+                          <div className="w-8 h-8 bg-gray-600 rounded border"></div>
+                          <Input
+                            type="color"
+                            defaultValue="#64748b"
+                            className="w-20"
+                          />
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <Label className="w-20">Accent</Label>
+                          <div className="w-8 h-8 bg-green-600 rounded border"></div>
+                          <Input
+                            type="color"
+                            defaultValue="#16a34a"
+                            className="w-20"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Typography</h4>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label>Primary Font</Label>
+                        <Select defaultValue="inter">
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="inter">Inter</SelectItem>
+                            <SelectItem value="roboto">Roboto</SelectItem>
+                            <SelectItem value="opensans">Open Sans</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Secondary Font</Label>
+                        <Select defaultValue="system">
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="system">System</SelectItem>
+                            <SelectItem value="arial">Arial</SelectItem>
+                            <SelectItem value="helvetica">Helvetica</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Email Templates</h4>
+                    <div className="grid gap-2">
+                      <Button variant="outline" className="justify-start">
+                        Welcome Email Template
+                      </Button>
+                      <Button variant="outline" className="justify-start">
+                        Password Reset Template
+                      </Button>
+                      <Button variant="outline" className="justify-start">
+                        Invoice Template
+                      </Button>
+                      <Button variant="outline" className="justify-start">
+                        Notification Template
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Login Page Customization</h4>
+                    <div className="space-y-2">
+                      <Label>Background Image</Label>
+                      <Button variant="outline" className="gap-2">
+                        <Upload className="h-4 w-4" />
+                        Upload Background
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Feature Control */}
+            {activeTab === "features" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Feature Toggles & Module Control</CardTitle>
+                  <CardDescription>
+                    Enable/disable features, manage rollouts, and control access
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Core Features</h4>
+                    <div className="grid gap-3 md:grid-cols-2">
+                      {[
+                        {
+                          name: "AI Content Writer",
+                          status: true,
+                          users: "All Users",
+                        },
+                        {
+                          name: "Advanced Analytics",
+                          status: true,
+                          users: "Pro & Enterprise",
+                        },
+                        {
+                          name: "Custom Integrations",
+                          status: false,
+                          users: "Enterprise Only",
+                        },
+                        {
+                          name: "White Label Access",
+                          status: true,
+                          users: "Enterprise Only",
+                        },
+                        {
+                          name: "API Access",
+                          status: true,
+                          users: "All Users",
+                        },
+                        {
+                          name: "Mobile App",
+                          status: false,
+                          users: "Beta Users",
+                        },
+                      ].map((feature, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-3 border rounded-lg"
+                        >
+                          <div>
+                            <div className="font-medium">{feature.name}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {feature.users}
+                            </div>
+                          </div>
+                          <Switch checked={feature.status} />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Beta Features</h4>
+                    <div className="space-y-3">
+                      {[
+                        {
+                          name: "AI Voice Assistant",
+                          description: "Voice-powered content creation",
+                          access: "10 Beta Users",
+                        },
+                        {
+                          name: "Advanced Automation",
+                          description: "Complex workflow automation",
+                          access: "5 Enterprise Clients",
+                        },
+                      ].map((beta, index) => (
+                        <div key={index} className="p-3 border rounded-lg">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <div className="font-medium">{beta.name}</div>
+                              <div className="text-sm text-muted-foreground">
+                                {beta.description}
+                              </div>
+                              <div className="text-xs text-blue-600">
+                                {beta.access}
+                              </div>
+                            </div>
+                            <div className="flex gap-2">
+                              <Button variant="outline" size="sm">
+                                Manage Access
+                              </Button>
+                              <Switch />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Scheduled Releases</h4>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <div className="font-medium">Mobile App v2.0</div>
+                          <div className="text-sm text-muted-foreground">
+                            Scheduled for March 15, 2024
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button variant="outline" size="sm">
+                            <Calendar className="h-4 w-4" />
+                          </Button>
+                          <Button variant="outline" size="sm">
+                            <Pause className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Automation & Defaults */}
+            {activeTab === "automation" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Automation & Default Settings</CardTitle>
+                  <CardDescription>
+                    Configure system automation, templates, and default
+                    behaviors
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <h4 className="font-medium">AI Prompt Templates</h4>
+                    <div className="space-y-3">
+                      {[
+                        {
+                          name: "Blog Post Writer",
+                          usage: "1,234 times",
+                          type: "Content Creation",
+                        },
+                        {
+                          name: "Social Media Posts",
+                          usage: "856 times",
+                          type: "Marketing",
+                        },
+                        {
+                          name: "Email Subject Lines",
+                          usage: "432 times",
+                          type: "Email Marketing",
+                        },
+                      ].map((template, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-3 border rounded-lg"
+                        >
+                          <div>
+                            <div className="font-medium">{template.name}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {template.type} • Used {template.usage}
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button variant="outline" size="sm">
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <Copy className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Scheduled Tasks</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <div className="font-medium">
+                            Daily Blog Post Creation
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            Runs every day at 9:00 AM
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">
+                            Active
+                          </span>
+                          <Button variant="outline" size="sm">
+                            <Settings className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <div className="font-medium">
+                            Weekly Analytics Report
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            Runs every Monday at 8:00 AM
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">
+                            Active
+                          </span>
+                          <Button variant="outline" size="sm">
+                            <Settings className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">
+                      Notification System Settings
+                    </h4>
+                    <div className="grid gap-4 md:grid-cols-3">
+                      <div className="space-y-3">
+                        <h5 className="font-medium">Email Notifications</h5>
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <Label className="text-sm">Welcome emails</Label>
+                            <Switch defaultChecked />
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <Label className="text-sm">Payment reminders</Label>
+                            <Switch defaultChecked />
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <Label className="text-sm">Feature updates</Label>
+                            <Switch />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <h5 className="font-medium">SMS Notifications</h5>
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <Label className="text-sm">Security alerts</Label>
+                            <Switch defaultChecked />
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <Label className="text-sm">
+                              System maintenance
+                            </Label>
+                            <Switch defaultChecked />
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <Label className="text-sm">
+                              Marketing messages
+                            </Label>
+                            <Switch />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <h5 className="font-medium">Push Notifications</h5>
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <Label className="text-sm">New features</Label>
+                            <Switch defaultChecked />
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <Label className="text-sm">Account updates</Label>
+                            <Switch defaultChecked />
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <Label className="text-sm">Reminders</Label>
+                            <Switch />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -851,7 +1650,7 @@ export default function SuperAdminSettings() {
                         <SelectContent>
                           <SelectItem value="USD">USD ($)</SelectItem>
                           <SelectItem value="EUR">EUR (€)</SelectItem>
-                          <SelectItem value="GBP">GBP (£)</SelectItem>
+                          <SelectItem value="GBP">GBP (��)</SelectItem>
                           <SelectItem value="CAD">CAD (C$)</SelectItem>
                         </SelectContent>
                       </Select>
