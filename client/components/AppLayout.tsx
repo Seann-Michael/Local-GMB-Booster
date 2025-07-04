@@ -72,9 +72,9 @@ export function AppLayout({ children }: AppLayoutProps) {
     },
     {
       label: "Gallery",
-      href: "/photos",
+      href: "/gallery",
       icon: Camera,
-      active: location.pathname === "/photos",
+      active: location.pathname === "/gallery",
     },
   ];
 
