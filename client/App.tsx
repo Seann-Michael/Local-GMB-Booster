@@ -33,6 +33,7 @@ import AgencyAdminUsers from "./pages/AgencyAdminUsers";
 import AgencySettings from "./pages/AgencySettings";
 import AgencyBusinessOwnerDetail from "./pages/AgencyBusinessOwnerDetail";
 import AgencyBusinessOwnerEdit from "./pages/AgencyBusinessOwnerEdit";
+import AddAgencyAdminUser from "./pages/AddAgencyAdminUser";
 import SuperAdminAgencyManagement from "./pages/SuperAdminAgencyManagement";
 
 const queryClient = new QueryClient();
@@ -231,6 +232,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <AgencyAdminUsers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/agency-admin/admin-users/add"
+            element={
+              <ProtectedRoute>
+                <AddAgencyAdminUser />
               </ProtectedRoute>
             }
           />
