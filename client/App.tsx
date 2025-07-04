@@ -208,6 +208,30 @@ const App = () => (
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/agency-admin/admin-users"
+            element={
+              <ProtectedRoute>
+                <AgencyAdminUsers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/agency-admin/settings"
+            element={
+              <ProtectedRoute>
+                <AgencySettings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/super-admin/agencies"
+            element={
+              <ProtectedRoute>
+                <SuperAdminAgencyManagement />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Legacy/manual route redirects */}
           <Route path="/users" element={<Navigate to="/settings" replace />} />
