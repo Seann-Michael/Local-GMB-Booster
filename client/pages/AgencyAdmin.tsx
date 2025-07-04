@@ -41,7 +41,16 @@ interface RevenueStats {
 }
 
 export default function AgencyAdmin() {
-  const [hideMetrics, setHideMetrics] = useState(true); // Default: metrics hidden
+  const [hideMetrics, setHideMetrics] = useState(() => {
+    const saved = localStorage.getItem("agency_hide_metrics");
+    return saved ? JSON.parse(saved) : true; // Default: metrics hidden
+  });
+
+  const toggleMetrics = () => {
+    const newValue = !hideMetrics;
+    setHideMetrics(newValue);
+    localStorage.setItem("agency_hide_metrics", JSON.stringify(newValue));
+  };
   const [clientStats, setClientStats] = useState<ClientStats>({
     totalClients: 0,
     activeClients: 0,
@@ -114,11 +123,7 @@ export default function AgencyAdmin() {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              onClick={() => setHideMetrics(!hideMetrics)}
-              className="gap-2"
-            >
+            <Button variant="outline" onClick={toggleMetrics} className="gap-2">
               {hideMetrics ? (
                 <EyeOff className="h-4 w-4" />
               ) : (
