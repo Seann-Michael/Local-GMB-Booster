@@ -11,7 +11,16 @@ import {
 } from "@/components/ui/select";
 import { AppLayout } from "@/components/AppLayout";
 import { ProjectCard } from "@/components/ProjectCard";
-import { FolderOpen, Plus, Search, Filter, X, RotateCcw } from "lucide-react";
+import {
+  FolderOpen,
+  Plus,
+  Search,
+  Filter,
+  X,
+  RotateCcw,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCurrentUser } from "@/lib/auth";
