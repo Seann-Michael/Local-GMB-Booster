@@ -1271,41 +1271,108 @@ export default function SuperAdminSettings() {
             {activeTab === "security" && (
               <Card>
                 <CardHeader>
-                  <CardTitle>Security Configuration</CardTitle>
+                  <CardTitle>Security & Compliance</CardTitle>
                   <CardDescription>
-                    Manage security policies and access controls
+                    Enhanced security controls, compliance settings, and access
+                    restrictions
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Two-Factor Authentication</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Require 2FA for admin accounts
-                        </p>
+                    <h4 className="font-medium">Authentication & Access</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label>2FA Enforcement</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Force all users to enable two-factor authentication
+                          </p>
+                        </div>
+                        <Switch
+                          checked={settings.enableTwoFactor}
+                          onCheckedChange={(checked) =>
+                            updateSetting("enableTwoFactor", checked)
+                          }
+                        />
                       </div>
-                      <Switch
-                        checked={settings.enableTwoFactor}
-                        onCheckedChange={(checked) =>
-                          updateSetting("enableTwoFactor", checked)
-                        }
-                      />
-                    </div>
 
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Enable Audit Logs</Label>
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label>Audit Logging</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Track all system-level events and user actions
+                          </p>
+                        </div>
+                        <Switch
+                          checked={settings.enableAuditLogs}
+                          onCheckedChange={(checked) =>
+                            updateSetting("enableAuditLogs", checked)
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">IP & Device Restrictions</h4>
+                    <div className="space-y-3">
+                      <div className="space-y-2">
+                        <Label>Allowed IP Addresses (Staff/Admins)</Label>
+                        <Textarea
+                          placeholder="192.168.1.0/24&#10;10.0.0.0/16&#10;203.0.113.0/24"
+                          rows={3}
+                        />
                         <p className="text-sm text-muted-foreground">
-                          Track all admin actions and system changes
+                          One IP range per line. Leave empty to allow all IPs.
                         </p>
                       </div>
-                      <Switch
-                        checked={settings.enableAuditLogs}
-                        onCheckedChange={(checked) =>
-                          updateSetting("enableAuditLogs", checked)
-                        }
-                      />
+
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label>Device Registration Required</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Require device registration for admin access
+                          </p>
+                        </div>
+                        <Switch />
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">GDPR & Compliance</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label>Cookie Consent Banner</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Display GDPR-compliant cookie consent
+                          </p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Data Retention Period (days)</Label>
+                        <Input type="number" defaultValue="365" />
+                        <p className="text-sm text-muted-foreground">
+                          Automatically purge user data after this period
+                        </p>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Privacy Policy URL</Label>
+                        <Input placeholder="https://yoursite.com/privacy" />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Terms of Service URL</Label>
+                        <Input placeholder="https://yoursite.com/terms" />
+                      </div>
                     </div>
                   </div>
 
@@ -1329,32 +1396,6 @@ export default function SuperAdminSettings() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="passwordComplexity">
-                        Password Complexity
-                      </Label>
-                      <Select
-                        value={settings.passwordComplexity}
-                        onValueChange={(value) =>
-                          updateSetting("passwordComplexity", value)
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="basic">
-                            Basic (8+ characters)
-                          </SelectItem>
-                          <SelectItem value="strong">
-                            Strong (8+ chars, numbers, symbols)
-                          </SelectItem>
-                          <SelectItem value="complex">
-                            Complex (12+ chars, mixed case, numbers, symbols)
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
                       <Label htmlFor="apiRateLimit">
                         API Rate Limit (per hour)
                       </Label>
@@ -1368,6 +1409,621 @@ export default function SuperAdminSettings() {
                             parseInt(e.target.value),
                           )
                         }
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Monitoring & Logs */}
+            {activeTab === "monitoring" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>System Monitoring & Logs</CardTitle>
+                  <CardDescription>
+                    Monitor system health, webhooks, user reports, and resource
+                    usage
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid gap-4 md:grid-cols-4">
+                    <Card className="p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Activity className="h-4 w-4 text-green-500" />
+                        <span className="font-medium">System Health</span>
+                      </div>
+                      <div className="text-2xl font-bold text-green-600">
+                        99.9%
+                      </div>
+                      <p className="text-sm text-muted-foreground">Uptime</p>
+                    </Card>
+
+                    <Card className="p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Webhook className="h-4 w-4 text-blue-500" />
+                        <span className="font-medium">Webhooks</span>
+                      </div>
+                      <div className="text-2xl font-bold">1,234</div>
+                      <p className="text-sm text-muted-foreground">Today</p>
+                    </Card>
+
+                    <Card className="p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Globe className="h-4 w-4 text-orange-500" />
+                        <span className="font-medium">API Calls</span>
+                      </div>
+                      <div className="text-2xl font-bold">45.2K</div>
+                      <p className="text-sm text-muted-foreground">This hour</p>
+                    </Card>
+
+                    <Card className="p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Database className="h-4 w-4 text-purple-500" />
+                        <span className="font-medium">Storage</span>
+                      </div>
+                      <div className="text-2xl font-bold">2.4TB</div>
+                      <p className="text-sm text-muted-foreground">Used</p>
+                    </Card>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Webhook Logs</h4>
+                    <div className="rounded-md border">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="border-b">
+                            <th className="p-3 text-left">Endpoint</th>
+                            <th className="p-3 text-left">Event</th>
+                            <th className="p-3 text-left">Status</th>
+                            <th className="p-3 text-left">Response Time</th>
+                            <th className="p-3 text-left">Timestamp</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="border-b">
+                            <td className="p-3">api.example.com/webhook</td>
+                            <td className="p-3">user.created</td>
+                            <td className="p-3">
+                              <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">
+                                200
+                              </span>
+                            </td>
+                            <td className="p-3">145ms</td>
+                            <td className="p-3">2 min ago</td>
+                          </tr>
+                          <tr className="border-b">
+                            <td className="p-3">hooks.client.com/events</td>
+                            <td className="p-3">payment.failed</td>
+                            <td className="p-3">
+                              <span className="px-2 py-1 bg-red-100 text-red-800 text-xs rounded">
+                                500
+                              </span>
+                            </td>
+                            <td className="p-3">timeout</td>
+                            <td className="p-3">5 min ago</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Resource Usage</h4>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <span className="text-sm">Bandwidth (Monthly)</span>
+                          <span className="text-sm font-medium">
+                            847 GB / 1 TB
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className="bg-blue-600 h-2 rounded-full"
+                            style={{ width: "84.7%" }}
+                          ></div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <span className="text-sm">AI Tokens (Monthly)</span>
+                          <span className="text-sm font-medium">1.2M / 2M</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className="bg-green-600 h-2 rounded-full"
+                            style={{ width: "60%" }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Error Reports</h4>
+                    <div className="space-y-2">
+                      <div className="p-3 border rounded-lg">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="font-medium text-red-600">
+                              Database Connection Timeout
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              Affected 12 users • 5 minutes ago
+                            </div>
+                          </div>
+                          <Button variant="outline" size="sm">
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Developer Tools */}
+            {activeTab === "developer" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Developer Tools</CardTitle>
+                  <CardDescription>
+                    Environment variables, custom code injection, and testing
+                    tools
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Environment Variables</h4>
+                    <div className="space-y-3">
+                      {[
+                        {
+                          key: "DATABASE_URL",
+                          value: "postgresql://***",
+                          type: "Backend",
+                        },
+                        {
+                          key: "STRIPE_SECRET_KEY",
+                          value: "sk_***",
+                          type: "Backend",
+                        },
+                        {
+                          key: "REACT_APP_API_URL",
+                          value: "https://api.example.com",
+                          type: "Frontend",
+                        },
+                      ].map((env, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-3 border rounded-lg"
+                        >
+                          <div>
+                            <div className="font-medium">{env.key}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {env.value}
+                            </div>
+                            <div className="text-xs text-blue-600">
+                              {env.type}
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button variant="outline" size="sm">
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <Copy className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <Button className="gap-2">
+                      <Plus className="h-4 w-4" />
+                      Add Variable
+                    </Button>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Custom Code Injection</h4>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label>Global JavaScript</Label>
+                        <Textarea
+                          placeholder="// Custom JavaScript code here"
+                          rows={4}
+                        />
+                        <p className="text-sm text-muted-foreground">
+                          Injected into all pages before &lt;/body&gt;
+                        </p>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Global CSS</Label>
+                        <Textarea
+                          placeholder="/* Custom CSS styles here */"
+                          rows={4}
+                        />
+                        <p className="text-sm text-muted-foreground">
+                          Injected into all pages in &lt;head&gt;
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">API Testing Tools</h4>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <Card className="p-4">
+                        <h5 className="font-medium mb-2">Webhook Tester</h5>
+                        <div className="space-y-2">
+                          <Input placeholder="Webhook URL" />
+                          <Select>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Event Type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="user.created">
+                                user.created
+                              </SelectItem>
+                              <SelectItem value="payment.success">
+                                payment.success
+                              </SelectItem>
+                              <SelectItem value="project.completed">
+                                project.completed
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <Button className="w-full">Send Test</Button>
+                        </div>
+                      </Card>
+
+                      <Card className="p-4">
+                        <h5 className="font-medium mb-2">CLI Tools</h5>
+                        <div className="space-y-2">
+                          <Button
+                            variant="outline"
+                            className="w-full justify-start gap-2"
+                          >
+                            <Code className="h-4 w-4" />
+                            Open Terminal
+                          </Button>
+                          <Button
+                            variant="outline"
+                            className="w-full justify-start gap-2"
+                          >
+                            <Download className="h-4 w-4" />
+                            Download Logs
+                          </Button>
+                          <Button
+                            variant="outline"
+                            className="w-full justify-start gap-2"
+                          >
+                            <Database className="h-4 w-4" />
+                            Database Console
+                          </Button>
+                        </div>
+                      </Card>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Communication */}
+            {activeTab === "communication" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Communication & Messaging</CardTitle>
+                  <CardDescription>
+                    Configure system-wide communication settings and social
+                    media
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <h4 className="font-medium">System Contact Information</h4>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label>Primary Phone Number</Label>
+                        <Input placeholder="+1 (555) 123-4567" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Support Email</Label>
+                        <Input placeholder="support@yourplatform.com" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Sales Phone</Label>
+                        <Input placeholder="+1 (555) 123-4568" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Sales Email</Label>
+                        <Input placeholder="sales@yourplatform.com" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">
+                      Default Auto-Posting Settings
+                    </h4>
+
+                    <div className="space-y-3">
+                      <div className="p-3 border rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-3">
+                            <Globe className="h-5 w-5 text-blue-600" />
+                            <span className="font-medium">
+                              Google My Business
+                            </span>
+                          </div>
+                          <Switch defaultChecked />
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          Default auto-posting behavior for new business
+                          accounts
+                        </div>
+                      </div>
+
+                      <div className="p-3 border rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-3">
+                            <MessageSquare className="h-5 w-5 text-blue-500" />
+                            <span className="font-medium">Facebook Pages</span>
+                          </div>
+                          <Switch />
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          Enable Facebook posting for new accounts by default
+                        </div>
+                      </div>
+
+                      <div className="p-3 border rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-3">
+                            <Camera className="h-5 w-5 text-pink-500" />
+                            <span className="font-medium">Instagram</span>
+                          </div>
+                          <Switch />
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          Enable Instagram posting for new accounts by default
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Social Media Templates</h4>
+                    <div className="space-y-3">
+                      <div className="space-y-2">
+                        <Label>Default Post Template</Label>
+                        <Textarea
+                          placeholder="🎉 Check out our latest project! #business #success"
+                          rows={3}
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Project Completion Template</Label>
+                        <Textarea
+                          placeholder="✅ Another successful project completed! We're proud to deliver quality results for our clients. #projectcomplete #quality"
+                          rows={3}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">
+                      SMS & Communication Settings
+                    </h4>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label>SMS Provider</Label>
+                        <Select defaultValue="twilio">
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="twilio">Twilio</SelectItem>
+                            <SelectItem value="aws">AWS SNS</SelectItem>
+                            <SelectItem value="messagebird">
+                              MessageBird
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Default Sender ID</Label>
+                        <Input placeholder="YourBrand" />
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Legal & Admin */}
+            {activeTab === "legal" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Legal & Administrative Settings</CardTitle>
+                  <CardDescription>
+                    Manage terms of service, privacy policy, and legal
+                    compliance
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Legal Documents</h4>
+                    <div className="space-y-3">
+                      <div className="p-4 border rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <h5 className="font-medium">Terms of Service</h5>
+                          <div className="flex gap-2">
+                            <Button variant="outline" size="sm">
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Last updated: March 1, 2024
+                        </p>
+                        <div className="mt-2">
+                          <Button variant="outline" size="sm" className="gap-2">
+                            <Upload className="h-4 w-4" />
+                            Upload New Version
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="p-4 border rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <h5 className="font-medium">Privacy Policy</h5>
+                          <div className="flex gap-2">
+                            <Button variant="outline" size="sm">
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Last updated: March 1, 2024
+                        </p>
+                        <div className="mt-2">
+                          <Button variant="outline" size="sm" className="gap-2">
+                            <Upload className="h-4 w-4" />
+                            Upload New Version
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="p-4 border rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <h5 className="font-medium">Cookie Policy</h5>
+                          <div className="flex gap-2">
+                            <Button variant="outline" size="sm">
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          Last updated: February 15, 2024
+                        </p>
+                        <div className="mt-2">
+                          <Button variant="outline" size="sm" className="gap-2">
+                            <Upload className="h-4 w-4" />
+                            Upload New Version
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Compliance Settings</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label>GDPR Compliance Mode</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Enable EU data protection compliance features
+                          </p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label>CCPA Compliance Mode</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Enable California privacy compliance features
+                          </p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label>Age Verification Required</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Require age verification for new accounts
+                          </p>
+                        </div>
+                        <Switch />
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Legal Contact Information</h4>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label>Legal Entity Name</Label>
+                        <Input placeholder="Your Company Legal Name LLC" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Legal Contact Email</Label>
+                        <Input placeholder="legal@yourcompany.com" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Business Registration Number</Label>
+                        <Input placeholder="12345678" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Tax ID / VAT Number</Label>
+                        <Input placeholder="US123456789" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Copyright & Disclaimers</h4>
+                    <div className="space-y-2">
+                      <Label>Copyright Notice</Label>
+                      <Textarea
+                        placeholder="© 2024 Your Company Name. All rights reserved."
+                        rows={2}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>General Disclaimer</Label>
+                      <Textarea
+                        placeholder="The information provided on this platform is for general informational purposes only..."
+                        rows={4}
                       />
                     </div>
                   </div>
