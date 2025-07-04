@@ -956,7 +956,7 @@ export default function ProjectDetail() {
                           onClick={() => fileInputRef.current?.click()}
                         >
                           <Plus className="h-4 w-4" />
-                          Add First Photo
+                          Add First Media
                         </Button>
                       </div>
                     )}
