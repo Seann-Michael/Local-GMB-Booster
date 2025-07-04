@@ -259,7 +259,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/support" className="flex items-center">
+                    <Link to="/admin-support" className="flex items-center">
                       <MessageSquare className="mr-2 h-4 w-4" />
                       <span>Support</span>
                     </Link>
