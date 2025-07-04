@@ -35,7 +35,7 @@ import { AgencyAdminLayout } from "@/components/AgencyAdminLayout";
 import {
   Search,
   Filter,
-  MoreHorizontal,
+  MoreVertical,
   Eye,
   Edit,
   UserPlus,
@@ -373,7 +373,7 @@ export default function AgencyClientManagement() {
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
-                              <MoreHorizontal className="h-4 w-4" />
+                              <MoreVertical className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
