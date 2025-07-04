@@ -24,6 +24,7 @@ import NotFound from "./pages/NotFound";
 import AgencyAdmin from "./pages/AgencyAdmin";
 import AgencyClientManagement from "./pages/AgencyClientManagement";
 import AddAgencyClient from "./pages/AddAgencyClient";
+import AgencyCommission from "./pages/AgencyCommission";
 
 const queryClient = new QueryClient();
 
