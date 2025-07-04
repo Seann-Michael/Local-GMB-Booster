@@ -71,7 +71,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         location.pathname === "/" || location.pathname.startsWith("/project"),
     },
     {
-      label: "Photos",
+      label: "Gallery",
       href: "/photos",
       icon: Camera,
       active: location.pathname === "/photos",
