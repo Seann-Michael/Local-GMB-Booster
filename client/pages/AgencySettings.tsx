@@ -70,11 +70,6 @@ interface AgencySettings {
   billingContact: string;
   billingEmail: string;
   autoRenewal: boolean;
-
-  // Branding
-  primaryColor: string;
-  secondaryColor: string;
-  customDomain: string;
 }
 
 export default function AgencySettings() {
@@ -112,11 +107,6 @@ export default function AgencySettings() {
     billingContact: "Jane Smith",
     billingEmail: "billing@digitalmarketingpro.com",
     autoRenewal: true,
-
-    // Branding
-    primaryColor: "#3b82f6",
-    secondaryColor: "#6366f1",
-    customDomain: "",
   });
 
   const [activeTab, setActiveTab] = useState("general");
@@ -174,7 +164,6 @@ export default function AgencySettings() {
     { id: "notifications", label: "Notifications", icon: Bell },
     { id: "security", label: "Security", icon: Shield },
     { id: "billing", label: "Billing", icon: CreditCard },
-    { id: "branding", label: "Branding", icon: Camera },
   ];
 
   return (
