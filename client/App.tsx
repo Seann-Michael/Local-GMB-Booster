@@ -29,6 +29,9 @@ import AgencyAnalytics from "./pages/AgencyAnalytics";
 import AgencyReports from "./pages/AgencyReports";
 import AgencyBilling from "./pages/AgencyBilling";
 import AgencyBusinessOwners from "./pages/AgencyBusinessOwners";
+import AgencyAdminUsers from "./pages/AgencyAdminUsers";
+import AgencySettings from "./pages/AgencySettings";
+import SuperAdminAgencyManagement from "./pages/SuperAdminAgencyManagement";
 
 const queryClient = new QueryClient();
 
