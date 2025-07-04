@@ -270,23 +270,44 @@ export default function Gallery() {
             </p>
           </div>
 
-          {/* Sort Dropdown - Separate from filters */}
-          <div className="flex items-center gap-2">
-            <Label className="text-sm text-muted-foreground">Sort:</Label>
-            <Select
-              value={filters.sortOrder}
-              onValueChange={(value: "newest" | "oldest") =>
-                updateFilter("sortOrder", value)
-              }
-            >
-              <SelectTrigger className="w-40">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="newest">Newest First</SelectItem>
-                <SelectItem value="oldest">Oldest First</SelectItem>
-              </SelectContent>
-            </Select>
+          {/* Sort and Thumbnail Size Controls */}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Label className="text-sm text-muted-foreground">Sort:</Label>
+              <Select
+                value={filters.sortOrder}
+                onValueChange={(value: "newest" | "oldest") =>
+                  updateFilter("sortOrder", value)
+                }
+              >
+                <SelectTrigger className="w-40">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="newest">Newest First</SelectItem>
+                  <SelectItem value="oldest">Oldest First</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Label className="text-sm text-muted-foreground">Size:</Label>
+              <Select
+                value={filters.thumbnailSize}
+                onValueChange={(value: "small" | "medium" | "large") =>
+                  updateFilter("thumbnailSize", value)
+                }
+              >
+                <SelectTrigger className="w-32">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="small">Small</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="large">Large</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <Button
