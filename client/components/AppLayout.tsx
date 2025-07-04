@@ -76,6 +76,12 @@ export function AppLayout({ children }: AppLayoutProps) {
       icon: Camera,
       active: location.pathname === "/gallery",
     },
+    {
+      label: "Support",
+      href: "/support",
+      icon: MessageSquare,
+      active: location.pathname === "/support",
+    },
   ];
 
   return (
