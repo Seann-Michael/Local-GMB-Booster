@@ -155,21 +155,9 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
         </nav>
 
-        {/* Sidebar Footer */}
+        {/* Sidebar Footer - Removed settings */}
         <div className="p-2 border-t space-y-1">
-          <Link to="/settings">
-            <Button
-              variant="ghost"
-              className={cn(
-                "w-full justify-start gap-2",
-                sidebarCollapsed && "px-2",
-              )}
-              size="sm"
-            >
-              <Settings className="h-4 w-4" />
-              {!sidebarCollapsed && <span>Settings</span>}
-            </Button>
-          </Link>
+          {/* Settings moved to top header */}
         </div>
       </div>
 
@@ -213,6 +201,13 @@ export function AppLayout({ children }: AppLayoutProps) {
               <Button variant="ghost" size="icon" className="hidden sm:flex">
                 <Search className="h-5 w-5" />
               </Button>
+
+              {/* Settings */}
+              <Link to="/settings">
+                <Button variant="ghost" size="icon">
+                  <Settings className="h-4 w-4 md:h-5 md:w-5" />
+                </Button>
+              </Link>
 
               {/* Notifications */}
               <Link to="/notifications">
@@ -325,17 +320,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               </Button>
             </Link>
 
-            {/* Settings Button */}
-            <Link to="/settings" className="flex-1">
-              <Button
-                variant="ghost"
-                className="w-full flex flex-col items-center gap-1 h-auto py-2 px-1"
-                size="sm"
-              >
-                <Settings className="h-5 w-5" />
-                <span className="text-xs font-medium">Settings</span>
-              </Button>
-            </Link>
+            {/* Settings moved to top header gear icon */}
           </div>
         </nav>
       </div>

@@ -182,6 +182,7 @@ export default function SuperAdminSettings() {
     { id: "email", label: "Email", icon: Mail },
     { id: "notifications", label: "Notifications", icon: Bell },
     { id: "ai", label: "AI Settings", icon: BarChart3 },
+    { id: "integrations", label: "Integrations", icon: Globe },
     { id: "financial", label: "Financial", icon: DollarSign },
     { id: "database", label: "Database", icon: Database },
   ];
@@ -918,6 +919,141 @@ export default function SuperAdminSettings() {
                           updateSetting("enableSubscriptions", checked)
                         }
                       />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Integrations Settings */}
+            {activeTab === "integrations" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Integration Configuration</CardTitle>
+                  <CardDescription>
+                    Manage third-party integrations and API connections
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <Card className="p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Globe className="h-5 w-5 text-blue-500" />
+                        <h4 className="font-medium">Google My Business</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Connect to Google My Business API for location
+                        management
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span className="text-sm font-medium">Connected</span>
+                      </div>
+                    </Card>
+
+                    <Card className="p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Database className="h-5 w-5 text-purple-500" />
+                        <h4 className="font-medium">Google Analytics</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Analytics integration for advanced reporting
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                        <span className="text-sm font-medium">
+                          Pending Setup
+                        </span>
+                      </div>
+                    </Card>
+
+                    <Card className="p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Mail className="h-5 w-5 text-green-500" />
+                        <h4 className="font-medium">Mailchimp</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Email marketing and automation platform
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                        <span className="text-sm font-medium">
+                          Not Connected
+                        </span>
+                      </div>
+                    </Card>
+
+                    <Card className="p-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <DollarSign className="h-5 w-5 text-blue-500" />
+                        <h4 className="font-medium">Stripe</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Payment processing and subscription management
+                      </p>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span className="text-sm font-medium">Connected</span>
+                      </div>
+                    </Card>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Integration Settings</h4>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label>Enable Third-Party Integrations</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Allow external services to connect via API
+                          </p>
+                        </div>
+                        <Switch checked={true} onCheckedChange={() => {}} />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label>Auto-sync Data</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Automatically synchronize data with connected
+                            services
+                          </p>
+                        </div>
+                        <Switch checked={true} onCheckedChange={() => {}} />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label>Enable Webhooks</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Allow real-time notifications from integrated
+                            services
+                          </p>
+                        </div>
+                        <Switch checked={false} onCheckedChange={() => {}} />
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  <div className="space-y-4">
+                    <h4 className="font-medium">API Management</h4>
+                    <div className="space-y-2">
+                      <Button variant="outline" className="w-full gap-2">
+                        <Globe className="h-4 w-4" />
+                        Manage API Keys
+                      </Button>
+                      <Button variant="outline" className="w-full gap-2">
+                        <Database className="h-4 w-4" />
+                        View Integration Logs
+                      </Button>
+                      <Button variant="outline" className="w-full gap-2">
+                        <Settings className="h-4 w-4" />
+                        Configure Webhooks
+                      </Button>
                     </div>
                   </div>
                 </CardContent>

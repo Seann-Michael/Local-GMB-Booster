@@ -50,6 +50,7 @@ import {
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { isAgencyAdmin, isSuperAdmin } from "@/lib/auth";
+import { ArrowUpDown } from "lucide-react";
 
 interface SupportTicket {
   id: string;
@@ -77,6 +78,11 @@ export default function Support() {
   const { toast } = useToast();
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [sortField, setSortField] = useState<string>("createdDate");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+  const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(
+    null,
+  );
   const [formData, setFormData] = useState({
     title: "",
     category: "",
@@ -284,6 +290,36 @@ export default function Support() {
     );
   };
 
+  const handleSort = (field: string) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDirection("asc");
+    }
+  };
+
+  const sortedTickets = [...tickets].sort((a, b) => {
+    let aValue = a[sortField as keyof SupportTicket];
+    let bValue = b[sortField as keyof SupportTicket];
+
+    if (typeof aValue === "string") aValue = aValue.toLowerCase();
+    if (typeof bValue === "string") bValue = bValue.toLowerCase();
+
+    if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
+    if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
+    return 0;
+  });
+
+  const handleRowClick = (ticket: SupportTicket) => {
+    setSelectedTicket(ticket);
+    // Here you could navigate to ticket detail page or open modal
+    toast({
+      title: "Opening Ticket",
+      description: `Opening ticket #${ticket.id}: ${ticket.title}`,
+    });
+  };
+
   const getLayoutComponent = () => {
     const role = getCurrentUserRole();
     if (role === "super-admin") return SuperAdminLayout;
@@ -434,18 +470,76 @@ export default function Support() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Ticket</TableHead>
-                      <TableHead>Category</TableHead>
-                      <TableHead>Priority</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Created</TableHead>
-                      <TableHead>Updated</TableHead>
+                      <TableHead>
+                        <Button
+                          variant="ghost"
+                          className="h-8 p-0 font-medium"
+                          onClick={() => handleSort("title")}
+                        >
+                          Ticket
+                          <ArrowUpDown className="ml-2 h-4 w-4" />
+                        </Button>
+                      </TableHead>
+                      <TableHead>
+                        <Button
+                          variant="ghost"
+                          className="h-8 p-0 font-medium"
+                          onClick={() => handleSort("category")}
+                        >
+                          Category
+                          <ArrowUpDown className="ml-2 h-4 w-4" />
+                        </Button>
+                      </TableHead>
+                      <TableHead>
+                        <Button
+                          variant="ghost"
+                          className="h-8 p-0 font-medium"
+                          onClick={() => handleSort("priority")}
+                        >
+                          Priority
+                          <ArrowUpDown className="ml-2 h-4 w-4" />
+                        </Button>
+                      </TableHead>
+                      <TableHead>
+                        <Button
+                          variant="ghost"
+                          className="h-8 p-0 font-medium"
+                          onClick={() => handleSort("status")}
+                        >
+                          Status
+                          <ArrowUpDown className="ml-2 h-4 w-4" />
+                        </Button>
+                      </TableHead>
+                      <TableHead>
+                        <Button
+                          variant="ghost"
+                          className="h-8 p-0 font-medium"
+                          onClick={() => handleSort("createdDate")}
+                        >
+                          Created
+                          <ArrowUpDown className="ml-2 h-4 w-4" />
+                        </Button>
+                      </TableHead>
+                      <TableHead>
+                        <Button
+                          variant="ghost"
+                          className="h-8 p-0 font-medium"
+                          onClick={() => handleSort("updatedDate")}
+                        >
+                          Updated
+                          <ArrowUpDown className="ml-2 h-4 w-4" />
+                        </Button>
+                      </TableHead>
                       <TableHead>Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {tickets.map((ticket) => (
-                      <TableRow key={ticket.id}>
+                    {sortedTickets.map((ticket) => (
+                      <TableRow
+                        key={ticket.id}
+                        className="cursor-pointer hover:bg-muted/50"
+                        onClick={() => handleRowClick(ticket)}
+                      >
                         <TableCell>
                           <div>
                             <div className="font-medium">{ticket.title}</div>
@@ -465,7 +559,7 @@ export default function Support() {
                         <TableCell>
                           {new Date(ticket.updatedDate).toLocaleDateString()}
                         </TableCell>
-                        <TableCell>
+                        <TableCell onClick={(e) => e.stopPropagation()}>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button variant="ghost" className="h-8 w-8 p-0">

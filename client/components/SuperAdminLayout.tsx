@@ -83,6 +83,12 @@ export function SuperAdminLayout({
       active: location.pathname.startsWith("/super-admin/agencies"),
     },
     {
+      label: "Super Admin Staff",
+      href: "/super-admin/staff",
+      icon: User,
+      active: location.pathname.startsWith("/super-admin/staff"),
+    },
+    {
       label: "Financial Dashboard",
       href: "/super-admin/financial",
       icon: DollarSign,
@@ -152,25 +158,9 @@ export function SuperAdminLayout({
           </div>
         </nav>
 
-        {/* Sidebar Footer */}
+        {/* Sidebar Footer - Settings moved to header */}
         <div className="p-2 border-t space-y-1">
-          <Link to="/super-admin/settings">
-            <Button
-              variant={
-                location.pathname === "/super-admin/settings"
-                  ? "secondary"
-                  : "ghost"
-              }
-              className={cn(
-                "w-full justify-start gap-2",
-                sidebarCollapsed && "px-2",
-              )}
-              size="sm"
-            >
-              <Settings className="h-4 w-4" />
-              {!sidebarCollapsed && <span>Settings</span>}
-            </Button>
-          </Link>
+          {/* Settings moved to top header */}
         </div>
       </div>
 
@@ -205,6 +195,13 @@ export function SuperAdminLayout({
               <Button variant="ghost" size="icon" className="hidden sm:flex">
                 <Search className="h-5 w-5" />
               </Button>
+
+              {/* Settings */}
+              <Link to="/super-admin/settings">
+                <Button variant="ghost" size="icon">
+                  <Settings className="h-4 w-4 md:h-5 md:w-5" />
+                </Button>
+              </Link>
 
               {/* Notifications */}
               <div className="relative">
@@ -251,12 +248,7 @@ export function SuperAdminLayout({
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link to="/super-admin/settings" className="cursor-pointer">
-                      <User className="mr-2 h-4 w-4" />
-                      <span>Settings</span>
-                    </Link>
-                  </DropdownMenuItem>
+                  {/* Settings moved to gear icon in header */}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut}>
                     <LogOut className="mr-2 h-4 w-4" />

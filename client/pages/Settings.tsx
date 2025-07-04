@@ -212,9 +212,116 @@ export default function Settings() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
-                    Billing settings coming soon.
-                  </p>
+                  <div className="space-y-6">
+                    {/* Current Plan Overview */}
+                    <div className="grid gap-4 md:grid-cols-3">
+                      <div className="p-4 border rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Shield className="h-4 w-4 text-muted-foreground" />
+                          <span className="text-sm font-medium">
+                            Current Plan
+                          </span>
+                        </div>
+                        <div className="text-2xl font-bold">Professional</div>
+                        <p className="text-xs text-muted-foreground">
+                          1/5 users
+                        </p>
+                      </div>
+
+                      <div className="p-4 border rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <CreditCard className="h-4 w-4 text-muted-foreground" />
+                          <span className="text-sm font-medium">
+                            Monthly Total
+                          </span>
+                        </div>
+                        <div className="text-2xl font-bold">$49</div>
+                        <p className="text-xs text-muted-foreground">
+                          Next bill: Apr 15, 2024
+                        </p>
+                      </div>
+
+                      <div className="p-4 border rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <User className="h-4 w-4 text-muted-foreground" />
+                          <span className="text-sm font-medium">
+                            Available Slots
+                          </span>
+                        </div>
+                        <div className="text-2xl font-bold">4</div>
+                        <p className="text-xs text-muted-foreground">
+                          Add more users anytime
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Payment Information */}
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-medium mb-2">Payment Method</h4>
+                          <div className="flex items-center gap-3 p-3 border rounded-lg">
+                            <CreditCard className="h-5 w-5" />
+                            <div>
+                              <p className="font-medium">
+                                •••• •••• ••���• 4242
+                              </p>
+                              <p className="text-sm text-muted-foreground">
+                                Expires 12/25
+                              </p>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="ml-auto"
+                            >
+                              Update
+                            </Button>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="font-medium mb-2">Billing Address</h4>
+                          <div className="text-sm text-muted-foreground space-y-1">
+                            <p>Joe's Pizza</p>
+                            <p>123 Main St</p>
+                            <p>New York, NY 10001</p>
+                            <p>United States</p>
+                          </div>
+                          <Button variant="ghost" size="sm" className="mt-2">
+                            Update Address
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-medium mb-2">Next Payment</h4>
+                          <div className="p-3 bg-muted rounded-lg space-y-2">
+                            <div className="flex justify-between items-center">
+                              <span>Amount Due:</span>
+                              <span className="font-medium">$49.00</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span>Due Date:</span>
+                              <span className="font-medium">Apr 15, 2024</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="font-medium mb-2">Auto-renewal</h4>
+                          <p className="text-sm text-muted-foreground">
+                            Your subscription will automatically renew on April
+                            15, 2024. You can cancel anytime.
+                          </p>
+                          <Button variant="outline" size="sm" className="mt-2">
+                            Manage Auto-renewal
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             )}
