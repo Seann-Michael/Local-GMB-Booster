@@ -1,137 +1,390 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { SuperAdminLayout } from "@/components/SuperAdminLayout";
 import {
   Users,
   Activity,
-  Server,
   TrendingUp,
   TrendingDown,
   UserPlus,
-  UserMinus,
-  Crown,
-  Clock,
-  CheckCircle2,
+  Building2,
+  Star,
+  BarChart3,
+  ArrowUp,
+  ArrowDown,
+  Eye,
+  EyeOff,
 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export default function SuperAdmin() {
-  // Mock data for comprehensive analytics
-  const systemStats = {
-    systemHealth: 98.5,
-    apiHealth: 99.2,
-    serverLoad: 67,
-    newSignupsToday: 12,
-    newSignupsWeek: 67,
-    newSignupsMonth: 289,
-    canceledToday: 2,
-    canceledWeek: 8,
-    canceledMonth: 23,
-    freeTrials: 23,
-    paidUsers: 66,
-    avgLifetime: "14.5 months",
+  const [timeFrame, setTimeFrame] = useState("30d");
+  const [hideMetrics, setHideMetrics] = useState(true); // Default: metrics hidden
+
+  // Mock analytics data based on time frame
+  const analyticsData = {
+    "1d": {
+      activeUsers: 1247,
+      dailyActiveUsers: 812,
+      newSignups: 45,
+      userRetention: 87.3,
+      apiCalls: 45678,
+      activeProjects: 234,
+      reviewsGenerated: 123,
+    },
+    "7d": {
+      activeUsers: 1289,
+      dailyActiveUsers: 834,
+      newSignups: 289,
+      userRetention: 86.8,
+      apiCalls: 298765,
+      activeProjects: 267,
+      reviewsGenerated: 856,
+    },
+    "30d": {
+      activeUsers: 1456,
+      dailyActiveUsers: 943,
+      newSignups: 1247,
+      userRetention: 87.3,
+      apiCalls: 987654,
+      activeProjects: 289,
+      reviewsGenerated: 3456,
+    },
+    "60d": {
+      activeUsers: 1623,
+      dailyActiveUsers: 1056,
+      newSignups: 2134,
+      userRetention: 88.1,
+      apiCalls: 1876543,
+      activeProjects: 334,
+      reviewsGenerated: 6789,
+    },
+    "90d": {
+      activeUsers: 1789,
+      dailyActiveUsers: 1167,
+      newSignups: 3421,
+      userRetention: 88.9,
+      apiCalls: 2765432,
+      activeProjects: 389,
+      reviewsGenerated: 9876,
+    },
+    "180d": {
+      activeUsers: 2156,
+      dailyActiveUsers: 1402,
+      newSignups: 6789,
+      userRetention: 89.5,
+      apiCalls: 5432109,
+      activeProjects: 456,
+      reviewsGenerated: 18765,
+    },
+    "365d": {
+      activeUsers: 2847,
+      dailyActiveUsers: 1851,
+      newSignups: 12456,
+      userRetention: 90.2,
+      apiCalls: 9876543,
+      activeProjects: 567,
+      reviewsGenerated: 34567,
+    },
   };
 
-  const trends = {
-    users: { value: 12.5, isPositive: true },
-    revenue: { value: 8.3, isPositive: true },
-    cancellations: { value: 15.2, isPositive: false },
-    newSignups: { value: 23.1, isPositive: true },
-  };
+  const currentData = analyticsData[timeFrame as keyof typeof analyticsData];
+
+  // User growth trend data for charts
+  const userGrowthData = [
+    { period: "6 months ago", users: 1234, growth: "+15%" },
+    { period: "5 months ago", users: 1456, growth: "+18%" },
+    { period: "4 months ago", users: 1623, growth: "+11%" },
+    { period: "3 months ago", users: 1789, growth: "+10%" },
+    { period: "2 months ago", users: 1987, growth: "+11%" },
+    { period: "Last month", users: 2156, growth: "+8%" },
+    { period: "This month", users: 2847, growth: "+32%" },
+  ];
+
+  const usageMetrics = [
+    {
+      label: "API Calls Today",
+      value: "45,678",
+      change: "+15%",
+      trend: "up",
+      icon: Activity,
+    },
+    {
+      label: "Active Projects",
+      value: currentData.activeProjects.toString(),
+      change: "+8%",
+      trend: "up",
+      icon: Building2,
+    },
+    {
+      label: "Reviews Generated",
+      value: currentData.reviewsGenerated.toLocaleString(),
+      change: "+12%",
+      trend: "up",
+      icon: Star,
+    },
+    {
+      label: "User Sessions",
+      value: "12,456",
+      change: "+23%",
+      trend: "up",
+      icon: Users,
+    },
+  ];
 
   return (
-    <SuperAdminLayout title="Local GMB Booster Analytics" breadcrumbs={[]}>
+    <SuperAdminLayout>
       <div className="space-y-6">
-        {/* Financial Analytics Row */}
-        <div className="grid gap-6 md:grid-cols-4">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Analytics Dashboard</h1>
+            <p className="text-muted-foreground">
+              Software performance and user analytics
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={() => setHideMetrics(!hideMetrics)}
+              className="gap-2"
+            >
+              {hideMetrics ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
+              {hideMetrics ? "Show Metrics" : "Hide Metrics"}
+            </Button>
+            <Select value={timeFrame} onValueChange={setTimeFrame}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select time frame" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1d">Last 24 Hours</SelectItem>
+                <SelectItem value="7d">Last 7 Days</SelectItem>
+                <SelectItem value="30d">Last 30 Days</SelectItem>
+                <SelectItem value="60d">Last 60 Days</SelectItem>
+                <SelectItem value="90d">Last 90 Days</SelectItem>
+                <SelectItem value="180d">Last 180 Days</SelectItem>
+                <SelectItem value="365d">Last 365 Days</SelectItem>
+              </SelectContent>
+            </Select>
+            <Link to="/super-admin/financial">
+              <Button className="gap-2">
+                <BarChart3 className="h-4 w-4" />
+                Financial Dashboard
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Key Performance Metrics - Conditionally visible */}
+        {!hideMetrics && (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Active Users
+                </CardTitle>
+                <Users className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {currentData.activeUsers.toLocaleString()}
+                </div>
+                <p className="text-xs text-muted-foreground flex items-center">
+                  <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
+                  +12% from last period
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Daily Active Users
+                </CardTitle>
+                <Activity className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {currentData.dailyActiveUsers.toLocaleString()}
+                </div>
+                <p className="text-xs text-muted-foreground flex items-center">
+                  <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
+                  +8% from last period
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  New Signups
+                </CardTitle>
+                <UserPlus className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {currentData.newSignups.toLocaleString()}
+                </div>
+                <p className="text-xs text-muted-foreground flex items-center">
+                  <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
+                  +23% from last period
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  User Retention
+                </CardTitle>
+                <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {currentData.userRetention}%
+                </div>
+                <p className="text-xs text-muted-foreground flex items-center">
+                  <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
+                  +5.2% from last period
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Analytics Charts */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          {/* User Growth Chart */}
           <Card>
-            <CardContent className="p-4">
-              <div className="text-center">
-                <Crown className="h-6 w-6 mx-auto mb-2 text-yellow-600" />
-                <div className="text-lg font-bold">{systemStats.paidUsers}</div>
-                <div className="text-sm text-muted-foreground">Paid Users</div>
+            <CardHeader>
+              <CardTitle>User Growth Trends</CardTitle>
+              <CardDescription>
+                User acquisition and retention over time
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {userGrowthData.map((data, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className="w-20 text-sm font-medium truncate">
+                        {data.period}
+                      </div>
+                      <div className="flex-1 bg-muted rounded-full h-2 relative min-w-[100px]">
+                        <div
+                          className="bg-blue-500 h-2 rounded-full transition-all"
+                          style={{
+                            width: `${Math.max((data.users / 3000) * 100, 10)}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium w-12 text-right">
+                        {data.users.toLocaleString()}
+                      </span>
+                      <span className="text-xs text-green-600 w-10">
+                        {data.growth}
+                      </span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
 
+          {/* Platform Usage Analytics */}
           <Card>
-            <CardContent className="p-4">
-              <div className="text-center">
-                <Clock className="h-6 w-6 mx-auto mb-2 text-blue-600" />
-                <div className="text-lg font-bold">
-                  {systemStats.freeTrials}
-                </div>
-                <div className="text-sm text-muted-foreground">Free Trials</div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="text-center">
-                <UserPlus className="h-6 w-6 mx-auto mb-2 text-green-600" />
-                <div className="text-lg font-bold">
-                  {systemStats.newSignupsMonth}
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  New This Month
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="text-center">
-                <UserMinus className="h-6 w-6 mx-auto mb-2 text-red-600" />
-                <div className="text-lg font-bold">
-                  {systemStats.canceledMonth}
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  Canceled This Month
-                </div>
+            <CardHeader>
+              <CardTitle>Platform Usage</CardTitle>
+              <CardDescription>
+                Real-time system activity and engagement
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {usageMetrics.map((metric, index) => {
+                  const Icon = metric.icon;
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-3 bg-muted rounded-lg"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Icon className="h-5 w-5 text-blue-500" />
+                        <div>
+                          <p className="font-medium">{metric.label}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {metric.value} total
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        {metric.trend === "up" ? (
+                          <ArrowUp className="h-3 w-3 text-green-500" />
+                        ) : (
+                          <ArrowDown className="h-3 w-3 text-red-500" />
+                        )}
+                        <span
+                          className={`text-sm ${
+                            metric.trend === "up"
+                              ? "text-green-600"
+                              : "text-red-600"
+                          }`}
+                        >
+                          {metric.change}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* System Health Dashboard */}
-        <div className="grid gap-6 md:grid-cols-3">
+        {/* Quick Actions */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Server className="h-5 w-5" />
-                System Status
+                <Users className="h-5 w-5" />
+                User Management
               </CardTitle>
+              <CardDescription>
+                Manage all users and their accounts
+              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm">API Health</span>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-600" />
-                  <span className="text-sm font-medium">
-                    {systemStats.apiHealth}%
-                  </span>
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Server Load</span>
-                <div className="flex items-center gap-2">
-                  <div className="h-2 w-16 bg-muted rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-green-600 rounded-full"
-                      style={{ width: `${systemStats.serverLoad}%` }}
-                    />
-                  </div>
-                  <span className="text-sm font-medium">
-                    {systemStats.serverLoad}%
-                  </span>
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Database</span>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-green-600" />
-                  <span className="text-sm font-medium">Online</span>
-                </div>
+            <CardContent>
+              <div className="space-y-2">
+                <Link to="/super-admin/users">
+                  <Button variant="outline" className="w-full gap-2">
+                    <Eye className="h-4 w-4" />
+                    View All Users
+                  </Button>
+                </Link>
+                <Link to="/super-admin/users/add">
+                  <Button className="w-full gap-2">
+                    <UserPlus className="h-4 w-4" />
+                    Add New User
+                  </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>
@@ -139,34 +392,27 @@ export default function SuperAdmin() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Activity className="h-5 w-5" />
-                User Activity
+                <Building2 className="h-5 w-5" />
+                Business Management
               </CardTitle>
+              <CardDescription>
+                Manage all businesses and their accounts
+              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Avg. User Lifetime</span>
-                <span className="text-sm font-medium">
-                  {systemStats.avgLifetime}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">New Today</span>
-                <span className="text-sm font-medium text-green-600">
-                  +{systemStats.newSignupsToday}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">New This Week</span>
-                <span className="text-sm font-medium text-green-600">
-                  +{systemStats.newSignupsWeek}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Canceled Today</span>
-                <span className="text-sm font-medium text-red-600">
-                  -{systemStats.canceledToday}
-                </span>
+            <CardContent>
+              <div className="space-y-2">
+                <Link to="/super-admin/businesses">
+                  <Button variant="outline" className="w-full gap-2">
+                    <Eye className="h-4 w-4" />
+                    View All Businesses
+                  </Button>
+                </Link>
+                <Link to="/super-admin/businesses/add">
+                  <Button className="w-full gap-2">
+                    <Building2 className="h-4 w-4" />
+                    Add New Business
+                  </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>
@@ -174,46 +420,55 @@ export default function SuperAdmin() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5" />
-                Growth Trends
+                <Building2 className="h-5 w-5" />
+                Agency Management
               </CardTitle>
+              <CardDescription>
+                Manage marketing agencies and partners
+              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm">User Growth</span>
-                <div className="flex items-center gap-1">
-                  <TrendingUp className="h-3 w-3 text-green-600" />
-                  <span className="text-sm font-medium text-green-600">
-                    +{trends.users.value}%
-                  </span>
-                </div>
+            <CardContent>
+              <div className="space-y-2">
+                <Link to="/super-admin/agencies">
+                  <Button variant="outline" className="w-full gap-2">
+                    <Eye className="h-4 w-4" />
+                    View All Agencies
+                  </Button>
+                </Link>
+                <Link to="/super-admin/agencies/add">
+                  <Button className="w-full gap-2">
+                    <Building2 className="h-4 w-4" />
+                    Add New Agency
+                  </Button>
+                </Link>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Revenue Growth</span>
-                <div className="flex items-center gap-1">
-                  <TrendingUp className="h-3 w-3 text-green-600" />
-                  <span className="text-sm font-medium text-green-600">
-                    +{trends.revenue.value}%
-                  </span>
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">New Signups</span>
-                <div className="flex items-center gap-1">
-                  <TrendingUp className="h-3 w-3 text-green-600" />
-                  <span className="text-sm font-medium text-green-600">
-                    +{trends.newSignups.value}%
-                  </span>
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Cancellations</span>
-                <div className="flex items-center gap-1">
-                  <TrendingDown className="h-3 w-3 text-red-600" />
-                  <span className="text-sm font-medium text-red-600">
-                    +{trends.cancellations.value}%
-                  </span>
-                </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BarChart3 className="h-5 w-5" />
+                Analytics & Reports
+              </CardTitle>
+              <CardDescription>
+                Financial metrics and system insights
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <Link to="/super-admin/financial">
+                  <Button variant="outline" className="w-full gap-2">
+                    <TrendingUp className="h-4 w-4" />
+                    Financial Dashboard
+                  </Button>
+                </Link>
+                <Link to="/super-admin/settings">
+                  <Button variant="outline" className="w-full gap-2">
+                    <Users className="h-4 w-4" />
+                    System Settings
+                  </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>
