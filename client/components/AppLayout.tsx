@@ -201,22 +201,22 @@ export function AppLayout({ children }: AppLayoutProps) {
               )}
             </div>
 
-            <div className="flex items-center gap-2">
-              {/* Search */}
-              <Button variant="ghost" size="icon">
+            <div className="flex items-center gap-1 md:gap-2">
+              {/* Search - Hide on small mobile */}
+              <Button variant="ghost" size="icon" className="hidden sm:flex">
                 <Search className="h-5 w-5" />
               </Button>
 
               {/* Notifications */}
               <Link to="/notifications">
                 <Button variant="ghost" size="icon" className="relative">
-                  <Bell className="h-5 w-5" />
+                  <Bell className="h-4 w-4 md:h-5 md:w-5" />
                   {notificationCount > 0 && (
                     <Badge
                       variant="destructive"
-                      className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                      className="absolute -top-1 -right-1 h-4 w-4 md:h-5 md:w-5 flex items-center justify-center p-0 text-xs"
                     >
-                      {notificationCount}
+                      {notificationCount > 9 ? "9+" : notificationCount}
                     </Badge>
                   )}
                 </Button>
