@@ -35,7 +35,7 @@ import { AgencyAdminLayout } from "@/components/AgencyAdminLayout";
 import {
   Search,
   Filter,
-  MoreHorizontal,
+  MoreVertical,
   Eye,
   Edit,
   UserPlus,
@@ -48,6 +48,8 @@ import {
   AlertCircle,
   CheckCircle,
   Clock,
+  Trash2,
+  Smartphone,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -420,7 +422,7 @@ export default function AgencyAdminUsers() {
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
-                              <MoreHorizontal className="h-4 w-4" />
+                              <MoreVertical className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
@@ -449,13 +451,13 @@ export default function AgencyAdminUsers() {
                               Login as User
                             </DropdownMenuItem>
                             <DropdownMenuItem>
-                              <Mail className="mr-2 h-4 w-4" />
-                              Send Invite
+                              <Smartphone className="mr-2 h-4 w-4" />
+                              Send Mobile App Link
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem className="text-destructive">
-                              <AlertCircle className="mr-2 h-4 w-4" />
-                              Suspend User
+                              <Trash2 className="mr-2 h-4 w-4" />
+                              Delete User
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
