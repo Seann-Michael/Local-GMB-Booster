@@ -42,7 +42,7 @@ export default function SignIn() {
             email: email,
             role: "agency",
             agencyId: "agency-001",
-            agencyName: "Digital Marketing Pro",
+            agencyName: "Business Owner",
           };
         } else {
           user = {
