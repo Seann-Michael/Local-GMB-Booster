@@ -1740,6 +1740,135 @@ export default function ProjectDetail() {
               </div>
             )}
 
+            {/* Documents Tab */}
+            {activeTab === "documents" && (
+              <Card key="documents-card">
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="h-5 w-5" />
+                    Project Documents
+                  </CardTitle>
+                  <Button
+                    onClick={() =>
+                      toast.success("Upload document functionality coming soon")
+                    }
+                    size="sm"
+                    className="gap-2"
+                  >
+                    <Plus className="h-4 w-4" />
+                    Upload Document
+                  </Button>
+                </CardHeader>
+                <CardContent>
+                  {project.documents && project.documents.length > 0 ? (
+                    <div className="space-y-3">
+                      {project.documents.map((doc) => (
+                        <div
+                          key={doc.id}
+                          className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50"
+                        >
+                          <div className="flex items-center gap-3">
+                            <FileText className="h-8 w-8 text-muted-foreground" />
+                            <div>
+                              <p className="font-medium">{doc.name}</p>
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                <span>
+                                  Uploaded on{" "}
+                                  {new Date(
+                                    doc.uploadedAt,
+                                  ).toLocaleDateString()}
+                                </span>
+                                <span>•</span>
+                                <span>by {doc.uploadedBy}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => window.open(doc.url, "_blank")}
+                            >
+                              <ExternalLink className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                const a = document.createElement("a");
+                                a.href = doc.url;
+                                a.download = doc.name;
+                                document.body.appendChild(a);
+                                a.click();
+                                document.body.removeChild(a);
+                                toast.success("Document downloaded");
+                              }}
+                            >
+                              <Download className="h-4 w-4" />
+                            </Button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm">
+                                  <MoreVertical className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem
+                                  onClick={() =>
+                                    toast.success(
+                                      "Edit document functionality coming soon",
+                                    )
+                                  }
+                                >
+                                  <Edit className="h-4 w-4 mr-2" />
+                                  Rename
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => {
+                                    if (
+                                      confirm(
+                                        "Are you sure you want to delete this document?",
+                                      )
+                                    ) {
+                                      toast.success("Document deleted");
+                                    }
+                                  }}
+                                  className="text-destructive focus:text-destructive"
+                                >
+                                  <Trash2 className="h-4 w-4 mr-2" />
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12 text-muted-foreground">
+                      <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <p>No documents uploaded yet</p>
+                      <p className="text-sm mt-1">
+                        Upload project documents, contracts, or files
+                      </p>
+                      <Button
+                        variant="outline"
+                        className="mt-4 gap-2"
+                        onClick={() =>
+                          toast.success(
+                            "Upload document functionality coming soon",
+                          )
+                        }
+                      >
+                        <Plus className="h-4 w-4" />
+                        Upload First Document
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
             {/* Activity Log Tab */}
             {activeTab === "activity" && (
               <Card>
