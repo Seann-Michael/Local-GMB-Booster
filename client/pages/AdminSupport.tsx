@@ -38,6 +38,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "@/lib/auth";
 
 interface SupportTicket {
@@ -218,49 +219,6 @@ export default function AdminSupport() {
         return <CheckCircle className="h-4 w-4" />;
       default:
         return <MessageSquare className="h-4 w-4" />;
-    }
-  };
-
-  const handleAddNote = async () => {
-    if (!newNote.trim() || !selectedTicket) return;
-
-    setIsAddingNote(true);
-    try {
-      const newResponse: SupportResponse = {
-        id: Date.now().toString(),
-        message: newNote,
-        author: currentUser?.name || "User",
-        authorRole: "Business Owner",
-        timestamp: new Date().toISOString(),
-      };
-
-      const updatedTicket = {
-        ...selectedTicket,
-        responses: [...selectedTicket.responses, newResponse],
-        updatedDate: new Date().toISOString().split("T")[0],
-      };
-
-      // Update localStorage
-      const existingTickets = JSON.parse(
-        localStorage.getItem("support_tickets") || "[]",
-      );
-      const updatedTickets = existingTickets.map((ticket: SupportTicket) =>
-        ticket.id === selectedTicket.id ? updatedTicket : ticket,
-      );
-      localStorage.setItem("support_tickets", JSON.stringify(updatedTickets));
-
-      setSelectedTicket(updatedTicket);
-      setTickets(
-        tickets.map((ticket) =>
-          ticket.id === selectedTicket.id ? updatedTicket : ticket,
-        ),
-      );
-      setNewNote("");
-      toast.success("Note added successfully!");
-    } catch (error) {
-      toast.error("Failed to add note. Please try again.");
-    } finally {
-      setIsAddingNote(false);
     }
   };
 
@@ -499,7 +457,9 @@ export default function AdminSupport() {
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => setSelectedTicket(ticket)}
+                          onClick={() =>
+                            navigate(`/admin/support/ticket/${ticket.id}`)
+                          }
                         >
                           View
                         </Button>
