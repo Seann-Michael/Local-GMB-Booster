@@ -283,6 +283,18 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
         </header>
 
+        {/* Mobile second header row with Add Project button */}
+        <div className="md:hidden bg-background border-b p-4">
+          <div className="flex justify-center">
+            <Link to="/add-project">
+              <Button className="gap-2">
+                <Plus className="h-4 w-4" />
+                <span>Add Project</span>
+              </Button>
+            </Link>
+          </div>
+        </div>
+
         {/* Breadcrumbs for mobile */}
         <div className="lg:hidden bg-background border-b p-4">
           <Breadcrumbs />
