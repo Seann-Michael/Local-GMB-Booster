@@ -766,7 +766,7 @@ export default function ProjectDetail() {
 
   return (
     <AppLayout>
-      <div className="container px-4 py-6">
+      <div className="container px-4 py-6" key="project-detail-main">
         <div key="project-header" className="flex items-center gap-4 mb-6">
           <Link to="/">
             <Button variant="ghost" size="icon">
