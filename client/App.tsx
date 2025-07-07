@@ -149,7 +149,7 @@ const App = () => (
             }
           />
           <Route
-            path="/profile"
+            path="/admin/profile"
             element={
               <ProtectedRoute>
                 <Profile />
