@@ -731,7 +731,13 @@ export default function Settings() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <h4 className="font-medium">Webhooks</h4>
-                      <Button size="sm" className="gap-2">
+                      <Button
+                        size="sm"
+                        className="gap-2"
+                        onClick={() =>
+                          toast.success("Add webhook functionality coming soon")
+                        }
+                      >
                         <Plus className="h-4 w-4" />
                         Add Webhook
                       </Button>
