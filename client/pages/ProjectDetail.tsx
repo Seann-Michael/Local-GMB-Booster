@@ -1072,6 +1072,7 @@ export default function ProjectDetail() {
                                     ))}
                                   {photoTags.length > 2 && (
                                     <Badge
+                                      key="more-tags"
                                       variant="outline"
                                       className="text-xs"
                                     >
