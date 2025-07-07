@@ -231,9 +231,61 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
         </nav>
 
-        {/* Sidebar Footer - Removed settings */}
-        <div className="p-2 border-t space-y-1">
-          {/* Settings moved to top header */}
+        {/* Bottom Navigation */}
+        <div className="p-3 border-t bg-muted/20">
+          <div className="space-y-1">
+            {bottomSidebarItems.map((item) => (
+              <Link key={item.href} to={item.href}>
+                <Button
+                  variant={item.active ? "secondary" : "ghost"}
+                  className={cn(
+                    "w-full justify-start gap-3 h-10",
+                    sidebarCollapsed ? "px-3" : "px-4",
+                    item.active && "bg-primary/10 text-primary",
+                    !item.active &&
+                      "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                  )}
+                  size="sm"
+                >
+                  <item.icon
+                    className={cn("h-5 w-5", item.active && "text-primary")}
+                  />
+                  {!sidebarCollapsed && (
+                    <span className="font-medium">{item.label}</span>
+                  )}
+                </Button>
+              </Link>
+            ))}
+          </div>
+
+          {/* User Info */}
+          {!sidebarCollapsed && (
+            <div className="mt-3 p-3 rounded-lg bg-background/50 border">
+              <div className="flex items-center gap-3">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={currentUser?.avatar} />
+                  <AvatarFallback className="text-xs">
+                    {currentUser?.name ? (
+                      currentUser.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                    ) : (
+                      <User className="h-4 w-4" />
+                    )}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium truncate">
+                    {currentUser?.name || "User"}
+                  </p>
+                  <p className="text-xs text-muted-foreground truncate">
+                    Business Owner
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
