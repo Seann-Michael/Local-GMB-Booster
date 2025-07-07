@@ -1030,11 +1030,7 @@ export default function Settings() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() =>
-                              toast.success(
-                                "Edit tag functionality coming soon",
-                              )
-                            }
+                            onClick={() => setEditingTag(tag)}
                           >
                             <Edit className="h-4 w-4" />
                           </Button>
@@ -1047,7 +1043,7 @@ export default function Settings() {
                                   "Are you sure you want to delete this tag?",
                                 )
                               ) {
-                                toast.success("Tag deleted");
+                                deleteTag(tag.id);
                               }
                             }}
                           >
