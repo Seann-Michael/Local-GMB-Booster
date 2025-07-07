@@ -24,6 +24,15 @@ import {
   ChevronRight,
   Home,
   MessageSquare,
+  BarChart3,
+  FileText,
+  Calendar,
+  CreditCard,
+  Briefcase,
+  Target,
+  Workflow,
+  Building2,
+  UserCircle,
 } from "lucide-react";
 import { useState, ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
