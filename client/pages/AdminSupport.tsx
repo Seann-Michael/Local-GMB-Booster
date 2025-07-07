@@ -576,21 +576,3 @@ export default function AdminSupport() {
                         disabled={!newNote.trim() || isAddingNote}
                         className="gap-2"
                       >
-                        {isAddingNote ? (
-                          <RefreshCw className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <Send className="h-4 w-4" />
-                        )}
-                        {isAddingNote ? "Adding..." : "Add Note"}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </AppLayout>
-  );
-}
