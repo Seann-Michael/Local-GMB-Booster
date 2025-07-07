@@ -319,7 +319,14 @@ const App = () => (
           />
 
           {/* Legacy/manual route redirects */}
-          <Route path="/dashboard" element={<Navigate to="/" replace />} />
+          <Route
+            path="/"
+            element={<Navigate to="/admin/dashboard" replace />}
+          />
+          <Route
+            path="/dashboard"
+            element={<Navigate to="/admin/dashboard" replace />}
+          />
           <Route path="/users" element={<Navigate to="/settings" replace />} />
           <Route path="/photos" element={<Navigate to="/gallery" replace />} />
           <Route
