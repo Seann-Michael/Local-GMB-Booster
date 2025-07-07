@@ -1945,17 +1945,6 @@ export default function ProjectDetail() {
                           </div>
                         )}
 
-                      {project.gpsLat && project.gpsLng && (
-                        <div className="mb-3">
-                          <p className="text-xs text-muted-foreground">
-                            GPS Coordinates
-                          </p>
-                          <p className="text-sm font-mono text-xs">
-                            {project.gpsLat}, {project.gpsLng}
-                          </p>
-                        </div>
-                      )}
-
                       <Button
                         variant="outline"
                         size="sm"
