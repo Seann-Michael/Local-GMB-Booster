@@ -60,7 +60,7 @@ const App = () => (
 
           {/* Protected routes */}
           <Route
-            path="/"
+            path="/admin/dashboard"
             element={
               <ProtectedRoute>
                 <Index />
