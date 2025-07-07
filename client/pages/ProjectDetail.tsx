@@ -501,6 +501,10 @@ export default function ProjectDetail() {
   const addChecklistItem = () => {
     if (!project || !newChecklistItem.trim()) return;
 
+    console.log("1. Starting addChecklistItem");
+    console.log("2. Current project.checklist:", project.checklist);
+    console.log("3. New item text:", newChecklistItem);
+
     const item: ChecklistItem = {
       id: Date.now().toString(),
       title: newChecklistItem,
@@ -508,10 +512,14 @@ export default function ProjectDetail() {
       createdAt: new Date().toISOString(),
     };
 
+    console.log("4. Created item:", item);
+
     const updatedProject = {
       ...project,
       checklist: [...(project.checklist || []), item],
     };
+
+    console.log("5. Updated project checklist:", updatedProject.checklist);
 
     updateProject(updatedProject);
     addActivityLogEntry(
