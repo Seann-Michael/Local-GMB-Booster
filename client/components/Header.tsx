@@ -29,7 +29,7 @@ export function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const isAddProject = location.pathname === "/add-project";
-  const isSettings = location.pathname === "/settings";
+  const isSettings = location.pathname === "/admin/settings";
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -191,7 +191,7 @@ export function Header() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Link to="/settings">
+          <Link to="/admin/settings">
             <Button variant="ghost" size="icon">
               <Settings className="h-5 w-5" />
             </Button>
