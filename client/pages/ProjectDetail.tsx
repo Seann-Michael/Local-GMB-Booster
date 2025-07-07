@@ -921,7 +921,7 @@ export default function ProjectDetail() {
                     <div className="flex flex-wrap gap-2">
                       {project.keywords.map((keyword, index) => (
                         <Badge
-                          key={index}
+                          key={`keyword-${index}`}
                           variant="secondary"
                           className="cursor-pointer hover:bg-secondary/80"
                         >
@@ -941,6 +941,7 @@ export default function ProjectDetail() {
                         </Badge>
                       ))}
                       <Badge
+                        key="add-tag-button"
                         variant="outline"
                         className="cursor-pointer hover:bg-muted"
                         onClick={() =>
