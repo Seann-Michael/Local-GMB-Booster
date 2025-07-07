@@ -127,7 +127,7 @@ export function AgencyAdminLayout({ children }: AgencyAdminLayoutProps) {
 
         {/* Add Client Button */}
         <div className="p-2">
-          <Link to="/agency-admin/clients/add">
+          <Link to="/agency/admin/clients/add">
             <Button
               className={cn("w-full gap-2", sidebarCollapsed && "px-2")}
               size="sm"
@@ -198,7 +198,7 @@ export function AgencyAdminLayout({ children }: AgencyAdminLayoutProps) {
               </Button>
 
               {/* Notifications */}
-              <Link to="/agency-admin/notifications">
+              <Link to="/agency/admin/notifications">
                 <Button variant="ghost" size="icon" className="relative">
                   <Bell className="h-4 w-4 md:h-5 md:w-5" />
                   {notificationCount > 0 && (
@@ -252,7 +252,7 @@ export function AgencyAdminLayout({ children }: AgencyAdminLayoutProps) {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link
-                      to="/agency-admin/profile"
+                      to="/agency/admin/profile"
                       className="flex items-center"
                     >
                       <User className="mr-2 h-4 w-4" />
@@ -261,7 +261,7 @@ export function AgencyAdminLayout({ children }: AgencyAdminLayoutProps) {
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link
-                      to="/agency-admin/settings"
+                      to="/agency/admin/settings"
                       className="flex items-center"
                     >
                       <Settings className="mr-2 h-4 w-4" />
