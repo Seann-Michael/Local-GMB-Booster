@@ -84,12 +84,22 @@ interface BusinessSettings {
     active: boolean;
   }>;
 
+  // AI Assistance Settings
+  aiPromptTemplate: string;
+  aiInstructions: string;
+  aiVariables: string[];
+
   // Tags
   businessTags: Array<{
     id: string;
     name: string;
     color: string;
   }>;
+
+  // Media Settings
+  allowedImageTypes: string[];
+  allowedVideoTypes: string[];
+  maxFileSize: number;
 
   // Notification Settings
   emailNotifications: boolean;
