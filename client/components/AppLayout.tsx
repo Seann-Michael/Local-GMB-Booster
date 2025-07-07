@@ -76,23 +76,13 @@ export function AppLayout({ children }: AppLayoutProps) {
 
   const sidebarItems = [
     {
-      id: "dashboard",
-      label: "Dashboard",
-      href: "/admin/dashboard",
-      icon: Home,
-      active:
-        location.pathname === "/admin/dashboard" &&
-        !location.pathname.startsWith("/project"),
-    },
-    {
       id: "projects",
       label: "Projects",
-      href: "/admin/dashboard",
+      href: "/admin/projects",
       icon: FolderOpen,
       active:
-        location.pathname.startsWith("/project") ||
-        (location.pathname === "/admin/dashboard" &&
-          location.search.includes("view=projects")),
+        location.pathname === "/admin/projects" ||
+        location.pathname.startsWith("/project"),
     },
     {
       id: "gallery",

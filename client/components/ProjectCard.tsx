@@ -14,8 +14,11 @@ import {
   MoreVertical,
   RotateCcw,
   CheckCircle,
+  Star,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface TaggedPhoto {
   url: string;
@@ -47,13 +50,25 @@ interface ProjectCardProps {
   project: Project;
   onDelete?: () => void;
   onMarkIncomplete?: () => void;
+  onToggleStar?: (starred: boolean) => void;
 }
 
 export function ProjectCard({
   project,
   onDelete,
   onMarkIncomplete,
+  onToggleStar,
 }: ProjectCardProps) {
+  const [isStarred, setIsStarred] = useState(project.starred || false);
+
+  const handleStarClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const newStarred = !isStarred;
+    setIsStarred(newStarred);
+    onToggleStar?.(newStarred);
+    toast.success(newStarred ? "Project starred" : "Project unstarred");
+  };
   const getPrimaryPhoto = () => {
     if (project.photos.length === 0) return null;
 
@@ -143,9 +158,22 @@ export function ProjectCard({
             </div>
           )}
 
-          {/* Actions Menu */}
-          {(onDelete || onMarkIncomplete) && (
-            <div className="absolute top-2 right-2">
+          {/* Star and Actions */}
+          <div className="absolute top-2 right-2 flex items-center gap-1">
+            {/* Star Icon */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0 bg-black/50 hover:bg-black/70 text-white"
+              onClick={handleStarClick}
+            >
+              <Star
+                className={`h-4 w-4 ${isStarred ? "fill-yellow-400 text-yellow-400" : ""}`}
+              />
+            </Button>
+
+            {/* Actions Menu */}
+            {(onDelete || onMarkIncomplete) && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
@@ -174,8 +202,8 @@ export function ProjectCard({
                   )}
                 </DropdownMenuContent>
               </DropdownMenu>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         <CardContent className="p-4 flex-1 flex flex-col">
@@ -200,27 +228,33 @@ export function ProjectCard({
             </div>
           </div>
 
-          <div className="mt-auto min-h-[2rem] flex items-end">
-            <div className="flex flex-wrap gap-1 w-full">
+          <div className="mt-auto min-h-[3rem] flex items-start pt-2">
+            <div className="flex flex-wrap gap-1 w-full min-h-[2rem]">
               {project.keywords && project.keywords.length > 0 ? (
                 <>
-                  {project.keywords.slice(0, 3).map((keyword) => (
+                  {project.keywords.slice(0, 3).map((keyword, index) => (
                     <Badge
-                      key={keyword}
+                      key={`${keyword}-${index}`}
                       variant="secondary"
-                      className="text-xs"
+                      className="text-xs h-6 px-2 flex items-center"
                     >
                       {keyword}
                     </Badge>
                   ))}
                   {project.keywords.length > 3 && (
-                    <Badge variant="outline" className="text-xs">
+                    <Badge
+                      variant="outline"
+                      className="text-xs h-6 px-2 flex items-center"
+                    >
                       +{project.keywords.length - 3}
                     </Badge>
                   )}
                 </>
               ) : (
-                <Badge variant="outline" className="text-xs opacity-50">
+                <Badge
+                  variant="outline"
+                  className="text-xs h-6 px-2 flex items-center opacity-50"
+                >
                   No keywords
                 </Badge>
               )}

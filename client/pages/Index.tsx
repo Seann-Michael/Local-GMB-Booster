@@ -467,6 +467,16 @@ export default function Index() {
                       ? () => markProjectIncomplete(project.id)
                       : undefined
                   }
+                  onToggleStar={(starred) => {
+                    const updatedProjects = projects.map((p) =>
+                      p.id === project.id ? { ...p, starred } : p,
+                    );
+                    setProjects(updatedProjects);
+                    localStorage.setItem(
+                      "projects",
+                      JSON.stringify(updatedProjects),
+                    );
+                  }}
                 />
               </div>
             ))}
