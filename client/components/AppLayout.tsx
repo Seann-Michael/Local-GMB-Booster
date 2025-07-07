@@ -150,21 +150,32 @@ export function AppLayout({ children }: AppLayoutProps) {
         )}
       >
         {/* Sidebar Header */}
-        <div className="p-4 border-b">
+        <div className="p-4 border-b bg-primary/5">
           <div className="flex items-center justify-between">
-            {!sidebarCollapsed && (
-              <div className="flex items-center space-x-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                  <Camera className="h-4 w-4 text-primary-foreground" />
+            {!sidebarCollapsed ? (
+              <div className="flex items-center space-x-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary shadow-sm">
+                  <Building2 className="h-5 w-5 text-primary-foreground" />
                 </div>
-                <span className="font-semibold text-sm">Local GMB Booster</span>
+                <div>
+                  <span className="font-bold text-base text-foreground">
+                    GMB Booster
+                  </span>
+                  <p className="text-xs text-muted-foreground">
+                    Business Dashboard
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary shadow-sm">
+                <Building2 className="h-5 w-5 text-primary-foreground" />
               </div>
             )}
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="h-8 w-8"
+              className="h-8 w-8 hover:bg-primary/10"
             >
               {sidebarCollapsed ? (
                 <ChevronRight className="h-4 w-4" />
