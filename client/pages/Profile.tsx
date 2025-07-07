@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AppLayout } from "@/components/AppLayout";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowLeft, Camera, Save, LogOut } from "lucide-react";
+import { Camera, Save } from "lucide-react";
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
@@ -172,11 +172,7 @@ export default function Profile() {
                 </div>
               </div>
 
-              <div className="flex justify-between">
-                <Button variant="outline" className="gap-2">
-                  <LogOut className="h-4 w-4" />
-                  Sign Out
-                </Button>
+              <div className="flex justify-end">
                 <Button
                   onClick={handleSave}
                   disabled={isSubmitting}
