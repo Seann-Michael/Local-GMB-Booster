@@ -304,7 +304,7 @@ export default function UserManagement() {
       };
 
       localStorage.setItem("auth_user", JSON.stringify(impersonatedUser));
-      navigate("/", { replace: true });
+      navigate("/admin/dashboard", { replace: true });
     }
   };
 
