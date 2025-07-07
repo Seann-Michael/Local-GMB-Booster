@@ -104,7 +104,7 @@ export function AppLayout({ children }: AppLayoutProps) {
     {
       id: "calendar",
       label: "Calendar",
-      href: "/",
+      href: "/admin/dashboard",
       icon: Calendar,
       active: location.pathname === "/calendar",
       comingSoon: true,
@@ -112,7 +112,7 @@ export function AppLayout({ children }: AppLayoutProps) {
     {
       id: "analytics",
       label: "Analytics",
-      href: "/",
+      href: "/admin/dashboard",
       icon: BarChart3,
       active: location.pathname === "/analytics",
       comingSoon: true,
@@ -120,7 +120,7 @@ export function AppLayout({ children }: AppLayoutProps) {
     {
       id: "documents",
       label: "Documents",
-      href: "/",
+      href: "/admin/dashboard",
       icon: FileText,
       active: location.pathname === "/documents",
       comingSoon: true,
@@ -128,7 +128,7 @@ export function AppLayout({ children }: AppLayoutProps) {
     {
       id: "workflow",
       label: "Workflow",
-      href: "/",
+      href: "/admin/dashboard",
       icon: Workflow,
       active: location.pathname === "/workflow",
       comingSoon: true,
@@ -136,7 +136,7 @@ export function AppLayout({ children }: AppLayoutProps) {
     {
       id: "billing",
       label: "Billing",
-      href: "/",
+      href: "/admin/dashboard",
       icon: CreditCard,
       active: location.pathname === "/billing",
       comingSoon: true,
