@@ -515,7 +515,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 {sidebarItems.slice(4).map((item) => (
-                  <DropdownMenuItem key={item.href} asChild>
+                  <DropdownMenuItem key={item.id} asChild>
                     <Link to={item.href} className="flex items-center gap-2">
                       <item.icon className="h-4 w-4" />
                       <span>{item.label}</span>
