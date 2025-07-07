@@ -1414,10 +1414,6 @@ export default function ProjectDetail() {
                     )}
 
                     <div className="space-y-3">
-                      {console.log(
-                        "Checklist render - project.checklist:",
-                        project.checklist,
-                      )}
                       {project.checklist &&
                       Array.isArray(project.checklist) &&
                       project.checklist.length > 0 ? (
