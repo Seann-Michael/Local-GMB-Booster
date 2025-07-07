@@ -358,6 +358,10 @@ const App = () => (
             element={<Navigate to="/admin/settings" replace />}
           />
           <Route
+            path="/profile"
+            element={<Navigate to="/admin/profile" replace />}
+          />
+          <Route
             path="/users"
             element={<Navigate to="/admin/settings" replace />}
           />
