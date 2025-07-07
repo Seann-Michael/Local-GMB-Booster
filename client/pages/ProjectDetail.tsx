@@ -1953,25 +1953,6 @@ export default function ProjectDetail() {
                     </div>
                   </>
                 )}
-
-                {project.keywords.length > 0 && (
-                  <>
-                    <Separator />
-                    <div>
-                      <h4 className="font-medium mb-2 flex items-center gap-2">
-                        <Tag className="h-4 w-4" />
-                        Keywords
-                      </h4>
-                      <div className="flex flex-wrap gap-1">
-                        {project.keywords.map((keyword, index) => (
-                          <Badge key={index} variant="secondary">
-                            {keyword}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  </>
-                )}
               </CardContent>
             </Card>
 
