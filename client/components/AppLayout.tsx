@@ -375,18 +375,6 @@ export function AppLayout({ children }: AppLayoutProps) {
                       <span>Profile</span>
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/settings" className="flex items-center">
-                      <Settings className="mr-2 h-4 w-4" />
-                      <span>Settings</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/admin-support" className="flex items-center">
-                      <MessageSquare className="mr-2 h-4 w-4" />
-                      <span>Support</span>
-                    </Link>
-                  </DropdownMenuItem>
                   {showSuperAdmin && (
                     <DropdownMenuItem asChild>
                       <Link to="/super-admin" className="flex items-center">
