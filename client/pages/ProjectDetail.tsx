@@ -251,7 +251,7 @@ export default function ProjectDetail() {
       const updatedProjects = projects.filter((p: Project) => p.id !== id);
       localStorage.setItem("projects", JSON.stringify(updatedProjects));
       toast.success("Project deleted successfully");
-      navigate("/");
+      navigate("/admin/dashboard");
     }
   };
 
