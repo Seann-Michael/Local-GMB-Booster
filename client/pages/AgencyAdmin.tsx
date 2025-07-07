@@ -131,13 +131,13 @@ export default function AgencyAdmin() {
               )}
               {hideMetrics ? "Show Metrics" : "Hide Metrics"}
             </Button>
-            <Link to="/agency-admin/admin-users/add">
+            <Link to="/agency/admin/admin-users/add">
               <Button className="gap-2">
                 <UserPlus className="h-4 w-4" />
                 Add Admin User
               </Button>
             </Link>
-            <Link to="/agency-admin/settings">
+            <Link to="/agency/admin/settings">
               <Button variant="outline" size="icon">
                 <Settings className="h-4 w-4" />
               </Button>
@@ -238,7 +238,7 @@ export default function AgencyAdmin() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <Link to="/agency-admin/clients">
+                <Link to="/agency/admin/clients">
                   <Button variant="outline" className="w-full gap-2">
                     <Eye className="h-4 w-4" />
                     View All Clients
@@ -264,13 +264,13 @@ export default function AgencyAdmin() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <Link to="/agency-admin/analytics">
+                <Link to="/agency/admin/analytics">
                   <Button variant="outline" className="w-full gap-2">
                     <TrendingUp className="h-4 w-4" />
                     View Analytics
                   </Button>
                 </Link>
-                <Link to="/agency-admin/reports">
+                <Link to="/agency/admin/reports">
                   <Button variant="outline" className="w-full gap-2">
                     <Calendar className="h-4 w-4" />
                     Generate Reports
@@ -292,13 +292,13 @@ export default function AgencyAdmin() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <Link to="/agency-admin/billing">
+                <Link to="/agency/admin/billing">
                   <Button variant="outline" className="w-full gap-2">
                     <DollarSign className="h-4 w-4" />
                     View Billing
                   </Button>
                 </Link>
-                <Link to="/agency-admin/business-owners">
+                <Link to="/agency/admin/business-owners">
                   <Button variant="outline" className="w-full gap-2">
                     <TrendingUp className="h-4 w-4" />
                     Business Management
@@ -347,7 +347,7 @@ export default function AgencyAdmin() {
                       >
                         {client.status || "pending"}
                       </Badge>
-                      <Link to={`/agency-admin/clients/${client.id || index}`}>
+                      <Link to={`/agency/admin/clients/${client.id || index}`}>
                         <Button variant="ghost" size="sm">
                           <Eye className="h-4 w-4" />
                         </Button>
