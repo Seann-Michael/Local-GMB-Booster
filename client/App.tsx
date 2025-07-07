@@ -255,6 +255,14 @@ const App = () => (
             }
           />
           <Route
+            path="/agency/admin/business-owners/add"
+            element={
+              <ProtectedRoute>
+                <AddAgencyClient />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/agency/admin/business-owners/:id"
             element={
               <ProtectedRoute>
