@@ -254,7 +254,7 @@ export default function AddProject() {
       );
 
       toast.success("Project created successfully!");
-      navigate("/");
+      navigate("/admin/dashboard");
     } catch (error) {
       toast.error("Failed to create project");
     } finally {
