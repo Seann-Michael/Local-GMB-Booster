@@ -144,12 +144,14 @@ export function AppLayout({ children }: AppLayoutProps) {
 
   const bottomSidebarItems = [
     {
+      id: "settings",
       label: "Settings",
       href: "/settings",
       icon: Settings,
       active: location.pathname === "/settings",
     },
     {
+      id: "support",
       label: "Support",
       href: "/admin-support",
       icon: MessageSquare,
