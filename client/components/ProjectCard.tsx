@@ -85,7 +85,7 @@ export function ProjectCard({
 
   return (
     <Link to={`/project/${project.id}`}>
-      <Card className="group overflow-hidden transition-all hover:shadow-lg hover:shadow-primary/5">
+      <Card className="group overflow-hidden transition-all hover:shadow-lg hover:shadow-primary/5 h-full flex flex-col">
         <div className="aspect-video relative overflow-hidden bg-muted">
           {primaryPhoto ? (
             <>
@@ -178,7 +178,7 @@ export function ProjectCard({
           )}
         </div>
 
-        <CardContent className="p-4">
+        <CardContent className="p-4 flex-1 flex flex-col">
           <h3 className="font-semibold text-lg mb-2 line-clamp-1">
             {project.name}
           </h3>
@@ -196,20 +196,22 @@ export function ProjectCard({
             <span>{new Date(project.createdAt).toLocaleDateString()}</span>
           </div>
 
-          {project.keywords.length > 0 && (
-            <div className="flex flex-wrap gap-1">
-              {project.keywords.slice(0, 3).map((keyword) => (
-                <Badge key={keyword} variant="secondary" className="text-xs">
-                  {keyword}
-                </Badge>
-              ))}
-              {project.keywords.length > 3 && (
-                <Badge variant="outline" className="text-xs">
-                  +{project.keywords.length - 3}
-                </Badge>
-              )}
-            </div>
-          )}
+          <div className="mt-auto">
+            {project.keywords.length > 0 && (
+              <div className="flex flex-wrap gap-1">
+                {project.keywords.slice(0, 3).map((keyword) => (
+                  <Badge key={keyword} variant="secondary" className="text-xs">
+                    {keyword}
+                  </Badge>
+                ))}
+                {project.keywords.length > 3 && (
+                  <Badge variant="outline" className="text-xs">
+                    +{project.keywords.length - 3}
+                  </Badge>
+                )}
+              </div>
+            )}
+          </div>
         </CardContent>
       </Card>
     </Link>

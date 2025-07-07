@@ -103,7 +103,22 @@ export function AppLayout({ children }: AppLayoutProps) {
     },
   ];
 
-  const bottomSidebarItems = [];
+  const bottomSidebarItems = [
+    {
+      id: "settings",
+      label: "Settings",
+      href: "/settings",
+      icon: Settings,
+      active: location.pathname === "/settings",
+    },
+    {
+      id: "support",
+      label: "Support",
+      href: "/support",
+      icon: MessageSquare,
+      active: location.pathname === "/support",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -219,6 +234,35 @@ export function AppLayout({ children }: AppLayoutProps) {
             })}
           </div>
         </nav>
+
+        {/* Bottom Navigation */}
+        <div className="px-3 py-2 border-t">
+          <div className="space-y-1">
+            {bottomSidebarItems.map((item) => (
+              <Link key={item.id} to={item.href}>
+                <Button
+                  variant={item.active ? "secondary" : "ghost"}
+                  className={cn(
+                    "w-full justify-start gap-3 h-10 font-medium",
+                    sidebarCollapsed ? "px-3" : "px-4",
+                    item.active &&
+                      "bg-primary/10 text-primary border-r-2 border-primary",
+                    !item.active &&
+                      "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                  )}
+                  size="sm"
+                >
+                  <item.icon
+                    className={cn("h-5 w-5", item.active && "text-primary")}
+                  />
+                  {!sidebarCollapsed && (
+                    <span className="font-medium">{item.label}</span>
+                  )}
+                </Button>
+              </Link>
+            ))}
+          </div>
+        </div>
 
         {/* User Info */}
         <div className="p-3 border-t bg-muted/20">
@@ -423,6 +467,15 @@ export function AppLayout({ children }: AppLayoutProps) {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 {sidebarItems.slice(4).map((item) => (
+                  <DropdownMenuItem key={item.id} asChild>
+                    <Link to={item.href} className="flex items-center gap-2">
+                      <item.icon className="h-4 w-4" />
+                      <span>{item.label}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+                <DropdownMenuSeparator />
+                {bottomSidebarItems.map((item) => (
                   <DropdownMenuItem key={item.id} asChild>
                     <Link to={item.href} className="flex items-center gap-2">
                       <item.icon className="h-4 w-4" />
