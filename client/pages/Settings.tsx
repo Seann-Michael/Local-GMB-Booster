@@ -1860,6 +1860,157 @@ export default function Settings() {
             )}
           </div>
         </div>
+
+        {/* Webhook Form Modal */}
+        {(showWebhookForm || editingWebhook) && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-background rounded-lg shadow-lg max-w-md w-full p-6">
+              <h3 className="text-lg font-semibold mb-4">
+                {editingWebhook ? "Edit Webhook" : "Add Webhook"}
+              </h3>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const formData = new FormData(e.target as HTMLFormElement);
+                  const webhook = {
+                    name: formData.get("name") as string,
+                    url: formData.get("url") as string,
+                    events: (formData.get("events") as string)
+                      .split(",")
+                      .map((e) => e.trim()),
+                    active: formData.get("active") === "on",
+                  };
+                  if (editingWebhook) {
+                    updateWebhook(editingWebhook.id, webhook);
+                  } else {
+                    addWebhook(webhook);
+                  }
+                }}
+              >
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="webhookName">Name</Label>
+                    <Input
+                      id="webhookName"
+                      name="name"
+                      defaultValue={editingWebhook?.name}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="webhookUrl">URL</Label>
+                    <Input
+                      id="webhookUrl"
+                      name="url"
+                      type="url"
+                      defaultValue={editingWebhook?.url}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="webhookEvents">
+                      Events (comma-separated)
+                    </Label>
+                    <Input
+                      id="webhookEvents"
+                      name="events"
+                      defaultValue={editingWebhook?.events?.join(", ")}
+                      placeholder="project.created, project.completed"
+                      required
+                    />
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="webhookActive"
+                      name="active"
+                      defaultChecked={editingWebhook?.active !== false}
+                    />
+                    <Label htmlFor="webhookActive">Active</Label>
+                  </div>
+                </div>
+                <div className="flex justify-end gap-2 mt-6">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setShowWebhookForm(false);
+                      setEditingWebhook(null);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit">
+                    {editingWebhook ? "Update" : "Add"} Webhook
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Tag Form Modal */}
+        {(showTagForm || editingTag) && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-background rounded-lg shadow-lg max-w-md w-full p-6">
+              <h3 className="text-lg font-semibold mb-4">
+                {editingTag ? "Edit Tag" : "Add Tag"}
+              </h3>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const formData = new FormData(e.target as HTMLFormElement);
+                  const tag = {
+                    name: formData.get("name") as string,
+                    color: formData.get("color") as string,
+                  };
+                  if (editingTag) {
+                    updateTag(editingTag.id, tag);
+                  } else {
+                    addTag(tag);
+                  }
+                }}
+              >
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="tagName">Tag Name</Label>
+                    <Input
+                      id="tagName"
+                      name="name"
+                      defaultValue={editingTag?.name}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="tagColor">Color</Label>
+                    <Input
+                      id="tagColor"
+                      name="color"
+                      type="color"
+                      defaultValue={editingTag?.color || "#3b82f6"}
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-end gap-2 mt-6">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      setShowTagForm(false);
+                      setEditingTag(null);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit">
+                    {editingTag ? "Update" : "Add"} Tag
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </AppLayout>
   );
