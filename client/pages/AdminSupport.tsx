@@ -34,7 +34,6 @@ import {
   AlertTriangle,
   CheckCircle,
   Paperclip,
-  Send,
   RefreshCw,
 } from "lucide-react";
 import { useState, useEffect } from "react";
