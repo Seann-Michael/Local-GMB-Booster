@@ -65,7 +65,6 @@ export default function Index() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
   const [showFilters, setShowFilters] = useState(false);
-  const [hideMetrics, setHideMetrics] = useState(true); // Default: metrics hidden
   const [projectSort, setProjectSort] = useState<
     "all" | "starred" | "my-projects" | "archived"
   >("all");
