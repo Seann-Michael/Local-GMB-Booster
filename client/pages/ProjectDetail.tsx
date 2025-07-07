@@ -583,6 +583,7 @@ export default function ProjectDetail() {
     if (!project || !project.checklist) return;
 
     const user = getCurrentUser();
+    const item = project.checklist.find((i) => i.id === itemId);
     const updatedChecklist = project.checklist.map((item) =>
       item.id === itemId
         ? {
@@ -594,12 +595,23 @@ export default function ProjectDetail() {
         : item,
     );
 
-    updateProject({ ...project, checklist: updatedChecklist });
-    const item = project.checklist.find((i) => i.id === itemId);
-    addActivityLogEntry(
-      "checklist_item_toggled",
-      `Checklist item "${item?.title}" marked as ${!item?.completed ? "completed" : "incomplete"}`,
-    );
+    const entry: ActivityLogEntry = {
+      id: Date.now().toString(),
+      type: "checklist_item_toggled",
+      description: `Checklist item "${item?.title}" marked as ${!item?.completed ? "completed" : "incomplete"}`,
+      timestamp: new Date().toISOString(),
+      userId: user.id,
+      userName: user.name,
+      platform: user.platform,
+    };
+
+    const updatedProject = {
+      ...project,
+      checklist: updatedChecklist,
+      activityLog: [entry, ...(project.activityLog || [])],
+    };
+
+    updateProject(updatedProject);
   };
 
   const editChecklistItem = (itemId: string, newTitle: string) => {
