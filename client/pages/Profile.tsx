@@ -2,8 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Header } from "@/components/Header";
-import { Breadcrumb } from "@/components/Breadcrumb";
+import { AppLayout } from "@/components/AppLayout";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowLeft, Camera, Save, LogOut } from "lucide-react";
 import { useState, useRef } from "react";
@@ -19,7 +18,8 @@ export default function Profile() {
     return saved
       ? JSON.parse(saved)
       : {
-          name: "John Smith",
+          firstName: "John",
+          lastName: "Smith",
           email: "john@smithconstruction.com",
           phone: "(555) 123-4567",
           avatar: "",
