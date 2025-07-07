@@ -426,8 +426,25 @@ export default function ProjectDetail() {
       return;
 
     const updatedNotes = project.notes.filter((note) => note.id !== noteId);
-    updateProject({ ...project, notes: updatedNotes });
-    addActivityLogEntry("note_deleted", "Project note deleted");
+
+    const user = getCurrentUser();
+    const entry: ActivityLogEntry = {
+      id: Date.now().toString(),
+      type: "note_deleted",
+      description: "Project note deleted",
+      timestamp: new Date().toISOString(),
+      userId: user.id,
+      userName: user.name,
+      platform: user.platform,
+    };
+
+    const updatedProject = {
+      ...project,
+      notes: updatedNotes,
+      activityLog: [entry, ...(project.activityLog || [])],
+    };
+
+    updateProject(updatedProject);
     toast.success("Note deleted successfully");
   };
 
