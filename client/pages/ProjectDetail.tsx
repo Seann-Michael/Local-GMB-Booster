@@ -1960,7 +1960,7 @@ export default function ProjectDetail() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card key="project-statistics">
               <CardHeader>
                 <CardTitle>Statistics</CardTitle>
               </CardHeader>
