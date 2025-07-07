@@ -43,6 +43,7 @@ import SignUp from "./pages/SignUp";
 import ForgotPassword from "./pages/ForgotPassword";
 import Support from "./pages/Support";
 import AdminSupport from "./pages/AdminSupport";
+import SupportTicketDetail from "./pages/SupportTicketDetail";
 
 const queryClient = new QueryClient();
 
@@ -160,6 +161,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <AdminSupport />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/support/ticket/:ticketId"
+            element={
+              <ProtectedRoute>
+                <SupportTicketDetail />
               </ProtectedRoute>
             }
           />
