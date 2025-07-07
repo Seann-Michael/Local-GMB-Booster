@@ -814,7 +814,12 @@ export default function Settings() {
                       Create and manage tags to organize your projects and
                       content
                     </p>
-                    <Button className="gap-2">
+                    <Button
+                      className="gap-2"
+                      onClick={() =>
+                        toast.success("Add tag functionality coming soon")
+                      }
+                    >
                       <Plus className="h-4 w-4" />
                       Add Tag
                     </Button>
