@@ -38,7 +38,7 @@ export default function SignIn() {
         } else if (email === "agency@marketingfirm.com") {
           user = {
             id: "2",
-            name: "Marketing Agency",
+            name: "Business Owner",
             email: email,
             role: "agency",
             agencyId: "agency-001",
