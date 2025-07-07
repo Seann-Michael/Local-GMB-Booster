@@ -78,19 +78,20 @@ export function AppLayout({ children }: AppLayoutProps) {
     {
       id: "dashboard",
       label: "Dashboard",
-      href: "/",
+      href: "/admin/dashboard",
       icon: Home,
       active:
-        location.pathname === "/" && !location.pathname.startsWith("/project"),
+        location.pathname === "/admin/dashboard" &&
+        !location.pathname.startsWith("/project"),
     },
     {
       id: "projects",
       label: "Projects",
-      href: "/",
+      href: "/admin/dashboard",
       icon: FolderOpen,
       active:
         location.pathname.startsWith("/project") ||
-        (location.pathname === "/" &&
+        (location.pathname === "/admin/dashboard" &&
           location.search.includes("view=projects")),
     },
     {
