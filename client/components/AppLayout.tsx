@@ -186,15 +186,18 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
         </div>
 
-        {/* Add Project Button */}
-        <div className="p-2">
+        {/* Quick Action Button */}
+        <div className="p-3">
           <Link to="/add-project">
             <Button
-              className={cn("w-full gap-2", sidebarCollapsed && "px-2")}
-              size="sm"
+              className={cn(
+                "w-full gap-2 shadow-sm bg-primary hover:bg-primary/90",
+                sidebarCollapsed ? "px-3" : "px-4",
+              )}
+              size={sidebarCollapsed ? "icon" : "sm"}
             >
               <Plus className="h-4 w-4" />
-              {!sidebarCollapsed && <span>Add Project</span>}
+              {!sidebarCollapsed && <span>New Project</span>}
             </Button>
           </Link>
         </div>
