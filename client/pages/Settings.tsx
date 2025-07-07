@@ -158,12 +158,30 @@ export default function Settings() {
       },
     ],
 
+    // AI Assistance Settings
+    aiPromptTemplate:
+      "Create a professional description for a {PROJECT_TYPE} project at {ADDRESS}. Include details about {SERVICES} and highlight the quality of work.",
+    aiInstructions:
+      "Write engaging, professional descriptions that highlight the benefits and quality of the work. Use a friendly but professional tone.",
+    aiVariables: [
+      "PROJECT_TYPE",
+      "ADDRESS",
+      "SERVICES",
+      "CUSTOMER_NAME",
+      "COMPLETION_DATE",
+    ],
+
     // Tags
     businessTags: [
       { id: "1", name: "Pizza", color: "#ef4444" },
       { id: "2", name: "Italian", color: "#3b82f6" },
       { id: "3", name: "Delivery", color: "#10b981" },
     ],
+
+    // Media Settings
+    allowedImageTypes: [".jpg", ".jpeg", ".png", ".gif", ".webp"],
+    allowedVideoTypes: [".mp4", ".mov", ".avi", ".wmv"],
+    maxFileSize: 10,
 
     // Notification Settings
     emailNotifications: true,
