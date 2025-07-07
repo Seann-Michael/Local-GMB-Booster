@@ -235,7 +235,13 @@ export default function AddProject() {
           .map((k) => k.trim())
           .filter(Boolean),
         photos,
+        documents: [],
+        tasks: [],
+        checklist: [],
+        notes: [],
+        activityLog: [],
         createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
       // Store in localStorage for demo
