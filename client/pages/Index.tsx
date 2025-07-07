@@ -438,7 +438,7 @@ export default function Index() {
                   ? "No projects match your search or filters."
                   : "Get started by creating your first project."}
               </p>
-              <Link to="/add-project">
+              <Link to="/admin/add-project">
                 <Button className="gap-2">
                   <Plus className="h-4 w-4" />
                   Add Project

@@ -68,7 +68,7 @@ const App = () => (
             }
           />
           <Route
-            path="/add-project"
+            path="/admin/add-project"
             element={
               <ProtectedRoute>
                 <AddProject />

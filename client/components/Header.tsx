@@ -28,7 +28,7 @@ import { toast } from "sonner";
 export function Header() {
   const location = useLocation();
   const navigate = useNavigate();
-  const isAddProject = location.pathname === "/add-project";
+  const isAddProject = location.pathname === "/admin/add-project";
   const isSettings = location.pathname === "/admin/settings";
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -84,7 +84,7 @@ export function Header() {
           )}
 
           {!isAddProject && !isSettings && !isImpersonated && (
-            <Link to="/add-project">
+            <Link to="/admin/add-project">
               <Button size="sm" className="gap-2">
                 <Plus className="h-4 w-4" />
                 Add Project

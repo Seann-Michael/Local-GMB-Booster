@@ -405,7 +405,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         {/* Mobile second header row with Add Project button */}
         <div className="md:hidden bg-background border-b p-4">
           <div className="flex justify-center">
-            <Link to="/add-project">
+            <Link to="/admin/add-project">
               <Button className="gap-2">
                 <Plus className="h-4 w-4" />
                 <span>Add Project</span>
@@ -475,7 +475,10 @@ export function AppLayout({ children }: AppLayoutProps) {
                 ))}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link to="/add-project" className="flex items-center gap-2">
+                  <Link
+                    to="/admin/add-project"
+                    className="flex items-center gap-2"
+                  >
                     <Plus className="h-4 w-4" />
                     <span>New Project</span>
                   </Link>

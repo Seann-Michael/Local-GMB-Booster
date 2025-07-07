@@ -528,7 +528,7 @@ export default function Gallery() {
                   : "Try adjusting your filters to see more results"}
               </p>
               {photos.length === 0 ? (
-                <Link to="/add-project">
+                <Link to="/admin/add-project">
                   <Button>Create First Project</Button>
                 </Link>
               ) : (
