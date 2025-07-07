@@ -1162,7 +1162,7 @@ export default function ProjectDetail() {
                 </Card>
 
                 {/* Notes Section */}
-                <Card>
+                <Card key="project-notes">
                   <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle>Project Notes</CardTitle>
                     <Button
