@@ -511,8 +511,25 @@ export default function ProjectDetail() {
 
     const task = project.tasks.find((t) => t.id === taskId);
     const updatedTasks = project.tasks.filter((task) => task.id !== taskId);
-    updateProject({ ...project, tasks: updatedTasks });
-    addActivityLogEntry("task_deleted", `Task "${task?.title}" deleted`);
+
+    const user = getCurrentUser();
+    const entry: ActivityLogEntry = {
+      id: Date.now().toString(),
+      type: "task_deleted",
+      description: `Task "${task?.title}" deleted`,
+      timestamp: new Date().toISOString(),
+      userId: user.id,
+      userName: user.name,
+      platform: user.platform,
+    };
+
+    const updatedProject = {
+      ...project,
+      tasks: updatedTasks,
+      activityLog: [entry, ...(project.activityLog || [])],
+    };
+
+    updateProject(updatedProject);
     toast.success("Task deleted successfully");
   };
 
