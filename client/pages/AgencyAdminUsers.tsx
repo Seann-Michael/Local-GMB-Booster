@@ -225,7 +225,7 @@ export default function AgencyAdminUsers() {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Link to="/agency-admin/admin-users/add">
+            <Link to="/agency/admin/admin-users/add">
               <Button className="gap-2" disabled={!canAddMoreUsers}>
                 <UserPlus className="h-4 w-4" />
                 Add Admin User
@@ -430,7 +430,7 @@ export default function AgencyAdminUsers() {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem asChild>
                               <Link
-                                to={`/agency-admin/admin-users/${user.id}`}
+                                to={`/agency/admin/admin-users/${user.id}`}
                                 className="flex items-center"
                               >
                                 <Eye className="mr-2 h-4 w-4" />
@@ -439,7 +439,7 @@ export default function AgencyAdminUsers() {
                             </DropdownMenuItem>
                             <DropdownMenuItem asChild>
                               <Link
-                                to={`/agency-admin/admin-users/${user.id}/edit`}
+                                to={`/agency/admin/admin-users/${user.id}/edit`}
                                 className="flex items-center"
                               >
                                 <Edit className="mr-2 h-4 w-4" />
