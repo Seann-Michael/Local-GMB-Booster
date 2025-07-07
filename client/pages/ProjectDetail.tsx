@@ -618,12 +618,15 @@ export default function ProjectDetail() {
   };
 
   const updateProject = (updatedProject: Project) => {
+    console.log("updateProject called with:", updatedProject);
     const projects = JSON.parse(localStorage.getItem("projects") || "[]");
     const updatedProjects = projects.map((p: Project) =>
       p.id === project?.id ? updatedProject : p,
     );
     localStorage.setItem("projects", JSON.stringify(updatedProjects));
+    console.log("Setting project state to:", updatedProject);
     setProject(updatedProject);
+    console.log("Project state updated");
   };
 
   const shareProject = () => {
