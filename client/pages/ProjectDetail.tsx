@@ -1576,7 +1576,7 @@ export default function ProjectDetail() {
                   </CardContent>
                 </Card>
 
-                <Card>
+                <Card key="checklists-card">
                   <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle>Checklists</CardTitle>
                     <Button
