@@ -1148,6 +1148,12 @@ export default function ProjectDetail() {
                           {project.address}
                         </a>
                       </div>
+                      {project.gpsLat && project.gpsLng && (
+                        <div className="text-sm text-muted-foreground">
+                          <span className="font-medium">GPS:</span>{" "}
+                          {project.gpsLat}, {project.gpsLng}
+                        </div>
+                      )}
                       <div className="w-full h-64 bg-muted rounded-lg overflow-hidden">
                         <iframe
                           width="100%"
