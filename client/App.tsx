@@ -60,7 +60,7 @@ const App = () => (
 
           {/* Protected routes */}
           <Route
-            path="/admin/dashboard"
+            path="/admin/projects"
             element={
               <ProtectedRoute>
                 <Index />
@@ -319,13 +319,14 @@ const App = () => (
           />
 
           {/* Legacy/manual route redirects */}
-          <Route
-            path="/"
-            element={<Navigate to="/admin/dashboard" replace />}
-          />
+          <Route path="/" element={<Navigate to="/admin/projects" replace />} />
           <Route
             path="/dashboard"
-            element={<Navigate to="/admin/dashboard" replace />}
+            element={<Navigate to="/admin/projects" replace />}
+          />
+          <Route
+            path="/admin/dashboard"
+            element={<Navigate to="/admin/projects" replace />}
           />
           <Route path="/users" element={<Navigate to="/settings" replace />} />
           <Route path="/photos" element={<Navigate to="/gallery" replace />} />
