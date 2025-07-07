@@ -201,7 +201,7 @@ export default function ForgotPassword() {
           <p className="text-sm text-gray-600">
             Need help?{" "}
             <Link
-              to="/support"
+              to="/admin/support"
               className="font-medium text-blue-600 hover:text-blue-500"
             >
               Contact Support
