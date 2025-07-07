@@ -379,13 +379,24 @@ export default function ProjectDetail() {
       createdBy: getCurrentUser().name,
     };
 
+    const user = getCurrentUser();
+    const entry: ActivityLogEntry = {
+      id: Date.now().toString(),
+      type: "note_added",
+      description: "Added project note",
+      timestamp: new Date().toISOString(),
+      userId: user.id,
+      userName: user.name,
+      platform: user.platform,
+    };
+
     const updatedProject = {
       ...project,
       notes: [note, ...(project.notes || [])],
+      activityLog: [entry, ...(project.activityLog || [])],
     };
 
     updateProject(updatedProject);
-    addActivityLogEntry("note_added", "Added project note");
     setNewNote("");
     setShowAddNote(false);
     toast.success("Note added successfully");
