@@ -1118,6 +1118,48 @@ export default function ProjectDetail() {
                   </CardContent>
                 </Card>
 
+                {/* Google Map Section */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <MapPin className="h-5 w-5" />
+                      Project Location
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <MapPin className="h-4 w-4" />
+                        <a
+                          href={`https://maps.google.com/?q=${encodeURIComponent(project.address)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary hover:underline"
+                        >
+                          {project.address}
+                        </a>
+                      </div>
+                      <div className="w-full h-64 bg-muted rounded-lg overflow-hidden">
+                        <iframe
+                          width="100%"
+                          height="100%"
+                          style={{ border: 0 }}
+                          loading="lazy"
+                          allowFullScreen
+                          referrerPolicy="no-referrer-when-downgrade"
+                          src={`https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${encodeURIComponent(project.address)}`}
+                          title="Project Location"
+                          className="w-full h-full"
+                        />
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Click the address above to open in Google Maps for
+                        directions
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+
                 {/* Notes Section */}
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between">
