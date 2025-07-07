@@ -972,6 +972,7 @@ export default function ProjectDetail() {
                       {selectedPhotos.length > 0 && (
                         <>
                           <Button
+                            key="download-btn"
                             variant="outline"
                             size="sm"
                             onClick={downloadSelectedPhotos}
@@ -981,6 +982,7 @@ export default function ProjectDetail() {
                             Download
                           </Button>
                           <Button
+                            key="share-btn"
                             variant="outline"
                             size="sm"
                             onClick={shareProject}
@@ -990,6 +992,7 @@ export default function ProjectDetail() {
                             Share
                           </Button>
                           <Button
+                            key="select-all-btn"
                             variant="outline"
                             size="sm"
                             onClick={selectAllPhotos}
