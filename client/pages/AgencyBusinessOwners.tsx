@@ -224,7 +224,7 @@ export default function AgencyBusinessOwners() {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Link to="/agency-admin/business-owners/add">
+            <Link to="/agency/admin/business-owners/add">
               <Button className="gap-2">
                 <UserPlus className="h-4 w-4" />
                 Add Business Owner
@@ -407,7 +407,7 @@ export default function AgencyBusinessOwners() {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem asChild>
                               <Link
-                                to={`/agency-admin/business-owners/${business.id}`}
+                                to={`/agency/admin/business-owners/${business.id}`}
                                 className="flex items-center"
                               >
                                 <Eye className="mr-2 h-4 w-4" />
@@ -416,7 +416,7 @@ export default function AgencyBusinessOwners() {
                             </DropdownMenuItem>
                             <DropdownMenuItem asChild>
                               <Link
-                                to={`/agency-admin/business-owners/${business.id}/edit`}
+                                to={`/agency/admin/business-owners/${business.id}/edit`}
                                 className="flex items-center"
                               >
                                 <Edit className="mr-2 h-4 w-4" />
