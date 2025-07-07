@@ -76,6 +76,7 @@ export function AppLayout({ children }: AppLayoutProps) {
 
   const sidebarItems = [
     {
+      id: "dashboard",
       label: "Dashboard",
       href: "/",
       icon: Home,
@@ -83,6 +84,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         location.pathname === "/" && !location.pathname.startsWith("/project"),
     },
     {
+      id: "projects",
       label: "Projects",
       href: "/",
       icon: FolderOpen,
@@ -92,12 +94,14 @@ export function AppLayout({ children }: AppLayoutProps) {
           location.search.includes("view=projects")),
     },
     {
+      id: "gallery",
       label: "Gallery",
       href: "/gallery",
       icon: Camera,
       active: location.pathname === "/gallery",
     },
     {
+      id: "calendar",
       label: "Calendar",
       href: "/",
       icon: Calendar,
@@ -105,6 +109,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       comingSoon: true,
     },
     {
+      id: "analytics",
       label: "Analytics",
       href: "/",
       icon: BarChart3,
@@ -112,6 +117,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       comingSoon: true,
     },
     {
+      id: "documents",
       label: "Documents",
       href: "/",
       icon: FileText,
@@ -119,6 +125,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       comingSoon: true,
     },
     {
+      id: "workflow",
       label: "Workflow",
       href: "/",
       icon: Workflow,
@@ -126,6 +133,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       comingSoon: true,
     },
     {
+      id: "billing",
       label: "Billing",
       href: "/",
       icon: CreditCard,
