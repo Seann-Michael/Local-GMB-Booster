@@ -1076,30 +1076,137 @@ export default function Settings() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <Card className="p-4">
-                      <div className="flex items-center gap-3 mb-2">
-                        <Image className="h-5 w-5 text-blue-500" />
-                        <h4 className="font-medium">Images</h4>
-                      </div>
-                      <div className="text-sm text-muted-foreground space-y-1">
-                        <p>Max file size: 10 MB</p>
-                        <p>Formats: JPG, PNG, WebP</p>
-                        <p>Auto-compression: Enabled</p>
-                      </div>
-                    </Card>
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Allowed File Types</h4>
 
-                    <Card className="p-4">
-                      <div className="flex items-center gap-3 mb-2">
-                        <Video className="h-5 w-5 text-green-500" />
-                        <h4 className="font-medium">Videos</h4>
+                    <div className="space-y-4">
+                      <div>
+                        <Label className="text-sm font-medium mb-2 block">
+                          Image Types
+                        </Label>
+                        <div className="flex flex-wrap gap-2 mb-2">
+                          {settings.allowedImageTypes.map((type, index) => (
+                            <Badge
+                              key={index}
+                              variant="outline"
+                              className="gap-1"
+                            >
+                              {type}
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-auto p-0 ml-1"
+                                onClick={() => {
+                                  const newTypes =
+                                    settings.allowedImageTypes.filter(
+                                      (_, i) => i !== index,
+                                    );
+                                  updateSetting("allowedImageTypes", newTypes);
+                                }}
+                              >
+                                <X className="h-3 w-3" />
+                              </Button>
+                            </Badge>
+                          ))}
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              const newType = prompt(
+                                "Enter image file extension (e.g., .jpg):",
+                              );
+                              if (
+                                newType &&
+                                !settings.allowedImageTypes.includes(newType)
+                              ) {
+                                updateSetting("allowedImageTypes", [
+                                  ...settings.allowedImageTypes,
+                                  newType,
+                                ]);
+                              }
+                            }}
+                          >
+                            <Plus className="h-3 w-3" />
+                            Add Type
+                          </Button>
+                        </div>
                       </div>
-                      <div className="text-sm text-muted-foreground space-y-1">
-                        <p>Max file size: 100 MB</p>
-                        <p>Formats: MP4, WebM</p>
-                        <p>Auto-optimization: Enabled</p>
+
+                      <div>
+                        <Label className="text-sm font-medium mb-2 block">
+                          Video Types
+                        </Label>
+                        <div className="flex flex-wrap gap-2 mb-2">
+                          {settings.allowedVideoTypes.map((type, index) => (
+                            <Badge
+                              key={index}
+                              variant="outline"
+                              className="gap-1"
+                            >
+                              {type}
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-auto p-0 ml-1"
+                                onClick={() => {
+                                  const newTypes =
+                                    settings.allowedVideoTypes.filter(
+                                      (_, i) => i !== index,
+                                    );
+                                  updateSetting("allowedVideoTypes", newTypes);
+                                }}
+                              >
+                                <X className="h-3 w-3" />
+                              </Button>
+                            </Badge>
+                          ))}
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              const newType = prompt(
+                                "Enter video file extension (e.g., .mp4):",
+                              );
+                              if (
+                                newType &&
+                                !settings.allowedVideoTypes.includes(newType)
+                              ) {
+                                updateSetting("allowedVideoTypes", [
+                                  ...settings.allowedVideoTypes,
+                                  newType,
+                                ]);
+                              }
+                            }}
+                          >
+                            <Plus className="h-3 w-3" />
+                            Add Type
+                          </Button>
+                        </div>
                       </div>
-                    </Card>
+
+                      <div>
+                        <Label
+                          htmlFor="maxFileSize"
+                          className="text-sm font-medium mb-2 block"
+                        >
+                          Maximum File Size (MB)
+                        </Label>
+                        <Input
+                          id="maxFileSize"
+                          type="number"
+                          min="1"
+                          max="100"
+                          value={settings.maxFileSize}
+                          onChange={(e) =>
+                            updateSetting(
+                              "maxFileSize",
+                              parseInt(e.target.value),
+                            )
+                          }
+                          className="w-32"
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <Separator />
