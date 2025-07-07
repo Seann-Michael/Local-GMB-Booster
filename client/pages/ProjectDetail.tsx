@@ -1842,7 +1842,7 @@ export default function ProjectDetail() {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            <Card>
+            <Card key="project-info-sidebar">
               <CardHeader>
                 <CardTitle>Project Information</CardTitle>
               </CardHeader>
