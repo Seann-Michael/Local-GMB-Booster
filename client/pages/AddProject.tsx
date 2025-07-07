@@ -254,7 +254,7 @@ export default function AddProject() {
       );
 
       toast.success("Project created successfully!");
-      navigate("/admin/dashboard");
+      navigate("/admin/projects");
     } catch (error) {
       toast.error("Failed to create project");
     } finally {
@@ -530,7 +530,7 @@ export default function AddProject() {
           </Card>
 
           <div className="flex justify-end gap-4">
-            <Link to="/admin/dashboard">
+            <Link to="/admin/projects">
               <Button variant="outline">Cancel</Button>
             </Link>
             <Button

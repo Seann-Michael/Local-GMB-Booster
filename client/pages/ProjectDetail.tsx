@@ -251,7 +251,7 @@ export default function ProjectDetail() {
       const updatedProjects = projects.filter((p: Project) => p.id !== id);
       localStorage.setItem("projects", JSON.stringify(updatedProjects));
       toast.success("Project deleted successfully");
-      navigate("/admin/dashboard");
+      navigate("/admin/projects");
     }
   };
 
@@ -754,7 +754,7 @@ export default function ProjectDetail() {
           <Card>
             <CardContent className="py-12 text-center">
               <p className="text-muted-foreground">Project not found</p>
-              <Link to="/admin/dashboard">
+              <Link to="/admin/projects">
                 <Button className="mt-4">Back to Projects</Button>
               </Link>
             </CardContent>
