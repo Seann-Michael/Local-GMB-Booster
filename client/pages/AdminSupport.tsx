@@ -25,257 +25,205 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { AppLayout } from "@/components/AppLayout";
+import { toast } from "sonner";
 import {
   Plus,
   MessageSquare,
   Clock,
   AlertTriangle,
   CheckCircle,
-  MoreVertical,
-  Eye,
-  MessageCircle,
   Paperclip,
-  ArrowUpDown,
+  Send,
+  RefreshCw,
 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { toast } from "sonner";
+import { getCurrentUser } from "@/lib/auth";
 
 interface SupportTicket {
   id: string;
   title: string;
   category: string;
   priority: "low" | "medium" | "high" | "urgent";
-  status: "open" | "in-progress" | "resolved" | "closed";
+  status: "open" | "in_progress" | "resolved" | "closed";
   description: string;
   createdDate: string;
   updatedDate: string;
-  assignedTo?: string;
   submittedBy: string;
-  responses: TicketResponse[];
+  responses: SupportResponse[];
+  attachments?: string[];
 }
 
-interface TicketResponse {
+interface SupportResponse {
   id: string;
   message: string;
-  timestamp: string;
   author: string;
-  isStaff: boolean;
+  authorRole: string;
+  timestamp: string;
+}
+
+interface TicketFormData {
+  title: string;
+  category: string;
+  priority: "low" | "medium" | "high" | "urgent";
+  description: string;
+  attachments: File[];
 }
 
 export default function AdminSupport() {
+  const currentUser = getCurrentUser();
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
-  const [sortField, setSortField] = useState<string>("createdDate");
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
-  const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(
-    null,
-  );
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<TicketFormData>({
     title: "",
     category: "",
-    priority: "medium" as const,
+    priority: "medium",
     description: "",
+    attachments: [],
   });
-
-  const categories = [
-    "Technical Issue",
-    "Account Access",
-    "Feature Request",
-    "Data Export",
-    "Performance Issue",
-    "Training Request",
-    "Project Management",
-    "Gallery Issues",
-    "Settings Help",
-    "Other",
-  ];
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    // Load admin-specific tickets
-    const existingTickets = JSON.parse(
-      localStorage.getItem("admin_support_tickets") || "[]",
-    );
-
-    if (existingTickets.length === 0) {
-      const sampleTickets: SupportTicket[] = [
-        {
-          id: "1",
-          title: "Cannot upload project photos",
-          category: "Technical Issue",
-          priority: "high",
-          status: "open",
-          description:
-            "When I try to upload photos to my project, the upload fails with an error message. This is preventing me from completing my project documentation.",
-          createdDate: "2024-03-12",
-          updatedDate: "2024-03-12",
-          submittedBy: "admin@business.com",
-          responses: [],
-        },
-        {
-          id: "2",
-          title: "Request for project export feature",
-          category: "Feature Request",
-          priority: "medium",
-          status: "in-progress",
-          description:
-            "It would be helpful to export project data including photos and documentation as a PDF report for client presentations.",
-          createdDate: "2024-03-10",
-          updatedDate: "2024-03-11",
-          submittedBy: "admin@business.com",
-          assignedTo: "Business Support Team",
-          responses: [
-            {
-              id: "1",
-              message:
-                "Thank you for your feature request. Our development team is reviewing this and we'll update you on the timeline soon.",
-              timestamp: "2024-03-11 10:30",
-              author: "Business Support Team",
-              isStaff: true,
-            },
-          ],
-        },
-      ];
-
-      localStorage.setItem(
-        "admin_support_tickets",
-        JSON.stringify(sampleTickets),
-      );
-      setTickets(sampleTickets);
-    } else {
-      setTickets(existingTickets);
-    }
+    loadTickets();
   }, []);
 
-  const handleCreateTicket = () => {
+  const loadTickets = () => {
+    const existingTickets = JSON.parse(
+      localStorage.getItem("support_tickets") || "[]",
+    );
+
+    // Filter tickets by current user
+    const userTickets = existingTickets.filter(
+      (ticket: SupportTicket) => ticket.submittedBy === currentUser?.email,
+    );
+
+    setTickets(userTickets);
+  };
+
+  const handleInputChange = (field: keyof TicketFormData, value: any) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
+    setFormData((prev) => ({
+      ...prev,
+      attachments: [...prev.attachments, ...files],
+    }));
+  };
+
+  const removeAttachment = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      attachments: prev.attachments.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleCreateTicket = async () => {
     if (!formData.title || !formData.category || !formData.description) {
       toast.error("Please fill in all required fields.");
       return;
     }
 
-    const newTicket: SupportTicket = {
-      id: Date.now().toString(),
-      title: formData.title,
-      category: formData.category,
-      priority: formData.priority,
-      status: "open",
-      description: formData.description,
-      createdDate: new Date().toISOString().split("T")[0],
-      updatedDate: new Date().toISOString().split("T")[0],
-      submittedBy: "admin@business.com",
-      responses: [],
-    };
+    setIsSubmitting(true);
 
-    const existingTickets = JSON.parse(
-      localStorage.getItem("admin_support_tickets") || "[]",
-    );
-    existingTickets.push(newTicket);
-    localStorage.setItem(
-      "admin_support_tickets",
-      JSON.stringify(existingTickets),
-    );
+    try {
+      const newTicket: SupportTicket = {
+        id: Date.now().toString(),
+        title: formData.title,
+        category: formData.category,
+        priority: formData.priority,
+        status: "open",
+        description: formData.description,
+        createdDate: new Date().toISOString().split("T")[0],
+        updatedDate: new Date().toISOString().split("T")[0],
+        submittedBy: currentUser?.email || "unknown@example.com",
+        responses: [],
+        attachments: formData.attachments.map((file) => file.name),
+      };
 
-    setTickets([newTicket, ...tickets]);
+      // Get existing tickets and add new one
+      const existingTickets = JSON.parse(
+        localStorage.getItem("support_tickets") || "[]",
+      );
+      const updatedTickets = [...existingTickets, newTicket];
+      localStorage.setItem("support_tickets", JSON.stringify(updatedTickets));
 
-    setFormData({
-      title: "",
-      category: "",
-      priority: "medium",
-      description: "",
-    });
-    setShowCreateForm(false);
+      // Simulate notification to agency admin and super admin
+      toast.success(
+        "Support ticket created successfully! Agency admin and super admin have been notified.",
+      );
 
-    toast.success(
-      `Support ticket #${newTicket.id} has been created successfully.`,
-    );
-  };
-
-  const handleSort = (field: string) => {
-    if (sortField === field) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortDirection("asc");
+      // Reset form and close
+      setFormData({
+        title: "",
+        category: "",
+        priority: "medium",
+        description: "",
+        attachments: [],
+      });
+      setShowCreateForm(false);
+      loadTickets();
+    } catch (error) {
+      toast.error("Failed to create support ticket. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const sortedTickets = [...tickets].sort((a, b) => {
-    let aValue = a[sortField as keyof SupportTicket];
-    let bValue = b[sortField as keyof SupportTicket];
-
-    if (typeof aValue === "string") aValue = aValue.toLowerCase();
-    if (typeof bValue === "string") bValue = bValue.toLowerCase();
-
-    if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
-    if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
-    return 0;
-  });
-
-  const handleRowClick = (ticket: SupportTicket) => {
-    setSelectedTicket(ticket);
-    toast.success(`Opening ticket #${ticket.id}: ${ticket.title}`);
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case "urgent":
+        return "bg-red-500";
+      case "high":
+        return "bg-orange-500";
+      case "medium":
+        return "bg-yellow-500";
+      case "low":
+        return "bg-green-500";
+      default:
+        return "bg-gray-500";
+    }
   };
 
-  const getPriorityBadge = (priority: string) => {
-    const priorityConfig = {
-      low: { variant: "secondary" as const, label: "Low" },
-      medium: { variant: "outline" as const, label: "Medium" },
-      high: { variant: "default" as const, label: "High" },
-      urgent: { variant: "destructive" as const, label: "Urgent" },
-    };
-
-    const config = priorityConfig[priority as keyof typeof priorityConfig];
-    return <Badge variant={config.variant}>{config.label}</Badge>;
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "open":
+        return "bg-blue-500";
+      case "in_progress":
+        return "bg-yellow-500";
+      case "resolved":
+        return "bg-green-500";
+      case "closed":
+        return "bg-gray-500";
+      default:
+        return "bg-gray-500";
+    }
   };
 
-  const getStatusBadge = (status: string) => {
-    const statusConfig = {
-      open: { variant: "outline" as const, label: "Open", icon: MessageSquare },
-      "in-progress": {
-        variant: "default" as const,
-        label: "In Progress",
-        icon: Clock,
-      },
-      resolved: {
-        variant: "secondary" as const,
-        label: "Resolved",
-        icon: CheckCircle,
-      },
-      closed: {
-        variant: "secondary" as const,
-        label: "Closed",
-        icon: CheckCircle,
-      },
-    };
-
-    const config = statusConfig[status as keyof typeof statusConfig];
-    const Icon = config.icon;
-
-    return (
-      <Badge variant={config.variant} className="gap-1">
-        <Icon className="h-3 w-3" />
-        {config.label}
-      </Badge>
-    );
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "open":
+        return <MessageSquare className="h-4 w-4" />;
+      case "in_progress":
+        return <Clock className="h-4 w-4" />;
+      case "resolved":
+        return <CheckCircle className="h-4 w-4" />;
+      case "closed":
+        return <CheckCircle className="h-4 w-4" />;
+      default:
+        return <MessageSquare className="h-4 w-4" />;
+    }
   };
 
   return (
     <AppLayout>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="container px-4 py-6">
+        <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-3xl font-bold">Business Support</h1>
+            <h1 className="text-3xl font-bold">Support Center</h1>
             <p className="text-muted-foreground">
-              Get help with your business account and projects
+              Create and manage your support tickets
             </p>
           </div>
           <Button
@@ -284,57 +232,52 @@ export default function AdminSupport() {
             disabled={showCreateForm}
           >
             <Plus className="h-4 w-4" />
-            Create Ticket
+            New Ticket
           </Button>
         </div>
 
         {/* Create Ticket Form */}
         {showCreateForm && (
-          <Card>
+          <Card className="mb-6">
             <CardHeader>
-              <CardTitle>Create Support Ticket</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <MessageSquare className="h-5 w-5" />
+                Create Support Ticket
+              </CardTitle>
               <CardDescription>
-                Describe your issue and we'll help you resolve it
+                Describe your issue and we'll get back to you as soon as
+                possible.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="title">
-                    Ticket Title <span className="text-red-500">*</span>
-                  </Label>
+                  <Label htmlFor="title">Subject *</Label>
                   <Input
                     id="title"
-                    value={formData.title}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        title: e.target.value,
-                      }))
-                    }
                     placeholder="Brief description of your issue"
+                    value={formData.title}
+                    onChange={(e) => handleInputChange("title", e.target.value)}
                   />
                 </div>
-
                 <div className="space-y-2">
-                  <Label htmlFor="category">
-                    Category <span className="text-red-500">*</span>
-                  </Label>
+                  <Label htmlFor="category">Category *</Label>
                   <Select
                     value={formData.category}
                     onValueChange={(value) =>
-                      setFormData((prev) => ({ ...prev, category: value }))
+                      handleInputChange("category", value)
                     }
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select category" />
+                      <SelectValue placeholder="Select a category" />
                     </SelectTrigger>
                     <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category} value={category}>
-                          {category}
-                        </SelectItem>
-                      ))}
+                      <SelectItem value="technical">Technical Issue</SelectItem>
+                      <SelectItem value="billing">Billing</SelectItem>
+                      <SelectItem value="feature">Feature Request</SelectItem>
+                      <SelectItem value="bug">Bug Report</SelectItem>
+                      <SelectItem value="account">Account Issue</SelectItem>
+                      <SelectItem value="general">General Inquiry</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -345,14 +288,11 @@ export default function AdminSupport() {
                 <Select
                   value={formData.priority}
                   onValueChange={(value) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      priority: value as "low" | "medium" | "high" | "urgent",
-                    }))
+                    handleInputChange("priority", value as any)
                   }
                 >
-                  <SelectTrigger className="w-full md:w-[200px]">
-                    <SelectValue placeholder="Select priority" />
+                  <SelectTrigger>
+                    <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="low">Low</SelectItem>
@@ -364,31 +304,70 @@ export default function AdminSupport() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description">
-                  Description <span className="text-red-500">*</span>
-                </Label>
+                <Label htmlFor="description">Description *</Label>
                 <Textarea
                   id="description"
+                  placeholder="Please provide detailed information about your issue..."
+                  className="min-h-[120px]"
                   value={formData.description}
                   onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      description: e.target.value,
-                    }))
+                    handleInputChange("description", e.target.value)
                   }
-                  placeholder="Please provide detailed information about your issue..."
-                  rows={4}
                 />
               </div>
 
-              <div className="flex justify-end gap-2">
+              <div className="space-y-2">
+                <Label htmlFor="attachments">Attachments</Label>
+                <Input
+                  id="attachments"
+                  type="file"
+                  multiple
+                  onChange={handleFileUpload}
+                  className="cursor-pointer"
+                />
+                {formData.attachments.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {formData.attachments.map((file, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center gap-1 bg-muted px-2 py-1 rounded text-sm"
+                      >
+                        <Paperclip className="h-3 w-3" />
+                        <span>{file.name}</span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-auto p-0 ml-1"
+                          onClick={() => removeAttachment(index)}
+                        >
+                          ×
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-end gap-2 pt-4">
                 <Button
                   variant="outline"
                   onClick={() => setShowCreateForm(false)}
+                  disabled={isSubmitting}
                 >
                   Cancel
                 </Button>
-                <Button onClick={handleCreateTicket}>Create Ticket</Button>
+                <Button
+                  onClick={handleCreateTicket}
+                  disabled={isSubmitting}
+                  className="gap-2"
+                >
+                  {isSubmitting ? (
+                    <RefreshCw className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Send className="h-4 w-4" />
+                  )}
+                  {isSubmitting ? "Creating..." : "Create Ticket"}
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -397,205 +376,83 @@ export default function AdminSupport() {
         {/* Tickets List */}
         <Card>
           <CardHeader>
-            <CardTitle>Your Support Tickets ({tickets.length})</CardTitle>
+            <CardTitle>Your Support Tickets</CardTitle>
             <CardDescription>
-              Track the status of your support requests
+              Track the status of your submitted tickets
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {tickets.length > 0 ? (
-              <div className="rounded-md border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>
-                        <Button
-                          variant="ghost"
-                          className="h-8 p-0 font-medium"
-                          onClick={() => handleSort("title")}
-                        >
-                          Ticket
-                          <ArrowUpDown className="ml-2 h-4 w-4" />
-                        </Button>
-                      </TableHead>
-                      <TableHead>
-                        <Button
-                          variant="ghost"
-                          className="h-8 p-0 font-medium"
-                          onClick={() => handleSort("category")}
-                        >
-                          Category
-                          <ArrowUpDown className="ml-2 h-4 w-4" />
-                        </Button>
-                      </TableHead>
-                      <TableHead>
-                        <Button
-                          variant="ghost"
-                          className="h-8 p-0 font-medium"
-                          onClick={() => handleSort("priority")}
-                        >
-                          Priority
-                          <ArrowUpDown className="ml-2 h-4 w-4" />
-                        </Button>
-                      </TableHead>
-                      <TableHead>
-                        <Button
-                          variant="ghost"
-                          className="h-8 p-0 font-medium"
-                          onClick={() => handleSort("status")}
-                        >
-                          Status
-                          <ArrowUpDown className="ml-2 h-4 w-4" />
-                        </Button>
-                      </TableHead>
-                      <TableHead>
-                        <Button
-                          variant="ghost"
-                          className="h-8 p-0 font-medium"
-                          onClick={() => handleSort("createdDate")}
-                        >
-                          Created
-                          <ArrowUpDown className="ml-2 h-4 w-4" />
-                        </Button>
-                      </TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {sortedTickets.map((ticket) => (
-                      <TableRow
-                        key={ticket.id}
-                        className="cursor-pointer hover:bg-muted/50"
-                        onClick={() => handleRowClick(ticket)}
-                      >
-                        <TableCell>
-                          <div>
-                            <div className="font-medium">{ticket.title}</div>
-                            <div className="text-sm text-muted-foreground">
-                              #{ticket.id}
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell>{ticket.category}</TableCell>
-                        <TableCell>
-                          {getPriorityBadge(ticket.priority)}
-                        </TableCell>
-                        <TableCell>{getStatusBadge(ticket.status)}</TableCell>
-                        <TableCell>
-                          {new Date(ticket.createdDate).toLocaleDateString()}
-                        </TableCell>
-                        <TableCell onClick={(e) => e.stopPropagation()}>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" className="h-8 w-8 p-0">
-                                <MoreVertical className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem>
-                                <Eye className="mr-2 h-4 w-4" />
-                                View Details
-                              </DropdownMenuItem>
-                              <DropdownMenuItem>
-                                <MessageCircle className="mr-2 h-4 w-4" />
-                                Add Response
-                              </DropdownMenuItem>
-                              {ticket.status === "open" && (
-                                <DropdownMenuItem>
-                                  <CheckCircle className="mr-2 h-4 w-4" />
-                                  Mark Resolved
-                                </DropdownMenuItem>
-                              )}
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+            {tickets.length === 0 ? (
+              <div className="text-center py-8">
+                <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No tickets yet</h3>
+                <p className="text-muted-foreground mb-4">
+                  You haven't created any support tickets yet.
+                </p>
+                <Button
+                  onClick={() => setShowCreateForm(true)}
+                  className="gap-2"
+                >
+                  <Plus className="h-4 w-4" />
+                  Create Your First Ticket
+                </Button>
               </div>
             ) : (
-              <div className="text-center py-8 text-muted-foreground">
-                <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>No support tickets found</p>
-                <p className="text-sm">
-                  Create your first ticket to get help from our support team
-                </p>
-              </div>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Subject</TableHead>
+                    <TableHead>Category</TableHead>
+                    <TableHead>Priority</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Created</TableHead>
+                    <TableHead>Updated</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {tickets.map((ticket) => (
+                    <TableRow key={ticket.id}>
+                      <TableCell>
+                        <div className="font-medium">{ticket.title}</div>
+                        <div className="text-sm text-muted-foreground">
+                          ID: {ticket.id}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{ticket.category}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant="outline"
+                          className={`text-white ${getPriorityColor(ticket.priority)}`}
+                        >
+                          {ticket.priority}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <div
+                            className={`p-1 rounded-full ${getStatusColor(ticket.status)}`}
+                          >
+                            {getStatusIcon(ticket.status)}
+                          </div>
+                          <Badge
+                            variant="outline"
+                            className={`text-white ${getStatusColor(ticket.status)}`}
+                          >
+                            {ticket.status.replace("_", " ")}
+                          </Badge>
+                        </div>
+                      </TableCell>
+                      <TableCell>{ticket.createdDate}</TableCell>
+                      <TableCell>{ticket.updatedDate}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             )}
           </CardContent>
         </Card>
-
-        {/* Quick Help Section */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <MessageSquare className="h-5 w-5" />
-                Common Issues
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2 text-sm">
-                <li>• Project photo upload issues</li>
-                <li>• Account access problems</li>
-                <li>• Gallery organization help</li>
-                <li>• Settings configuration</li>
-                <li>• Data export procedures</li>
-              </ul>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Clock className="h-5 w-5" />
-                Response Times
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span>Low Priority:</span>
-                  <span>24-48 hours</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Medium Priority:</span>
-                  <span>12-24 hours</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>High Priority:</span>
-                  <span>4-8 hours</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Urgent:</span>
-                  <span>1-2 hours</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5" />
-                Business Support
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2 text-sm">
-                <p>For urgent business issues:</p>
-                <p className="font-medium">business@support.com</p>
-                <p className="font-medium">1-800-BIZ-HELP</p>
-                <p className="text-xs text-muted-foreground mt-2">
-                  Business support available during business hours
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
     </AppLayout>
   );
