@@ -142,11 +142,11 @@ export function AppLayout({ children }: AppLayoutProps) {
 
   return (
     <div className="min-h-screen bg-background flex">
-      {/* Sidebar - Hidden on mobile */}
+      {/* Static Sidebar - Always visible on desktop, collapsible */}
       <div
         className={cn(
-          "hidden md:flex bg-card border-r transition-all duration-300 flex-col",
-          sidebarCollapsed ? "w-16" : "w-64",
+          "hidden md:flex bg-card border-r transition-all duration-300 flex-col shadow-sm",
+          sidebarCollapsed ? "w-16" : "w-72",
         )}
       >
         {/* Sidebar Header */}
