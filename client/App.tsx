@@ -295,7 +295,7 @@ const App = () => (
             }
           />
           <Route
-            path="/agency-admin/admin-users/:id/edit"
+            path="/agency/admin/admin-users/:id/edit"
             element={
               <ProtectedRoute>
                 <AgencyAdminUserEdit />
@@ -303,7 +303,7 @@ const App = () => (
             }
           />
           <Route
-            path="/agency-admin/settings"
+            path="/agency/admin/settings"
             element={
               <ProtectedRoute>
                 <AgencySettings />
