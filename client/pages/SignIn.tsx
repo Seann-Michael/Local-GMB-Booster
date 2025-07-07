@@ -60,7 +60,7 @@ export default function SignIn() {
 
         // Redirect based on user role
         if (user.role === "agency") {
-          navigate("/agency-admin", { replace: true });
+          navigate("/agency/admin/dashboard", { replace: true });
         } else if (user.role === "superadmin") {
           navigate("/super-admin", { replace: true });
         } else {
