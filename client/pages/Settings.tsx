@@ -1006,9 +1006,7 @@ export default function Settings() {
                     </p>
                     <Button
                       className="gap-2"
-                      onClick={() =>
-                        toast.success("Add tag functionality coming soon")
-                      }
+                      onClick={() => setShowTagForm(true)}
                     >
                       <Plus className="h-4 w-4" />
                       Add Tag
