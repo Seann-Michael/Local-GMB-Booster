@@ -75,6 +75,12 @@ export function AppLayout({ children }: AppLayoutProps) {
 
   const sidebarItems = [
     {
+      label: "Dashboard",
+      href: "/dashboard",
+      icon: Home,
+      active: location.pathname === "/dashboard",
+    },
+    {
       label: "Projects",
       href: "/",
       icon: FolderOpen,
@@ -86,6 +92,51 @@ export function AppLayout({ children }: AppLayoutProps) {
       href: "/gallery",
       icon: Camera,
       active: location.pathname === "/gallery",
+    },
+    {
+      label: "Calendar",
+      href: "/calendar",
+      icon: Calendar,
+      active: location.pathname === "/calendar",
+    },
+    {
+      label: "Analytics",
+      href: "/analytics",
+      icon: BarChart3,
+      active: location.pathname === "/analytics",
+    },
+    {
+      label: "Documents",
+      href: "/documents",
+      icon: FileText,
+      active: location.pathname === "/documents",
+    },
+    {
+      label: "Workflow",
+      href: "/workflow",
+      icon: Workflow,
+      active: location.pathname === "/workflow",
+    },
+    {
+      label: "Billing",
+      href: "/billing",
+      icon: CreditCard,
+      active: location.pathname === "/billing",
+    },
+  ];
+
+  const bottomSidebarItems = [
+    {
+      label: "Settings",
+      href: "/settings",
+      icon: Settings,
+      active: location.pathname === "/settings",
+    },
+    {
+      label: "Support",
+      href: "/admin-support",
+      icon: MessageSquare,
+      active: location.pathname === "/admin-support",
     },
   ];
 
