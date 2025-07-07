@@ -1596,8 +1596,8 @@ export default function ProjectDetail() {
                         </div>
                       ))
                     ) : (
-                      <>
-                        <div className="flex gap-3">
+                      <div className="space-y-4">
+                        <div key="project-created" className="flex gap-3">
                           <Clock className="h-4 w-4 mt-1 text-muted-foreground" />
                           <div>
                             <p className="text-sm">
@@ -1613,7 +1613,7 @@ export default function ProjectDetail() {
                         </div>
 
                         {project.photos.length > 0 && (
-                          <div className="flex gap-3">
+                          <div key="photos-uploaded" className="flex gap-3">
                             <Images className="h-4 w-4 mt-1 text-muted-foreground" />
                             <div>
                               <p className="text-sm">
@@ -1629,7 +1629,7 @@ export default function ProjectDetail() {
                         )}
 
                         {project.status === "completed" && (
-                          <div className="flex gap-3">
+                          <div key="project-completed" className="flex gap-3">
                             <CheckCircle className="h-4 w-4 mt-1 text-green-600" />
                             <div>
                               <p className="text-sm">
@@ -1648,7 +1648,7 @@ export default function ProjectDetail() {
                             </div>
                           </div>
                         )}
-                      </>
+                      </div>
                     )}
 
                     {(!project.activityLog ||
