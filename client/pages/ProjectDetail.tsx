@@ -1886,8 +1886,8 @@ export default function ProjectDetail() {
                   (project.additionalPhones &&
                     project.additionalPhones.length > 0)) && (
                   <>
-                    <Separator />
-                    <div>
+                    <Separator key="customer-separator" />
+                    <div key="customer-info">
                       <h4 className="font-medium mb-2 flex items-center gap-2">
                         <Phone className="h-4 w-4" />
                         Customer Information
