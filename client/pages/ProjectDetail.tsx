@@ -1728,109 +1728,112 @@ export default function ProjectDetail() {
             {/* Activity Log Tab */}
             {activeTab === "activity" && (
               <Card>
-                <CardHeader>
+                <CardHeader className="flex flex-row items-center justify-between">
                   <CardTitle>Activity Log</CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Select defaultValue="10">
+                      <SelectTrigger className="w-20">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="5">5</SelectItem>
+                        <SelectItem value="10">10</SelectItem>
+                        <SelectItem value="25">25</SelectItem>
+                        <SelectItem value="50">50</SelectItem>
+                        <SelectItem value="100">100</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <span className="text-sm text-muted-foreground">rows</span>
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    {project.activityLog &&
-                    Array.isArray(project.activityLog) &&
-                    project.activityLog.length > 0 ? (
-                      project.activityLog.map((entry) => (
-                        <div
-                          key={entry.id}
-                          className="flex gap-3 p-3 border rounded-lg"
-                        >
-                          <div className="flex items-center gap-2">
-                            {entry.platform === "mobile" ? (
-                              <Smartphone className="h-4 w-4 text-muted-foreground" />
-                            ) : (
-                              <Monitor className="h-4 w-4 text-muted-foreground" />
-                            )}
-                            <Clock className="h-4 w-4 text-muted-foreground" />
-                          </div>
-                          <div className="flex-1">
-                            <p className="text-sm">
-                              <span className="font-medium">
-                                {entry.description}
-                              </span>{" "}
-                              by {entry.userName}
-                            </p>
-                            <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
-                              <span>{formatTimestamp(entry.timestamp)}</span>
-                              <Badge variant="outline" className="text-xs">
-                                {entry.platform}
-                              </Badge>
-                            </div>
+                  {project.activityLog && project.activityLog.length > 0 ? (
+                    <div className="space-y-4">
+                      <div className="overflow-x-auto">
+                        <table className="w-full">
+                          <thead>
+                            <tr className="border-b">
+                              <th className="text-left p-2 font-medium cursor-pointer hover:bg-muted">
+                                Platform
+                              </th>
+                              <th className="text-left p-2 font-medium cursor-pointer hover:bg-muted">
+                                Action
+                              </th>
+                              <th className="text-left p-2 font-medium cursor-pointer hover:bg-muted">
+                                User
+                              </th>
+                              <th className="text-left p-2 font-medium cursor-pointer hover:bg-muted">
+                                Date/Time
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {project.activityLog.slice(0, 10).map((entry) => (
+                              <tr
+                                key={entry.id}
+                                className="border-b hover:bg-muted/50"
+                              >
+                                <td className="p-2">
+                                  <div className="flex items-center gap-2">
+                                    {entry.platform === "mobile" ? (
+                                      <Smartphone className="h-4 w-4 text-muted-foreground" />
+                                    ) : (
+                                      <Monitor className="h-4 w-4 text-muted-foreground" />
+                                    )}
+                                    <Badge
+                                      variant="outline"
+                                      className="text-xs capitalize"
+                                    >
+                                      {entry.platform}
+                                    </Badge>
+                                  </div>
+                                </td>
+                                <td className="p-2">
+                                  <span className="font-medium text-sm">
+                                    {entry.description}
+                                  </span>
+                                </td>
+                                <td className="p-2">
+                                  <span className="text-sm text-muted-foreground">
+                                    {entry.userName}
+                                  </span>
+                                </td>
+                                <td className="p-2">
+                                  <span className="text-sm text-muted-foreground">
+                                    {formatTimestamp(entry.timestamp)}
+                                  </span>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+
+                      {project.activityLog.length > 10 && (
+                        <div className="flex items-center justify-between text-sm text-muted-foreground">
+                          <span>
+                            Showing 1-10 of {project.activityLog.length} entries
+                          </span>
+                          <div className="flex gap-2">
+                            <Button variant="outline" size="sm">
+                              Previous
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              Next
+                            </Button>
                           </div>
                         </div>
-                      ))
-                    ) : (
-                      <div className="space-y-4">
-                        <div key="project-created" className="flex gap-3">
-                          <Clock className="h-4 w-4 mt-1 text-muted-foreground" />
-                          <div>
-                            <p className="text-sm">
-                              <span className="font-medium">
-                                Project created
-                              </span>{" "}
-                              by John Smith
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              {formatTimestamp(project.createdAt)} • web
-                            </p>
-                          </div>
-                        </div>
-
-                        {project.photos.length > 0 && (
-                          <div key="photos-uploaded" className="flex gap-3">
-                            <Images className="h-4 w-4 mt-1 text-muted-foreground" />
-                            <div>
-                              <p className="text-sm">
-                                <span className="font-medium">
-                                  {project.photos.length} photos uploaded
-                                </span>
-                              </p>
-                              <p className="text-xs text-muted-foreground">
-                                Various times • web
-                              </p>
-                            </div>
-                          </div>
-                        )}
-
-                        {project.status === "completed" && (
-                          <div key="project-completed" className="flex gap-3">
-                            <CheckCircle className="h-4 w-4 mt-1 text-green-600" />
-                            <div>
-                              <p className="text-sm">
-                                <span className="font-medium text-green-800">
-                                  Project completed
-                                </span>
-                              </p>
-                              <p className="text-xs text-muted-foreground">
-                                {project.completedDate
-                                  ? formatTimestamp(
-                                      project.completedDate + "T12:00:00",
-                                    )
-                                  : "Unknown"}{" "}
-                                • web
-                              </p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {(!project.activityLog ||
-                      project.activityLog.length === 0) && (
-                      <div className="text-center py-4 text-muted-foreground mt-4">
-                        <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                        <p className="text-sm">
-                          Activity log tracks all project changes
-                        </p>
-                      </div>
-                    )}
-                  </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                      <p>No activity logged yet</p>
+                      <p className="text-sm mt-1">
+                        Activity will appear here as you work on the project
+                      </p>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             )}
