@@ -259,6 +259,72 @@ export default function Settings() {
     }));
   };
 
+  // Webhook management functions
+  const addWebhook = (webhook: any) => {
+    const newWebhook = {
+      ...webhook,
+      id: Date.now().toString(),
+    };
+    setSettings((prev) => ({
+      ...prev,
+      webhooks: [...prev.webhooks, newWebhook],
+    }));
+    setShowWebhookForm(false);
+    toast.success("Webhook added successfully!");
+  };
+
+  const updateWebhook = (webhookId: string, updatedWebhook: any) => {
+    setSettings((prev) => ({
+      ...prev,
+      webhooks: prev.webhooks.map((webhook) =>
+        webhook.id === webhookId ? { ...webhook, ...updatedWebhook } : webhook,
+      ),
+    }));
+    setEditingWebhook(null);
+    toast.success("Webhook updated successfully!");
+  };
+
+  const deleteWebhook = (webhookId: string) => {
+    setSettings((prev) => ({
+      ...prev,
+      webhooks: prev.webhooks.filter((webhook) => webhook.id !== webhookId),
+    }));
+    toast.success("Webhook deleted successfully!");
+  };
+
+  // Tag management functions
+  const addTag = (tag: any) => {
+    const newTag = {
+      ...tag,
+      id: Date.now().toString(),
+    };
+    setSettings((prev) => ({
+      ...prev,
+      businessTags: [...prev.businessTags, newTag],
+    }));
+    setShowTagForm(false);
+    toast.success("Tag added successfully!");
+  };
+
+  const updateTag = (tagId: string, updatedTag: any) => {
+    setSettings((prev) => ({
+      ...prev,
+      businessTags: prev.businessTags.map((tag) =>
+        tag.id === tagId ? { ...tag, ...updatedTag } : tag,
+      ),
+    }));
+    setEditingTag(null);
+    toast.success("Tag updated successfully!");
+  };
+
+  const deleteTag = (tagId: string) => {
+    setSettings((prev) => ({
+      ...prev,
+      businessTags: prev.businessTags.filter((tag) => tag.id !== tagId),
+    }));
+    toast.success("Tag deleted successfully!");
+  };
+
   const tabs = [
     { id: "general", label: "General", icon: Building2 },
     { id: "projects", label: "Projects", icon: FolderOpen },
