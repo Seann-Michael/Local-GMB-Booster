@@ -877,6 +877,7 @@ export default function ProjectDetail() {
             {[
               { id: "overview", label: "Overview" },
               { id: "tasks", label: "Tasks & Checklists" },
+              { id: "documents", label: "Documents" },
               { id: "activity", label: "Activity Log" },
             ].map((tab) => (
               <button
