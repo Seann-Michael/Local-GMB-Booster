@@ -530,7 +530,7 @@ export default function AddProject() {
           </Card>
 
           <div className="flex justify-end gap-4">
-            <Link to="/">
+            <Link to="/admin/dashboard">
               <Button variant="outline">Cancel</Button>
             </Link>
             <Button
