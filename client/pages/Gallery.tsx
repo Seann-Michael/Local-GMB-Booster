@@ -12,8 +12,7 @@ import {
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Header } from "@/components/Header";
-import { Breadcrumb } from "@/components/Breadcrumb";
+import { AppLayout } from "@/components/AppLayout";
 import {
   ArrowLeft,
   Images,
@@ -247,17 +246,9 @@ export default function Gallery() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-
+    <AppLayout>
       <div className="container px-4 py-6">
-        <Breadcrumb />
         <div className="flex items-center gap-4 mb-6">
-          <Link to="/admin/projects">
-            <Button variant="ghost" size="icon">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          </Link>
           <div className="flex-1">
             <h1 className="text-2xl font-bold">Gallery</h1>
             <p className="text-muted-foreground">
