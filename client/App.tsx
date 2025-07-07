@@ -247,7 +247,7 @@ const App = () => (
             }
           />
           <Route
-            path="/agency-admin/business-owners"
+            path="/agency/admin/business-owners"
             element={
               <ProtectedRoute>
                 <AgencyBusinessOwners />
@@ -255,7 +255,7 @@ const App = () => (
             }
           />
           <Route
-            path="/agency-admin/business-owners/:id"
+            path="/agency/admin/business-owners/:id"
             element={
               <ProtectedRoute>
                 <AgencyBusinessOwnerDetail />
@@ -263,7 +263,7 @@ const App = () => (
             }
           />
           <Route
-            path="/agency-admin/business-owners/:id/edit"
+            path="/agency/admin/business-owners/:id/edit"
             element={
               <ProtectedRoute>
                 <AgencyBusinessOwnerEdit />
@@ -271,7 +271,7 @@ const App = () => (
             }
           />
           <Route
-            path="/agency-admin/admin-users"
+            path="/agency/admin/admin-users"
             element={
               <ProtectedRoute>
                 <AgencyAdminUsers />
@@ -279,7 +279,7 @@ const App = () => (
             }
           />
           <Route
-            path="/agency-admin/admin-users/add"
+            path="/agency/admin/admin-users/add"
             element={
               <ProtectedRoute>
                 <AddAgencyAdminUser />
@@ -287,7 +287,7 @@ const App = () => (
             }
           />
           <Route
-            path="/agency-admin/admin-users/:id"
+            path="/agency/admin/admin-users/:id"
             element={
               <ProtectedRoute>
                 <AgencyAdminUserDetail />
