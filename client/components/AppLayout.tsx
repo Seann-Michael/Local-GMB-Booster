@@ -214,8 +214,8 @@ export function AppLayout({ children }: AppLayoutProps) {
         {/* Main Navigation */}
         <nav className="flex-1 px-3 py-2">
           <div className="space-y-1">
-            {sidebarItems.map((item) => (
-              <Link key={item.href} to={item.href}>
+            {sidebarItems.map((item) => {
+              const NavButton = (
                 <Button
                   variant={item.active ? "secondary" : "ghost"}
                   className={cn(
@@ -225,18 +225,42 @@ export function AppLayout({ children }: AppLayoutProps) {
                       "bg-primary/10 text-primary border-r-2 border-primary",
                     !item.active &&
                       "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                    item.comingSoon && "opacity-70",
                   )}
                   size="sm"
+                  onClick={
+                    item.comingSoon
+                      ? (e) => {
+                          e.preventDefault();
+                          toast.success(`${item.label} feature coming soon!`);
+                        }
+                      : undefined
+                  }
                 >
                   <item.icon
                     className={cn("h-5 w-5", item.active && "text-primary")}
                   />
                   {!sidebarCollapsed && (
-                    <span className="font-medium">{item.label}</span>
+                    <span className="font-medium flex items-center gap-2">
+                      {item.label}
+                      {item.comingSoon && (
+                        <span className="text-xs bg-primary/20 text-primary px-1 py-0.5 rounded">
+                          Soon
+                        </span>
+                      )}
+                    </span>
                   )}
                 </Button>
-              </Link>
-            ))}
+              );
+
+              return item.comingSoon ? (
+                <div key={item.label}>{NavButton}</div>
+              ) : (
+                <Link key={item.href} to={item.href}>
+                  {NavButton}
+                </Link>
+              );
+            })}
           </div>
         </nav>
 
