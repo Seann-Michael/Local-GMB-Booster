@@ -244,7 +244,7 @@ export default function AgencyAdmin() {
                     View All Clients
                   </Button>
                 </Link>
-                <Link to="/agency-admin/clients/add">
+                <Link to="/agency/admin/clients/add">
                   <Button className="w-full gap-2">
                     <Plus className="h-4 w-4" />
                     Add New Client
@@ -360,7 +360,7 @@ export default function AgencyAdmin() {
               <div className="text-center py-8 text-muted-foreground">
                 <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
                 <p>No clients added yet</p>
-                <Link to="/agency-admin/clients/add">
+                <Link to="/agency/admin/clients/add">
                   <Button className="mt-2 gap-2">
                     <Plus className="h-4 w-4" />
                     Add Your First Client
