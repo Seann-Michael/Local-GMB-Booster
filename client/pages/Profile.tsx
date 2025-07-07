@@ -96,10 +96,7 @@ export default function Profile() {
                 <Avatar className="h-20 w-20">
                   <AvatarImage src={profileData.avatar} />
                   <AvatarFallback className="text-lg">
-                    {profileData.name
-                      .split(" ")
-                      .map((n: string) => n[0])
-                      .join("")}
+                    {`${profileData.firstName?.[0] || ""}${profileData.lastName?.[0] || ""}`}
                   </AvatarFallback>
                 </Avatar>
                 <div>
@@ -128,11 +125,23 @@ export default function Profile() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="name">Full Name</Label>
+                  <Label htmlFor="firstName">First Name</Label>
                   <Input
-                    id="name"
-                    value={profileData.name}
-                    onChange={(e) => handleInputChange("name", e.target.value)}
+                    id="firstName"
+                    value={profileData.firstName}
+                    onChange={(e) =>
+                      handleInputChange("firstName", e.target.value)
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName">Last Name</Label>
+                  <Input
+                    id="lastName"
+                    value={profileData.lastName}
+                    onChange={(e) =>
+                      handleInputChange("lastName", e.target.value)
+                    }
                   />
                 </div>
                 <div className="space-y-2">
