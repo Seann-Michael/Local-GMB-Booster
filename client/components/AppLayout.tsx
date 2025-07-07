@@ -202,21 +202,29 @@ export function AppLayout({ children }: AppLayoutProps) {
           </Link>
         </div>
 
-        {/* Sidebar Navigation */}
-        <nav className="flex-1 p-2">
+        {/* Main Navigation */}
+        <nav className="flex-1 px-3 py-2">
           <div className="space-y-1">
             {sidebarItems.map((item) => (
               <Link key={item.href} to={item.href}>
                 <Button
                   variant={item.active ? "secondary" : "ghost"}
                   className={cn(
-                    "w-full justify-start gap-2",
-                    sidebarCollapsed && "px-2",
+                    "w-full justify-start gap-3 h-10 font-medium",
+                    sidebarCollapsed ? "px-3" : "px-4",
+                    item.active &&
+                      "bg-primary/10 text-primary border-r-2 border-primary",
+                    !item.active &&
+                      "text-muted-foreground hover:text-foreground hover:bg-muted/50",
                   )}
                   size="sm"
                 >
-                  <item.icon className="h-4 w-4" />
-                  {!sidebarCollapsed && <span>{item.label}</span>}
+                  <item.icon
+                    className={cn("h-5 w-5", item.active && "text-primary")}
+                  />
+                  {!sidebarCollapsed && (
+                    <span className="font-medium">{item.label}</span>
+                  )}
                 </Button>
               </Link>
             ))}
