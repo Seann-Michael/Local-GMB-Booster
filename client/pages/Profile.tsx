@@ -190,6 +190,6 @@ export default function Profile() {
           </Card>
         </div>
       </div>
-    </div>
+    </AppLayout>
   );
 }
