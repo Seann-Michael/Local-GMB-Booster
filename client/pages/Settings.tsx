@@ -839,10 +839,30 @@ export default function Settings() {
                           <span className="font-medium">{tag.name}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Button variant="ghost" size="sm">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() =>
+                              toast.success(
+                                "Edit tag functionality coming soon",
+                              )
+                            }
+                          >
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              if (
+                                confirm(
+                                  "Are you sure you want to delete this tag?",
+                                )
+                              ) {
+                                toast.success("Tag deleted");
+                              }
+                            }}
+                          >
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
