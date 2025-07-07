@@ -138,7 +138,7 @@ export default function AddAgencyClient() {
       localStorage.setItem("agency_clients", JSON.stringify(updatedClients));
 
       toast.success("Client added successfully!");
-      navigate("/agency-admin/clients");
+      navigate("/agency/admin/clients");
     } catch (error) {
       toast.error("Failed to add client. Please try again.");
     } finally {

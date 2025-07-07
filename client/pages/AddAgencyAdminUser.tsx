@@ -103,7 +103,7 @@ export default function AddAgencyAdminUser() {
     });
 
     // Navigate back to admin users list
-    navigate("/agency-admin/admin-users");
+    navigate("/agency/admin/admin-users");
   };
 
   const availablePermissions = [

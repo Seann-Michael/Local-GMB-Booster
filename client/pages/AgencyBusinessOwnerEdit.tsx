@@ -117,7 +117,7 @@ export default function AgencyBusinessOwnerEdit() {
     });
 
     // Navigate back to detail page
-    navigate(`/agency-admin/business-owners/${id}`);
+    navigate(`/agency/admin/business-owners/${id}`);
   };
 
   if (!business) {

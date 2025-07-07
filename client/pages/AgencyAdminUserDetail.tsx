@@ -155,7 +155,7 @@ export default function AgencyAdminUserDetail() {
         description: "Admin user has been successfully deleted.",
       });
 
-      navigate("/agency-admin/admin-users");
+      navigate("/agency/admin/admin-users");
     }
   };
 

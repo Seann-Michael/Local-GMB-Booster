@@ -126,7 +126,7 @@ export default function AgencyAdminUserEdit() {
     });
 
     // Navigate back to detail page
-    navigate(`/agency-admin/admin-users/${id}`);
+    navigate(`/agency/admin/admin-users/${id}`);
   };
 
   if (!user) {
