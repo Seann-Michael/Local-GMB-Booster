@@ -501,10 +501,6 @@ export default function ProjectDetail() {
   const addChecklistItem = () => {
     if (!project || !newChecklistItem.trim()) return;
 
-    console.log("1. Starting addChecklistItem");
-    console.log("2. Current project.checklist:", project.checklist);
-    console.log("3. New item text:", newChecklistItem);
-
     const item: ChecklistItem = {
       id: Date.now().toString(),
       title: newChecklistItem,
@@ -512,20 +508,24 @@ export default function ProjectDetail() {
       createdAt: new Date().toISOString(),
     };
 
-    console.log("4. Created item:", item);
+    const user = getCurrentUser();
+    const entry: ActivityLogEntry = {
+      id: Date.now().toString(),
+      type: "checklist_item_added",
+      description: `Checklist item "${item.title}" added`,
+      timestamp: new Date().toISOString(),
+      userId: user.id,
+      userName: user.name,
+      platform: user.platform,
+    };
 
     const updatedProject = {
       ...project,
       checklist: [...(project.checklist || []), item],
+      activityLog: [entry, ...(project.activityLog || [])],
     };
 
-    console.log("5. Updated project checklist:", updatedProject.checklist);
-
     updateProject(updatedProject);
-    addActivityLogEntry(
-      "checklist_item_added",
-      `Checklist item "${item.title}" added`,
-    );
     setNewChecklistItem("");
     setShowAddChecklist(false);
     toast.success("Checklist item added");
