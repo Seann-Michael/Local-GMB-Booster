@@ -72,9 +72,9 @@ interface TicketFormData {
 
 export default function AdminSupport() {
   const currentUser = getCurrentUser();
+  const navigate = useNavigate();
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
-
   const [formData, setFormData] = useState<TicketFormData>({
     title: "",
     category: "",
@@ -365,7 +365,7 @@ export default function AdminSupport() {
                   {isSubmitting ? (
                     <RefreshCw className="h-4 w-4 animate-spin" />
                   ) : (
-                    <Send className="h-4 w-4" />
+                    <Plus className="h-4 w-4" />
                   )}
                   {isSubmitting ? "Creating..." : "Create Ticket"}
                 </Button>
@@ -466,113 +466,7 @@ export default function AdminSupport() {
             )}
           </CardContent>
         </Card>
-
       </div>
     </AppLayout>
   );
 }
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-background rounded-lg shadow-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
-              <div className="flex items-center justify-between p-6 border-b">
-                <div>
-                  <h2 className="text-xl font-semibold">
-                    {selectedTicket.title}
-                  </h2>
-                  <div className="flex items-center gap-2 mt-1">
-                    <Badge variant="outline">{selectedTicket.category}</Badge>
-                    <Badge
-                      variant="outline"
-                      className={`text-white ${getPriorityColor(selectedTicket.priority)}`}
-                    >
-                      {selectedTicket.priority}
-                    </Badge>
-                    <Badge
-                      variant="outline"
-                      className={`text-white ${getStatusColor(selectedTicket.status)}`}
-                    >
-                      {selectedTicket.status.replace("_", " ")}
-                    </Badge>
-                  </div>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setSelectedTicket(null)}
-                >
-                  ×
-                </Button>
-              </div>
-
-              <div className="p-6 overflow-y-auto max-h-[70vh] space-y-6">
-                {/* Original Description */}
-                <div>
-                  <h3 className="font-medium mb-2">Description</h3>
-                  <div className="p-3 bg-muted rounded-lg">
-                    <p className="whitespace-pre-wrap">
-                      {selectedTicket.description}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Attachments */}
-                {selectedTicket.attachments &&
-                  selectedTicket.attachments.length > 0 && (
-                    <div>
-                      <h3 className="font-medium mb-2">Attachments</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedTicket.attachments.map((attachment, index) => (
-                          <div
-                            key={index}
-                            className="flex items-center gap-1 bg-muted px-2 py-1 rounded text-sm"
-                          >
-                            <Paperclip className="h-3 w-3" />
-                            <span>{attachment}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                {/* Notes/Responses */}
-                <div>
-                  <h3 className="font-medium mb-2">Notes & Updates</h3>
-                  <div className="space-y-3">
-                    {selectedTicket.responses.map((response) => (
-                      <div key={response.id} className="border rounded-lg p-3">
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-2">
-                            <span className="font-medium">
-                              {response.author}
-                            </span>
-                            <Badge variant="outline" className="text-xs">
-                              {response.authorRole}
-                            </Badge>
-                          </div>
-                          <span className="text-sm text-muted-foreground">
-                            {new Date(response.timestamp).toLocaleString()}
-                          </span>
-                        </div>
-                        <p className="whitespace-pre-wrap">
-                          {response.message}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Add New Note */}
-                <div>
-                  <h3 className="font-medium mb-2">Add Note</h3>
-                  <div className="space-y-2">
-                    <Textarea
-                      placeholder="Add a note or update..."
-                      value={newNote}
-                      onChange={(e) => setNewNote(e.target.value)}
-                      className="min-h-[100px]"
-                    />
-                    <div className="flex justify-end">
-                      <Button
-                        onClick={handleAddNote}
-                        disabled={!newNote.trim() || isAddingNote}
-                        className="gap-2"
-                      >
