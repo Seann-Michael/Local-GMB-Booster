@@ -92,7 +92,7 @@ const App = () => (
             }
           />
           <Route
-            path="/gallery"
+            path="/admin/gallery"
             element={
               <ProtectedRoute>
                 <Gallery />
@@ -100,7 +100,7 @@ const App = () => (
             }
           />
           <Route
-            path="/settings"
+            path="/admin/settings"
             element={
               <ProtectedRoute>
                 <Settings />
@@ -152,6 +152,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/support"
+            element={
+              <ProtectedRoute>
+                <Support />
               </ProtectedRoute>
             }
           />
@@ -328,8 +336,22 @@ const App = () => (
             path="/admin/dashboard"
             element={<Navigate to="/admin/projects" replace />}
           />
-          <Route path="/users" element={<Navigate to="/settings" replace />} />
-          <Route path="/photos" element={<Navigate to="/gallery" replace />} />
+          <Route
+            path="/gallery"
+            element={<Navigate to="/admin/gallery" replace />}
+          />
+          <Route
+            path="/settings"
+            element={<Navigate to="/admin/settings" replace />}
+          />
+          <Route
+            path="/users"
+            element={<Navigate to="/admin/settings" replace />}
+          />
+          <Route
+            path="/photos"
+            element={<Navigate to="/admin/gallery" replace />}
+          />
           <Route
             path="/agency-admin/clients"
             element={<Navigate to="/agency-admin/business-owners" replace />}
