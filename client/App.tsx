@@ -369,15 +369,74 @@ const App = () => (
             path="/photos"
             element={<Navigate to="/admin/gallery" replace />}
           />
+          {/* Agency Admin Legacy URL Redirects */}
+          <Route
+            path="/agency-admin"
+            element={<Navigate to="/agency/admin/dashboard" replace />}
+          />
           <Route
             path="/agency-admin/clients"
-            element={<Navigate to="/agency-admin/business-owners" replace />}
+            element={<Navigate to="/agency/admin/business-owners" replace />}
           />
           <Route
             path="/agency-admin/clients/:id"
             element={
-              <Navigate to="/agency-admin/business-owners/:id" replace />
+              <Navigate to="/agency/admin/business-owners/:id" replace />
             }
+          />
+          <Route
+            path="/agency-admin/billing"
+            element={<Navigate to="/agency/admin/billing" replace />}
+          />
+          <Route
+            path="/agency-admin/analytics"
+            element={<Navigate to="/agency/admin/analytics" replace />}
+          />
+          <Route
+            path="/agency-admin/settings"
+            element={<Navigate to="/agency/admin/settings" replace />}
+          />
+          <Route
+            path="/agency-admin/business-owners"
+            element={<Navigate to="/agency/admin/business-owners" replace />}
+          />
+          <Route
+            path="/agency-admin/business-owners/:id"
+            element={
+              <Navigate to="/agency/admin/business-owners/:id" replace />
+            }
+          />
+          <Route
+            path="/agency-admin/business-owners/:id/edit"
+            element={
+              <Navigate to="/agency/admin/business-owners/:id/edit" replace />
+            }
+          />
+          <Route
+            path="/agency-admin/admin-users"
+            element={<Navigate to="/agency/admin/admin-users" replace />}
+          />
+          <Route
+            path="/agency-admin/admin-users/add"
+            element={<Navigate to="/agency/admin/admin-users/add" replace />}
+          />
+          <Route
+            path="/agency-admin/admin-users/:id"
+            element={<Navigate to="/agency/admin/admin-users/:id" replace />}
+          />
+          <Route
+            path="/agency-admin/admin-users/:id/edit"
+            element={
+              <Navigate to="/agency/admin/admin-users/:id/edit" replace />
+            }
+          />
+          <Route
+            path="/agency-admin/commission"
+            element={<Navigate to="/agency/admin/commission" replace />}
+          />
+          <Route
+            path="/agency-admin/reports"
+            element={<Navigate to="/agency/admin/reports" replace />}
           />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
