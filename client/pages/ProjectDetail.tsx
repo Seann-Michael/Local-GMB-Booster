@@ -623,23 +623,12 @@ export default function ProjectDetail() {
   };
 
   const updateProject = (updatedProject: Project) => {
-    console.log(
-      "6. updateProject called with checklist:",
-      updatedProject.checklist,
-    );
     const projects = JSON.parse(localStorage.getItem("projects") || "[]");
-    console.log("7. Current projects from localStorage:", projects.length);
     const updatedProjects = projects.map((p: Project) =>
       p.id === project?.id ? updatedProject : p,
     );
-    console.log("8. Updated projects array");
     localStorage.setItem("projects", JSON.stringify(updatedProjects));
-    console.log("9. Saved to localStorage");
     setProject({ ...updatedProject });
-    console.log(
-      "10. Set project state with checklist:",
-      updatedProject.checklist,
-    );
   };
 
   const shareProject = () => {
