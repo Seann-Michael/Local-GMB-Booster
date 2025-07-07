@@ -260,9 +260,9 @@ export default function Index() {
   return (
     <AppLayout>
       <div className="container px-4 py-6">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold">Projects</h1>
-          <div className="flex items-center gap-2">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold mb-4">Projects</h1>
+          <div className="flex items-center justify-between">
             {/* Project Sort Buttons */}
             <div className="flex items-center gap-1 border rounded-lg p-1">
               <Button
@@ -307,12 +307,6 @@ export default function Index() {
               <Filter className="h-4 w-4" />
               Filters
             </Button>
-            <Link to="/add-project">
-              <Button className="gap-2">
-                <Plus className="h-4 w-4" />
-                Add Project
-              </Button>
-            </Link>
           </div>
         </div>
 
