@@ -1559,8 +1559,22 @@ export default function Settings() {
                             </li>
                           </ul>
 
-                          <Button className="w-full" variant="default">
-                            Upgrade
+                          <Button
+                            className="w-full"
+                            variant="outline"
+                            onClick={() => {
+                              if (
+                                confirm(
+                                  "Are you sure you want to downgrade to the Starter plan? This will take effect at your next billing cycle.",
+                                )
+                              ) {
+                                toast.success(
+                                  "Plan downgrade scheduled for next billing cycle",
+                                );
+                              }
+                            }}
+                          >
+                            Downgrade
                           </Button>
                         </div>
                       </div>
