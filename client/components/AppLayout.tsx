@@ -382,7 +382,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                         {currentUser?.name || "User"}
                       </p>
                       <p className="text-xs leading-none text-muted-foreground">
-                        {currentUser?.email}
+                        Business Owner
                       </p>
                     </div>
                   </DropdownMenuLabel>
