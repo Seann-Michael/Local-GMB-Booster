@@ -438,34 +438,56 @@ export function AppLayout({ children }: AppLayoutProps) {
         <main className="flex-1 overflow-auto pb-24 md:pb-0">{children}</main>
 
         {/* Mobile Bottom Navigation - Only visible on mobile */}
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t z-50">
-          <div className="flex items-center justify-around px-2 py-2">
-            {sidebarItems.map((item) => (
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t z-50 shadow-lg">
+          <div className="flex items-center justify-around px-1 py-2">
+            {sidebarItems.slice(0, 4).map((item) => (
               <Link key={item.href} to={item.href} className="flex-1">
                 <Button
                   variant={item.active ? "secondary" : "ghost"}
-                  className="w-full flex flex-col items-center gap-1 h-auto py-2 px-1"
+                  className={cn(
+                    "w-full flex flex-col items-center gap-1 h-auto py-2 px-1",
+                    item.active && "bg-primary/10 text-primary",
+                  )}
                   size="sm"
                 >
-                  <item.icon className="h-5 w-5" />
+                  <item.icon
+                    className={cn("h-5 w-5", item.active && "text-primary")}
+                  />
                   <span className="text-xs font-medium">{item.label}</span>
                 </Button>
               </Link>
             ))}
 
-            {/* Add Project Button */}
-            <Link to="/add-project" className="flex-1">
-              <Button
-                variant="ghost"
-                className="w-full flex flex-col items-center gap-1 h-auto py-2 px-1"
-                size="sm"
-              >
-                <Plus className="h-5 w-5" />
-                <span className="text-xs font-medium">Add</span>
-              </Button>
-            </Link>
-
-            {/* Settings moved to top header gear icon */}
+            {/* More Menu for Additional Items */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="flex-1 flex flex-col items-center gap-1 h-auto py-2 px-1"
+                  size="sm"
+                >
+                  <MoreVertical className="h-5 w-5" />
+                  <span className="text-xs font-medium">More</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                {sidebarItems.slice(4).map((item) => (
+                  <DropdownMenuItem key={item.href} asChild>
+                    <Link to={item.href} className="flex items-center gap-2">
+                      <item.icon className="h-4 w-4" />
+                      <span>{item.label}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/add-project" className="flex items-center gap-2">
+                    <Plus className="h-4 w-4" />
+                    <span>New Project</span>
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </nav>
       </div>
