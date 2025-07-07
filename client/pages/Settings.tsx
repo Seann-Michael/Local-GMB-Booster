@@ -1828,9 +1828,29 @@ export default function Settings() {
                             Your subscription will automatically renew on April
                             15, 2024. You can cancel anytime.
                           </p>
-                          <Button variant="outline" size="sm" className="mt-2">
-                            Manage Auto-renewal
-                          </Button>
+                          <div className="flex gap-2 mt-2">
+                            <Button variant="outline" size="sm">
+                              Manage Auto-renewal
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
+                              onClick={() => {
+                                if (
+                                  confirm(
+                                    "Are you sure you want to cancel your plan? This action cannot be undone. Your access will continue until the end of your current billing period.",
+                                  )
+                                ) {
+                                  toast.success(
+                                    "Plan cancellation scheduled. You'll retain access until April 15, 2024.",
+                                  );
+                                }
+                              }}
+                            >
+                              Cancel Plan
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     </div>
