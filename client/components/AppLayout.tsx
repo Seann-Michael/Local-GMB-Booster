@@ -87,9 +87,9 @@ export function AppLayout({ children }: AppLayoutProps) {
     {
       id: "gallery",
       label: "Gallery",
-      href: "/gallery",
+      href: "/admin/gallery",
       icon: Camera,
-      active: location.pathname === "/gallery",
+      active: location.pathname === "/admin/gallery",
     },
   ];
 
@@ -97,16 +97,16 @@ export function AppLayout({ children }: AppLayoutProps) {
     {
       id: "settings",
       label: "Settings",
-      href: "/settings",
+      href: "/admin/settings",
       icon: Settings,
-      active: location.pathname === "/settings",
+      active: location.pathname === "/admin/settings",
     },
     {
       id: "support",
       label: "Support",
-      href: "/support",
+      href: "/admin/support",
       icon: MessageSquare,
-      active: location.pathname === "/support",
+      active: location.pathname === "/admin/support",
     },
   ];
 
