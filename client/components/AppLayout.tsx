@@ -158,7 +158,7 @@ export function AppLayout({ children }: AppLayoutProps) {
 
         {/* Quick Action Button */}
         <div className="p-3">
-          <Link to="/add-project">
+          <Link to="/admin/add-project">
             <Button
               className={cn(
                 "w-full gap-2 shadow-sm bg-primary hover:bg-primary/90",
