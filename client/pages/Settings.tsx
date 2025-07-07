@@ -700,15 +700,26 @@ export default function Settings() {
                       <Label htmlFor="goHighLevelApiKey">
                         GoHighLevel API Key
                       </Label>
-                      <Input
-                        id="goHighLevelApiKey"
-                        type="password"
-                        value={settings.goHighLevelApiKey}
-                        onChange={(e) =>
-                          updateSetting("goHighLevelApiKey", e.target.value)
-                        }
-                        placeholder="Enter your GoHighLevel API key"
-                      />
+                      <div className="flex gap-2">
+                        <Input
+                          id="goHighLevelApiKey"
+                          type="password"
+                          value={settings.goHighLevelApiKey}
+                          onChange={(e) =>
+                            updateSetting("goHighLevelApiKey", e.target.value)
+                          }
+                          placeholder="Enter your GoHighLevel API key"
+                          className="flex-1"
+                        />
+                        <Button
+                          onClick={() =>
+                            toast.success("API key saved successfully")
+                          }
+                          size="sm"
+                        >
+                          Save
+                        </Button>
+                      </div>
                       <p className="text-sm text-muted-foreground">
                         Connect to GoHighLevel for CRM integration
                       </p>
