@@ -469,6 +469,7 @@ export default function ProjectDetail() {
     if (!project || !project.tasks) return;
 
     const user = getCurrentUser();
+    const task = project.tasks.find((t) => t.id === taskId);
     const updatedTasks = project.tasks.map((task) =>
       task.id === taskId
         ? {
@@ -480,12 +481,23 @@ export default function ProjectDetail() {
         : task,
     );
 
-    updateProject({ ...project, tasks: updatedTasks });
-    const task = project.tasks.find((t) => t.id === taskId);
-    addActivityLogEntry(
-      "task_toggled",
-      `Task "${task?.title}" marked as ${!task?.completed ? "completed" : "incomplete"}`,
-    );
+    const entry: ActivityLogEntry = {
+      id: Date.now().toString(),
+      type: "task_toggled",
+      description: `Task "${task?.title}" marked as ${!task?.completed ? "completed" : "incomplete"}`,
+      timestamp: new Date().toISOString(),
+      userId: user.id,
+      userName: user.name,
+      platform: user.platform,
+    };
+
+    const updatedProject = {
+      ...project,
+      tasks: updatedTasks,
+      activityLog: [entry, ...(project.activityLog || [])],
+    };
+
+    updateProject(updatedProject);
   };
 
   const editTask = (taskId: string, updatedTask: Partial<Task>) => {
