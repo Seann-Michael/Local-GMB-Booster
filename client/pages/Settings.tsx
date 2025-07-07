@@ -960,11 +960,7 @@ export default function Settings() {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={() =>
-                                  toast.success(
-                                    "Edit webhook functionality coming soon",
-                                  )
-                                }
+                                onClick={() => setEditingWebhook(webhook)}
                               >
                                 <Edit className="h-4 w-4" />
                               </Button>
@@ -977,7 +973,7 @@ export default function Settings() {
                                       "Are you sure you want to delete this webhook?",
                                     )
                                   ) {
-                                    toast.success("Webhook deleted");
+                                    deleteWebhook(webhook.id);
                                   }
                                 }}
                               >
