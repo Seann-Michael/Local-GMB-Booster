@@ -897,6 +897,62 @@ export default function ProjectDetail() {
             {/* Overview Tab */}
             {activeTab === "overview" && (
               <>
+                {/* Project Description */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Project Description</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground">
+                      {project.description || "No description provided"}
+                    </p>
+                  </CardContent>
+                </Card>
+
+                {/* Project Keywords/Tags */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Tag className="h-5 w-5" />
+                      Project Keywords
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                      {project.keywords.map((keyword, index) => (
+                        <Badge
+                          key={index}
+                          variant="secondary"
+                          className="cursor-pointer hover:bg-secondary/80"
+                        >
+                          {keyword}
+                          <button
+                            className="ml-1 hover:text-destructive"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              // Add remove keyword functionality here
+                              toast.success(
+                                "Keyword removal functionality coming soon",
+                              );
+                            }}
+                          >
+                            ×
+                          </button>
+                        </Badge>
+                      ))}
+                      <Badge
+                        variant="outline"
+                        className="cursor-pointer hover:bg-muted"
+                        onClick={() =>
+                          toast.success("Add keyword functionality coming soon")
+                        }
+                      >
+                        + Add Tag
+                      </Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle className="flex items-center gap-2">
