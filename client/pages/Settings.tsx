@@ -621,6 +621,98 @@ export default function Settings() {
               </Card>
             )}
 
+            {/* AI Assistance Settings */}
+            {activeTab === "ai" && (
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>AI Prompt Configuration</CardTitle>
+                    <CardDescription>
+                      Configure how AI generates descriptions for your projects
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="aiPromptTemplate">Prompt Template</Label>
+                      <Textarea
+                        id="aiPromptTemplate"
+                        placeholder="Enter your AI prompt template..."
+                        value={settings.aiPromptTemplate}
+                        onChange={(e) =>
+                          updateSetting("aiPromptTemplate", e.target.value)
+                        }
+                        className="min-h-[100px]"
+                      />
+                      <p className="text-sm text-muted-foreground">
+                        Use variables like {"{PROJECT_TYPE}"}, {"{ADDRESS}"},{" "}
+                        {"{SERVICES}"} in your template
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="aiInstructions">AI Instructions</Label>
+                      <Textarea
+                        id="aiInstructions"
+                        placeholder="Provide specific instructions for the AI..."
+                        value={settings.aiInstructions}
+                        onChange={(e) =>
+                          updateSetting("aiInstructions", e.target.value)
+                        }
+                        className="min-h-[80px]"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Available Variables</Label>
+                      <div className="flex flex-wrap gap-2">
+                        {settings.aiVariables.map((variable, index) => (
+                          <Badge
+                            key={index}
+                            variant="outline"
+                            className="gap-1"
+                          >
+                            {"{" + variable + "}"}
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-auto p-0 ml-1"
+                              onClick={() => {
+                                const newVariables =
+                                  settings.aiVariables.filter(
+                                    (_, i) => i !== index,
+                                  );
+                                updateSetting("aiVariables", newVariables);
+                              }}
+                            >
+                              <X className="h-3 w-3" />
+                            </Button>
+                          </Badge>
+                        ))}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const newVariable = prompt(
+                              "Enter new variable name:",
+                            );
+                            if (newVariable) {
+                              updateSetting("aiVariables", [
+                                ...settings.aiVariables,
+                                newVariable.toUpperCase(),
+                              ]);
+                            }
+                          }}
+                        >
+                          <Plus className="h-3 w-3" />
+                          Add Variable
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
             {/* Project Settings */}
             {activeTab === "projects" && (
               <Card>
