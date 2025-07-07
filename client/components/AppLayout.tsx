@@ -220,36 +220,10 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
         </nav>
 
-        {/* Bottom Navigation */}
+        {/* User Info */}
         <div className="p-3 border-t bg-muted/20">
-          <div className="space-y-1">
-            {bottomSidebarItems.map((item) => (
-              <Link key={item.id} to={item.href}>
-                <Button
-                  variant={item.active ? "secondary" : "ghost"}
-                  className={cn(
-                    "w-full justify-start gap-3 h-10",
-                    sidebarCollapsed ? "px-3" : "px-4",
-                    item.active && "bg-primary/10 text-primary",
-                    !item.active &&
-                      "text-muted-foreground hover:text-foreground hover:bg-muted/50",
-                  )}
-                  size="sm"
-                >
-                  <item.icon
-                    className={cn("h-5 w-5", item.active && "text-primary")}
-                  />
-                  {!sidebarCollapsed && (
-                    <span className="font-medium">{item.label}</span>
-                  )}
-                </Button>
-              </Link>
-            ))}
-          </div>
-
-          {/* User Info */}
           {!sidebarCollapsed && (
-            <div className="mt-3 p-3 rounded-lg bg-background/50 border">
+            <div className="p-3 rounded-lg bg-background/50 border">
               <div className="flex items-center gap-3">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src={currentUser?.avatar} />
