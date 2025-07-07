@@ -191,7 +191,7 @@ const App = () => (
 
           {/* Agency Admin Routes */}
           <Route
-            path="/agency-admin"
+            path="/agency/admin/dashboard"
             element={
               <ProtectedRoute>
                 <AgencyAdmin />
@@ -199,7 +199,7 @@ const App = () => (
             }
           />
           <Route
-            path="/agency-admin/clients"
+            path="/agency/admin/clients"
             element={
               <ProtectedRoute>
                 <AgencyClientManagement />
@@ -207,7 +207,7 @@ const App = () => (
             }
           />
           <Route
-            path="/agency-admin/clients/add"
+            path="/agency/admin/clients/add"
             element={
               <ProtectedRoute>
                 <AddAgencyClient />
@@ -215,7 +215,7 @@ const App = () => (
             }
           />
           <Route
-            path="/agency-admin/commission"
+            path="/agency/admin/commission"
             element={
               <ProtectedRoute>
                 <AgencyCommission />
@@ -223,7 +223,7 @@ const App = () => (
             }
           />
           <Route
-            path="/agency-admin/analytics"
+            path="/agency/admin/analytics"
             element={
               <ProtectedRoute>
                 <AgencyAnalytics />
@@ -231,7 +231,7 @@ const App = () => (
             }
           />
           <Route
-            path="/agency-admin/reports"
+            path="/agency/admin/reports"
             element={
               <ProtectedRoute>
                 <AgencyReports />
@@ -239,7 +239,7 @@ const App = () => (
             }
           />
           <Route
-            path="/agency-admin/billing"
+            path="/agency/admin/billing"
             element={
               <ProtectedRoute>
                 <AgencyBilling />
