@@ -484,7 +484,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t z-50 shadow-lg">
           <div className="flex items-center justify-around px-1 py-2">
             {sidebarItems.slice(0, 4).map((item) => (
-              <Link key={item.href} to={item.href} className="flex-1">
+              <Link key={item.id} to={item.href} className="flex-1">
                 <Button
                   variant={item.active ? "secondary" : "ghost"}
                   className={cn(
