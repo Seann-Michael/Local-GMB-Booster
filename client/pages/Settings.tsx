@@ -930,9 +930,7 @@ export default function Settings() {
                       <Button
                         size="sm"
                         className="gap-2"
-                        onClick={() =>
-                          toast.success("Add webhook functionality coming soon")
-                        }
+                        onClick={() => setShowWebhookForm(true)}
                       >
                         <Plus className="h-4 w-4" />
                         Add Webhook
