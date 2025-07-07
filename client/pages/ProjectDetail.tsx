@@ -1897,9 +1897,12 @@ export default function ProjectDetail() {
                           <p className="text-xs text-muted-foreground">
                             Mobile Phone
                           </p>
-                          <p className="text-sm">
+                          <a
+                            href={`tel:${project.mobilePhone || project.customerPhone}`}
+                            className="text-sm text-primary hover:underline"
+                          >
                             {project.mobilePhone || project.customerPhone}
-                          </p>
+                          </a>
                         </div>
                       )}
 
@@ -1913,9 +1916,13 @@ export default function ProjectDetail() {
                             {project.additionalPhones
                               .filter((phone) => phone.trim())
                               .map((phone, index) => (
-                                <p key={index} className="text-sm">
+                                <a
+                                  key={index}
+                                  href={`tel:${phone}`}
+                                  className="text-sm text-primary hover:underline block"
+                                >
                                   {phone}
-                                </p>
+                                </a>
                               ))}
                           </div>
                         )}
