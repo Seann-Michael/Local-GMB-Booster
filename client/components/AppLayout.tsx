@@ -101,46 +101,6 @@ export function AppLayout({ children }: AppLayoutProps) {
       icon: Camera,
       active: location.pathname === "/gallery",
     },
-    {
-      id: "calendar",
-      label: "Calendar",
-      href: "/admin/dashboard",
-      icon: Calendar,
-      active: location.pathname === "/calendar",
-      comingSoon: true,
-    },
-    {
-      id: "analytics",
-      label: "Analytics",
-      href: "/admin/dashboard",
-      icon: BarChart3,
-      active: location.pathname === "/analytics",
-      comingSoon: true,
-    },
-    {
-      id: "documents",
-      label: "Documents",
-      href: "/admin/dashboard",
-      icon: FileText,
-      active: location.pathname === "/documents",
-      comingSoon: true,
-    },
-    {
-      id: "workflow",
-      label: "Workflow",
-      href: "/admin/dashboard",
-      icon: Workflow,
-      active: location.pathname === "/workflow",
-      comingSoon: true,
-    },
-    {
-      id: "billing",
-      label: "Billing",
-      href: "/admin/dashboard",
-      icon: CreditCard,
-      active: location.pathname === "/billing",
-      comingSoon: true,
-    },
   ];
 
   const bottomSidebarItems = [
