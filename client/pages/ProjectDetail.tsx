@@ -1844,15 +1844,6 @@ export default function ProjectDetail() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <h4 className="font-medium mb-2">Description</h4>
-                  <p className="text-sm text-muted-foreground">
-                    {project.description || "No description provided"}
-                  </p>
-                </div>
-
-                <Separator />
-
-                <div>
                   <h4 className="font-medium mb-2 flex items-center gap-2">
                     <CalendarDays className="h-4 w-4" />
                     Created
@@ -1869,9 +1860,14 @@ export default function ProjectDetail() {
                     <MapPin className="h-4 w-4" />
                     Location
                   </h4>
-                  <p className="text-sm text-muted-foreground">
+                  <a
+                    href={`https://maps.google.com/?q=${encodeURIComponent(project.address)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-primary hover:underline"
+                  >
                     {project.address}
-                  </p>
+                  </a>
                 </div>
 
                 {(project.customerName ||
