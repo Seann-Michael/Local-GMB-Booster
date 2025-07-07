@@ -754,7 +754,7 @@ export default function ProjectDetail() {
           <Card>
             <CardContent className="py-12 text-center">
               <p className="text-muted-foreground">Project not found</p>
-              <Link to="/">
+              <Link to="/admin/dashboard">
                 <Button className="mt-4">Back to Projects</Button>
               </Link>
             </CardContent>
