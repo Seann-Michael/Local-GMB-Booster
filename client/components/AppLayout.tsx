@@ -301,7 +301,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         </div>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-auto pb-16 md:pb-0">{children}</main>
+        <main className="flex-1 overflow-auto pb-24 md:pb-0">{children}</main>
 
         {/* Mobile Bottom Navigation - Only visible on mobile */}
         <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t z-50">
