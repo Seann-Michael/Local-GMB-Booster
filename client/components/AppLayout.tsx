@@ -264,9 +264,9 @@ export function AppLayout({ children }: AppLayoutProps) {
               );
 
               return item.comingSoon ? (
-                <div key={item.label}>{NavButton}</div>
+                <div key={item.id}>{NavButton}</div>
               ) : (
-                <Link key={item.href} to={item.href}>
+                <Link key={item.id} to={item.href}>
                   {NavButton}
                 </Link>
               );
