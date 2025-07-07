@@ -202,6 +202,10 @@ export default function Settings() {
 
   const [activeTab, setActiveTab] = useState("general");
   const [isLoading, setIsLoading] = useState(false);
+  const [editingWebhook, setEditingWebhook] = useState<any>(null);
+  const [editingTag, setEditingTag] = useState<any>(null);
+  const [showWebhookForm, setShowWebhookForm] = useState(false);
+  const [showTagForm, setShowTagForm] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
