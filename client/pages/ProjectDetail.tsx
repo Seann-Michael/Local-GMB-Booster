@@ -618,11 +618,25 @@ export default function ProjectDetail() {
     const updatedChecklist = project.checklist.filter(
       (item) => item.id !== itemId,
     );
-    updateProject({ ...project, checklist: updatedChecklist });
-    addActivityLogEntry(
-      "checklist_item_deleted",
-      `Checklist item "${item?.title}" deleted`,
-    );
+
+    const user = getCurrentUser();
+    const entry: ActivityLogEntry = {
+      id: Date.now().toString(),
+      type: "checklist_item_deleted",
+      description: `Checklist item "${item?.title}" deleted`,
+      timestamp: new Date().toISOString(),
+      userId: user.id,
+      userName: user.name,
+      platform: user.platform,
+    };
+
+    const updatedProject = {
+      ...project,
+      checklist: updatedChecklist,
+      activityLog: [entry, ...(project.activityLog || [])],
+    };
+
+    updateProject(updatedProject);
     toast.success("Checklist item deleted");
   };
 
