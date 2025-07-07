@@ -74,11 +74,7 @@ export default function AdminSupport() {
   const currentUser = getCurrentUser();
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
-  const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(
-    null,
-  );
-  const [newNote, setNewNote] = useState("");
-  const [isAddingNote, setIsAddingNote] = useState(false);
+
   const [formData, setFormData] = useState<TicketFormData>({
     title: "",
     category: "",
