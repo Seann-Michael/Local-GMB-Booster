@@ -1399,23 +1399,6 @@ export default function ProjectDetail() {
                     </Button>
                   </CardHeader>
                   <CardContent>
-                    {/* Debug info */}
-                    <div className="mb-4 p-2 bg-gray-100 text-xs">
-                      <div>Project ID: {project?.id}</div>
-                      <div>
-                        Checklist exists: {project?.checklist ? "Yes" : "No"}
-                      </div>
-                      <div>
-                        Checklist is array:{" "}
-                        {Array.isArray(project?.checklist) ? "Yes" : "No"}
-                      </div>
-                      <div>
-                        Checklist length: {project?.checklist?.length || 0}
-                      </div>
-                      <div>
-                        Checklist items: {JSON.stringify(project?.checklist)}
-                      </div>
-                    </div>
                     {showAddChecklist && (
                       <div className="border rounded-lg p-4 mb-4 space-y-3">
                         <Input
