@@ -447,27 +447,28 @@ export default function Index() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr">
             {filteredProjects.map((project) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                onDelete={() => {
-                  const updatedProjects = projects.filter(
-                    (p) => p.id !== project.id,
-                  );
-                  setProjects(updatedProjects);
-                  localStorage.setItem(
-                    "projects",
-                    JSON.stringify(updatedProjects),
-                  );
-                }}
-                onMarkIncomplete={
-                  project.status === "completed"
-                    ? () => markProjectIncomplete(project.id)
-                    : undefined
-                }
-              />
+              <div key={project.id} className="flex">
+                <ProjectCard
+                  project={project}
+                  onDelete={() => {
+                    const updatedProjects = projects.filter(
+                      (p) => p.id !== project.id,
+                    );
+                    setProjects(updatedProjects);
+                    localStorage.setItem(
+                      "projects",
+                      JSON.stringify(updatedProjects),
+                    );
+                  }}
+                  onMarkIncomplete={
+                    project.status === "completed"
+                      ? () => markProjectIncomplete(project.id)
+                      : undefined
+                  }
+                />
+              </div>
             ))}
           </div>
         )}
