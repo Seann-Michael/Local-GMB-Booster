@@ -431,16 +431,24 @@ export default function ProjectDetail() {
       createdAt: new Date().toISOString(),
     };
 
+    const user = getCurrentUser();
+    const entry: ActivityLogEntry = {
+      id: Date.now().toString(),
+      type: "task_added",
+      description: `Task "${task.title}" assigned to ${task.assignedTo || "unassigned"}`,
+      timestamp: new Date().toISOString(),
+      userId: user.id,
+      userName: user.name,
+      platform: user.platform,
+    };
+
     const updatedProject = {
       ...project,
       tasks: [...(project.tasks || []), task],
+      activityLog: [entry, ...(project.activityLog || [])],
     };
 
     updateProject(updatedProject);
-    addActivityLogEntry(
-      "task_added",
-      `Task "${task.title}" assigned to ${task.assignedTo || "unassigned"}`,
-    );
     setNewTask({ title: "", assignedTo: "", dueDate: "", dueTime: "" });
     setShowAddTask(false);
     toast.success("Task added successfully");
