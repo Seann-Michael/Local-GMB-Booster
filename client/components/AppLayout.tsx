@@ -278,7 +278,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         <div className="p-3 border-t bg-muted/20">
           <div className="space-y-1">
             {bottomSidebarItems.map((item) => (
-              <Link key={item.href} to={item.href}>
+              <Link key={item.id} to={item.href}>
                 <Button
                   variant={item.active ? "secondary" : "ghost"}
                   className={cn(
