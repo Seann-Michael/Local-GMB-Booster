@@ -87,7 +87,9 @@ export function AppLayout({ children }: AppLayoutProps) {
       href: "/",
       icon: FolderOpen,
       active:
-        location.pathname === "/" || location.pathname.startsWith("/project"),
+        location.pathname.startsWith("/project") ||
+        (location.pathname === "/" &&
+          location.search.includes("view=projects")),
     },
     {
       label: "Gallery",
@@ -97,33 +99,38 @@ export function AppLayout({ children }: AppLayoutProps) {
     },
     {
       label: "Calendar",
-      href: "/calendar",
+      href: "/",
       icon: Calendar,
       active: location.pathname === "/calendar",
+      comingSoon: true,
     },
     {
       label: "Analytics",
-      href: "/analytics",
+      href: "/",
       icon: BarChart3,
       active: location.pathname === "/analytics",
+      comingSoon: true,
     },
     {
       label: "Documents",
-      href: "/documents",
+      href: "/",
       icon: FileText,
       active: location.pathname === "/documents",
+      comingSoon: true,
     },
     {
       label: "Workflow",
-      href: "/workflow",
+      href: "/",
       icon: Workflow,
       active: location.pathname === "/workflow",
+      comingSoon: true,
     },
     {
       label: "Billing",
-      href: "/billing",
+      href: "/",
       icon: CreditCard,
       active: location.pathname === "/billing",
+      comingSoon: true,
     },
   ];
 
