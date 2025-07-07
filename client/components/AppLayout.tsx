@@ -277,7 +277,9 @@ export function AppLayout({ children }: AppLayoutProps) {
                     {currentUser?.name || "User"}
                   </p>
                   <p className="text-xs text-muted-foreground truncate">
-                    Business Owner
+                    {currentUser?.firstName && currentUser?.lastName
+                      ? `${currentUser.firstName} ${currentUser.lastName}`
+                      : "Business Owner"}
                   </p>
                 </div>
               </div>
