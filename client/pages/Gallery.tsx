@@ -253,7 +253,7 @@ export default function Gallery() {
       <div className="container px-4 py-6">
         <Breadcrumb />
         <div className="flex items-center gap-4 mb-6">
-          <Link to="/">
+          <Link to="/admin/dashboard">
             <Button variant="ghost" size="icon">
               <ArrowLeft className="h-5 w-5" />
             </Button>
