@@ -513,6 +513,9 @@ export default function ProjectDetail() {
       checklist: [...(project.checklist || []), item],
     };
 
+    console.log("Adding checklist item:", item);
+    console.log("Updated project checklist:", updatedProject.checklist);
+
     updateProject(updatedProject);
     addActivityLogEntry(
       "checklist_item_added",
