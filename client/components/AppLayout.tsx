@@ -24,7 +24,6 @@ import {
   ChevronRight,
   Home,
   MessageSquare,
-  TrendingUp,
 } from "lucide-react";
 import { useState, ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -78,12 +77,6 @@ export function AppLayout({ children }: AppLayoutProps) {
       href: "/gallery",
       icon: Camera,
       active: location.pathname === "/gallery",
-    },
-    {
-      label: "Roadmap",
-      href: "/roadmap",
-      icon: TrendingUp,
-      active: location.pathname === "/roadmap",
     },
   ];
 
