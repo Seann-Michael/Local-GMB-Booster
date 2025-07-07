@@ -54,7 +54,20 @@ export default function Profile() {
     setIsSubmitting(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Save profile data
       localStorage.setItem("userProfile", JSON.stringify(profileData));
+
+      // Update the auth user with the new name
+      const currentUser = JSON.parse(localStorage.getItem("auth_user") || "{}");
+      const updatedUser = {
+        ...currentUser,
+        name: `${profileData.firstName} ${profileData.lastName}`,
+        firstName: profileData.firstName,
+        lastName: profileData.lastName,
+      };
+      localStorage.setItem("auth_user", JSON.stringify(updatedUser));
+
       toast.success("Profile updated successfully!");
     } catch (error) {
       toast.error("Failed to update profile");
@@ -64,20 +77,14 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-
+    <AppLayout>
       <div className="container px-4 py-6">
-        <div className="flex items-center gap-4 mb-6">
-          <Link to="/admin/projects">
-            <Button variant="ghost" size="icon">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          </Link>
+        <div className="mb-6">
           <h1 className="text-2xl font-bold">My Profile</h1>
+          <p className="text-muted-foreground">
+            Manage your personal information and preferences
+          </p>
         </div>
-
-        <Breadcrumb />
 
         <div className="max-w-2xl mx-auto">
           <Card>
