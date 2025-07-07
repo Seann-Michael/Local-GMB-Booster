@@ -954,7 +954,7 @@ export default function ProjectDetail() {
                   </CardContent>
                 </Card>
 
-                <Card>
+                <Card key="photos-video">
                   <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle className="flex items-center gap-2">
                       <Images className="h-5 w-5" />
