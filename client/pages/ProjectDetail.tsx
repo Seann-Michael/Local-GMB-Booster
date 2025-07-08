@@ -976,7 +976,7 @@ export default function ProjectDetail() {
                     </CardTitle>
                     <div className="flex items-center gap-2">
                       {selectedPhotos.length > 0 && (
-                        <>
+                        <div key="photo-actions" className="flex gap-2">
                           <Button
                             key="download-btn"
                             variant="outline"
@@ -1007,7 +1007,7 @@ export default function ProjectDetail() {
                               ? "Deselect All"
                               : "Select All"}
                           </Button>
-                        </>
+                        </div>
                       )}
                       <Button
                         variant="outline"
