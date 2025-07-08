@@ -423,6 +423,39 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
         </div>
 
+        {/* User Info */}
+        <div className="p-3 border-b bg-background">
+          {!sidebarCollapsed && (
+            <div className="p-3 rounded-lg bg-white border">
+              <div className="flex items-center gap-3">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={currentUser?.avatar} />
+                  <AvatarFallback className="text-xs">
+                    {currentUser?.name ? (
+                      currentUser.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                    ) : (
+                      <User className="h-4 w-4" />
+                    )}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium truncate">
+                    {currentUser?.name || "User"}
+                  </p>
+                  <p className="text-xs text-muted-foreground truncate">
+                    {currentUser?.firstName && currentUser?.lastName
+                      ? `${currentUser.firstName} ${currentUser.lastName}`
+                      : "Business Owner"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
         {/* Quick Action Button */}
         <div className="p-3">
           <Link to="/admin/add-project">
@@ -519,39 +552,6 @@ export function AppLayout({ children }: AppLayoutProps) {
               </Link>
             ))}
           </div>
-        </div>
-
-        {/* User Info */}
-        <div className="p-3 border-t bg-muted/20">
-          {!sidebarCollapsed && (
-            <div className="p-3 rounded-lg bg-background/50 border">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={currentUser?.avatar} />
-                  <AvatarFallback className="text-xs">
-                    {currentUser?.name ? (
-                      currentUser.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")
-                    ) : (
-                      <User className="h-4 w-4" />
-                    )}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">
-                    {currentUser?.name || "User"}
-                  </p>
-                  <p className="text-xs text-muted-foreground truncate">
-                    {currentUser?.firstName && currentUser?.lastName
-                      ? `${currentUser.firstName} ${currentUser.lastName}`
-                      : "Business Owner"}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
 
