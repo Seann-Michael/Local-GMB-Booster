@@ -549,6 +549,6 @@ export default function AddProject() {
           </div>
         </form>
       </div>
-    </div>
+    </AppLayout>
   );
 }
