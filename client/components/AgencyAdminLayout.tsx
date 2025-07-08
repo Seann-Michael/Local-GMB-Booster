@@ -91,6 +91,12 @@ export function AgencyAdminLayout({ children }: AgencyAdminLayoutProps) {
       active: location.pathname.startsWith("/agency/admin/admin-users"),
     },
     {
+      label: "Help Center",
+      href: "/agency/admin/help",
+      icon: BookOpen,
+      active: location.pathname === "/agency/admin/help",
+    },
+    {
       label: "Support",
       href: "/support",
       icon: MessageSquare,
