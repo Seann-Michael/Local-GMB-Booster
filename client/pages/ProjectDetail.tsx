@@ -2027,8 +2027,8 @@ export default function ProjectDetail() {
                   project.customerPhone ||
                   (project.additionalPhones &&
                     project.additionalPhones.length > 0)) && (
-                  <>
-                    <Separator key="customer-separator" />
+                  <div key="customer-section">
+                    <Separator />
                     <div key="customer-info">
                       <h4 className="font-medium mb-2 flex items-center gap-2">
                         <Phone className="h-4 w-4" />
@@ -2092,7 +2092,7 @@ export default function ProjectDetail() {
                         Request Google Review
                       </Button>
                     </div>
-                  </>
+                  </div>
                 )}
               </CardContent>
             </Card>
