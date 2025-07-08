@@ -739,6 +739,52 @@ Contact our billing support team:
     setSelectedArticle(null);
   };
 
+  const handleMediaUpload = async (file: File) => {
+    if (!editingArticle) return;
+
+    setUploadingMedia(true);
+    try {
+      // In a real app, this would upload to a file service (AWS S3, etc.)
+      // For demo, we'll create a placeholder URL
+      const fileUrl = URL.createObjectURL(file);
+      const fileName = file.name;
+      const fileType = file.type;
+
+      let markdownInsert = "";
+
+      if (fileType.startsWith("image/")) {
+        markdownInsert = `\n![${fileName}](${fileUrl})\n`;
+      } else if (fileType.startsWith("video/")) {
+        markdownInsert = `\n<video controls src="${fileUrl}"></video>\n`;
+      } else {
+        markdownInsert = `\n[Download ${fileName}](${fileUrl})\n`;
+      }
+
+      setEditingArticle({
+        ...editingArticle,
+        content: editingArticle.content + markdownInsert,
+      });
+
+      toast.success(
+        `${fileType.startsWith("image/") ? "Image" : fileType.startsWith("video/") ? "Video" : "File"} added to article`,
+      );
+    } catch (error) {
+      toast.error("Failed to upload media");
+    } finally {
+      setUploadingMedia(false);
+    }
+  };
+
+  const insertMarkdownHelper = (syntax: string, placeholder: string) => {
+    if (!editingArticle) return;
+
+    const insertion = syntax.replace("{}", placeholder);
+    setEditingArticle({
+      ...editingArticle,
+      content: editingArticle.content + `\n${insertion}\n`,
+    });
+  };
+
   // If no user logged in, show public layout
   if (!currentUser) {
     return (
