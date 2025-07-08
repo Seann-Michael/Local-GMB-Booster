@@ -248,9 +248,7 @@ export default function EditProject() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-
+    <AppLayout>
       <div className="container px-4 py-6">
         <div className="flex items-center gap-4 mb-6">
           <Link to={`/project/${id}`}>
