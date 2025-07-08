@@ -15,6 +15,12 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { AppLayout } from "@/components/AppLayout";
 import { AgencyAdminLayout } from "@/components/AgencyAdminLayout";
 import { SuperAdminLayout } from "@/components/SuperAdminLayout";
@@ -50,7 +56,7 @@ import {
   Paperclip,
   RefreshCw,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getCurrentUser, isSuperAdmin } from "@/lib/auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
