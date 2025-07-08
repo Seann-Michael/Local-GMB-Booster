@@ -45,6 +45,8 @@ import Support from "./pages/Support";
 import AdminSupport from "./pages/AdminSupport";
 import SupportTicketDetail from "./pages/SupportTicketDetail";
 import KnowledgeBase from "./pages/KnowledgeBase";
+import ReviewGate from "./pages/ReviewGate";
+import AdminReviews from "./pages/AdminReviews";
 
 const queryClient = new QueryClient();
 
