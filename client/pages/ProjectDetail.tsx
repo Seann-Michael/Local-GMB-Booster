@@ -818,58 +818,59 @@ export default function ProjectDetail() {
         </div>
 
         {/* Project Status and Completion */}
-        {project.status !== "completed" && (
-          <Card key="status-incomplete" className="mb-6">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-medium">Project Status</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Started:{" "}
-                    {new Date(
-                      project.startDate || project.createdAt,
-                    ).toLocaleDateString()}
-                    {project.completionDate && (
-                      <span>
-                        {" "}
-                        • Expected:{" "}
-                        {new Date(project.completionDate).toLocaleDateString()}
-                      </span>
-                    )}
-                  </p>
+        <div key="status-wrapper">
+          {project.status !== "completed" && (
+            <Card className="mb-6">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-medium">Project Status</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Started:{" "}
+                      {new Date(
+                        project.startDate || project.createdAt,
+                      ).toLocaleDateString()}
+                      {project.completionDate && (
+                        <span>
+                          {" "}
+                          • Expected:{" "}
+                          {new Date(
+                            project.completionDate,
+                          ).toLocaleDateString()}
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                  <Button onClick={markProjectCompleted} className="gap-2">
+                    <CheckCircle className="h-4 w-4" />
+                    Mark Completed
+                  </Button>
                 </div>
-                <Button onClick={markProjectCompleted} className="gap-2">
-                  <CheckCircle className="h-4 w-4" />
-                  Mark Completed
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+              </CardContent>
+            </Card>
+          )}
 
-        {project.status === "completed" && (
-          <Card
-            key="status-completed"
-            className="mb-6 border-green-200 bg-green-50"
-          >
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-green-600" />
-                <div>
-                  <h3 className="font-medium text-green-800">
-                    Project Completed
-                  </h3>
-                  <p className="text-sm text-green-700">
-                    Completed on{" "}
-                    {project.completedDate
-                      ? new Date(project.completedDate).toLocaleDateString()
-                      : "Unknown"}
-                  </p>
+          {project.status === "completed" && (
+            <Card className="mb-6 border-green-200 bg-green-50">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  <div>
+                    <h3 className="font-medium text-green-800">
+                      Project Completed
+                    </h3>
+                    <p className="text-sm text-green-700">
+                      Completed on{" "}
+                      {project.completedDate
+                        ? new Date(project.completedDate).toLocaleDateString()
+                        : "Unknown"}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+              </CardContent>
+            </Card>
+          )}
+        </div>
 
         {/* Tabs */}
         <div key="project-tabs" className="border-b mb-6">
