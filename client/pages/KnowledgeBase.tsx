@@ -990,6 +990,248 @@ Contact our billing support team:
           onMediaUpload={handleMediaUpload}
           uploadingMedia={uploadingMedia}
         />
+
+        {/* Support Tickets Section */}
+        {!selectedCategory &&
+          !searchQuery &&
+          !selectedArticle &&
+          !editingArticle &&
+          currentUser && (
+            <div className="mt-8 pt-8 border-t">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold">Your Support Tickets</h2>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowSupportTickets(!showSupportTickets)}
+                    className="gap-2"
+                  >
+                    <MessageSquare className="h-4 w-4" />
+                    {showSupportTickets
+                      ? "Hide Tickets"
+                      : `View Tickets (${tickets.length})`}
+                  </Button>
+                  <Button
+                    onClick={() => setShowCreateTicket(true)}
+                    className="gap-2"
+                  >
+                    <Plus className="h-4 w-4" />
+                    New Ticket
+                  </Button>
+                </div>
+              </div>
+
+              {showSupportTickets && (
+                <Card className="mb-6">
+                  <CardHeader>
+                    <CardTitle className="text-lg">
+                      Recent Support Tickets
+                    </CardTitle>
+                    <CardDescription>
+                      Track and manage your support requests
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {tickets.length === 0 ? (
+                      <div className="text-center py-8">
+                        <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                        <h3 className="text-lg font-semibold mb-2">
+                          No support tickets yet
+                        </h3>
+                        <p className="text-muted-foreground mb-4">
+                          Create your first support ticket to get help with any
+                          issues.
+                        </p>
+                        <Button
+                          onClick={() => setShowCreateTicket(true)}
+                          className="gap-2"
+                        >
+                          <Plus className="h-4 w-4" />
+                          Create Your First Ticket
+                        </Button>
+                      </div>
+                    ) : (
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Title</TableHead>
+                            <TableHead>Category</TableHead>
+                            <TableHead>Priority</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Created</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {tickets.slice(0, 5).map((ticket) => (
+                            <TableRow
+                              key={ticket.id}
+                              className="cursor-pointer hover:bg-muted/50"
+                            >
+                              <TableCell>
+                                <div>
+                                  <div className="font-medium">
+                                    {ticket.title}
+                                  </div>
+                                  <div className="text-sm text-muted-foreground">
+                                    #{ticket.id}
+                                  </div>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <Badge variant="outline">
+                                  {ticket.category}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                <Badge
+                                  className={getPriorityColor(ticket.priority)}
+                                >
+                                  {ticket.priority}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                <Badge
+                                  className={getStatusColor(ticket.status)}
+                                >
+                                  {ticket.status.replace("_", " ")}
+                                </Badge>
+                              </TableCell>
+                              <TableCell className="text-sm text-muted-foreground">
+                                {new Date(
+                                  ticket.createdAt,
+                                ).toLocaleDateString()}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Create Ticket Modal */}
+              {showCreateTicket && (
+                <Card className="mb-6">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle>Create Support Ticket</CardTitle>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setShowCreateTicket(false)}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <CardDescription>
+                      Describe your issue and we'll help you resolve it quickly
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="ticket-title">Title *</Label>
+                        <Input
+                          id="ticket-title"
+                          placeholder="Brief description of your issue"
+                          value={newTicket.title}
+                          onChange={(e) =>
+                            setNewTicket({
+                              ...newTicket,
+                              title: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="ticket-category">Category</Label>
+                        <Select
+                          value={newTicket.category}
+                          onValueChange={(value) =>
+                            setNewTicket({ ...newTicket, category: value })
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select category" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="technical">
+                              Technical Support
+                            </SelectItem>
+                            <SelectItem value="billing">
+                              Billing & Account
+                            </SelectItem>
+                            <SelectItem value="feature">
+                              Feature Request
+                            </SelectItem>
+                            <SelectItem value="bug">Bug Report</SelectItem>
+                            <SelectItem value="general">
+                              General Question
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="ticket-priority">Priority</Label>
+                      <Select
+                        value={newTicket.priority}
+                        onValueChange={(value: any) =>
+                          setNewTicket({ ...newTicket, priority: value })
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="low">
+                            Low - General question
+                          </SelectItem>
+                          <SelectItem value="medium">
+                            Medium - Normal issue
+                          </SelectItem>
+                          <SelectItem value="high">
+                            High - Important issue
+                          </SelectItem>
+                          <SelectItem value="urgent">
+                            Urgent - Business critical
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="ticket-description">Description *</Label>
+                      <Textarea
+                        id="ticket-description"
+                        placeholder="Please provide detailed information about your issue..."
+                        className="min-h-32"
+                        value={newTicket.description}
+                        onChange={(e) =>
+                          setNewTicket({
+                            ...newTicket,
+                            description: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="flex gap-2 pt-4">
+                      <Button onClick={handleCreateTicket} className="gap-2">
+                        <MessageSquare className="h-4 w-4" />
+                        Create Ticket
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => setShowCreateTicket(false)}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          )}
       </div>
     </LayoutComponent>
   );
