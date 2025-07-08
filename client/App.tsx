@@ -44,6 +44,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Support from "./pages/Support";
 import AdminSupport from "./pages/AdminSupport";
 import SupportTicketDetail from "./pages/SupportTicketDetail";
+import KnowledgeBase from "./pages/KnowledgeBase";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +58,8 @@ const App = () => (
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/help" element={<KnowledgeBase />} />
+          <Route path="/knowledge-base" element={<KnowledgeBase />} />
           <Route path="/public/project/:id" element={<PublicProject />} />
 
           {/* Protected routes */}
@@ -319,6 +322,14 @@ const App = () => (
             }
           />
           <Route
+            path="/agency/admin/help"
+            element={
+              <ProtectedRoute>
+                <KnowledgeBase />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/super-admin/agencies"
             element={
               <ProtectedRoute>
@@ -339,6 +350,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <SuperAdminStaff />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/super-admin/help"
+            element={
+              <ProtectedRoute>
+                <KnowledgeBase />
               </ProtectedRoute>
             }
           />
