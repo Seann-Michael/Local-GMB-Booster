@@ -22,6 +22,7 @@ import {
   Plus,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   Home,
   MessageSquare,
   BarChart3,
@@ -40,7 +41,15 @@ import {
 } from "lucide-react";
 import { useState, ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { getCurrentUser, signOut, isSuperAdmin } from "@/lib/auth";
+import {
+  getCurrentUser,
+  signOut,
+  isSuperAdmin,
+  getCurrentBusiness,
+  getUserBusinesses,
+  switchToBusiness,
+  canSwitchBusinesses,
+} from "@/lib/auth";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
@@ -55,8 +64,22 @@ export function AppLayout({ children }: AppLayoutProps) {
   const currentUser = getCurrentUser();
   const showSuperAdmin = isSuperAdmin();
   const isImpersonated = currentUser?.isImpersonated;
+  const currentBusiness = getCurrentBusiness();
+  const userBusinesses = getUserBusinesses();
+  const canSwitch = canSwitchBusinesses();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
+  const handleBusinessSwitch = (businessId: string) => {
+    if (switchToBusiness(businessId)) {
+      toast.success(
+        `Switched to ${userBusinesses.find((b) => b.id === businessId)?.name}`,
+      );
+      window.location.reload(); // Reload to update all components
+    } else {
+      toast.error("Failed to switch business profile");
+    }
+  };
 
   // Mock notification count
   const notificationCount = 3;
@@ -310,18 +333,73 @@ export function AppLayout({ children }: AppLayoutProps) {
         <div className="p-4 border-b bg-primary/5">
           <div className="flex items-center justify-between">
             {!sidebarCollapsed ? (
-              <div className="flex items-center space-x-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary shadow-sm">
-                  <Building2 className="h-5 w-5 text-primary-foreground" />
+              <div className="flex-1 mr-2">
+                <div className="flex items-center space-x-3 mb-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary shadow-sm">
+                    <Building2 className="h-5 w-5 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <span className="font-bold text-base text-foreground">
+                      GMB Booster
+                    </span>
+                    <p className="text-xs text-muted-foreground">
+                      Business Dashboard
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <span className="font-bold text-base text-foreground">
-                    GMB Booster
-                  </span>
-                  <p className="text-xs text-muted-foreground">
-                    Business Dashboard
-                  </p>
-                </div>
+
+                {/* Business Switcher */}
+                {canSwitch && userBusinesses.length > 1 ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-between p-2 h-auto"
+                      >
+                        <div className="text-left">
+                          <p className="text-sm font-medium truncate">
+                            {currentBusiness?.name || "Select Business"}
+                          </p>
+                          <p className="text-xs text-muted-foreground truncate">
+                            Current Business
+                          </p>
+                        </div>
+                        <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" className="w-64">
+                      <DropdownMenuLabel>Switch Business</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      {userBusinesses.map((business) => (
+                        <DropdownMenuItem
+                          key={business.id}
+                          onClick={() => handleBusinessSwitch(business.id)}
+                          className={cn(
+                            "flex flex-col items-start p-3",
+                            business.id === currentBusiness?.id &&
+                              "bg-primary/5",
+                          )}
+                        >
+                          <div className="font-medium">{business.name}</div>
+                          {business.description && (
+                            <div className="text-xs text-muted-foreground">
+                              {business.description}
+                            </div>
+                          )}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <div className="p-2">
+                    <p className="text-sm font-medium truncate">
+                      {currentBusiness?.name || "Business Dashboard"}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Current Business
+                    </p>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary shadow-sm">
@@ -332,7 +410,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               variant="ghost"
               size="icon"
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="h-8 w-8 hover:bg-primary/10"
+              className="h-8 w-8 hover:bg-primary/10 flex-shrink-0"
             >
               {sidebarCollapsed ? (
                 <ChevronRight className="h-4 w-4" />

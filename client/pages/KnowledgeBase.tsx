@@ -41,6 +41,10 @@ import {
   Trash2,
   Save,
   X,
+  Upload,
+  Image,
+  File,
+  Video,
 } from "lucide-react";
 import { useState } from "react";
 import { getCurrentUser, isSuperAdmin } from "@/lib/auth";
@@ -76,6 +80,7 @@ export default function KnowledgeBase() {
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [editingArticle, setEditingArticle] = useState<Article | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [uploadingMedia, setUploadingMedia] = useState(false);
 
   // Determine which layout to use based on current path or user role
   const getLayoutComponent = () => {
@@ -778,6 +783,8 @@ Contact our billing support team:
             onDeleteArticle={() => {}}
             onSaveArticle={() => {}}
             onCreateNew={() => {}}
+            onMediaUpload={() => {}}
+            uploadingMedia={false}
           />
         </main>
       </div>
@@ -806,6 +813,8 @@ Contact our billing support team:
           onDeleteArticle={handleDeleteArticle}
           onSaveArticle={handleSaveArticle}
           onCreateNew={handleCreateNew}
+          onMediaUpload={handleMediaUpload}
+          uploadingMedia={uploadingMedia}
         />
       </div>
     </LayoutComponent>
@@ -851,6 +860,8 @@ function KnowledgeBaseContent({
   onDeleteArticle: (articleId: string) => void;
   onSaveArticle: () => void;
   onCreateNew: () => void;
+  onMediaUpload: (file: File) => void;
+  uploadingMedia: boolean;
 }) {
   // Article editing form for super admin
   if (editingArticle) {
@@ -956,8 +967,84 @@ function KnowledgeBaseContent({
             </div>
           </CardHeader>
           <CardContent>
-            <div>
-              <label className="text-sm font-medium">Content</label>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium">Content</label>
+                <div className="flex gap-2">
+                  <input
+                    type="file"
+                    id="media-upload"
+                    accept="image/*,video/*,.pdf,.doc,.docx"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleMediaUpload(file);
+                    }}
+                    className="hidden"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      document.getElementById("media-upload")?.click()
+                    }
+                    disabled={uploadingMedia}
+                    className="gap-2"
+                  >
+                    <Upload className="h-4 w-4" />
+                    {uploadingMedia ? "Uploading..." : "Add Media"}
+                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm">
+                        Insert
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem
+                        onClick={() => insertMarkdownHelper("## {}", "Heading")}
+                      >
+                        Heading
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() =>
+                          insertMarkdownHelper("**{}**", "Bold text")
+                        }
+                      >
+                        Bold Text
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() =>
+                          insertMarkdownHelper("*{}*", "Italic text")
+                        }
+                      >
+                        Italic Text
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() =>
+                          insertMarkdownHelper("- {}", "List item")
+                        }
+                      >
+                        Bullet List
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() =>
+                          insertMarkdownHelper("[{}](url)", "Link text")
+                        }
+                      >
+                        Link
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() =>
+                          insertMarkdownHelper("```\n{}\n```", "Code here")
+                        }
+                      >
+                        Code Block
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </div>
               <textarea
                 value={editingArticle.content}
                 onChange={(e) =>
@@ -970,10 +1057,30 @@ function KnowledgeBaseContent({
                 placeholder="Article content in markdown format..."
               />
             </div>
-            <p className="text-xs text-muted-foreground mt-2">
-              Use markdown formatting: # for headers, **bold**, *italic*, - for
-              lists
-            </p>
+            <div className="mt-4 p-4 border rounded-md bg-muted/20">
+              <p className="text-sm font-medium mb-2">Formatting Help:</p>
+              <div className="text-xs text-muted-foreground space-y-1">
+                <p>
+                  <code># Heading</code> - Creates a large heading
+                </p>
+                <p>
+                  <code>**bold**</code> - Makes text bold
+                </p>
+                <p>
+                  <code>*italic*</code> - Makes text italic
+                </p>
+                <p>
+                  <code>- List item</code> - Creates bullet points
+                </p>
+                <p>
+                  <code>[Link text](url)</code> - Creates links
+                </p>
+                <p>
+                  <code>![Alt text](image-url)</code> - Embeds images
+                </p>
+                <p>Use the "Add Media" button to upload files directly</p>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
