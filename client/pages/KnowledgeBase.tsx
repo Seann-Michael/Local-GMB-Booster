@@ -836,6 +836,77 @@ Contact our billing support team:
     });
   };
 
+  // Load support tickets
+  useEffect(() => {
+    const savedTickets = localStorage.getItem("support_tickets");
+    if (savedTickets) {
+      setTickets(JSON.parse(savedTickets));
+    }
+  }, []);
+
+  const handleCreateTicket = () => {
+    if (!newTicket.title.trim() || !newTicket.description.trim()) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    const ticket: SupportTicket = {
+      id: Date.now().toString(),
+      title: newTicket.title,
+      category: newTicket.category || "general",
+      priority: newTicket.priority,
+      status: "open",
+      description: newTicket.description,
+      createdAt: new Date().toISOString(),
+      createdBy: currentUser?.name || "Anonymous",
+      updatedAt: new Date().toISOString(),
+      attachments: [],
+    };
+
+    const updatedTickets = [ticket, ...tickets];
+    setTickets(updatedTickets);
+    localStorage.setItem("support_tickets", JSON.stringify(updatedTickets));
+
+    setNewTicket({
+      title: "",
+      category: "",
+      priority: "medium",
+      description: "",
+    });
+    setShowCreateTicket(false);
+    toast.success("Support ticket created successfully!");
+  };
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case "urgent":
+        return "bg-red-100 text-red-800";
+      case "high":
+        return "bg-orange-100 text-orange-800";
+      case "medium":
+        return "bg-yellow-100 text-yellow-800";
+      case "low":
+        return "bg-green-100 text-green-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "open":
+        return "bg-blue-100 text-blue-800";
+      case "in_progress":
+        return "bg-yellow-100 text-yellow-800";
+      case "resolved":
+        return "bg-green-100 text-green-800";
+      case "closed":
+        return "bg-gray-100 text-gray-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
   // If no user logged in, show public layout
   if (!currentUser) {
     return (
