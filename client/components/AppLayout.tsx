@@ -15,6 +15,7 @@ import {
   Users,
   FolderOpen,
   Camera,
+  Star,
   Settings,
   Search,
   Bell,
