@@ -1523,7 +1523,7 @@ export default function ProjectDetail() {
                                     </div>
                                   </div>
                                 ) : (
-                                  <>
+                                  <div key="task-display">
                                     <p
                                       className={`font-medium ${task.completed ? "line-through text-muted-foreground" : ""}`}
                                     >
