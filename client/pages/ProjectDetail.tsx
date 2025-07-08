@@ -1335,7 +1335,7 @@ export default function ProjectDetail() {
                     </div>
                   </CardContent>
                 </Card>
-              </>
+              </div>
             )}
 
             {/* Tasks & Checklists Tab */}
