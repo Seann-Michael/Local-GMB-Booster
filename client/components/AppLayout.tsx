@@ -370,36 +370,99 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
         </div>
 
-        {/* User Info */}
+        {/* Profile Switcher */}
         <div className="p-3 border-b bg-background">
           {!sidebarCollapsed && (
-            <div className="p-3 rounded-lg bg-white border">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={currentUser?.avatar} />
-                  <AvatarFallback className="text-xs">
-                    {currentUser?.name ? (
-                      currentUser.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")
-                    ) : (
-                      <User className="h-4 w-4" />
-                    )}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">
-                    {currentUser?.name || "User"}
-                  </p>
-                  <p className="text-xs text-muted-foreground truncate">
-                    {currentUser?.firstName && currentUser?.lastName
-                      ? `${currentUser.firstName} ${currentUser.lastName}`
-                      : "Business Owner"}
-                  </p>
-                </div>
-              </div>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start p-3 h-auto bg-white border rounded-lg hover:bg-gray-50"
+                >
+                  <div className="flex items-center gap-3 w-full">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={currentUser?.avatar} />
+                      <AvatarFallback className="text-xs">
+                        {currentUser?.name ? (
+                          currentUser.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")
+                        ) : (
+                          <User className="h-4 w-4" />
+                        )}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0 text-left">
+                      <p className="text-sm font-medium truncate">
+                        {currentUser?.name || "User"}
+                      </p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {currentUser?.firstName && currentUser?.lastName
+                          ? `${currentUser.firstName} ${currentUser.lastName}`
+                          : "Business Owner"}
+                      </p>
+                    </div>
+                    <ChevronDown className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                  </div>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-64">
+                <DropdownMenuLabel>Switch Profile</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="flex flex-col items-start p-3">
+                  <div className="flex items-center gap-3 w-full">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={currentUser?.avatar} />
+                      <AvatarFallback className="text-xs">
+                        {currentUser?.name ? (
+                          currentUser.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")
+                        ) : (
+                          <User className="h-4 w-4" />
+                        )}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <div className="font-medium">
+                        {currentUser?.name || "User"}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        Business Owner
+                      </div>
+                    </div>
+                    <CheckCircle className="h-4 w-4 text-primary" />
+                  </div>
+                </DropdownMenuItem>
+                {showSuperAdmin && (
+                  <DropdownMenuItem
+                    className="flex flex-col items-start p-3"
+                    onClick={() => navigate("/super-admin")}
+                  >
+                    <div className="flex items-center gap-3 w-full">
+                      <Avatar className="h-8 w-8">
+                        <AvatarFallback className="text-xs bg-purple-100">
+                          <Shield className="h-4 w-4 text-purple-600" />
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <div className="font-medium">Super Admin</div>
+                        <div className="text-xs text-muted-foreground">
+                          System Administrator
+                        </div>
+                      </div>
+                    </div>
+                  </DropdownMenuItem>
+                )}
+                {/* Add more profile options here as needed */}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="text-sm text-muted-foreground">
+                  Switch between your available profiles
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
         </div>
 
