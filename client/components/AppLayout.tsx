@@ -485,7 +485,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                   )}
 
                 {/* Business Profiles */}
-                {userBusinesses
+                {(userBusinesses || [])
                   .filter(
                     (business) =>
                       !profileSearchQuery ||
