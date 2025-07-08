@@ -349,59 +349,6 @@ export function AppLayout({ children }: AppLayoutProps) {
                     </p>
                   </div>
                 </div>
-
-                {/* Business Switcher */}
-                {canSwitch && userBusinesses.length > 1 ? (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        className="w-full justify-between p-2 h-auto"
-                      >
-                        <div className="text-left">
-                          <p className="text-sm font-medium truncate">
-                            {currentBusiness?.name || "Select Business"}
-                          </p>
-                          <p className="text-xs text-muted-foreground truncate">
-                            Current Business
-                          </p>
-                        </div>
-                        <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" className="w-64">
-                      <DropdownMenuLabel>Switch Business</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      {userBusinesses.map((business) => (
-                        <DropdownMenuItem
-                          key={business.id}
-                          onClick={() => handleBusinessSwitch(business.id)}
-                          className={cn(
-                            "flex flex-col items-start p-3",
-                            business.id === currentBusiness?.id &&
-                              "bg-primary/5",
-                          )}
-                        >
-                          <div className="font-medium">{business.name}</div>
-                          {business.description && (
-                            <div className="text-xs text-muted-foreground">
-                              {business.description}
-                            </div>
-                          )}
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                ) : (
-                  <div className="p-2">
-                    <p className="text-sm font-medium truncate">
-                      {currentBusiness?.name || "Business Dashboard"}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      Current Business
-                    </p>
-                  </div>
-                )}
               </div>
             ) : (
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary shadow-sm">
