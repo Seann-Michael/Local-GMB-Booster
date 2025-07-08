@@ -1601,7 +1601,7 @@ function KnowledgeBaseContent({
   }
 
   return (
-    <div>
+    <>
       {/* Header */}
       <div className="text-center mb-8">
         <div className="flex items-center justify-between mb-4">
