@@ -34,6 +34,7 @@ import {
   Building2,
   UserCircle,
   MoreVertical,
+  BookOpen,
 } from "lucide-react";
 import { useState, ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -94,6 +95,13 @@ export function AppLayout({ children }: AppLayoutProps) {
   ];
 
   const bottomSidebarItems = [
+    {
+      id: "help",
+      label: "Help Center",
+      href: "/admin/help",
+      icon: BookOpen,
+      active: location.pathname === "/admin/help",
+    },
     {
       id: "settings",
       label: "Settings",
