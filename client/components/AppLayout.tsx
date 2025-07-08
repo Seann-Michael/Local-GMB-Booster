@@ -110,6 +110,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       active:
         location.pathname === "/admin/projects" ||
         location.pathname.startsWith("/project"),
+      comingSoon: false,
     },
     {
       id: "gallery",
@@ -117,6 +118,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       href: "/admin/gallery",
       icon: Camera,
       active: location.pathname === "/admin/gallery",
+      comingSoon: false,
     },
   ];
 

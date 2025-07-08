@@ -671,7 +671,10 @@ Contact our billing support team:
     return articles.filter((article) => {
       const matchesUserType =
         article.userType === "all" ||
-        article.userType === currentUser?.role ||
+        (currentUser?.role === "admin" && article.userType === "admin") ||
+        (currentUser?.role === "agency" && article.userType === "agency") ||
+        (currentUser?.role === "superadmin" &&
+          article.userType === "super-admin") ||
         (!currentUser && article.userType === "all");
 
       const matchesCategory =
@@ -694,7 +697,10 @@ Contact our billing support team:
     return categories.filter((category) => {
       return (
         category.userType === "all" ||
-        category.userType === currentUser?.role ||
+        (currentUser?.role === "admin" && category.userType === "admin") ||
+        (currentUser?.role === "agency" && category.userType === "agency") ||
+        (currentUser?.role === "superadmin" &&
+          category.userType === "super-admin") ||
         (!currentUser && category.userType === "all")
       );
     });
@@ -909,6 +915,16 @@ function KnowledgeBaseContent({
   onMediaUpload: (file: File) => void;
   uploadingMedia: boolean;
 }) {
+  const insertMarkdownHelper = (syntax: string, placeholder: string) => {
+    if (!editingArticle) return;
+
+    const insertion = syntax.replace("{}", placeholder);
+    setEditingArticle({
+      ...editingArticle,
+      content: editingArticle.content + `\n${insertion}\n`,
+    });
+  };
+
   // Article editing form for super admin
   if (editingArticle) {
     return (
@@ -1023,7 +1039,7 @@ function KnowledgeBaseContent({
                     accept="image/*,video/*,.pdf,.doc,.docx"
                     onChange={(e) => {
                       const file = e.target.files?.[0];
-                      if (file) handleMediaUpload(file);
+                      if (file) onMediaUpload(file);
                     }}
                     className="hidden"
                   />
