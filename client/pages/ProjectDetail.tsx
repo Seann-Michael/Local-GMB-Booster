@@ -1069,7 +1069,7 @@ export default function ProjectDetail() {
                                     .slice(0, 2)
                                     .map((tag, tagIndex) => (
                                       <Badge
-                                        key={tagIndex}
+                                        key={`photo-${index}-tag-${tagIndex}`}
                                         variant="secondary"
                                         className="text-xs"
                                       >
