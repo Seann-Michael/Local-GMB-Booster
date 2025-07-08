@@ -1786,9 +1786,8 @@ function KnowledgeBaseContent({
 
       {/* Quick Links */}
       {!selectedCategory && !searchQuery && (
-        <div className="mt-8 pt-8 border-t">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold">Your Support Tickets</h2>
+        <div className="mt-12 pt-8 border-t">
+          <h2 className="text-xl font-semibold mb-4">Additional Resources</h2>
             <div className="flex gap-2">
               <Button
                 variant="outline"
