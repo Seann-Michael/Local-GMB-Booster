@@ -96,6 +96,12 @@ export function SuperAdminLayout({
       active: location.pathname === "/super-admin/financial",
     },
     {
+      label: "Help Center",
+      href: "/super-admin/help",
+      icon: BookOpen,
+      active: location.pathname === "/super-admin/help",
+    },
+    {
       label: "Support",
       href: "/support",
       icon: MessageSquare,
