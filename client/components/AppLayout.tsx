@@ -35,6 +35,8 @@ import {
   UserCircle,
   MoreVertical,
   BookOpen,
+  Menu,
+  X,
 } from "lucide-react";
 import { useState, ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -54,6 +56,7 @@ export function AppLayout({ children }: AppLayoutProps) {
   const showSuperAdmin = isSuperAdmin();
   const isImpersonated = currentUser?.isImpersonated;
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   // Mock notification count
   const notificationCount = 3;
@@ -120,6 +123,182 @@ export function AppLayout({ children }: AppLayoutProps) {
 
   return (
     <div className="min-h-screen bg-background flex">
+      {/* Mobile Sidebar Overlay */}
+      {mobileSidebarOpen && (
+        <div
+          className="md:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setMobileSidebarOpen(false)}
+        />
+      )}
+
+      {/* Mobile Sidebar */}
+      <div
+        className={cn(
+          "md:hidden fixed inset-y-0 left-0 z-50 w-72 bg-card border-r shadow-lg transform transition-transform duration-300 flex flex-col",
+          mobileSidebarOpen ? "translate-x-0" : "-translate-x-full",
+        )}
+      >
+        {/* Mobile Sidebar Header */}
+        <div className="p-4 border-b bg-primary/5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary shadow-sm">
+                <Building2 className="h-5 w-5 text-primary-foreground" />
+              </div>
+              <div>
+                <span className="font-bold text-base text-foreground">
+                  GMB Booster
+                </span>
+                <p className="text-xs text-muted-foreground">
+                  Business Dashboard
+                </p>
+              </div>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setMobileSidebarOpen(false)}
+              className="h-8 w-8 hover:bg-primary/10"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Mobile Quick Action Button */}
+        <div className="p-3">
+          <Link
+            to="/admin/add-project"
+            onClick={() => setMobileSidebarOpen(false)}
+          >
+            <Button
+              className="w-full gap-2 shadow-sm bg-primary hover:bg-primary/90"
+              size="sm"
+            >
+              <Plus className="h-4 w-4" />
+              <span>New Project</span>
+            </Button>
+          </Link>
+        </div>
+
+        {/* Mobile Main Navigation */}
+        <nav className="flex-1 px-3 py-2">
+          <div className="space-y-1">
+            {sidebarItems.map((item) => {
+              const NavButton = (
+                <Button
+                  variant={item.active ? "secondary" : "ghost"}
+                  className={cn(
+                    "w-full justify-start gap-3 h-10 font-medium px-4",
+                    item.active &&
+                      "bg-primary/10 text-primary border-r-2 border-primary",
+                    !item.active &&
+                      "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                    item.comingSoon && "opacity-70",
+                  )}
+                  size="sm"
+                  onClick={
+                    item.comingSoon
+                      ? (e) => {
+                          e.preventDefault();
+                          toast.success(`${item.label} feature coming soon!`);
+                        }
+                      : undefined
+                  }
+                >
+                  <item.icon
+                    className={cn("h-5 w-5", item.active && "text-primary")}
+                  />
+                  <span className="font-medium flex items-center gap-2">
+                    {item.label}
+                    {item.comingSoon && (
+                      <span className="text-xs bg-primary/20 text-primary px-1 py-0.5 rounded">
+                        Soon
+                      </span>
+                    )}
+                  </span>
+                </Button>
+              );
+
+              return item.comingSoon ? (
+                <div key={item.id} onClick={() => setMobileSidebarOpen(false)}>
+                  {NavButton}
+                </div>
+              ) : (
+                <Link
+                  key={item.id}
+                  to={item.href}
+                  onClick={() => setMobileSidebarOpen(false)}
+                >
+                  {NavButton}
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+
+        {/* Mobile Bottom Navigation */}
+        <div className="px-3 py-2 border-t">
+          <div className="space-y-1">
+            {bottomSidebarItems.map((item) => (
+              <Link
+                key={item.id}
+                to={item.href}
+                onClick={() => setMobileSidebarOpen(false)}
+              >
+                <Button
+                  variant={item.active ? "secondary" : "ghost"}
+                  className={cn(
+                    "w-full justify-start gap-3 h-10 font-medium px-4",
+                    item.active &&
+                      "bg-primary/10 text-primary border-r-2 border-primary",
+                    !item.active &&
+                      "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                  )}
+                  size="sm"
+                >
+                  <item.icon
+                    className={cn("h-5 w-5", item.active && "text-primary")}
+                  />
+                  <span className="font-medium">{item.label}</span>
+                </Button>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile User Info */}
+        <div className="p-3 border-t bg-muted/20">
+          <div className="p-3 rounded-lg bg-background/50 border">
+            <div className="flex items-center gap-3">
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={currentUser?.avatar} />
+                <AvatarFallback className="text-xs">
+                  {currentUser?.name ? (
+                    currentUser.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")
+                  ) : (
+                    <User className="h-4 w-4" />
+                  )}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium truncate">
+                  {currentUser?.name || "User"}
+                </p>
+                <p className="text-xs text-muted-foreground truncate">
+                  {currentUser?.firstName && currentUser?.lastName
+                    ? `${currentUser.firstName} ${currentUser.lastName}`
+                    : "Business Owner"}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Static Sidebar - Always visible on desktop, collapsible */}
       <div
         className={cn(
@@ -302,6 +481,16 @@ export function AppLayout({ children }: AppLayoutProps) {
         <header className="bg-background border-b p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
+              {/* Mobile hamburger menu */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden"
+                onClick={() => setMobileSidebarOpen(true)}
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+
               {/* Mobile app title - only show on mobile */}
               <div className="md:hidden flex items-center space-x-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">

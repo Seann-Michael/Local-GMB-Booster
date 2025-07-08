@@ -36,9 +36,14 @@ import {
   Star,
   Clock,
   User,
+  Plus,
+  Edit,
+  Trash2,
+  Save,
+  X,
 } from "lucide-react";
 import { useState } from "react";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser, isSuperAdmin } from "@/lib/auth";
 import { useLocation } from "react-router-dom";
 
 interface Article {
@@ -64,9 +69,12 @@ interface Category {
 export default function KnowledgeBase() {
   const currentUser = getCurrentUser();
   const location = useLocation();
+  const isSuper = isSuperAdmin();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [editingArticle, setEditingArticle] = useState<Article | null>(null);
+  const [isCreating, setIsCreating] = useState(false);
 
   // Determine which layout to use based on current path or user role
   const getLayoutComponent = () => {
@@ -686,6 +694,45 @@ Contact our billing support team:
     });
   };
 
+  // Handlers for super admin editing
+  const handleEditArticle = (article: Article) => {
+    setEditingArticle({ ...article });
+    setSelectedArticle(null);
+  };
+
+  const handleDeleteArticle = (articleId: string) => {
+    if (confirm("Are you sure you want to delete this article?")) {
+      // In real app, this would make an API call
+      toast.success("Article deleted successfully");
+      setSelectedArticle(null);
+    }
+  };
+
+  const handleSaveArticle = () => {
+    if (!editingArticle) return;
+
+    // In real app, this would make an API call to save
+    toast.success("Article saved successfully");
+    setEditingArticle(null);
+    setIsCreating(false);
+  };
+
+  const handleCreateNew = () => {
+    const newArticle: Article = {
+      id: Date.now().toString(),
+      title: "",
+      description: "",
+      category: "getting-started",
+      userType: "all",
+      content: "",
+      tags: [],
+      lastUpdated: new Date().toISOString().split("T")[0],
+    };
+    setEditingArticle(newArticle);
+    setIsCreating(true);
+    setSelectedArticle(null);
+  };
+
   // If no user logged in, show public layout
   if (!currentUser) {
     return (
@@ -757,6 +804,15 @@ function KnowledgeBaseContent({
   filteredCategories,
   filteredArticles,
   currentUser,
+  isSuper,
+  editingArticle,
+  setEditingArticle,
+  isCreating,
+  setIsCreating,
+  onEditArticle,
+  onDeleteArticle,
+  onSaveArticle,
+  onCreateNew,
 }: {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
@@ -767,11 +823,148 @@ function KnowledgeBaseContent({
   filteredCategories: Category[];
   filteredArticles: Article[];
   currentUser: any;
+  isSuper: boolean;
+  editingArticle: Article | null;
+  setEditingArticle: (article: Article | null) => void;
+  isCreating: boolean;
+  setIsCreating: (creating: boolean) => void;
+  onEditArticle: (article: Article) => void;
+  onDeleteArticle: (articleId: string) => void;
+  onSaveArticle: () => void;
+  onCreateNew: () => void;
 }) {
+  // Article editing form for super admin
+  if (editingArticle) {
+    return (
+      <div className="max-w-4xl mx-auto">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              onClick={() => {
+                setEditingArticle(null);
+                setIsCreating(false);
+              }}
+              className="gap-2"
+            >
+              ← Back to Help Center
+            </Button>
+            <h1 className="text-2xl font-bold">
+              {isCreating ? "Create New Article" : "Edit Article"}
+            </h1>
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setEditingArticle(null);
+                setIsCreating(false);
+              }}
+            >
+              <X className="h-4 w-4 mr-2" />
+              Cancel
+            </Button>
+            <Button onClick={onSaveArticle}>
+              <Save className="h-4 w-4 mr-2" />
+              Save Article
+            </Button>
+          </div>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium">Title</label>
+                  <Input
+                    value={editingArticle.title}
+                    onChange={(e) =>
+                      setEditingArticle({
+                        ...editingArticle,
+                        title: e.target.value,
+                      })
+                    }
+                    placeholder="Article title"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Category</label>
+                  <select
+                    value={editingArticle.category}
+                    onChange={(e) =>
+                      setEditingArticle({
+                        ...editingArticle,
+                        category: e.target.value,
+                      })
+                    }
+                    className="w-full p-2 border rounded-md"
+                  >
+                    {filteredCategories.map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Description</label>
+                <Input
+                  value={editingArticle.description}
+                  onChange={(e) =>
+                    setEditingArticle({
+                      ...editingArticle,
+                      description: e.target.value,
+                    })
+                  }
+                  placeholder="Brief description of the article"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium">Tags</label>
+                <Input
+                  value={editingArticle.tags.join(", ")}
+                  onChange={(e) =>
+                    setEditingArticle({
+                      ...editingArticle,
+                      tags: e.target.value.split(",").map((tag) => tag.trim()),
+                    })
+                  }
+                  placeholder="Tags separated by commas"
+                />
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div>
+              <label className="text-sm font-medium">Content</label>
+              <textarea
+                value={editingArticle.content}
+                onChange={(e) =>
+                  setEditingArticle({
+                    ...editingArticle,
+                    content: e.target.value,
+                  })
+                }
+                className="w-full h-96 p-4 border rounded-md font-mono text-sm"
+                placeholder="Article content in markdown format..."
+              />
+            </div>
+            <p className="text-xs text-muted-foreground mt-2">
+              Use markdown formatting: # for headers, **bold**, *italic*, - for
+              lists
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   if (selectedArticle) {
     return (
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center gap-4 mb-6">
+        <div className="flex items-center justify-between mb-6">
           <Button
             variant="ghost"
             onClick={() => setSelectedArticle(null)}
@@ -779,6 +972,26 @@ function KnowledgeBaseContent({
           >
             ← Back to Help Center
           </Button>
+          {isSuper && (
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={() => onEditArticle(selectedArticle)}
+                className="gap-2"
+              >
+                <Edit className="h-4 w-4" />
+                Edit
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => onDeleteArticle(selectedArticle.id)}
+                className="gap-2 text-destructive hover:text-destructive"
+              >
+                <Trash2 className="h-4 w-4" />
+                Delete
+              </Button>
+            </div>
+          )}
         </div>
         <Card>
           <CardHeader>
@@ -839,6 +1052,15 @@ function KnowledgeBaseContent({
     <>
       {/* Header */}
       <div className="text-center mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <div></div>
+          {isSuper && (
+            <Button onClick={onCreateNew} className="gap-2">
+              <Plus className="h-4 w-4" />
+              Create Article
+            </Button>
+          )}
+        </div>
         <h1 className="text-3xl font-bold mb-2">Help Center</h1>
         <p className="text-muted-foreground text-lg">
           Find answers, guides, and resources to get the most out of GMB Booster
