@@ -1784,8 +1784,8 @@ function KnowledgeBaseContent({
         </div>
       )}
 
-      {/* Support Tickets Section */}
-      {!selectedCategory && !searchQuery && currentUser && (
+      {/* Quick Links */}
+      {!selectedCategory && !searchQuery && (
         <div className="mt-8 pt-8 border-t">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold">Your Support Tickets</h2>
