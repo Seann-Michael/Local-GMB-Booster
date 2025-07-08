@@ -821,7 +821,7 @@ export default function ProjectDetail() {
         {/* Project Status and Completion */}
         <div key="status-wrapper">
           {project.status !== "completed" && (
-            <Card className="mb-6">
+            <Card key="status-incomplete" className="mb-6">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
@@ -852,7 +852,10 @@ export default function ProjectDetail() {
           )}
 
           {project.status === "completed" && (
-            <Card className="mb-6 border-green-200 bg-green-50">
+            <Card
+              key="status-completed"
+              className="mb-6 border-green-200 bg-green-50"
+            >
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-green-600" />
