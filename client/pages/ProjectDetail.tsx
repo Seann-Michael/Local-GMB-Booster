@@ -1680,7 +1680,7 @@ export default function ProjectDetail() {
                                     </div>
                                   </div>
                                 ) : (
-                                  <>
+                                  <div key="checklist-display">
                                     <span
                                       className={
                                         item.completed
@@ -1697,7 +1697,7 @@ export default function ProjectDetail() {
                                         {formatTimestamp(item.completedAt)}
                                       </p>
                                     )}
-                                  </>
+                                  </div>
                                 )}
                               </div>
                             </div>
