@@ -123,6 +123,14 @@ export function AppLayout({ children }: AppLayoutProps) {
       active: location.pathname === "/admin/gallery",
       comingSoon: false,
     },
+    {
+      id: "reviews",
+      label: "Reviews",
+      href: "/admin/reviews",
+      icon: Star,
+      active: location.pathname === "/admin/reviews",
+      comingSoon: false,
+    },
   ];
 
   const bottomSidebarItems = [
