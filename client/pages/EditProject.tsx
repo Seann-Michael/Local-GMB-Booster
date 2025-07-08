@@ -492,6 +492,6 @@ export default function EditProject() {
           </div>
         </form>
       </div>
-    </div>
+    </AppLayout>
   );
 }
