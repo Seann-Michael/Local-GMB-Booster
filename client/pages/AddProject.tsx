@@ -4,8 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Header } from "@/components/Header";
-import { Breadcrumb } from "@/components/Breadcrumb";
+import { AppLayout } from "@/components/AppLayout";
 import { PhotoCapture } from "@/components/PhotoCapture";
 import {
   ArrowLeft,
