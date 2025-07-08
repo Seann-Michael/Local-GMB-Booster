@@ -176,6 +176,14 @@ const App = () => (
             }
           />
           <Route
+            path="/admin/help"
+            element={
+              <ProtectedRoute>
+                <KnowledgeBase />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/support"
             element={
               <ProtectedRoute>
