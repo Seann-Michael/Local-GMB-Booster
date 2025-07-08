@@ -1551,7 +1551,7 @@ export default function ProjectDetail() {
                                         {formatTimestamp(task.completedAt)}
                                       </p>
                                     )}
-                                  </>
+                                  </div>
                                 )}
                               </div>
                             </div>
