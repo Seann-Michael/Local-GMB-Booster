@@ -61,6 +61,7 @@ const App = () => (
           <Route path="/help" element={<KnowledgeBase />} />
           <Route path="/knowledge-base" element={<KnowledgeBase />} />
           <Route path="/public/project/:id" element={<PublicProject />} />
+          <Route path="/review/:id" element={<ReviewGate />} />
 
           {/* Protected routes */}
           <Route
