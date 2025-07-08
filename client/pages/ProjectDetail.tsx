@@ -768,19 +768,19 @@ export default function ProjectDetail() {
     <AppLayout>
       <div className="container px-4 py-6" key="project-detail-main">
         <div key="project-header" className="flex items-center gap-4 mb-6">
-          <Link to="/admin/projects">
+          <Link key="back-button" to="/admin/projects">
             <Button variant="ghost" size="icon">
               <ArrowLeft className="h-5 w-5" />
             </Button>
           </Link>
-          <div className="flex-1">
+          <div key="project-info" className="flex-1">
             <h1 className="text-2xl font-bold">{project.name}</h1>
             <div className="flex items-center gap-2 text-muted-foreground mt-1">
               <MapPin className="h-4 w-4" />
               <span>{project.address}</span>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div key="project-actions" className="flex items-center gap-2">
             <Link key="edit-button" to={`/project/${id}/edit`}>
               <Button variant="ghost" size="icon" className="h-8 w-8">
                 <Edit className="h-4 w-4" />
