@@ -2069,7 +2069,7 @@ export default function ProjectDetail() {
                               .filter((phone) => phone.trim())
                               .map((phone, index) => (
                                 <a
-                                  key={index}
+                                  key={`additional-phone-${index}-${phone}`}
                                   href={`tel:${phone}`}
                                   className="text-sm text-primary hover:underline block"
                                 >
