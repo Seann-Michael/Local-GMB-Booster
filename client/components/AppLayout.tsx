@@ -410,59 +410,115 @@ export function AppLayout({ children }: AppLayoutProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-64">
-                <DropdownMenuLabel>Switch Profile</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="flex flex-col items-start p-3">
-                  <div className="flex items-center gap-3 w-full">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={currentUser?.avatar} />
-                      <AvatarFallback className="text-xs">
-                        {currentUser?.name ? (
-                          currentUser.name
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")
-                        ) : (
-                          <User className="h-4 w-4" />
-                        )}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <div className="font-medium">
-                        {currentUser?.name || "User"}
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        Business Owner
-                      </div>
-                    </div>
-                    <CheckCircle className="h-4 w-4 text-primary" />
+                {/* Search Bar */}
+                <div className="p-2">
+                  <div className="relative">
+                    <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search profiles..."
+                      value={profileSearchQuery}
+                      onChange={(e) => setProfileSearchQuery(e.target.value)}
+                      className="pl-8 h-8 text-sm"
+                    />
                   </div>
-                </DropdownMenuItem>
-                {showSuperAdmin && (
-                  <DropdownMenuItem
-                    className="flex flex-col items-start p-3"
-                    onClick={() => navigate("/super-admin")}
-                  >
+                </div>
+                <DropdownMenuSeparator />
+
+                {/* Current Business Owner Profile */}
+                {(!profileSearchQuery ||
+                  `${currentUser?.name || "User"} Business Owner`
+                    .toLowerCase()
+                    .includes(profileSearchQuery.toLowerCase())) && (
+                  <DropdownMenuItem className="flex flex-col items-start p-3">
                     <div className="flex items-center gap-3 w-full">
                       <Avatar className="h-8 w-8">
-                        <AvatarFallback className="text-xs bg-purple-100">
-                          <Shield className="h-4 w-4 text-purple-600" />
+                        <AvatarImage src={currentUser?.avatar} />
+                        <AvatarFallback className="text-xs">
+                          {currentUser?.name ? (
+                            currentUser.name
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")
+                          ) : (
+                            <User className="h-4 w-4" />
+                          )}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
-                        <div className="font-medium">Super Admin</div>
+                        <div className="font-medium">
+                          {currentUser?.name || "User"}
+                        </div>
                         <div className="text-xs text-muted-foreground">
-                          System Administrator
+                          Business Owner
                         </div>
                       </div>
+                      <CheckCircle className="h-4 w-4 text-primary" />
                     </div>
                   </DropdownMenuItem>
                 )}
-                {/* Add more profile options here as needed */}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-sm text-muted-foreground">
-                  Switch between your available profiles
-                </DropdownMenuItem>
+
+                {/* Super Admin Profile */}
+                {showSuperAdmin &&
+                  (!profileSearchQuery ||
+                    "Super Admin System Administrator"
+                      .toLowerCase()
+                      .includes(profileSearchQuery.toLowerCase())) && (
+                    <DropdownMenuItem
+                      className="flex flex-col items-start p-3"
+                      onClick={() => navigate("/super-admin")}
+                    >
+                      <div className="flex items-center gap-3 w-full">
+                        <Avatar className="h-8 w-8">
+                          <AvatarFallback className="text-xs bg-purple-100">
+                            <Shield className="h-4 w-4 text-purple-600" />
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <div className="font-medium">Super Admin</div>
+                          <div className="text-xs text-muted-foreground">
+                            System Administrator
+                          </div>
+                        </div>
+                      </div>
+                    </DropdownMenuItem>
+                  )}
+
+                {/* Business Profiles */}
+                {userBusinesses
+                  .filter(
+                    (business) =>
+                      !profileSearchQuery ||
+                      business.name
+                        .toLowerCase()
+                        .includes(profileSearchQuery.toLowerCase()) ||
+                      business.description
+                        ?.toLowerCase()
+                        .includes(profileSearchQuery.toLowerCase()),
+                  )
+                  .map((business) => (
+                    <DropdownMenuItem
+                      key={business.id}
+                      className="flex flex-col items-start p-3"
+                      onClick={() => handleBusinessSwitch(business.id)}
+                    >
+                      <div className="flex items-center gap-3 w-full">
+                        <Avatar className="h-8 w-8">
+                          <AvatarFallback className="text-xs bg-blue-100">
+                            <Building2 className="h-4 w-4 text-blue-600" />
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <div className="font-medium">{business.name}</div>
+                          <div className="text-xs text-muted-foreground">
+                            {business.description || "Business Profile"}
+                          </div>
+                        </div>
+                        {business.id === currentBusiness?.id && (
+                          <CheckCircle className="h-4 w-4 text-primary" />
+                        )}
+                      </div>
+                    </DropdownMenuItem>
+                  ))}
               </DropdownMenuContent>
             </DropdownMenu>
           )}
