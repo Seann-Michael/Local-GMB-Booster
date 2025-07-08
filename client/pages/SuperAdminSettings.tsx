@@ -284,6 +284,7 @@ export default function SuperAdminSettings() {
     { id: "workspaces", label: "Workspaces", icon: Building2 },
     { id: "billing", label: "Billing & Plans", icon: DollarSign },
     { id: "integrations", label: "Integrations", icon: Globe },
+    { id: "reviews", label: "Review System", icon: MessageSquare },
     { id: "branding", label: "Branding", icon: Camera },
     { id: "features", label: "Feature Control", icon: BarChart3 },
     { id: "security", label: "Security", icon: Shield },
