@@ -768,6 +768,15 @@ Contact our billing support team:
             filteredCategories={getFilteredCategories()}
             filteredArticles={getFilteredArticles()}
             currentUser={currentUser}
+            isSuper={false}
+            editingArticle={null}
+            setEditingArticle={() => {}}
+            isCreating={false}
+            setIsCreating={() => {}}
+            onEditArticle={() => {}}
+            onDeleteArticle={() => {}}
+            onSaveArticle={() => {}}
+            onCreateNew={() => {}}
           />
         </main>
       </div>
@@ -787,6 +796,15 @@ Contact our billing support team:
           filteredCategories={getFilteredCategories()}
           filteredArticles={getFilteredArticles()}
           currentUser={currentUser}
+          isSuper={isSuper}
+          editingArticle={editingArticle}
+          setEditingArticle={setEditingArticle}
+          isCreating={isCreating}
+          setIsCreating={setIsCreating}
+          onEditArticle={handleEditArticle}
+          onDeleteArticle={handleDeleteArticle}
+          onSaveArticle={handleSaveArticle}
+          onCreateNew={handleCreateNew}
         />
       </div>
     </LayoutComponent>
