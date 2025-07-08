@@ -23,6 +23,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronDown,
+  CheckCircle,
   Home,
   MessageSquare,
   BarChart3,
