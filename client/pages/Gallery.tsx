@@ -580,15 +580,14 @@ export default function Gallery() {
                 {Object.entries(
                   filteredPhotos.reduce(
                     (groups, photo) => {
-                      const date = new Date(photo.uploadedAt).toLocaleDateString(
-                        "en-US",
-                        {
-                          weekday: "long",
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        },
-                      );
+                      const date = new Date(
+                        photo.uploadedAt,
+                      ).toLocaleDateString("en-US", {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      });
                       if (!groups[date]) groups[date] = [];
                       groups[date].push(photo);
                       return groups;
@@ -612,157 +611,170 @@ export default function Gallery() {
                             : "sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
                       }`}
                     >
-                  {datePhotos.map((photo, index) => (
-                    <Card key={`${date}-${index}`} className="overflow-hidden">
-                      <div
-                        className={`relative cursor-pointer group ${
-                          filters.thumbnailSize === "small"
-                            ? "aspect-square"
-                            : filters.thumbnailSize === "large"
-                              ? "aspect-[4/3]"
-                              : "aspect-square"
-                        }`}
-                        onClick={() => setSelectedPhoto(photo.url)}
-                      >
-                        <img
-                          src={photo.url}
-                          alt={`${photo.type} from ${photo.projectName}`}
-                          className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-
-                        {/* Top badges */}
-                        <div className="absolute top-2 left-2 flex gap-1">
-                          {photo.isPrimary && (
-                            <Badge variant="secondary" className="gap-1">
-                              <Star className="h-3 w-3" />
-                              Primary
-                            </Badge>
-                          )}
-                          {photo.type === "video" && (
-                            <Badge variant="default" className="gap-1">
-                              Video
-                            </Badge>
-                          )}
-                        </div>
-
-                        {/* Bottom badges */}
-                        <div className="absolute bottom-2 left-2">
-                          <Badge
-                            variant="outline"
-                            className="text-xs bg-black/50 text-white border-white/20"
-                          >
-                            {photo.size}
-                          </Badge>
-                        </div>
-
-                        <Button
-                          variant="secondary"
-                          size="icon"
-                          className="absolute top-2 right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            downloadPhoto(photo.url, photo.projectName, index);
-                          }}
+                      {datePhotos.map((photo, index) => (
+                        <Card
+                          key={`${date}-${index}`}
+                          className="overflow-hidden"
                         >
-                          <Download className="h-3 w-3" />
-                        </Button>
-                      </div>
-                      <CardContent
-                        className={`${
-                          filters.thumbnailSize === "small"
-                            ? "p-2"
-                            : filters.thumbnailSize === "large"
-                              ? "p-6"
-                              : "p-4"
-                        }`}
-                      >
-                        <Link
-                          to={`/project/${photo.projectId}`}
-                          className="block hover:text-primary transition-colors"
-                        >
-                          <h3
-                            className={`font-semibold mb-1 line-clamp-1 ${
-                              filters.thumbnailSize === "small"
-                                ? "text-xs"
-                                : filters.thumbnailSize === "large"
-                                  ? "text-base"
-                                  : "text-sm"
-                            }`}
-                          >
-                            {photo.projectName}
-                          </h3>
-                        </Link>
-
-                        <div
-                          className={`text-muted-foreground ${
-                            filters.thumbnailSize === "small"
-                              ? "space-y-1 text-xs"
-                              : filters.thumbnailSize === "large"
-                                ? "space-y-3 text-sm"
-                                : "space-y-2 text-xs"
-                          }`}
-                        >
-                          <div className="flex items-center gap-1">
-                            <MapPin className="h-3 w-3" />
-                            <span className="line-clamp-1">
-                              {photo.projectAddress}
-                            </span>
-                          </div>
-
-                          <div className="flex items-center gap-1">
-                            <User className="h-3 w-3" />
-                            <span>{photo.uploadedBy}</span>
-                          </div>
-
-                          <div className="flex items-center gap-1">
-                            <Calendar className="h-3 w-3" />
-                            <span>{formatDate(photo.uploadedAt)}</span>
-                          </div>
-                        </div>
-
-                        {photo.tags.length > 0 && (
                           <div
-                            className={`flex flex-wrap gap-1 ${
+                            className={`relative cursor-pointer group ${
                               filters.thumbnailSize === "small"
-                                ? "mt-1"
-                                : "mt-2"
+                                ? "aspect-square"
+                                : filters.thumbnailSize === "large"
+                                  ? "aspect-[4/3]"
+                                  : "aspect-square"
+                            }`}
+                            onClick={() => setSelectedPhoto(photo.url)}
+                          >
+                            <img
+                              src={photo.url}
+                              alt={`${photo.type} from ${photo.projectName}`}
+                              className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                            />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+
+                            {/* Top badges */}
+                            <div className="absolute top-2 left-2 flex gap-1">
+                              {photo.isPrimary && (
+                                <Badge variant="secondary" className="gap-1">
+                                  <Star className="h-3 w-3" />
+                                  Primary
+                                </Badge>
+                              )}
+                              {photo.type === "video" && (
+                                <Badge variant="default" className="gap-1">
+                                  Video
+                                </Badge>
+                              )}
+                            </div>
+
+                            {/* Bottom badges */}
+                            <div className="absolute bottom-2 left-2">
+                              <Badge
+                                variant="outline"
+                                className="text-xs bg-black/50 text-white border-white/20"
+                              >
+                                {photo.size}
+                              </Badge>
+                            </div>
+
+                            <Button
+                              variant="secondary"
+                              size="icon"
+                              className="absolute top-2 right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                downloadPhoto(
+                                  photo.url,
+                                  photo.projectName,
+                                  index,
+                                );
+                              }}
+                            >
+                              <Download className="h-3 w-3" />
+                            </Button>
+                          </div>
+                          <CardContent
+                            className={`${
+                              filters.thumbnailSize === "small"
+                                ? "p-2"
+                                : filters.thumbnailSize === "large"
+                                  ? "p-6"
+                                  : "p-4"
                             }`}
                           >
-                            {photo.tags
-                              .slice(
-                                0,
-                                filters.thumbnailSize === "small" ? 1 : 2,
-                              )
-                              .map((tag, tagIndex) => (
-                                <Badge
-                                  key={tagIndex}
-                                  variant="outline"
-                                  className={
-                                    filters.thumbnailSize === "small"
-                                      ? "text-xs"
-                                      : "text-xs"
-                                  }
-                                >
-                                  {tag}
-                                </Badge>
-                              ))}
-                            {photo.tags.length >
-                              (filters.thumbnailSize === "small" ? 1 : 2) && (
-                              <Badge variant="outline" className="text-xs">
-                                +
-                                {photo.tags.length -
-                                  (filters.thumbnailSize === "small" ? 1 : 2)}
-                              </Badge>
+                            <Link
+                              to={`/project/${photo.projectId}`}
+                              className="block hover:text-primary transition-colors"
+                            >
+                              <h3
+                                className={`font-semibold mb-1 line-clamp-1 ${
+                                  filters.thumbnailSize === "small"
+                                    ? "text-xs"
+                                    : filters.thumbnailSize === "large"
+                                      ? "text-base"
+                                      : "text-sm"
+                                }`}
+                              >
+                                {photo.projectName}
+                              </h3>
+                            </Link>
+
+                            <div
+                              className={`text-muted-foreground ${
+                                filters.thumbnailSize === "small"
+                                  ? "space-y-1 text-xs"
+                                  : filters.thumbnailSize === "large"
+                                    ? "space-y-3 text-sm"
+                                    : "space-y-2 text-xs"
+                              }`}
+                            >
+                              <div className="flex items-center gap-1">
+                                <MapPin className="h-3 w-3" />
+                                <span className="line-clamp-1">
+                                  {photo.projectAddress}
+                                </span>
+                              </div>
+
+                              <div className="flex items-center gap-1">
+                                <User className="h-3 w-3" />
+                                <span>{photo.uploadedBy}</span>
+                              </div>
+
+                              <div className="flex items-center gap-1">
+                                <Calendar className="h-3 w-3" />
+                                <span>{formatDate(photo.uploadedAt)}</span>
+                              </div>
+                            </div>
+
+                            {photo.tags.length > 0 && (
+                              <div
+                                className={`flex flex-wrap gap-1 ${
+                                  filters.thumbnailSize === "small"
+                                    ? "mt-1"
+                                    : "mt-2"
+                                }`}
+                              >
+                                {photo.tags
+                                  .slice(
+                                    0,
+                                    filters.thumbnailSize === "small" ? 1 : 2,
+                                  )
+                                  .map((tag, tagIndex) => (
+                                    <Badge
+                                      key={tagIndex}
+                                      variant="outline"
+                                      className={
+                                        filters.thumbnailSize === "small"
+                                          ? "text-xs"
+                                          : "text-xs"
+                                      }
+                                    >
+                                      {tag}
+                                    </Badge>
+                                  ))}
+                                {photo.tags.length >
+                                  (filters.thumbnailSize === "small"
+                                    ? 1
+                                    : 2) && (
+                                  <Badge variant="outline" className="text-xs">
+                                    +
+                                    {photo.tags.length -
+                                      (filters.thumbnailSize === "small"
+                                        ? 1
+                                        : 2)}
+                                  </Badge>
+                                )}
+                              </div>
                             )}
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            ))}
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
           </div>
         )}
       </div>
