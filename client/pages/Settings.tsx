@@ -593,7 +593,7 @@ export default function Settings() {
                       <span>Business Information</span>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <span>Sub Account ID:</span>
-                        <code className="bg-muted px-2 py-1 rounded text-xs">
+                        <code className="bg-muted px-3 py-1.5 rounded font-mono text-sm border">
                           {settings.subAccountId}
                         </code>
                         <Button
