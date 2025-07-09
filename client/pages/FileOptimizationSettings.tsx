@@ -212,19 +212,31 @@ export default function FileOptimizationSettings() {
         {/* Main Content Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview" className="gap-2">
+            <TabsTrigger
+              value="overview"
+              className="gap-2"
+              data-value="overview"
+            >
               <BarChart3 className="h-4 w-4" />
               Overview
             </TabsTrigger>
-            <TabsTrigger value="metadata" className="gap-2">
+            <TabsTrigger
+              value="metadata"
+              className="gap-2"
+              data-value="metadata"
+            >
               <Settings className="h-4 w-4" />
               Metadata
             </TabsTrigger>
-            <TabsTrigger value="optimization" className="gap-2">
+            <TabsTrigger
+              value="optimization"
+              className="gap-2"
+              data-value="optimization"
+            >
               <Zap className="h-4 w-4" />
               Optimization
             </TabsTrigger>
-            <TabsTrigger value="archive" className="gap-2">
+            <TabsTrigger value="archive" className="gap-2" data-value="archive">
               <Archive className="h-4 w-4" />
               Archive
             </TabsTrigger>
