@@ -42,7 +42,6 @@ import SuperAdminStaff from "./pages/SuperAdminStaff";
 import SignUp from "./pages/SignUp";
 import ForgotPassword from "./pages/ForgotPassword";
 import Support from "./pages/Support";
-import AdminSupport from "./pages/AdminSupport";
 import SupportTicketDetail from "./pages/SupportTicketDetail";
 import KnowledgeBase from "./pages/KnowledgeBase";
 import ReviewGate from "./pages/ReviewGate";
@@ -193,22 +192,7 @@ const App = () => (
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/admin/support"
-            element={
-              <ProtectedRoute>
-                <AdminSupport />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/support/ticket/:ticketId"
-            element={
-              <ProtectedRoute>
-                <SupportTicketDetail />
-              </ProtectedRoute>
-            }
-          />
+
           <Route
             path="/admin/help"
             element={
@@ -222,14 +206,6 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <Support />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin-support"
-            element={
-              <ProtectedRoute>
-                <AdminSupport />
               </ProtectedRoute>
             }
           />
