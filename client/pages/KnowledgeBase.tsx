@@ -1547,15 +1547,16 @@ Contact our billing support team:
                         Create Your First Ticket
                       </Button>
                     </div>
-                  ) : (
+                ) : (
+                  <div className="responsive-table">
                     <Table>
                       <TableHeader>
                         <TableRow>
                           <TableHead>Subject</TableHead>
-                          <TableHead>Category</TableHead>
-                          <TableHead>Priority</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Created</TableHead>
+                          <TableHead className="hidden sm:table-cell">Category</TableHead>
+                          <TableHead className="hidden md:table-cell">Priority</TableHead>
+                          <TableHead className="hidden md:table-cell">Status</TableHead>
+                          <TableHead className="hidden lg:table-cell">Created</TableHead>
                           <TableHead>Actions</TableHead>
                         </TableRow>
                       </TableHeader>
@@ -1795,7 +1796,7 @@ Contact our billing support team:
             </p>
             <Button
               variant="outline"
-              onClick={() => window.open("/status", "_blank")}
+              onClick={() => window.open('/status', '_blank')}
               className="gap-2"
             >
               <ExternalLink className="h-4 w-4" />
