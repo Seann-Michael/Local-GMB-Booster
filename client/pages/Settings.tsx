@@ -1300,13 +1300,13 @@ export default function Settings() {
                         onSubmit={(e) => {
                           e.preventDefault();
                           const formData = new FormData(e.currentTarget);
+                          const selectedEvents = formData.getAll(
+                            "selectedEvents",
+                          ) as string[];
                           const webhook = {
                             name: (formData.get("name") as string) || "",
                             url: (formData.get("url") as string) || "",
-                            events: ((formData.get("events") as string) || "")
-                              .split(",")
-                              .map((e) => e.trim())
-                              .filter((e) => e.length > 0),
+                            events: selectedEvents,
                             active: formData.get("active") === "on",
                           };
                           if (editingWebhook) {
