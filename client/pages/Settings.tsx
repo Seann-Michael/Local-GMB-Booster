@@ -281,9 +281,9 @@ export default function Settings() {
     } catch (error) {
       console.error("Failed to load settings:", error);
       // Keep default settings if loading fails
-    } finally {
-      setIsInitialized(true);
     }
+    // Always set initialized to true, regardless of localStorage success
+    setIsInitialized(true);
   }, []);
 
   const handleSave = async () => {
@@ -379,8 +379,8 @@ export default function Settings() {
     }
   };
 
-  // Don't render until settings are properly initialized
-  if (!isInitialized || !settings) {
+  // Only show loading if not initialized yet
+  if (!isInitialized) {
     return (
       <AppLayout>
         <div className="container mx-auto px-4 py-6">
