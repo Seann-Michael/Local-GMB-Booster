@@ -62,25 +62,38 @@ export class FileOptimizer {
   }
 
   /**
-   * Detect optimal format based on image content and browser support
+   * Detect optimal format based on browser support using proper feature detection
    */
-  static detectOptimalImageFormat(): "avif" | "webp" | "jpeg" {
-    // Check browser support for modern formats
-    const canvas = document.createElement("canvas");
-    canvas.width = 1;
-    canvas.height = 1;
-
-    // Test AVIF support
-    if (canvas.toDataURL("image/avif").includes("data:image/avif")) {
+  static async detectOptimalImageFormat(): Promise<"avif" | "webp" | "jpeg"> {
+    // Use proper feature detection instead of unreliable canvas method
+    if (await this.supportsImageFormat("avif")) {
       return "avif";
     }
 
-    // Test WebP support
-    if (canvas.toDataURL("image/webp").includes("data:image/webp")) {
+    if (await this.supportsImageFormat("webp")) {
       return "webp";
     }
 
     return "jpeg";
+  }
+
+  /**
+   * Reliable feature detection for image formats
+   */
+  private static supportsImageFormat(format: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+
+      // Use minimal test images for each format
+      const testImages = {
+        webp: "data:image/webp;base64,UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA",
+        avif: "data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgABogQEAwgMg8f8D///8WfhwB8+ErK42A=",
+      };
+
+      img.src = testImages[format as keyof typeof testImages] || "";
+    });
   }
 
   /**
