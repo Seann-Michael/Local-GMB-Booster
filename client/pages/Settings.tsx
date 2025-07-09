@@ -19,6 +19,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { AppLayout } from "@/components/AppLayout";
+import { MetadataSettings } from "@/components/MetadataSettings";
 import {
   Save,
   Building2,
