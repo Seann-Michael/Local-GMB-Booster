@@ -78,14 +78,15 @@ import NotificationPreferences from "./pages/NotificationPreferences";
 const queryClient = new QueryClient();
 
 // PWA Service Worker Registration
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js')
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker
+    .register("/sw.js")
     .then((registration) => {
-      console.log('Service Worker registered:', registration);
-      analytics.track('service_worker_registered');
+      console.log("Service Worker registered:", registration);
+      analytics.track("service_worker_registered");
     })
     .catch((error) => {
-      console.error('Service Worker registration failed:', error);
+      console.error("Service Worker registration failed:", error);
       analytics.trackError(error);
     });
 }
@@ -97,637 +98,641 @@ const App = () => (
         <ThemeProvider defaultTheme="system" storageKey="gmb-booster-theme">
           <TooltipProvider>
             <Sonner />
-          <Suspense
-            fallback={
-              <div className="min-h-screen bg-background">
-                <div className="container px-4 py-6">
-                  <div className="animate-pulse space-y-6">
-                    {/* Header skeleton */}
-                    <div className="h-16 bg-muted rounded-lg"></div>
+            <Suspense
+              fallback={
+                <div className="min-h-screen bg-background">
+                  <div className="container px-4 py-6">
+                    <div className="animate-pulse space-y-6">
+                      {/* Header skeleton */}
+                      <div className="h-16 bg-muted rounded-lg"></div>
 
-                    {/* Stats grid skeleton */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                      {Array.from({ length: 4 }).map((_, i) => (
-                        <div key={i} className="h-24 bg-muted rounded-lg"></div>
-                      ))}
-                    </div>
+                      {/* Stats grid skeleton */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {Array.from({ length: 4 }).map((_, i) => (
+                          <div
+                            key={i}
+                            className="h-24 bg-muted rounded-lg"
+                          ></div>
+                        ))}
+                      </div>
 
-                    {/* Content grid skeleton */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {Array.from({ length: 6 }).map((_, i) => (
-                        <div key={i} className="space-y-3">
-                          <div className="aspect-video bg-muted rounded-lg"></div>
-                          <div className="space-y-2">
-                            <div className="h-4 bg-muted rounded w-3/4"></div>
-                            <div className="h-3 bg-muted rounded w-1/2"></div>
+                      {/* Content grid skeleton */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {Array.from({ length: 6 }).map((_, i) => (
+                          <div key={i} className="space-y-3">
+                            <div className="aspect-video bg-muted rounded-lg"></div>
+                            <div className="space-y-2">
+                              <div className="h-4 bg-muted rounded w-3/4"></div>
+                              <div className="h-3 bg-muted rounded w-1/2"></div>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            }
-          >
-            <Routes>
-              {/* Public routes */}
-              <Route path="/signin" element={<SignIn />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/help" element={<KnowledgeBase />} />
-              <Route path="/knowledge-base" element={<KnowledgeBase />} />
-              <Route path="/public/project/:id" element={<PublicProject />} />
-              <Route path="/review/:id" element={<ReviewGate />} />
-              <Route path="/review-demo" element={<ReviewGate />} />
-              <Route path="/status" element={<StatusPage />} />
+              }
+            >
+              <Routes>
+                {/* Public routes */}
+                <Route path="/signin" element={<SignIn />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/help" element={<KnowledgeBase />} />
+                <Route path="/knowledge-base" element={<KnowledgeBase />} />
+                <Route path="/public/project/:id" element={<PublicProject />} />
+                <Route path="/review/:id" element={<ReviewGate />} />
+                <Route path="/review-demo" element={<ReviewGate />} />
+                <Route path="/status" element={<StatusPage />} />
 
-              {/* Protected routes */}
-              <Route
-                path="/admin/projects"
-                element={
-                  <ProtectedRoute>
-                    <Index />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/add-project"
-                element={
-                  <ProtectedRoute>
-                    <AddProject />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/project/:id"
-                element={
-                  <ProtectedRoute>
-                    <ProjectDetail />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/project/:id/edit"
-                element={
-                  <ProtectedRoute>
-                    <EditProject />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/gallery"
-                element={
-                  <ProtectedRoute>
-                    <Gallery />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/reviews"
-                element={
-                  <ProtectedRoute>
-                    <AdminReviews />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/ideas"
-                element={
-                  <ProtectedRoute>
-                    <Ideas />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/ideas/:id"
-                element={
-                  <ProtectedRoute>
-                    <IdeaDetail />
-                  </ProtectedRoute>
-                }
-              />
+                {/* Protected routes */}
+                <Route
+                  path="/admin/projects"
+                  element={
+                    <ProtectedRoute>
+                      <Index />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/add-project"
+                  element={
+                    <ProtectedRoute>
+                      <AddProject />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/project/:id"
+                  element={
+                    <ProtectedRoute>
+                      <ProjectDetail />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/project/:id/edit"
+                  element={
+                    <ProtectedRoute>
+                      <EditProject />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/gallery"
+                  element={
+                    <ProtectedRoute>
+                      <Gallery />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/reviews"
+                  element={
+                    <ProtectedRoute>
+                      <AdminReviews />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/ideas"
+                  element={
+                    <ProtectedRoute>
+                      <Ideas />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/ideas/:id"
+                  element={
+                    <ProtectedRoute>
+                      <IdeaDetail />
+                    </ProtectedRoute>
+                  }
+                />
 
-              <Route
-                path="/admin/settings"
-                element={
-                  <ProtectedRoute>
-                    <Settings />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/security"
-                element={
-                  <ProtectedRoute>
-                    <SecurityDashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/file-optimization"
-                element={
-                  <ProtectedRoute>
-                    <FileOptimizationSettings />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin"
-                element={
-                  <ProtectedRoute>
-                    <SuperAdmin />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/businesses"
-                element={
-                  <ProtectedRoute>
-                    <BusinessManagement />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/business/:businessId"
-                element={
-                  <ProtectedRoute>
-                    <BusinessDetail />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/users"
-                element={
-                  <ProtectedRoute>
-                    <UserManagement />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/notifications"
-                element={
-                  <ProtectedRoute>
-                    <Notifications />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/profile"
-                element={
-                  <ProtectedRoute>
-                    <Profile />
-                  </ProtectedRoute>
-                }
-              />
+                <Route
+                  path="/admin/settings"
+                  element={
+                    <ProtectedRoute>
+                      <Settings />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/security"
+                  element={
+                    <ProtectedRoute>
+                      <SecurityDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/file-optimization"
+                  element={
+                    <ProtectedRoute>
+                      <FileOptimizationSettings />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdmin />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/businesses"
+                  element={
+                    <ProtectedRoute>
+                      <BusinessManagement />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/business/:businessId"
+                  element={
+                    <ProtectedRoute>
+                      <BusinessDetail />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/users"
+                  element={
+                    <ProtectedRoute>
+                      <UserManagement />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/notifications"
+                  element={
+                    <ProtectedRoute>
+                      <Notifications />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/profile"
+                  element={
+                    <ProtectedRoute>
+                      <Profile />
+                    </ProtectedRoute>
+                  }
+                />
 
-              <Route
-                path="/admin/help"
-                element={
-                  <ProtectedRoute>
-                    <KnowledgeBase />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/leads"
-                element={
-                  <ProtectedRoute>
-                    <LeadManagement />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/project-value"
-                element={
-                  <ProtectedRoute>
-                    <ProjectValue />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/notification-preferences"
-                element={
-                  <ProtectedRoute>
-                    <NotificationPreferences />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/support"
-                element={
-                  <ProtectedRoute>
-                    <Support />
-                  </ProtectedRoute>
-                }
-              />
+                <Route
+                  path="/admin/help"
+                  element={
+                    <ProtectedRoute>
+                      <KnowledgeBase />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/leads"
+                  element={
+                    <ProtectedRoute>
+                      <LeadManagement />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/project-value"
+                  element={
+                    <ProtectedRoute>
+                      <ProjectValue />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/notification-preferences"
+                  element={
+                    <ProtectedRoute>
+                      <NotificationPreferences />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/support"
+                  element={
+                    <ProtectedRoute>
+                      <Support />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Agency Admin Routes */}
-              <Route
-                path="/agency/admin/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <AgencyAdmin />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/agency/admin/clients"
-                element={
-                  <ProtectedRoute>
-                    <AgencyClientManagement />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/agency/admin/clients/add"
-                element={
-                  <ProtectedRoute>
-                    <AddAgencyClient />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/agency/admin/commission"
-                element={
-                  <ProtectedRoute>
-                    <AgencyCommission />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/agency/admin/analytics"
-                element={
-                  <ProtectedRoute>
-                    <AgencyAnalytics />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/agency/admin/reports"
-                element={
-                  <ProtectedRoute>
-                    <AgencyReports />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/agency/admin/billing"
-                element={
-                  <ProtectedRoute>
-                    <AgencyBilling />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/agency/admin/business-owners"
-                element={
-                  <ProtectedRoute>
-                    <AgencyBusinessOwners />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/agency/admin/business-owners/add"
-                element={
-                  <ProtectedRoute>
-                    <AddAgencyClient />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/agency/admin/business-owners/:id"
-                element={
-                  <ProtectedRoute>
-                    <AgencyBusinessOwnerDetail />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/agency/admin/business-owners/:id/edit"
-                element={
-                  <ProtectedRoute>
-                    <AgencyBusinessOwnerEdit />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/agency/admin/admin-users"
-                element={
-                  <ProtectedRoute>
-                    <AgencyAdminUsers />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/agency/admin/admin-users/add"
-                element={
-                  <ProtectedRoute>
-                    <AddAgencyAdminUser />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/agency/admin/admin-users/:id"
-                element={
-                  <ProtectedRoute>
-                    <AgencyAdminUserDetail />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/agency/admin/admin-users/:id/edit"
-                element={
-                  <ProtectedRoute>
-                    <AgencyAdminUserEdit />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/agency/admin/settings"
-                element={
-                  <ProtectedRoute>
-                    <AgencySettings />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/agency/admin/help"
-                element={
-                  <ProtectedRoute>
-                    <KnowledgeBase />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/agencies"
-                element={
-                  <ProtectedRoute>
-                    <SuperAdminAgencyManagement />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/settings"
-                element={
-                  <ProtectedRoute>
-                    <SuperAdminSettings />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/staff"
-                element={
-                  <ProtectedRoute>
-                    <SuperAdminStaff />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/ideas"
-                element={
-                  <ProtectedRoute>
-                    <SuperAdminIdeas />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/broadcast"
-                element={
-                  <ProtectedRoute>
-                    <SuperAdminBroadcast />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/templates"
-                element={
-                  <ProtectedRoute>
-                    <SuperAdminMessageTemplates />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/analytics"
-                element={
-                  <ProtectedRoute>
-                    <SuperAdminAnalytics />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/automation"
-                element={
-                  <ProtectedRoute>
-                    <SuperAdminAutomation />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/segments"
-                element={
-                  <ProtectedRoute>
-                    <SuperAdminSegmentation />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/email"
-                element={
-                  <ProtectedRoute>
-                    <SuperAdminEmailIntegration />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/api"
-                element={
-                  <ProtectedRoute>
-                    <SuperAdminAPI />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/project-messaging"
-                element={
-                  <ProtectedRoute>
-                    <SuperAdminProjectMessaging />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/advanced-features"
-                element={
-                  <ProtectedRoute>
-                    <SuperAdminAdvancedFeatures />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/performance"
-                element={
-                  <ProtectedRoute>
-                    <SuperAdminPerformance />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/quality"
-                element={
-                  <ProtectedRoute>
-                    <SuperAdminQuality />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/super-admin/help"
-                element={
-                  <ProtectedRoute>
-                    <KnowledgeBase />
-                  </ProtectedRoute>
-                }
-              />
+                {/* Agency Admin Routes */}
+                <Route
+                  path="/agency/admin/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <AgencyAdmin />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/clients"
+                  element={
+                    <ProtectedRoute>
+                      <AgencyClientManagement />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/clients/add"
+                  element={
+                    <ProtectedRoute>
+                      <AddAgencyClient />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/commission"
+                  element={
+                    <ProtectedRoute>
+                      <AgencyCommission />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/analytics"
+                  element={
+                    <ProtectedRoute>
+                      <AgencyAnalytics />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/reports"
+                  element={
+                    <ProtectedRoute>
+                      <AgencyReports />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/billing"
+                  element={
+                    <ProtectedRoute>
+                      <AgencyBilling />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/business-owners"
+                  element={
+                    <ProtectedRoute>
+                      <AgencyBusinessOwners />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/business-owners/add"
+                  element={
+                    <ProtectedRoute>
+                      <AddAgencyClient />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/business-owners/:id"
+                  element={
+                    <ProtectedRoute>
+                      <AgencyBusinessOwnerDetail />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/business-owners/:id/edit"
+                  element={
+                    <ProtectedRoute>
+                      <AgencyBusinessOwnerEdit />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/admin-users"
+                  element={
+                    <ProtectedRoute>
+                      <AgencyAdminUsers />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/admin-users/add"
+                  element={
+                    <ProtectedRoute>
+                      <AddAgencyAdminUser />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/admin-users/:id"
+                  element={
+                    <ProtectedRoute>
+                      <AgencyAdminUserDetail />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/admin-users/:id/edit"
+                  element={
+                    <ProtectedRoute>
+                      <AgencyAdminUserEdit />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/settings"
+                  element={
+                    <ProtectedRoute>
+                      <AgencySettings />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/help"
+                  element={
+                    <ProtectedRoute>
+                      <KnowledgeBase />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/agencies"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminAgencyManagement />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/settings"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminSettings />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/staff"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminStaff />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/ideas"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminIdeas />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/broadcast"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminBroadcast />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/templates"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminMessageTemplates />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/analytics"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminAnalytics />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/automation"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminAutomation />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/segments"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminSegmentation />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/email"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminEmailIntegration />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/api"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminAPI />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/project-messaging"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminProjectMessaging />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/advanced-features"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminAdvancedFeatures />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/performance"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminPerformance />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/quality"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminQuality />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/help"
+                  element={
+                    <ProtectedRoute>
+                      <KnowledgeBase />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Legacy/manual route redirects */}
-              <Route
-                path="/"
-                element={<Navigate to="/admin/projects" replace />}
-              />
-              <Route
-                path="/dashboard"
-                element={<Navigate to="/admin/projects" replace />}
-              />
-              <Route
-                path="/admin/dashboard"
-                element={<Navigate to="/admin/projects" replace />}
-              />
-              <Route
-                path="/add-project"
-                element={<Navigate to="/admin/add-project" replace />}
-              />
-              <Route
-                path="/gallery"
-                element={<Navigate to="/admin/gallery" replace />}
-              />
-              <Route
-                path="/settings"
-                element={<Navigate to="/admin/settings" replace />}
-              />
-              <Route
-                path="/profile"
-                element={<Navigate to="/admin/profile" replace />}
-              />
-              <Route
-                path="/users"
-                element={<Navigate to="/admin/settings" replace />}
-              />
-              <Route
-                path="/photos"
-                element={<Navigate to="/admin/gallery" replace />}
-              />
-              <Route
-                path="/admin/knowledge-base"
-                element={<Navigate to="/admin/help" replace />}
-              />
-              <Route
-                path="/agency/admin/knowledge-base"
-                element={<Navigate to="/agency/admin/help" replace />}
-              />
-              <Route
-                path="/super-admin/knowledge-base"
-                element={<Navigate to="/super-admin/help" replace />}
-              />
-              {/* Agency Admin Legacy URL Redirects */}
-              <Route
-                path="/agency-admin"
-                element={<Navigate to="/agency/admin/dashboard" replace />}
-              />
-              <Route
-                path="/agency-admin/clients"
-                element={
-                  <Navigate to="/agency/admin/business-owners" replace />
-                }
-              />
-              <Route
-                path="/agency-admin/clients/:id"
-                element={
-                  <Navigate to="/agency/admin/business-owners/:id" replace />
-                }
-              />
-              <Route
-                path="/agency-admin/billing"
-                element={<Navigate to="/agency/admin/billing" replace />}
-              />
-              <Route
-                path="/agency-admin/analytics"
-                element={<Navigate to="/agency/admin/analytics" replace />}
-              />
-              <Route
-                path="/agency-admin/settings"
-                element={<Navigate to="/agency/admin/settings" replace />}
-              />
-              <Route
-                path="/agency-admin/business-owners"
-                element={
-                  <Navigate to="/agency/admin/business-owners" replace />
-                }
-              />
-              <Route
-                path="/agency-admin/business-owners/add"
-                element={
-                  <Navigate to="/agency/admin/business-owners/add" replace />
-                }
-              />
-              <Route
-                path="/agency-admin/business-owners/:id"
-                element={
-                  <Navigate to="/agency/admin/business-owners/:id" replace />
-                }
-              />
-              <Route
-                path="/agency-admin/business-owners/:id/edit"
-                element={
-                  <Navigate
-                    to="/agency/admin/business-owners/:id/edit"
-                    replace
-                  />
-                }
-              />
-              <Route
-                path="/agency-admin/admin-users"
-                element={<Navigate to="/agency/admin/admin-users" replace />}
-              />
-              <Route
-                path="/agency-admin/admin-users/add"
-                element={
-                  <Navigate to="/agency/admin/admin-users/add" replace />
-                }
-              />
-              <Route
-                path="/agency-admin/admin-users/:id"
-                element={
-                  <Navigate to="/agency/admin/admin-users/:id" replace />
-                }
-              />
-              <Route
-                path="/agency-admin/admin-users/:id/edit"
-                element={
-                  <Navigate to="/agency/admin/admin-users/:id/edit" replace />
-                }
-              />
-              <Route
-                path="/agency-admin/commission"
-                element={<Navigate to="/agency/admin/commission" replace />}
-              />
-              <Route
-                path="/agency-admin/reports"
-                element={<Navigate to="/agency/admin/reports" replace />}
-              />
+                {/* Legacy/manual route redirects */}
+                <Route
+                  path="/"
+                  element={<Navigate to="/admin/projects" replace />}
+                />
+                <Route
+                  path="/dashboard"
+                  element={<Navigate to="/admin/projects" replace />}
+                />
+                <Route
+                  path="/admin/dashboard"
+                  element={<Navigate to="/admin/projects" replace />}
+                />
+                <Route
+                  path="/add-project"
+                  element={<Navigate to="/admin/add-project" replace />}
+                />
+                <Route
+                  path="/gallery"
+                  element={<Navigate to="/admin/gallery" replace />}
+                />
+                <Route
+                  path="/settings"
+                  element={<Navigate to="/admin/settings" replace />}
+                />
+                <Route
+                  path="/profile"
+                  element={<Navigate to="/admin/profile" replace />}
+                />
+                <Route
+                  path="/users"
+                  element={<Navigate to="/admin/settings" replace />}
+                />
+                <Route
+                  path="/photos"
+                  element={<Navigate to="/admin/gallery" replace />}
+                />
+                <Route
+                  path="/admin/knowledge-base"
+                  element={<Navigate to="/admin/help" replace />}
+                />
+                <Route
+                  path="/agency/admin/knowledge-base"
+                  element={<Navigate to="/agency/admin/help" replace />}
+                />
+                <Route
+                  path="/super-admin/knowledge-base"
+                  element={<Navigate to="/super-admin/help" replace />}
+                />
+                {/* Agency Admin Legacy URL Redirects */}
+                <Route
+                  path="/agency-admin"
+                  element={<Navigate to="/agency/admin/dashboard" replace />}
+                />
+                <Route
+                  path="/agency-admin/clients"
+                  element={
+                    <Navigate to="/agency/admin/business-owners" replace />
+                  }
+                />
+                <Route
+                  path="/agency-admin/clients/:id"
+                  element={
+                    <Navigate to="/agency/admin/business-owners/:id" replace />
+                  }
+                />
+                <Route
+                  path="/agency-admin/billing"
+                  element={<Navigate to="/agency/admin/billing" replace />}
+                />
+                <Route
+                  path="/agency-admin/analytics"
+                  element={<Navigate to="/agency/admin/analytics" replace />}
+                />
+                <Route
+                  path="/agency-admin/settings"
+                  element={<Navigate to="/agency/admin/settings" replace />}
+                />
+                <Route
+                  path="/agency-admin/business-owners"
+                  element={
+                    <Navigate to="/agency/admin/business-owners" replace />
+                  }
+                />
+                <Route
+                  path="/agency-admin/business-owners/add"
+                  element={
+                    <Navigate to="/agency/admin/business-owners/add" replace />
+                  }
+                />
+                <Route
+                  path="/agency-admin/business-owners/:id"
+                  element={
+                    <Navigate to="/agency/admin/business-owners/:id" replace />
+                  }
+                />
+                <Route
+                  path="/agency-admin/business-owners/:id/edit"
+                  element={
+                    <Navigate
+                      to="/agency/admin/business-owners/:id/edit"
+                      replace
+                    />
+                  }
+                />
+                <Route
+                  path="/agency-admin/admin-users"
+                  element={<Navigate to="/agency/admin/admin-users" replace />}
+                />
+                <Route
+                  path="/agency-admin/admin-users/add"
+                  element={
+                    <Navigate to="/agency/admin/admin-users/add" replace />
+                  }
+                />
+                <Route
+                  path="/agency-admin/admin-users/:id"
+                  element={
+                    <Navigate to="/agency/admin/admin-users/:id" replace />
+                  }
+                />
+                <Route
+                  path="/agency-admin/admin-users/:id/edit"
+                  element={
+                    <Navigate to="/agency/admin/admin-users/:id/edit" replace />
+                  }
+                />
+                <Route
+                  path="/agency-admin/commission"
+                  element={<Navigate to="/agency/admin/commission" replace />}
+                />
+                <Route
+                  path="/agency-admin/reports"
+                  element={<Navigate to="/agency/admin/reports" replace />}
+                />
 
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </TooltipProvider>
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </TooltipProvider>
+        </ThemeProvider>
       </BrowserRouter>
     </QueryClientProvider>
   </ErrorBoundary>
