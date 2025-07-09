@@ -670,7 +670,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col pt-[73px]">
         {/* Top Header */}
         <header className="bg-background border-b p-4 fixed top-0 left-0 right-0 z-50">
           <div className="flex items-center justify-between">
