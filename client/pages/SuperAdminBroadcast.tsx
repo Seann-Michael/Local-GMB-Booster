@@ -152,7 +152,88 @@ export default function SuperAdminBroadcast() {
 
   useEffect(() => {
     loadBroadcastData();
+    loadTemplates();
   }, []);
+
+  const loadTemplates = () => {
+    const storedTemplates = localStorage.getItem("messageTemplates");
+    if (storedTemplates) {
+      const parsed: MessageTemplate[] = JSON.parse(storedTemplates);
+      const activeApproved = parsed.filter(
+        (t) => t.isActive && t.approvalStatus === "approved",
+      );
+      setTemplates(activeApproved);
+    }
+  };
+
+  const handleTemplateSelect = (templateId: string) => {
+    const template = templates.find((t) => t.id === templateId);
+    if (template) {
+      setFormData((prev) => ({
+        ...prev,
+        title: template.title,
+        content: template.content,
+        type: template.type,
+        targetAudience: prev.targetAudience, // Keep existing audience selection
+      }));
+
+      // Initialize template variables
+      const vars: Record<string, string> = {};
+      template.variables.forEach((variable) => {
+        vars[variable] = "";
+      });
+      setTemplateVariables(vars);
+      setShowTemplateVars(template.variables.length > 0);
+
+      // Update template usage count
+      const updatedTemplates = templates.map((t) =>
+        t.id === templateId ? { ...t, usageCount: t.usageCount + 1 } : t,
+      );
+      setTemplates(updatedTemplates);
+
+      // Save back to localStorage
+      const allStoredTemplates = localStorage.getItem("messageTemplates");
+      if (allStoredTemplates) {
+        const allTemplates: MessageTemplate[] = JSON.parse(allStoredTemplates);
+        const updatedAllTemplates = allTemplates.map((t) =>
+          t.id === templateId ? { ...t, usageCount: t.usageCount + 1 } : t,
+        );
+        localStorage.setItem(
+          "messageTemplates",
+          JSON.stringify(updatedAllTemplates),
+        );
+      }
+
+      toast.success(`Template "${template.name}" applied!`);
+    }
+  };
+
+  const fillTemplateVariables = () => {
+    let filledTitle = formData.title;
+    let filledContent = formData.content;
+
+    Object.entries(templateVariables).forEach(([variable, value]) => {
+      const placeholder = `{{${variable}}}`;
+      filledTitle = filledTitle.replace(
+        new RegExp(placeholder, "g"),
+        value || placeholder,
+      );
+      filledContent = filledContent.replace(
+        new RegExp(placeholder, "g"),
+        value || placeholder,
+      );
+    });
+
+    setFormData((prev) => ({
+      ...prev,
+      title: filledTitle,
+      content: filledContent,
+    }));
+
+    setShowTemplateVars(false);
+    setTemplateVariables({});
+    toast.success("Template variables filled!");
+  };
 
   const loadBroadcastData = () => {
     const storedMessages = localStorage.getItem("broadcastMessages");
