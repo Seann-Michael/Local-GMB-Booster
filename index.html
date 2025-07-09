@@ -2,13 +2,155 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hello world project</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+
+    <!-- Primary Meta Tags -->
+    <title>GMB Booster - Professional Project Management System</title>
+    <meta
+      name="title"
+      content="GMB Booster - Professional Project Management System"
+    />
+    <meta
+      name="description"
+      content="Advanced project management system with enhanced media processing, metadata management, and Google My Business optimization tools."
+    />
+    <meta
+      name="keywords"
+      content="project management, GMB, Google My Business, construction, media optimization, file compression"
+    />
+    <meta name="author" content="GMB Booster Team" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://gmbbooster.com/" />
+    <meta
+      property="og:title"
+      content="GMB Booster - Professional Project Management"
+    />
+    <meta
+      property="og:description"
+      content="Advanced project management system with enhanced media processing and optimization tools."
+    />
+    <meta property="og:image" content="/icon-512x512.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://gmbbooster.com/" />
+    <meta
+      property="twitter:title"
+      content="GMB Booster - Professional Project Management"
+    />
+    <meta
+      property="twitter:description"
+      content="Advanced project management system with enhanced media processing and optimization tools."
+    />
+    <meta property="twitter:image" content="/icon-512x512.png" />
+
+    <!-- PWA Meta Tags -->
+    <meta name="application-name" content="GMB Booster" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="GMB Booster" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    <meta name="msapplication-TileColor" content="#2563eb" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="theme-color" content="#2563eb" />
+
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/icon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/icon-16x16.png" />
+    <link rel="apple-touch-icon" href="/icon-192x192.png" />
+    <link rel="mask-icon" href="/icon-base.svg" color="#2563eb" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    <!-- Performance Optimizations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://api.example.com" />
+
+    <!-- Security Headers -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' blob:; media-src 'self' blob:; object-src 'none'; frame-src 'none';"
+    />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta
+      http-equiv="Referrer-Policy"
+      content="strict-origin-when-cross-origin"
+    />
+
+    <!-- Accessibility -->
+    <meta name="color-scheme" content="light dark" />
+
+    <!-- Performance Monitoring -->
+    <script>
+      // Performance monitoring
+      window.addEventListener("load", () => {
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((registration) => console.log("SW registered:", registration))
+            .catch((error) => console.log("SW registration failed:", error));
+        }
+
+        // Track Core Web Vitals
+        if ("web-vital" in window) {
+          // Would integrate with actual web vitals library
+        }
+      });
+    </script>
   </head>
 
   <body>
+    <!-- Skip Links for Accessibility -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 z-50"
+    >
+      Skip to main content
+    </a>
+
+    <!-- No Script Fallback -->
+    <noscript>
+      <div style="text-align: center; padding: 2rem; font-family: system-ui">
+        <h1>JavaScript Required</h1>
+        <p>
+          GMB Booster requires JavaScript to function properly. Please enable
+          JavaScript in your browser settings.
+        </p>
+      </div>
+    </noscript>
+
+    <!-- Main App Container -->
     <div id="root"></div>
 
+    <!-- App Script -->
     <script type="module" src="/client/App.tsx"></script>
+
+    <!-- Service Worker Update Handler -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.addEventListener("message", (event) => {
+          if (event.data && event.data.type === "SW_UPDATE_AVAILABLE") {
+            // Handle service worker updates
+            if (confirm("New version available! Reload to update?")) {
+              window.location.reload();
+            }
+          }
+        });
+      }
+    </script>
   </body>
 </html>
