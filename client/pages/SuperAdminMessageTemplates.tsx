@@ -508,7 +508,7 @@ export default function SuperAdminMessageTemplates() {
       case "emergency":
         return <Shield className="h-4 w-4" />;
       default:
-        return <Template className="h-4 w-4" />;
+        return <FileText className="h-4 w-4" />;
     }
   };
 
