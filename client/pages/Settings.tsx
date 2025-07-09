@@ -1122,7 +1122,7 @@ export default function Settings() {
                     </div>
 
                     <div className="space-y-3">
-                      {settings.webhooks.map((webhook) => (
+                      {(settings.webhooks || []).map((webhook) => (
                         <div key={webhook.id} className="p-3 border rounded-lg">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
