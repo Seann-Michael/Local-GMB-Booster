@@ -1715,7 +1715,7 @@ export default function Settings() {
                             </div>
                           </div>
                           <Switch
-                            checked={settings.deliveryMethods.inApp}
+                            checked={settings?.deliveryMethods?.inApp || false}
                             onCheckedChange={(checked) => {
                               const newDeliveryMethods = {
                                 ...settings.deliveryMethods,
@@ -1751,7 +1751,7 @@ export default function Settings() {
                             </div>
                           </div>
                           <Switch
-                            checked={settings.deliveryMethods.email}
+                            checked={settings?.deliveryMethods?.email || false}
                             onCheckedChange={(checked) => {
                               const newDeliveryMethods = {
                                 ...settings.deliveryMethods,
@@ -1787,7 +1787,7 @@ export default function Settings() {
                             </div>
                           </div>
                           <Switch
-                            checked={settings.deliveryMethods.sms}
+                            checked={settings?.deliveryMethods?.sms || false}
                             onCheckedChange={(checked) => {
                               const newDeliveryMethods = {
                                 ...settings.deliveryMethods,
@@ -1815,7 +1815,7 @@ export default function Settings() {
                             </div>
                           </div>
                           <Switch
-                            checked={settings.deliveryMethods.push}
+                            checked={settings?.deliveryMethods?.push || false}
                             onCheckedChange={(checked) => {
                               const newDeliveryMethods = {
                                 ...settings.deliveryMethods,
