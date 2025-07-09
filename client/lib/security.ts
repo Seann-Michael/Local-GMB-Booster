@@ -1,6 +1,44 @@
 // Comprehensive security utilities for frontend application
 
-import { safeStorage } from "./reliability";
+// Local safe storage implementation to avoid import dependencies
+const localSafeStorage = {
+  get<T = any>(key: string, fallback?: T): T | undefined {
+    try {
+      if (typeof window === "undefined" || !window.localStorage) {
+        return fallback;
+      }
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : fallback;
+    } catch {
+      return fallback;
+    }
+  },
+
+  set(key: string, value: any): boolean {
+    try {
+      if (typeof window === "undefined" || !window.localStorage) {
+        return false;
+      }
+      localStorage.setItem(key, JSON.stringify(value));
+      return true;
+    } catch {
+      console.warn(`Failed to save to localStorage: ${key}`);
+      return false;
+    }
+  },
+
+  remove(key: string): boolean {
+    try {
+      if (typeof window === "undefined" || !window.localStorage) {
+        return false;
+      }
+      localStorage.removeItem(key);
+      return true;
+    } catch {
+      return false;
+    }
+  },
+};
 
 // CSRF Protection
 export class CSRFProtection {
@@ -22,7 +60,7 @@ export class CSRFProtection {
         byte.toString(16).padStart(2, "0"),
       ).join("");
 
-      safeStorage.set(this.TOKEN_KEY, token);
+      localSafeStorage.set(this.TOKEN_KEY, token);
       return token;
     } catch (error) {
       console.error("CSRF token generation failed:", error);
@@ -35,7 +73,7 @@ export class CSRFProtection {
   }
 
   static getToken(): string | null {
-    return safeStorage.get(this.TOKEN_KEY);
+    return localSafeStorage.get(this.TOKEN_KEY);
   }
 
   static validateToken(token: string): boolean {
