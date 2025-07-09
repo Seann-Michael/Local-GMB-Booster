@@ -186,6 +186,14 @@ const App = () => (
                 }
               />
               <Route
+                path="/admin/file-optimization"
+                element={
+                  <ProtectedRoute>
+                    <FileOptimizationSettings />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="/super-admin"
                 element={
                   <ProtectedRoute>
