@@ -293,7 +293,7 @@ This feature has been highly requested by our user base, especially those who wo
 
   return (
     <AppLayout>
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 py-8 prevent-overflow">
         {/* Navigation */}
         <Button
           variant="ghost"
@@ -307,13 +307,13 @@ This feature has been highly requested by our user base, especially those who wo
         {/* Main Content */}
         <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
           {/* Header */}
-          <div className="p-6 border-b border-gray-200">
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex-1">
-                <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          <div className="p-4 sm:p-6 border-b border-gray-200">
+            <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4 mb-4">
+              <div className="flex-1 min-w-0">
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
                   {idea.title}
                 </h1>
-                <div className="flex items-center gap-4 text-sm text-gray-500">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm text-gray-500">
                   <span className="flex items-center gap-1">
                     <User className="h-4 w-4" />
                     {idea.author}
@@ -327,7 +327,7 @@ This feature has been highly requested by our user base, especially those who wo
                   </Badge>
                 </div>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                 {getStatusBadge(idea.status)}
                 <div className="flex items-center gap-2">
                   <Button
@@ -356,16 +356,16 @@ This feature has been highly requested by our user base, especially those who wo
           </div>
 
           {/* Description */}
-          <div className="p-6 border-b border-gray-200">
+          <div className="p-4 sm:p-6 border-b border-gray-200">
             <div className="prose max-w-none">
-              <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+              <p className="text-gray-700 leading-relaxed whitespace-pre-line text-sm sm:text-base">
                 {idea.description}
               </p>
             </div>
           </div>
 
           {/* Comments Section */}
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             <div className="flex items-center gap-2 mb-6">
               <MessageSquare className="h-5 w-5 text-gray-600" />
               <h2 className="text-lg font-semibold text-gray-900">
