@@ -517,8 +517,18 @@ export default function AddProject() {
             </CardHeader>
             <CardContent>
               <PhotoCapture
-                photos={photos.map((p) => p.url)}
+                photos={photos}
                 onPhotosChange={handlePhotosChange}
+                projectInfo={{
+                  id: "new-project",
+                  name: formData.name || "New Project",
+                  address: formData.address || "",
+                  customerName: formData.customerName || "",
+                  keywords: formData.keywords
+                    .split(",")
+                    .map((k) => k.trim())
+                    .filter(Boolean),
+                }}
               />
             </CardContent>
           </Card>
