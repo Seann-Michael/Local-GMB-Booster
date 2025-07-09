@@ -788,15 +788,18 @@ export function AppLayout({ children }: AppLayoutProps) {
           {children}
         </main>
 
-        {/* Mobile Bottom Navigation - Only visible on mobile */}
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t z-50 shadow-lg">
-          <div className="flex items-center justify-around px-1 py-2">
+        {/* Mobile Bottom Navigation - Fixed with safe area support */}
+        <nav
+          className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t z-50 shadow-lg"
+          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+        >
+          <div className="flex items-center justify-around px-1 py-3 pb-1">
             {sidebarItems.slice(0, 4).map((item) => (
               <Link key={item.id} to={item.href} className="flex-1">
                 <Button
                   variant={item.active ? "secondary" : "ghost"}
                   className={cn(
-                    "w-full flex flex-col items-center gap-1 h-auto py-2 px-1",
+                    "w-full flex flex-col items-center gap-1 h-auto py-3 px-1 min-h-[58px]",
                     item.active && "bg-primary/10 text-primary",
                   )}
                   size="sm"
@@ -804,7 +807,9 @@ export function AppLayout({ children }: AppLayoutProps) {
                   <item.icon
                     className={cn("h-5 w-5", item.active && "text-primary")}
                   />
-                  <span className="text-xs font-medium">{item.label}</span>
+                  <span className="text-xs font-medium leading-tight">
+                    {item.label}
+                  </span>
                 </Button>
               </Link>
             ))}
