@@ -1316,34 +1316,107 @@ export default function Settings() {
                       </p>
                     </div>
 
-                    <div className="p-4 bg-muted/20 rounded-lg">
-                      <h4 className="font-medium mb-2 flex items-center gap-2">
-                        <Star className="h-4 w-4 text-yellow-500" />
-                        Review Statistics
+                    <div className="pt-4 border-t">
+                      <Label htmlFor="reviewAiPrompt">
+                        AI Review Request Prompt
+                      </Label>
+                      <Textarea
+                        id="reviewAiPrompt"
+                        value={settings.reviewAiPrompt}
+                        onChange={(e) =>
+                          updateSetting("reviewAiPrompt", e.target.value)
+                        }
+                        rows={3}
+                        className="mt-2"
+                        placeholder="Enter AI prompt for generating personalized review requests..."
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        AI will use this prompt to generate personalized review
+                        request messages
+                      </p>
+                    </div>
+
+                    <div className="pt-4 border-t">
+                      <h4 className="font-medium mb-4">
+                        Review Gate Customization
                       </h4>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                      <div className="space-y-4">
                         <div>
-                          <div className="font-medium">Total Reviews</div>
-                          <div className="text-2xl font-bold text-primary">
-                            47
-                          </div>
+                          <Label htmlFor="reviewGateTitle">
+                            Review Gate Title
+                          </Label>
+                          <Input
+                            id="reviewGateTitle"
+                            value={settings.reviewGateTitle}
+                            onChange={(e) =>
+                              updateSetting("reviewGateTitle", e.target.value)
+                            }
+                            className="mt-1"
+                            placeholder="We'd Love Your Feedback!"
+                          />
                         </div>
+
                         <div>
-                          <div className="font-medium">Average Rating</div>
-                          <div className="text-2xl font-bold text-primary">
-                            4.8
-                          </div>
+                          <Label htmlFor="reviewGateDescription">
+                            Review Gate Description
+                          </Label>
+                          <Textarea
+                            id="reviewGateDescription"
+                            value={settings.reviewGateDescription}
+                            onChange={(e) =>
+                              updateSetting(
+                                "reviewGateDescription",
+                                e.target.value,
+                              )
+                            }
+                            rows={3}
+                            className="mt-1"
+                            placeholder="Your review helps us improve and helps other customers make informed decisions..."
+                          />
                         </div>
+
                         <div>
-                          <div className="font-medium">Response Rate</div>
-                          <div className="text-2xl font-bold text-primary">
-                            73%
-                          </div>
-                        </div>
-                        <div>
-                          <div className="font-medium">This Month</div>
-                          <div className="text-2xl font-bold text-primary">
-                            12
+                          <Label htmlFor="reviewGateVideo">
+                            Review Gate Video
+                          </Label>
+                          <div className="space-y-2 mt-1">
+                            <Input
+                              id="reviewGateVideo"
+                              type="url"
+                              value={settings.reviewGateVideoUrl}
+                              onChange={(e) =>
+                                updateSetting(
+                                  "reviewGateVideoUrl",
+                                  e.target.value,
+                                )
+                              }
+                              placeholder="https://example.com/video.mp4 or paste YouTube URL"
+                            />
+                            <div className="flex gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="gap-2"
+                              >
+                                <FileImage className="h-4 w-4" />
+                                Upload Video
+                              </Button>
+                              {settings.reviewGateVideoUrl && (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() =>
+                                    updateSetting("reviewGateVideoUrl", "")
+                                  }
+                                >
+                                  Remove Video
+                                </Button>
+                              )}
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              Upload a video or provide a URL to show on the
+                              review gate page
+                            </p>
                           </div>
                         </div>
                       </div>
