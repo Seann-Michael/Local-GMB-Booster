@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // Detect user preferences
 export function useAccessibilityPreferences() {
