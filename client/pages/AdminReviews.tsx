@@ -676,12 +676,9 @@ export default function AdminReviews() {
                           </DropdownMenuItem>
                           {request.status === "sent" && (
                             <DropdownMenuItem
-                              onClick={() => {
-                                toast.success(
-                                  `Review request for ${request.customerName} cancelled`,
-                                );
-                                // In real app, would cancel the request
-                              }}
+                              onClick={() =>
+                                cancelReviewRequest(request.id, request.customerName)
+                              }
                               className="text-red-600 focus:text-red-600"
                             >
                               <X className="h-4 w-4 mr-2" />
@@ -690,13 +687,12 @@ export default function AdminReviews() {
                           )}
                           {request.reviewText && (
                             <DropdownMenuItem
-                              onClick={() =>
-                                navigator.clipboard
-                                  .writeText(request.reviewText!)
-                                  .then(() =>
-                                    toast.success(
-                                      "Review text copied to clipboard!",
-                                    ),
+                              onClick={() => copyReviewText(request.reviewText!)}
+                            >
+                              <Copy className="h-4 w-4 mr-2" />
+                              Copy Review Text
+                            </DropdownMenuItem>
+                          )}
                                   )
                               }
                             >
