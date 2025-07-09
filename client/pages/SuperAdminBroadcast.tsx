@@ -603,6 +603,14 @@ export default function SuperAdminBroadcast() {
                   Cancel
                 </Button>
                 <Button
+                  variant="secondary"
+                  onClick={handlePreviewMessage}
+                  className="gap-2"
+                >
+                  <Monitor className="h-4 w-4" />
+                  Preview
+                </Button>
+                <Button
                   onClick={
                     editingMessage ? handleUpdateMessage : handleCreateMessage
                   }
