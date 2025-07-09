@@ -6,6 +6,24 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   ThumbsUp,
   MessageSquare,
   Search,
@@ -26,6 +44,9 @@ import {
   Mail,
   Shield,
   FileText,
+  Plus,
+  X,
+  Send,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -99,6 +120,13 @@ export default function Ideas() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("boards");
+  const [showSuggestionForm, setShowSuggestionForm] = useState(false);
+  const [suggestionForm, setSuggestionForm] = useState({
+    title: "",
+    description: "",
+    category: "",
+    justification: "",
+  });
 
   useEffect(() => {
     loadCategoryBoards();
@@ -451,6 +479,49 @@ export default function Ideas() {
   const getCategoryName = (categoryId: string) => {
     const board = categoryBoards.find((b) => b.id === categoryId);
     return board ? board.name : categoryId;
+  };
+
+  const handleSuggestionSubmit = () => {
+    if (
+      !suggestionForm.title ||
+      !suggestionForm.description ||
+      !suggestionForm.category
+    ) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    // Create new idea submission (pending approval)
+    const newIdea: Idea = {
+      id: `idea-${Date.now()}`,
+      title: suggestionForm.title,
+      description: suggestionForm.description,
+      category: suggestionForm.category,
+      status: "submitted",
+      votes: 1, // Author's vote
+      userVoted: true,
+      author: "You", // Current user
+      createdAt: new Date().toISOString(),
+      comments: [],
+      priority: "low",
+    };
+
+    // In real app, this would send to super admin for approval
+    // For demo, add directly to ideas list
+    setIdeas((prev) => [newIdea, ...prev]);
+
+    // Reset form
+    setSuggestionForm({
+      title: "",
+      description: "",
+      category: "",
+      justification: "",
+    });
+    setShowSuggestionForm(false);
+
+    toast.success(
+      "Feature suggestion submitted! It will be reviewed by our team.",
+    );
   };
 
   return (
