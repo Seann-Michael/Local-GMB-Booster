@@ -669,12 +669,12 @@ export function AppLayout({ children }: AppLayoutProps) {
                 <Menu className="h-5 w-5" />
               </Button>
 
-              {/* Mobile app title - only show on mobile */}
-              <div className="md:hidden flex items-center space-x-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                  <Camera className="h-4 w-4 text-primary-foreground" />
+              {/* GMB Booster branding - show on all screen sizes */}
+              <div className="flex items-center space-x-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary shadow-sm">
+                  <Building2 className="h-4 w-4 text-primary-foreground" />
                 </div>
-                <span className="font-semibold text-lg">GMB Booster</span>
+                <span className="font-bold text-lg">GMB Booster</span>
               </div>
 
               {isImpersonated && (
