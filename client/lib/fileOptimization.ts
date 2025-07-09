@@ -51,6 +51,11 @@ export class FileOptimizer {
   private static canvas: HTMLCanvasElement | null = null;
   private static context: CanvasRenderingContext2D | null = null;
 
+  // File size limits (in bytes)
+  private static readonly MAX_IMAGE_SIZE = 50 * 1024 * 1024; // 50MB
+  private static readonly MAX_VIDEO_SIZE = 500 * 1024 * 1024; // 500MB
+  private static readonly MAX_DOCUMENT_SIZE = 100 * 1024 * 1024; // 100MB
+
   /**
    * Initialize canvas for image processing
    */
