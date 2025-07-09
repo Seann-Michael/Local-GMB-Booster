@@ -393,7 +393,13 @@ export default function Settings() {
         if (saved) {
           const parsed = JSON.parse(saved);
           // Merge with defaults to ensure all fields exist
-          setSettings((prev) => ({ ...prev, ...parsed }));
+          const loadedSettings = { ...createDefaultSettings(), ...parsed };
+          setSettings(loadedSettings);
+          // Also save business name to separate localStorage key
+          localStorage.setItem(
+            "business_name",
+            loadedSettings.businessName || "",
+          );
         }
       } catch (error) {
         console.error(
