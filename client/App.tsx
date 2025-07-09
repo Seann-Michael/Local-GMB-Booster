@@ -117,22 +117,7 @@ const App = () => (
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/ideas"
-            element={
-              <ProtectedRoute>
-                <Ideas />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/ideas/:id"
-            element={
-              <ProtectedRoute>
-                <IdeaDetail />
-              </ProtectedRoute>
-            }
-          />
+
           <Route
             path="/admin/settings"
             element={
