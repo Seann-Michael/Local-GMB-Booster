@@ -45,7 +45,7 @@ export default function ReviewGate() {
       const mockRequest: ReviewRequest = {
         id: id || "demo",
         businessName: "Smith Construction LLC",
-        businessLogo: "/api/placeholder/120/120",
+        businessLogo: undefined, // Only show if uploaded in admin settings
         businessAddress: "123 Main St, Springfield, IL 62701",
         customerName: "John",
         projectName: "Kitchen Renovation",
