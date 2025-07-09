@@ -161,6 +161,11 @@ interface SettingsData {
   maxFileSize: number;
   allowedFileTypes: string[];
   totalSpaceSaved: number;
+  // Additional Security Settings
+  rememberLogin: boolean;
+  activityLogging: boolean;
+  sessionMonitoring: boolean;
+  dataEncryption: boolean;
 }
 
 interface WebhookItem {
