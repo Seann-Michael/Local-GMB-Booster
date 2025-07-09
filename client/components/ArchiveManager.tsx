@@ -178,14 +178,42 @@ export function ArchiveManager() {
         const project = projectsToArchive[i];
         setCurrentlyProcessing(project.name);
 
-        // In a real implementation, you would:
-        // 1. Fetch all project files
+        // In a real implementation with server-side storage, you would:
+        // 1. Fetch all project files from storage
         // 2. Optimize them using FileOptimizer.archiveProjectFiles
-        // 3. Store optimized versions
+        // 3. Store optimized versions and remove originals
         // 4. Update project metadata
 
-        // Simulate the archiving process
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        // For demo with localStorage, we'll simulate the process
+        // and update the project's archive status
+        try {
+          const projectData = JSON.parse(
+            localStorage.getItem("projects") || "[]",
+          ).find((p: any) => p.id === project.id);
+
+          if (projectData && projectData.photos) {
+            // Simulate file optimization process
+            console.log(
+              `Archiving ${projectData.photos.length} files for project ${project.name}`,
+            );
+
+            // In a real implementation, you would optimize each file:
+            // const optimizedFiles = await FileOptimizer.archiveProjectFiles(
+            //   projectData.photos.map(photo => photo.file),
+            //   {
+            //     compressionLevel: archiveSettings.compressionLevel,
+            //     generateThumbnailsOnly: archiveSettings.generateThumbnailsOnly,
+            //     removeOriginals: archiveSettings.removeOriginals,
+            //     archiveDate: new Date().toISOString(),
+            //   }
+            // );
+          }
+
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+        } catch (error) {
+          console.error(`Failed to archive project ${project.name}:`, error);
+          throw error;
+        }
 
         // Update project as archived
         const updatedProjects = projects.map((p) =>
