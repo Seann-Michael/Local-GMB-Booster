@@ -408,6 +408,14 @@ const App = () => (
             }
           />
           <Route
+            path="/super-admin/analytics"
+            element={
+              <ProtectedRoute>
+                <SuperAdminAnalytics />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/super-admin/help"
             element={
               <ProtectedRoute>
