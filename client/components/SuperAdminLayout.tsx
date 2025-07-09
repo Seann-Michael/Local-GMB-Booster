@@ -117,6 +117,18 @@ export function SuperAdminLayout({
       active: location.pathname.startsWith("/super-admin/analytics"),
     },
     {
+      label: "Automation",
+      href: "/super-admin/automation",
+      icon: Workflow,
+      active: location.pathname.startsWith("/super-admin/automation"),
+    },
+    {
+      label: "User Segments",
+      href: "/super-admin/segments",
+      icon: Target,
+      active: location.pathname.startsWith("/super-admin/segments"),
+    },
+    {
       label: "Financial Dashboard",
       href: "/super-admin/financial",
       icon: DollarSign,
