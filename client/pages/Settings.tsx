@@ -879,7 +879,7 @@ export default function Settings() {
                           <div>
                             <h3 className="font-medium">Facebook</h3>
                             <p className="text-sm text-muted-foreground">
-                              {settings.facebookConnected
+                              {settings?.facebookConnected
                                 ? "Connected to your Facebook account"
                                 : "Connect to automatically post completed projects"}
                             </p>
