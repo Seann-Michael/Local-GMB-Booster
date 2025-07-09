@@ -1,0 +1,43 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" rx="80" fill="#2563eb"/>
+  
+  <!-- Main icon elements -->
+  <g transform="translate(80, 80)">
+    <!-- Building/GMB representation -->
+    <rect x="50" y="100" width="120" height="200" rx="8" fill="white" opacity="0.9"/>
+    <rect x="200" y="140" width="100" height="160" rx="8" fill="white" opacity="0.8"/>
+    <rect x="320" y="180" width="80" height="120" rx="8" fill="white" opacity="0.7"/>
+    
+    <!-- Windows -->
+    <rect x="70" y="120" width="20" height="20" rx="2" fill="#2563eb"/>
+    <rect x="110" y="120" width="20" height="20" rx="2" fill="#2563eb"/>
+    <rect x="130" y="120" width="20" height="20" rx="2" fill="#2563eb"/>
+    
+    <rect x="70" y="160" width="20" height="20" rx="2" fill="#2563eb"/>
+    <rect x="110" y="160" width="20" height="20" rx="2" fill="#2563eb"/>
+    <rect x="130" y="160" width="20" height="20" rx="2" fill="#2563eb"/>
+    
+    <rect x="220" y="160" width="15" height="15" rx="2" fill="#2563eb"/>
+    <rect x="255" y="160" width="15" height="15" rx="2" fill="#2563eb"/>
+    <rect x="220" y="190" width="15" height="15" rx="2" fill="#2563eb"/>
+    <rect x="255" y="190" width="15" height="15" rx="2" fill="#2563eb"/>
+    
+    <!-- Boost/optimization symbol -->
+    <circle cx="200" cy="80" r="40" fill="#fbbf24" opacity="0.9"/>
+    <path d="M185 65 L200 95 L215 65 L200 50 Z" fill="white"/>
+    <circle cx="200" cy="80" r="15" fill="white"/>
+    
+    <!-- Project indicators -->
+    <circle cx="80" y="320" r="8" fill="#10b981"/>
+    <circle cx="120" y="320" r="8" fill="#f59e0b"/>
+    <circle cx="160" y="320" r="8" fill="#ef4444"/>
+    
+    <!-- Connection lines -->
+    <path d="M160 80 L180 80" stroke="white" stroke-width="3" opacity="0.6"/>
+    <path d="M240 80 L280 80" stroke="white" stroke-width="3" opacity="0.6"/>
+  </g>
+  
+  <!-- Border highlight -->
+  <rect x="4" y="4" width="504" height="504" rx="76" fill="none" stroke="white" stroke-width="2" opacity="0.2"/>
+</svg>
