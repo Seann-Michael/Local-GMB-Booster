@@ -54,12 +54,15 @@ interface Idea {
     | "in-progress"
     | "completed"
     | "declined";
-  votes: number;
-  userVoted: boolean;
+  upvotes: number;
+  downvotes: number;
+  userVote: "up" | "down" | null;
   author: string;
   createdAt: string;
   comments: Comment[];
   priority: "low" | "medium" | "high";
+  images?: string[];
+  fullDescription?: string;
 }
 
 interface Comment {
