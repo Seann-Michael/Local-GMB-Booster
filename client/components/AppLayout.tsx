@@ -150,13 +150,6 @@ export function AppLayout({ children }: AppLayoutProps) {
       icon: Settings,
       active: location.pathname === "/admin/settings",
     },
-    {
-      id: "support",
-      label: "Support",
-      href: "/admin/support",
-      icon: MessageSquare,
-      active: location.pathname === "/admin/support",
-    },
   ];
 
   return (
