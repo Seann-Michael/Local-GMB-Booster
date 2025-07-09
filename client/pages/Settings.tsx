@@ -1,8 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { AppLayout } from "@/components/AppLayout";
 import { MetadataSettings } from "@/components/MetadataSettings";
 import {
@@ -13,11 +22,21 @@ import {
   Shield,
   CreditCard,
   Mail,
+  Bot,
+  Webhook,
+  Tag,
+  Plus,
+  X,
+  Image,
+  Video,
+  Globe,
+  Key,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
-interface BasicSettings {
+interface BusinessSettings {
+  // Business Information
   businessName: string;
   contactName: string;
   email: string;
@@ -27,25 +46,78 @@ interface BasicSettings {
   city: string;
   state: string;
   zipCode: string;
+  country: string;
+  logo: string;
+
+  // Project Settings
+  autoPostFacebook: boolean;
+  autoPostGoogleMyBusiness: boolean;
+  autoPostRssFeed: boolean;
+  aiPromptForDescriptions: boolean;
+
+  // Integration Settings
+  facebookConnected: boolean;
+  googleMyBusinessConnected: boolean;
+  goHighLevelApiKey: string;
+  webhooks: Array<{
+    id: string;
+    name: string;
+    url: string;
+    events: string[];
+    active: boolean;
+  }>;
+
+  // AI Assistance Settings
+  aiPromptTemplate: string;
+  aiInstructions: string;
+  aiVariables: string[];
+
+  // Tags
+  businessTags: Array<{
+    id: string;
+    name: string;
+    color: string;
+  }>;
+
+  // Media Settings
+  allowedImageTypes: string[];
+  allowedVideoTypes: string[];
+  maxFileSize: number;
+
+  // Notification Settings
   emailNotifications: boolean;
   smsNotifications: boolean;
+  marketingEmails: boolean;
+  systemAlerts: boolean;
+
+  // Security Settings
   twoFactorAuth: boolean;
+  passwordRequirements: string;
+  sessionTimeout: number;
+
+  // Billing Settings
+  billingContact: string;
+  billingEmail: string;
   autoRenewal: boolean;
 }
 
 const tabs = [
   { id: "general", label: "General", icon: Building2 },
-  { id: "profile", label: "Profile", icon: User },
+  { id: "integrations", label: "Integrations", icon: Globe },
+  { id: "ai", label: "AI Assistant", icon: Bot },
+  { id: "webhooks", label: "Webhooks", icon: Webhook },
+  { id: "tags", label: "Tags", icon: Tag },
+  { id: "media", label: "Media Settings", icon: Image },
   { id: "notifications", label: "Notifications", icon: Bell },
   { id: "security", label: "Security", icon: Shield },
   { id: "billing", label: "Billing", icon: CreditCard },
-  { id: "media", label: "Media Settings", icon: Mail },
 ];
 
 export default function Settings() {
   const [activeTab, setActiveTab] = useState("general");
   const [isLoading, setIsLoading] = useState(false);
-  const [settings, setSettings] = useState<BasicSettings>({
+  const [settings, setSettings] = useState<BusinessSettings>({
+    // Business Information
     businessName: "Joe's Pizza",
     contactName: "Joe Smith",
     email: "joe@joespizza.com",
@@ -55,14 +127,160 @@ export default function Settings() {
     city: "New York",
     state: "NY",
     zipCode: "10001",
+    country: "United States",
+    logo: "",
+
+    // Project Settings
+    autoPostFacebook: false,
+    autoPostGoogleMyBusiness: true,
+    autoPostRssFeed: false,
+    aiPromptForDescriptions: true,
+
+    // Integration Settings
+    facebookConnected: false,
+    googleMyBusinessConnected: true,
+    goHighLevelApiKey: "",
+    webhooks: [],
+
+    // AI Assistance Settings
+    aiPromptTemplate:
+      "Create a professional description for a {PROJECT_TYPE} project at {ADDRESS}. Include details about {SERVICES} and highlight the quality of work.",
+    aiInstructions:
+      "Write engaging, professional descriptions that highlight the benefits and quality of the work. Use a friendly but professional tone.",
+    aiVariables: [
+      "PROJECT_TYPE",
+      "ADDRESS",
+      "SERVICES",
+      "CUSTOMER_NAME",
+      "COMPLETION_DATE",
+    ],
+
+    // Tags
+    businessTags: [],
+
+    // Media Settings
+    allowedImageTypes: [".jpg", ".jpeg", ".png", ".gif", ".webp"],
+    allowedVideoTypes: [".mp4", ".mov", ".avi", ".wmv"],
+    maxFileSize: 10,
+
+    // Notification Settings
     emailNotifications: true,
     smsNotifications: false,
+    marketingEmails: true,
+    systemAlerts: true,
+
+    // Security Settings
     twoFactorAuth: false,
+    passwordRequirements: "strong",
+    sessionTimeout: 30,
+
+    // Billing Settings
+    billingContact: "Joe Smith",
+    billingEmail: "billing@joespizza.com",
     autoRenewal: true,
   });
 
-  const updateSetting = (key: keyof BasicSettings, value: any) => {
+  const [editingWebhook, setEditingWebhook] = useState<any>(null);
+  const [editingTag, setEditingTag] = useState<any>(null);
+  const [showWebhookForm, setShowWebhookForm] = useState(false);
+  const [showTagForm, setShowTagForm] = useState(false);
+
+  // Load settings from localStorage
+  useEffect(() => {
+    try {
+      const savedSettings = localStorage.getItem("business_settings");
+      if (savedSettings) {
+        const parsedSettings = JSON.parse(savedSettings);
+        setSettings((prev) => ({
+          ...prev,
+          ...parsedSettings,
+          // Ensure arrays are always arrays
+          webhooks: Array.isArray(parsedSettings.webhooks)
+            ? parsedSettings.webhooks
+            : [],
+          aiVariables: Array.isArray(parsedSettings.aiVariables)
+            ? parsedSettings.aiVariables
+            : prev.aiVariables,
+          businessTags: Array.isArray(parsedSettings.businessTags)
+            ? parsedSettings.businessTags
+            : [],
+          allowedImageTypes: Array.isArray(parsedSettings.allowedImageTypes)
+            ? parsedSettings.allowedImageTypes
+            : prev.allowedImageTypes,
+          allowedVideoTypes: Array.isArray(parsedSettings.allowedVideoTypes)
+            ? parsedSettings.allowedVideoTypes
+            : prev.allowedVideoTypes,
+        }));
+      }
+    } catch (error) {
+      console.error("Failed to load settings:", error);
+    }
+  }, []);
+
+  const updateSetting = (key: keyof BusinessSettings, value: any) => {
     setSettings((prev) => ({ ...prev, [key]: value }));
+  };
+
+  // Safe array operations to prevent errors
+  const addWebhook = (webhook: any) => {
+    const newWebhook = {
+      id: Date.now().toString(),
+      name: webhook.name || "",
+      url: webhook.url || "",
+      events: Array.isArray(webhook.events) ? webhook.events : [],
+      active: webhook.active !== false,
+    };
+    setSettings((prev) => ({
+      ...prev,
+      webhooks: [...(prev.webhooks || []), newWebhook],
+    }));
+  };
+
+  const removeWebhook = (id: string) => {
+    setSettings((prev) => ({
+      ...prev,
+      webhooks: (prev.webhooks || []).filter((w) => w.id !== id),
+    }));
+  };
+
+  const addTag = (tag: any) => {
+    const newTag = {
+      id: Date.now().toString(),
+      name: tag.name || "",
+      color: tag.color || "#3b82f6",
+    };
+    setSettings((prev) => ({
+      ...prev,
+      businessTags: [...(prev.businessTags || []), newTag],
+    }));
+  };
+
+  const removeTag = (id: string) => {
+    setSettings((prev) => ({
+      ...prev,
+      businessTags: (prev.businessTags || []).filter((t) => t.id !== id),
+    }));
+  };
+
+  const addFileType = (type: "image" | "video", extension: string) => {
+    if (!extension) return;
+    const key = type === "image" ? "allowedImageTypes" : "allowedVideoTypes";
+    setSettings((prev) => {
+      const currentTypes = prev[key] || [];
+      if (currentTypes.includes(extension)) return prev;
+      return {
+        ...prev,
+        [key]: [...currentTypes, extension],
+      };
+    });
+  };
+
+  const removeFileType = (type: "image" | "video", extension: string) => {
+    const key = type === "image" ? "allowedImageTypes" : "allowedVideoTypes";
+    setSettings((prev) => ({
+      ...prev,
+      [key]: (prev[key] || []).filter((t) => t !== extension),
+    }));
   };
 
   const handleSave = async () => {
