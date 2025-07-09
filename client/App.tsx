@@ -456,6 +456,38 @@ const App = () => (
             }
           />
           <Route
+            path="/super-admin/project-messaging"
+            element={
+              <ProtectedRoute>
+                <SuperAdminProjectMessaging />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/super-admin/advanced-features"
+            element={
+              <ProtectedRoute>
+                <SuperAdminAdvancedFeatures />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/super-admin/performance"
+            element={
+              <ProtectedRoute>
+                <SuperAdminPerformance />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/super-admin/quality"
+            element={
+              <ProtectedRoute>
+                <SuperAdminQuality />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/super-admin/help"
             element={
               <ProtectedRoute>

@@ -35,6 +35,9 @@ import {
   X,
   Mail,
   Code,
+  FolderOpen,
+  TestTube,
+  Zap,
 } from "lucide-react";
 import { useState, ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -146,6 +149,30 @@ export function SuperAdminLayout({
       href: "/super-admin/api",
       icon: Code,
       active: location.pathname.startsWith("/super-admin/api"),
+    },
+    {
+      label: "Project Messaging",
+      href: "/super-admin/project-messaging",
+      icon: FolderOpen,
+      active: location.pathname.startsWith("/super-admin/project-messaging"),
+    },
+    {
+      label: "Advanced Features",
+      href: "/super-admin/advanced-features",
+      icon: TestTube,
+      active: location.pathname.startsWith("/super-admin/advanced-features"),
+    },
+    {
+      label: "Performance & Scale",
+      href: "/super-admin/performance",
+      icon: Zap,
+      active: location.pathname.startsWith("/super-admin/performance"),
+    },
+    {
+      label: "Quality Assurance",
+      href: "/super-admin/quality",
+      icon: Shield,
+      active: location.pathname.startsWith("/super-admin/quality"),
     },
     {
       label: "Financial Dashboard",
