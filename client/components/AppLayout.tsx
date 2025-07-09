@@ -716,6 +716,11 @@ export function AppLayout({ children }: AppLayoutProps) {
                 <Search className="h-5 w-5" />
               </Button>
 
+              {/* Theme Toggle */}
+              <div className="hidden md:block">
+                <ThemeToggle />
+              </div>
+
               {/* Notifications */}
               <Link to="/notifications">
                 <Button variant="ghost" size="icon" className="relative">
