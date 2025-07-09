@@ -1547,71 +1547,84 @@ Contact our billing support team:
                         Create Your First Ticket
                       </Button>
                     </div>
-                ) : (
-                  <div className="responsive-table">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Subject</TableHead>
-                          <TableHead className="hidden sm:table-cell">Category</TableHead>
-                          <TableHead className="hidden md:table-cell">Priority</TableHead>
-                          <TableHead className="hidden md:table-cell">Status</TableHead>
-                          <TableHead className="hidden lg:table-cell">Created</TableHead>
-                          <TableHead>Actions</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {tickets.slice(0, 5).map((ticket) => (
-                          <TableRow
-                            key={ticket.id}
-                            className="cursor-pointer hover:bg-muted/50"
-                          >
-                            <TableCell>
-                              <div>
-                                <div className="font-medium">
-                                  {ticket.title}
-                                </div>
-                                <div className="text-sm text-muted-foreground">
-                                  #{ticket.id}
-                                </div>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <Badge variant="outline">{ticket.category}</Badge>
-                            </TableCell>
-                            <TableCell>
-                              <Badge
-                                className={getPriorityColor(ticket.priority)}
-                              >
-                                {ticket.priority}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>
-                              <Badge className={getStatusColor(ticket.status)}>
-                                {ticket.status.replace("_", " ")}
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="text-sm text-muted-foreground">
-                              {formatTableDate(ticket.createdAt)}
-                            </TableCell>
-                            <TableCell>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() =>
-                                  window.open(
-                                    `/admin/support/ticket/${ticket.id}`,
-                                    "_blank",
-                                  )
-                                }
-                              >
-                                View
-                              </Button>
-                            </TableCell>
+                  ) : (
+                    <div className="responsive-table">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Subject</TableHead>
+                            <TableHead className="hidden sm:table-cell">
+                              Category
+                            </TableHead>
+                            <TableHead className="hidden md:table-cell">
+                              Priority
+                            </TableHead>
+                            <TableHead className="hidden md:table-cell">
+                              Status
+                            </TableHead>
+                            <TableHead className="hidden lg:table-cell">
+                              Created
+                            </TableHead>
+                            <TableHead>Actions</TableHead>
                           </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                        </TableHeader>
+                        <TableBody>
+                          {tickets.slice(0, 5).map((ticket) => (
+                            <TableRow
+                              key={ticket.id}
+                              className="cursor-pointer hover:bg-muted/50"
+                            >
+                              <TableCell>
+                                <div>
+                                  <div className="font-medium">
+                                    {ticket.title}
+                                  </div>
+                                  <div className="text-sm text-muted-foreground">
+                                    #{ticket.id}
+                                  </div>
+                                </div>
+                              </TableCell>
+                              <TableCell>
+                                <Badge variant="outline">
+                                  {ticket.category}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                <Badge
+                                  className={getPriorityColor(ticket.priority)}
+                                >
+                                  {ticket.priority}
+                                </Badge>
+                              </TableCell>
+                              <TableCell>
+                                <Badge
+                                  className={getStatusColor(ticket.status)}
+                                >
+                                  {ticket.status.replace("_", " ")}
+                                </Badge>
+                              </TableCell>
+                              <TableCell className="text-sm text-muted-foreground">
+                                {formatTableDate(ticket.createdAt)}
+                              </TableCell>
+                              <TableCell>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() =>
+                                    window.open(
+                                      `/admin/support/ticket/${ticket.id}`,
+                                      "_blank",
+                                    )
+                                  }
+                                >
+                                  View
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
                   )}
                 </CardContent>
               </Card>
@@ -1796,7 +1809,7 @@ Contact our billing support team:
             </p>
             <Button
               variant="outline"
-              onClick={() => window.open('/status', '_blank')}
+              onClick={() => window.open("/status", "_blank")}
               className="gap-2"
             >
               <ExternalLink className="h-4 w-4" />
