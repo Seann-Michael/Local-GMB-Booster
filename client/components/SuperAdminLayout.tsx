@@ -154,8 +154,108 @@ export function SuperAdminLayout({
   ];
 
   return (
-    <div className="min-h-screen bg-background flex">
-      {/* Sidebar - Hidden on mobile */}
+    <div className="min-h-screen bg-background flex max-w-full overflow-x-hidden">
+      {/* Mobile Sidebar Overlay */}
+      {mobileSidebarOpen && (
+        <div
+          className="md:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setMobileSidebarOpen(false)}
+        />
+      )}
+
+      {/* Mobile Sidebar */}
+      <div
+        className={cn(
+          "md:hidden fixed inset-y-0 left-0 z-50 w-72 bg-card border-r shadow-lg transform transition-transform duration-300 flex flex-col",
+          mobileSidebarOpen ? "translate-x-0" : "-translate-x-full",
+        )}
+      >
+        {/* Mobile Sidebar Header */}
+        <div className="p-4 border-b bg-primary/5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary shadow-sm">
+                <Shield className="h-5 w-5 text-primary-foreground" />
+              </div>
+              <span className="font-bold text-base text-foreground">
+                Super Admin
+              </span>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setMobileSidebarOpen(false)}
+              className="h-8 w-8 hover:bg-primary/10"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Mobile Main Navigation */}
+        <nav className="flex-1 px-3 py-2">
+          <div className="space-y-1">
+            {sidebarItems.map((item) => (
+              <Link
+                key={item.href}
+                to={item.href}
+                onClick={() => setMobileSidebarOpen(false)}
+              >
+                <Button
+                  variant={item.active ? "secondary" : "ghost"}
+                  className={cn(
+                    "w-full justify-start gap-3 h-10 font-medium px-4",
+                    item.active &&
+                      "bg-primary/10 text-primary border-r-2 border-primary",
+                    !item.active &&
+                      "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                  )}
+                  size="sm"
+                >
+                  <item.icon
+                    className={cn("h-5 w-5", item.active && "text-primary")}
+                  />
+                  <span className="font-medium">{item.label}</span>
+                </Button>
+              </Link>
+            ))}
+          </div>
+        </nav>
+
+        {/* Mobile User Info */}
+        <div className="p-3 border-t bg-muted/20">
+          <div className="flex items-center space-x-3 mb-3">
+            <Avatar className="h-10 w-10">
+              <AvatarImage
+                src="/placeholder-avatar.jpg"
+                alt={currentUser?.name || "User"}
+              />
+              <AvatarFallback>
+                {currentUser?.name?.charAt(0) || "SA"}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium leading-none truncate">
+                {currentUser?.name || "Super Admin"}
+              </p>
+              <p className="text-xs text-muted-foreground truncate">
+                {currentUser?.email || "admin@system.com"}
+              </p>
+            </div>
+          </div>
+          <Button
+            variant="outline"
+            onClick={handleSignOut}
+            className="w-full gap-2"
+            size="sm"
+          >
+            <LogOut className="h-4 w-4" />
+            Sign Out
+          </Button>
+        </div>
+      </div>
+
+      {/* Desktop Sidebar */}
       <div
         className={cn(
           "hidden md:flex bg-card border-r transition-all duration-300 flex-col",
