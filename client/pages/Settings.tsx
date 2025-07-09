@@ -1829,6 +1829,467 @@ export default function Settings() {
                 </div>
               )}
 
+              {/* Notifications */}
+              {activeTab === "notifications" && (
+                <div className="space-y-6">
+                  {/* Global Notification Settings */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Global Notifications</CardTitle>
+                      <CardDescription>
+                        Control all notification preferences
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <Bell className="h-5 w-5 text-primary" />
+                          <div>
+                            <Label>Enable Notifications</Label>
+                            <p className="text-sm text-muted-foreground">
+                              Turn on/off all notifications
+                            </p>
+                          </div>
+                        </div>
+                        <Switch
+                          checked={settings.enableNotifications}
+                          onCheckedChange={(checked) =>
+                            updateSetting("enableNotifications", checked)
+                          }
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          {settings.enableSounds ? (
+                            <Volume2 className="h-5 w-5 text-primary" />
+                          ) : (
+                            <VolumeX className="h-5 w-5 text-muted-foreground" />
+                          )}
+                          <div>
+                            <Label>Sound Notifications</Label>
+                            <p className="text-sm text-muted-foreground">
+                              Play sounds for notifications
+                            </p>
+                          </div>
+                        </div>
+                        <Switch
+                          checked={settings.enableSounds}
+                          onCheckedChange={(checked) =>
+                            updateSetting("enableSounds", checked)
+                          }
+                          disabled={!settings.enableNotifications}
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Message Types */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Message Types</CardTitle>
+                      <CardDescription>
+                        Choose which types of messages you want to receive
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <Info className="h-4 w-4 text-blue-500" />
+                            <div>
+                              <Label className="text-sm">Information</Label>
+                              <p className="text-xs text-muted-foreground">
+                                General updates and info
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.messageTypes.info}
+                            onCheckedChange={(checked) => {
+                              const newMessageTypes = {
+                                ...settings.messageTypes,
+                                info: checked,
+                              };
+                              updateSetting("messageTypes", newMessageTypes);
+                            }}
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <AlertTriangle className="h-4 w-4 text-yellow-500" />
+                            <div>
+                              <Label className="text-sm">Warnings</Label>
+                              <p className="text-xs text-muted-foreground">
+                                Important warnings
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.messageTypes.warning}
+                            onCheckedChange={(checked) => {
+                              const newMessageTypes = {
+                                ...settings.messageTypes,
+                                warning: checked,
+                              };
+                              updateSetting("messageTypes", newMessageTypes);
+                            }}
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <XCircle className="h-4 w-4 text-red-500" />
+                            <div>
+                              <Label className="text-sm">Errors</Label>
+                              <p className="text-xs text-muted-foreground">
+                                Critical error messages
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.messageTypes.error}
+                            onCheckedChange={(checked) => {
+                              const newMessageTypes = {
+                                ...settings.messageTypes,
+                                error: checked,
+                              };
+                              updateSetting("messageTypes", newMessageTypes);
+                            }}
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            <div>
+                              <Label className="text-sm">Success</Label>
+                              <p className="text-xs text-muted-foreground">
+                                Success confirmations
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.messageTypes.success}
+                            onCheckedChange={(checked) => {
+                              const newMessageTypes = {
+                                ...settings.messageTypes,
+                                success: checked,
+                              };
+                              updateSetting("messageTypes", newMessageTypes);
+                            }}
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Delivery Methods */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Delivery Methods</CardTitle>
+                      <CardDescription>
+                        Choose how you want to receive notifications
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <Mail className="h-4 w-4 text-primary" />
+                            <div>
+                              <Label className="text-sm">Email</Label>
+                              <p className="text-xs text-muted-foreground">
+                                Notifications via email
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.deliveryMethods.email}
+                            onCheckedChange={(checked) => {
+                              const newDeliveryMethods = {
+                                ...settings.deliveryMethods,
+                                email: checked,
+                              };
+                              updateSetting(
+                                "deliveryMethods",
+                                newDeliveryMethods,
+                              );
+                            }}
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <MessageSquare className="h-4 w-4 text-primary" />
+                            <div>
+                              <Label className="text-sm">SMS</Label>
+                              <p className="text-xs text-muted-foreground">
+                                Text message notifications
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.deliveryMethods.sms}
+                            onCheckedChange={(checked) => {
+                              const newDeliveryMethods = {
+                                ...settings.deliveryMethods,
+                                sms: checked,
+                              };
+                              updateSetting(
+                                "deliveryMethods",
+                                newDeliveryMethods,
+                              );
+                            }}
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <Smartphone className="h-4 w-4 text-primary" />
+                            <div>
+                              <Label className="text-sm">Push</Label>
+                              <p className="text-xs text-muted-foreground">
+                                Mobile push notifications
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.deliveryMethods.push}
+                            onCheckedChange={(checked) => {
+                              const newDeliveryMethods = {
+                                ...settings.deliveryMethods,
+                                push: checked,
+                              };
+                              updateSetting(
+                                "deliveryMethods",
+                                newDeliveryMethods,
+                              );
+                            }}
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <Monitor className="h-4 w-4 text-primary" />
+                            <div>
+                              <Label className="text-sm">In-App</Label>
+                              <p className="text-xs text-muted-foreground">
+                                Browser notifications
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.deliveryMethods.inApp}
+                            onCheckedChange={(checked) => {
+                              const newDeliveryMethods = {
+                                ...settings.deliveryMethods,
+                                inApp: checked,
+                              };
+                              updateSetting(
+                                "deliveryMethods",
+                                newDeliveryMethods,
+                              );
+                            }}
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
+              {/* File Optimization */}
+              {activeTab === "file-optimization" && (
+                <div className="space-y-6">
+                  {/* Optimization Settings */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>File Optimization Settings</CardTitle>
+                      <CardDescription>
+                        Configure how files are optimized and compressed
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <Zap className="h-5 w-5 text-primary" />
+                          <div>
+                            <Label>Auto Optimization</Label>
+                            <p className="text-sm text-muted-foreground">
+                              Automatically optimize uploaded files
+                            </p>
+                          </div>
+                        </div>
+                        <Switch
+                          checked={settings.autoOptimization}
+                          onCheckedChange={(checked) =>
+                            updateSetting("autoOptimization", checked)
+                          }
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>
+                          Compression Level: {settings.compressionLevel}%
+                        </Label>
+                        <input
+                          type="range"
+                          min="0"
+                          max="100"
+                          value={settings.compressionLevel}
+                          onChange={(e) =>
+                            updateSetting(
+                              "compressionLevel",
+                              parseInt(e.target.value),
+                            )
+                          }
+                          className="w-full"
+                        />
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                          <span>No compression</span>
+                          <span>Maximum compression</span>
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="maxFileSizeOpt">
+                          Maximum File Size (MB)
+                        </Label>
+                        <Input
+                          id="maxFileSizeOpt"
+                          type="number"
+                          value={settings.maxFileSize}
+                          onChange={(e) =>
+                            updateSetting(
+                              "maxFileSize",
+                              parseInt(e.target.value),
+                            )
+                          }
+                          min="1"
+                          max="100"
+                        />
+                        <p className="text-sm text-muted-foreground mt-1">
+                          Files larger than this will be compressed
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* File Type Settings */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Supported File Types</CardTitle>
+                      <CardDescription>
+                        Manage which file types can be optimized
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                        {[
+                          ".jpg",
+                          ".jpeg",
+                          ".png",
+                          ".gif",
+                          ".webp",
+                          ".mp4",
+                          ".mov",
+                          ".avi",
+                        ].map((type) => (
+                          <div
+                            key={type}
+                            className="flex items-center space-x-2"
+                          >
+                            <input
+                              type="checkbox"
+                              id={`filetype-${type}`}
+                              checked={settings.allowedFileTypes.includes(type)}
+                              onChange={(e) => {
+                                const newTypes = e.target.checked
+                                  ? [...settings.allowedFileTypes, type]
+                                  : settings.allowedFileTypes.filter(
+                                      (t) => t !== type,
+                                    );
+                                updateSetting("allowedFileTypes", newTypes);
+                              }}
+                              className="rounded"
+                            />
+                            <Label
+                              htmlFor={`filetype-${type}`}
+                              className="text-sm font-normal cursor-pointer"
+                            >
+                              {type}
+                            </Label>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Optimization Statistics */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Optimization Statistics</CardTitle>
+                      <CardDescription>
+                        View storage savings and optimization performance
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="text-center p-4 border rounded-lg">
+                          <HardDrive className="h-8 w-8 mx-auto mb-2 text-primary" />
+                          <div className="text-2xl font-bold text-primary">
+                            {settings.totalSpaceSaved.toFixed(1)} GB
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            Space Saved
+                          </p>
+                        </div>
+
+                        <div className="text-center p-4 border rounded-lg">
+                          <TrendingDown className="h-8 w-8 mx-auto mb-2 text-green-500" />
+                          <div className="text-2xl font-bold text-green-600">
+                            {settings.compressionLevel}%
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            Avg Compression
+                          </p>
+                        </div>
+
+                        <div className="text-center p-4 border rounded-lg">
+                          <Activity className="h-8 w-8 mx-auto mb-2 text-blue-500" />
+                          <div className="text-2xl font-bold text-blue-600">
+                            {settings.allowedFileTypes.length}
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            File Types
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="mt-4 pt-4 border-t">
+                        <Button
+                          className="gap-2"
+                          disabled={!settings.autoOptimization}
+                        >
+                          <Archive className="h-4 w-4" />
+                          Optimize All Files
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
               {/* Users */}
               {activeTab === "users" && (
                 <div className="space-y-6">
