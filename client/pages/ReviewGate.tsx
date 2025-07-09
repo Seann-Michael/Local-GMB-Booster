@@ -42,7 +42,7 @@ export default function ReviewGate() {
     const loadReviewRequest = () => {
       // Simulate loading from API based on ID
       const mockRequest: ReviewRequest = {
-        id: id || "1",
+        id: id || "demo",
         businessName: "Smith Construction LLC",
         businessLogo: "/api/placeholder/120/120",
         businessAddress: "123 Main St, Springfield, IL 62701",
@@ -65,9 +65,8 @@ export default function ReviewGate() {
       setReviewRequest(mockRequest);
     };
 
-    if (id) {
-      loadReviewRequest();
-    }
+    // Always load the review request (demo data if no ID)
+    loadReviewRequest();
   }, [id]);
 
   const generateSeoReview = (originalText: string, request: ReviewRequest) => {
