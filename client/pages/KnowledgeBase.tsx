@@ -939,16 +939,6 @@ Contact our billing support team:
               Find answers, guides, and resources to get the most out of GMB
               Booster
             </p>
-            <div className="mt-4">
-              <Button
-                variant="outline"
-                onClick={() => window.open("/status", "_blank")}
-                className="gap-2"
-              >
-                <ExternalLink className="h-4 w-4" />
-                System Status
-              </Button>
-            </div>
           </div>
 
           {/* Categories */}
