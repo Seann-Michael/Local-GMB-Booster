@@ -763,7 +763,7 @@ export default function Settings() {
                         </p>
                       </div>
                       <Switch
-                        checked={settings.autoPostFacebook}
+                        checked={settings?.autoPostFacebook || false}
                         onCheckedChange={(checked) =>
                           updateSetting("autoPostFacebook", checked)
                         }
@@ -778,7 +778,7 @@ export default function Settings() {
                         </p>
                       </div>
                       <Switch
-                        checked={settings.autoPostGoogleMyBusiness}
+                        checked={settings?.autoPostGoogleMyBusiness || false}
                         onCheckedChange={(checked) =>
                           updateSetting("autoPostGoogleMyBusiness", checked)
                         }
@@ -792,7 +792,7 @@ export default function Settings() {
                         </p>
                       </div>
                       <Switch
-                        checked={settings.aiPromptForDescriptions}
+                        checked={settings?.aiPromptForDescriptions || false}
                         onCheckedChange={(checked) =>
                           updateSetting("aiPromptForDescriptions", checked)
                         }
