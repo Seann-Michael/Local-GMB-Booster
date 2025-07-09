@@ -84,11 +84,12 @@ interface RoadmapItem {
 }
 
 export default function Ideas() {
+  const navigate = useNavigate();
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [roadmapItems, setRoadmapItems] = useState<RoadmapItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
-  const [sortBy, setSortBy] = useState("votes");
+  const [sortBy, setSortBy] = useState("popular");
   const [showNewIdeaDialog, setShowNewIdeaDialog] = useState(false);
   const [newIdea, setNewIdea] = useState({
     title: "",
