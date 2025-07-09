@@ -254,14 +254,7 @@ const App = () => (
                     </ProtectedRoute>
                   }
                 />
-                <Route
-                  path="/notifications"
-                  element={
-                    <ProtectedRoute>
-                      <Notifications />
-                    </ProtectedRoute>
-                  }
-                />
+
                 <Route
                   path="/admin/profile"
                   element={
