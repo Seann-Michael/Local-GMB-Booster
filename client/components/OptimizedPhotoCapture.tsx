@@ -131,10 +131,7 @@ export function OptimizedPhotoCapture({
             throw new Error(`${file.name}: ${validation.error}`);
           }
 
-          if (
-            file.type.startsWith("image/") ||
-            file.type.startsWith("video/")
-          ) {
+          if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
             // First, enhance with metadata
             const enhancedFile = await MediaMetadataEnhancer.enhanceMediaFile(
               file,
@@ -147,10 +144,9 @@ export function OptimizedPhotoCapture({
             // Then optimize the file if enabled
             if (optimizationSettings.enableOptimization) {
               if (file.type.startsWith("image/")) {
-                const format =
-                  optimizationSettings.format === "auto"
-                    ? await FileOptimizer.detectOptimalImageFormat()
-                    : optimizationSettings.format;
+                const format = optimizationSettings.format === "auto"
+                  ? await FileOptimizer.detectOptimalImageFormat()
+                  : optimizationSettings.format;
 
                 optimizedFile = await FileOptimizer.optimizeImage(file, {
                   quality: optimizationSettings.quality,
@@ -198,7 +194,7 @@ export function OptimizedPhotoCapture({
           }
 
           throw new Error(`${file.name}: Unsupported file type`);
-        }),
+        })
       );
 
       // Process results
@@ -207,10 +203,7 @@ export function OptimizedPhotoCapture({
           processedFiles.push(result.value);
         } else {
           failedFiles.push(fileArray[index].name);
-          console.error(
-            `Failed to process ${fileArray[index].name}:`,
-            result.reason,
-          );
+          console.error(`Failed to process ${fileArray[index].name}:`, result.reason);
         }
       });
 
@@ -225,18 +218,14 @@ export function OptimizedPhotoCapture({
         const successMessage = `${processedFiles.length} file(s) processed. Saved ${formatFileSize(totalSavings.savings)} (${totalSavings.savingsPercentage.toFixed(1)}%)`;
 
         if (failedFiles.length > 0) {
-          toast.warning(
-            `${successMessage}. ${failedFiles.length} file(s) failed to process.`,
-          );
+          toast.warning(`${successMessage}. ${failedFiles.length} file(s) failed to process.`);
         } else {
           toast.success(successMessage);
         }
 
         setAdditionalTags("");
       } else if (failedFiles.length > 0) {
-        toast.error(
-          `Failed to process ${failedFiles.length} file(s). Check file sizes and formats.`,
-        );
+        toast.error(`Failed to process ${failedFiles.length} file(s). Check file sizes and formats.`);
       }
     } catch (error) {
       toast.error("Failed to process files");
@@ -310,7 +299,8 @@ export function OptimizedPhotoCapture({
     : 0;
 
   return (
-    <div className="space-y-6">
+    <FileProcessingErrorBoundary>
+      <div className="space-y-6">
       {/* Optimization Statistics */}
       {photos.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
