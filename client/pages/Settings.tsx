@@ -1546,7 +1546,7 @@ export default function Settings() {
                           </Label>
                           <Input
                             id="reviewGateTitle"
-                            value={settings.reviewGateTitle}
+                            value={settings?.reviewGateTitle || ""}
                             onChange={(e) =>
                               updateSetting("reviewGateTitle", e.target.value)
                             }
@@ -1561,7 +1561,7 @@ export default function Settings() {
                           </Label>
                           <Textarea
                             id="reviewGateDescription"
-                            value={settings.reviewGateDescription}
+                            value={settings?.reviewGateDescription || ""}
                             onChange={(e) =>
                               updateSetting(
                                 "reviewGateDescription",
@@ -1582,7 +1582,7 @@ export default function Settings() {
                             <Input
                               id="reviewGateVideo"
                               type="url"
-                              value={settings.reviewGateVideoUrl}
+                              value={settings?.reviewGateVideoUrl || ""}
                               onChange={(e) =>
                                 updateSetting(
                                   "reviewGateVideoUrl",
@@ -1600,7 +1600,7 @@ export default function Settings() {
                                 <FileImage className="h-4 w-4" />
                                 Upload Video
                               </Button>
-                              {settings.reviewGateVideoUrl && (
+                              {settings?.reviewGateVideoUrl && (
                                 <Button
                                   variant="outline"
                                   size="sm"
