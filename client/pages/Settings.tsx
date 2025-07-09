@@ -1339,20 +1339,87 @@ export default function Settings() {
                             />
                           </div>
                           <div>
-                            <Label htmlFor="webhookEvents">
-                              Events (comma-separated)
-                            </Label>
-                            <Input
-                              id="webhookEvents"
-                              name="events"
-                              defaultValue={
-                                Array.isArray(editingWebhook?.events)
-                                  ? editingWebhook.events.join(", ")
-                                  : ""
-                              }
-                              placeholder="project.created, project.completed"
-                              required
-                            />
+                            <Label>Select Events</Label>
+                            <div className="mt-2 space-y-3">
+                              <div className="grid gap-3 md:grid-cols-2">
+                                {[
+                                  {
+                                    id: "project.created",
+                                    label: "Project Created",
+                                    description:
+                                      "When a new project is created",
+                                    icon: "🆕",
+                                  },
+                                  {
+                                    id: "project.completed",
+                                    label: "Project Completed",
+                                    description:
+                                      "When a project is marked complete",
+                                    icon: "✅",
+                                  },
+                                  {
+                                    id: "project.updated",
+                                    label: "Project Updated",
+                                    description:
+                                      "When project details are modified",
+                                    icon: "📝",
+                                  },
+                                  {
+                                    id: "project.archived",
+                                    label: "Project Archived",
+                                    description: "When a project is archived",
+                                    icon: "📦",
+                                  },
+                                  {
+                                    id: "photo.uploaded",
+                                    label: "Photo Uploaded",
+                                    description: "When new photos are added",
+                                    icon: "📸",
+                                  },
+                                  {
+                                    id: "review.received",
+                                    label: "Review Received",
+                                    description:
+                                      "When a new review is submitted",
+                                    icon: "⭐",
+                                  },
+                                ].map((event) => (
+                                  <div
+                                    key={event.id}
+                                    className="flex items-start gap-3 p-3 border rounded-lg hover:bg-muted/50"
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      id={`event-${event.id}`}
+                                      name="selectedEvents"
+                                      value={event.id}
+                                      defaultChecked={
+                                        editingWebhook?.events?.includes(
+                                          event.id,
+                                        ) || false
+                                      }
+                                      className="mt-1"
+                                    />
+                                    <div className="flex-1">
+                                      <div className="flex items-center gap-2">
+                                        <span className="text-lg">
+                                          {event.icon}
+                                        </span>
+                                        <Label
+                                          htmlFor={`event-${event.id}`}
+                                          className="font-medium"
+                                        >
+                                          {event.label}
+                                        </Label>
+                                      </div>
+                                      <p className="text-xs text-muted-foreground mt-1">
+                                        {event.description}
+                                      </p>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
                           </div>
                           <div className="flex items-center gap-2">
                             <input
