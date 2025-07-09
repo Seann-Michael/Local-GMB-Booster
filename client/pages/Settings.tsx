@@ -1427,72 +1427,646 @@ export default function Settings() {
 
               {/* Notifications */}
               {activeTab === "notifications" && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Notification Preferences</CardTitle>
-                    <CardDescription>
-                      Choose how you want to be notified
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label>Email Notifications</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Receive email updates about your projects
-                        </p>
+                <div className="space-y-6">
+                  {/* Global Settings */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Bell className="h-5 w-5" />
+                        Global Settings
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label className="text-base">
+                            Enable Notifications
+                          </Label>
+                          <p className="text-sm text-muted-foreground">
+                            Turn on/off all notifications globally
+                          </p>
+                        </div>
+                        <Switch
+                          checked={settings.enableNotifications}
+                          onCheckedChange={(checked) =>
+                            updateSetting("enableNotifications", checked)
+                          }
+                        />
                       </div>
-                      <Switch
-                        checked={settings.emailNotifications}
-                        onCheckedChange={(checked) =>
-                          updateSetting("emailNotifications", checked)
-                        }
-                      />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label>SMS Notifications</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Receive text message updates
-                        </p>
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label className="text-base flex items-center gap-2">
+                            {settings.enableSounds ? (
+                              <Volume2 className="h-4 w-4" />
+                            ) : (
+                              <VolumeX className="h-4 w-4" />
+                            )}
+                            Notification Sounds
+                          </Label>
+                          <p className="text-sm text-muted-foreground">
+                            Play sound when notifications arrive
+                          </p>
+                        </div>
+                        <Switch
+                          checked={settings.enableSounds}
+                          onCheckedChange={(checked) =>
+                            updateSetting("enableSounds", checked)
+                          }
+                          disabled={!settings.enableNotifications}
+                        />
                       </div>
-                      <Switch
-                        checked={settings.smsNotifications}
-                        onCheckedChange={(checked) =>
-                          updateSetting("smsNotifications", checked)
-                        }
-                      />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label>Marketing Emails</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Receive marketing and promotional emails
-                        </p>
+                    </CardContent>
+                  </Card>
+
+                  {/* Message Types */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Message Types</CardTitle>
+                      <CardDescription>
+                        Choose which types of messages you want to receive
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <Info className="h-4 w-4 text-blue-500" />
+                            <div>
+                              <Label className="text-base">Information</Label>
+                              <p className="text-xs text-muted-foreground">
+                                General information and updates
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.messageTypes.info}
+                            onCheckedChange={(checked) => {
+                              const newMessageTypes = {
+                                ...settings.messageTypes,
+                                info: checked,
+                              };
+                              updateSetting("messageTypes", newMessageTypes);
+                            }}
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <AlertTriangle className="h-4 w-4 text-yellow-500" />
+                            <div>
+                              <Label className="text-base">Warning</Label>
+                              <p className="text-xs text-muted-foreground">
+                                Important warnings and alerts
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.messageTypes.warning}
+                            onCheckedChange={(checked) => {
+                              const newMessageTypes = {
+                                ...settings.messageTypes,
+                                warning: checked,
+                              };
+                              updateSetting("messageTypes", newMessageTypes);
+                            }}
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            <div>
+                              <Label className="text-base">Success</Label>
+                              <p className="text-xs text-muted-foreground">
+                                Success confirmations
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.messageTypes.success}
+                            onCheckedChange={(checked) => {
+                              const newMessageTypes = {
+                                ...settings.messageTypes,
+                                success: checked,
+                              };
+                              updateSetting("messageTypes", newMessageTypes);
+                            }}
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <XCircle className="h-4 w-4 text-red-500" />
+                            <div>
+                              <Label className="text-base">Error</Label>
+                              <p className="text-xs text-muted-foreground">
+                                Error notifications and issues
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.messageTypes.error}
+                            onCheckedChange={(checked) => {
+                              const newMessageTypes = {
+                                ...settings.messageTypes,
+                                error: checked,
+                              };
+                              updateSetting("messageTypes", newMessageTypes);
+                            }}
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
                       </div>
-                      <Switch
-                        checked={settings.marketingEmails}
-                        onCheckedChange={(checked) =>
-                          updateSetting("marketingEmails", checked)
-                        }
-                      />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label>System Alerts</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Receive important system notifications
-                        </p>
+                    </CardContent>
+                  </Card>
+
+                  {/* Message Categories */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Message Categories</CardTitle>
+                      <CardDescription>
+                        Select categories of messages you're interested in
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <Settings className="h-4 w-4 text-gray-500" />
+                            <div>
+                              <Label className="text-base">System</Label>
+                              <p className="text-xs text-muted-foreground">
+                                System updates and maintenance
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.systemAlerts}
+                            onCheckedChange={(checked) =>
+                              updateSetting("systemAlerts", checked)
+                            }
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <Mail className="h-4 w-4 text-purple-500" />
+                            <div>
+                              <Label className="text-base">Marketing</Label>
+                              <p className="text-xs text-muted-foreground">
+                                Feature announcements and promotions
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.marketingEmails}
+                            onCheckedChange={(checked) =>
+                              updateSetting("marketingEmails", checked)
+                            }
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <Users className="h-4 w-4 text-blue-500" />
+                            <div>
+                              <Label className="text-base">Support</Label>
+                              <p className="text-xs text-muted-foreground">
+                                Support updates and help
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.emailNotifications}
+                            onCheckedChange={(checked) =>
+                              updateSetting("emailNotifications", checked)
+                            }
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <AlertTriangle className="h-4 w-4 text-red-500" />
+                            <div>
+                              <Label className="text-base">Emergency</Label>
+                              <p className="text-xs text-muted-foreground">
+                                Critical alerts and security
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.systemAlerts}
+                            onCheckedChange={(checked) =>
+                              updateSetting("systemAlerts", checked)
+                            }
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
                       </div>
-                      <Switch
-                        checked={settings.systemAlerts}
-                        onCheckedChange={(checked) =>
-                          updateSetting("systemAlerts", checked)
-                        }
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+
+                  {/* Delivery Methods */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Delivery Methods</CardTitle>
+                      <CardDescription>
+                        Choose how you want to receive notifications
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <Bell className="h-4 w-4 text-primary" />
+                            <div>
+                              <Label className="text-base">
+                                In-App Notifications
+                              </Label>
+                              <p className="text-xs text-muted-foreground">
+                                Show notifications in the app
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.deliveryMethods.inApp}
+                            onCheckedChange={(checked) => {
+                              const newDeliveryMethods = {
+                                ...settings.deliveryMethods,
+                                inApp: checked,
+                              };
+                              updateSetting(
+                                "deliveryMethods",
+                                newDeliveryMethods,
+                              );
+                            }}
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <Mail className="h-4 w-4 text-primary" />
+                            <div>
+                              <Label className="text-base">
+                                Email Notifications
+                              </Label>
+                              <p className="text-xs text-muted-foreground">
+                                Send notifications to your email
+                              </p>
+                              {settings.deliveryMethods.email && (
+                                <Badge
+                                  variant="secondary"
+                                  className="mt-1 text-xs"
+                                >
+                                  Contact info required
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.deliveryMethods.email}
+                            onCheckedChange={(checked) => {
+                              const newDeliveryMethods = {
+                                ...settings.deliveryMethods,
+                                email: checked,
+                              };
+                              updateSetting(
+                                "deliveryMethods",
+                                newDeliveryMethods,
+                              );
+                            }}
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <MessageSquare className="h-4 w-4 text-primary" />
+                            <div>
+                              <Label className="text-base">
+                                SMS Notifications
+                              </Label>
+                              <p className="text-xs text-muted-foreground">
+                                Send text messages to your phone
+                              </p>
+                              {settings.deliveryMethods.sms && (
+                                <Badge
+                                  variant="secondary"
+                                  className="mt-1 text-xs"
+                                >
+                                  Contact info required
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.deliveryMethods.sms}
+                            onCheckedChange={(checked) => {
+                              const newDeliveryMethods = {
+                                ...settings.deliveryMethods,
+                                sms: checked,
+                              };
+                              updateSetting(
+                                "deliveryMethods",
+                                newDeliveryMethods,
+                              );
+                            }}
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <Smartphone className="h-4 w-4 text-primary" />
+                            <div>
+                              <Label className="text-base">
+                                Push Notifications
+                              </Label>
+                              <p className="text-xs text-muted-foreground">
+                                Send push notifications to your device
+                              </p>
+                            </div>
+                          </div>
+                          <Switch
+                            checked={settings.deliveryMethods.push}
+                            onCheckedChange={(checked) => {
+                              const newDeliveryMethods = {
+                                ...settings.deliveryMethods,
+                                push: checked,
+                              };
+                              updateSetting(
+                                "deliveryMethods",
+                                newDeliveryMethods,
+                              );
+                            }}
+                            disabled={!settings.enableNotifications}
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Frequency & Timing */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Clock className="h-5 w-5" />
+                        Frequency & Timing
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid gap-2">
+                        <Label htmlFor="frequency">
+                          Notification Frequency
+                        </Label>
+                        <Select
+                          value={settings.notificationFrequency || "immediate"}
+                          onValueChange={(value) =>
+                            updateSetting("notificationFrequency", value)
+                          }
+                          disabled={!settings.enableNotifications}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="immediate">
+                              <div className="flex items-center gap-2">
+                                <Zap className="h-4 w-4" />
+                                Immediate - Receive notifications as they happen
+                              </div>
+                            </SelectItem>
+                            <SelectItem value="hourly">
+                              <div className="flex items-center gap-2">
+                                <Clock className="h-4 w-4" />
+                                Hourly Digest - Batch notifications every hour
+                              </div>
+                            </SelectItem>
+                            <SelectItem value="daily">
+                              <div className="flex items-center gap-2">
+                                <Calendar className="h-4 w-4" />
+                                Daily Digest - One summary per day
+                              </div>
+                            </SelectItem>
+                            <SelectItem value="weekly">
+                              <div className="flex items-center gap-2">
+                                <Calendar className="h-4 w-4" />
+                                Weekly Digest - One summary per week
+                              </div>
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {settings.notificationFrequency &&
+                        settings.notificationFrequency !== "immediate" && (
+                          <div className="grid gap-2">
+                            <Label htmlFor="digestTime">Digest Time</Label>
+                            <Input
+                              id="digestTime"
+                              type="time"
+                              value={settings.digestTime || "09:00"}
+                              onChange={(e) =>
+                                updateSetting("digestTime", e.target.value)
+                              }
+                              disabled={!settings.enableNotifications}
+                            />
+                            <p className="text-xs text-muted-foreground">
+                              Time when you want to receive your digest
+                            </p>
+                          </div>
+                        )}
+                    </CardContent>
+                  </Card>
+
+                  {/* Do Not Disturb */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Moon className="h-5 w-5" />
+                        Do Not Disturb
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label className="text-base">
+                            Enable Do Not Disturb
+                          </Label>
+                          <p className="text-sm text-muted-foreground">
+                            Silence notifications during specific hours
+                          </p>
+                        </div>
+                        <Switch
+                          checked={settings.doNotDisturbEnabled || false}
+                          onCheckedChange={(checked) =>
+                            updateSetting("doNotDisturbEnabled", checked)
+                          }
+                          disabled={!settings.enableNotifications}
+                        />
+                      </div>
+
+                      {settings.doNotDisturbEnabled && (
+                        <>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid gap-2">
+                              <Label htmlFor="startTime">Start Time</Label>
+                              <Input
+                                id="startTime"
+                                type="time"
+                                value={settings.doNotDisturbStart || "22:00"}
+                                onChange={(e) =>
+                                  updateSetting(
+                                    "doNotDisturbStart",
+                                    e.target.value,
+                                  )
+                                }
+                              />
+                            </div>
+                            <div className="grid gap-2">
+                              <Label htmlFor="endTime">End Time</Label>
+                              <Input
+                                id="endTime"
+                                type="time"
+                                value={settings.doNotDisturbEnd || "08:00"}
+                                onChange={(e) =>
+                                  updateSetting(
+                                    "doNotDisturbEnd",
+                                    e.target.value,
+                                  )
+                                }
+                              />
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <div className="space-y-0.5">
+                              <Label className="text-base">Weekends Only</Label>
+                              <p className="text-sm text-muted-foreground">
+                                Apply Do Not Disturb only on weekends
+                              </p>
+                            </div>
+                            <Switch
+                              checked={
+                                settings.doNotDisturbWeekendsOnly || false
+                              }
+                              onCheckedChange={(checked) =>
+                                updateSetting(
+                                  "doNotDisturbWeekendsOnly",
+                                  checked,
+                                )
+                              }
+                            />
+                          </div>
+                        </>
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  {/* Advanced Settings */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Advanced Settings</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label className="text-base">Auto-mark as Read</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Automatically mark notifications as read after
+                            viewing
+                          </p>
+                        </div>
+                        <Switch
+                          checked={settings.autoMarkAsRead || false}
+                          onCheckedChange={(checked) =>
+                            updateSetting("autoMarkAsRead", checked)
+                          }
+                          disabled={!settings.enableNotifications}
+                        />
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label className="text-base">
+                            Show Message Previews
+                          </Label>
+                          <p className="text-sm text-muted-foreground">
+                            Display message content in notification previews
+                          </p>
+                        </div>
+                        <Switch
+                          checked={settings.showPreviews || true}
+                          onCheckedChange={(checked) =>
+                            updateSetting("showPreviews", checked)
+                          }
+                          disabled={!settings.enableNotifications}
+                        />
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label className="text-base">
+                            Group Similar Messages
+                          </Label>
+                          <p className="text-sm text-muted-foreground">
+                            Combine similar notifications into groups
+                          </p>
+                        </div>
+                        <Switch
+                          checked={settings.groupSimilar || true}
+                          onCheckedChange={(checked) =>
+                            updateSetting("groupSimilar", checked)
+                          }
+                          disabled={!settings.enableNotifications}
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Contact Information */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Mail className="h-5 w-5" />
+                        Contact Information
+                      </CardTitle>
+                      <CardDescription>
+                        Required for email and SMS notifications
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid gap-2">
+                        <Label htmlFor="contactEmail">Email Address</Label>
+                        <Input
+                          id="contactEmail"
+                          type="email"
+                          value={settings.email}
+                          onChange={(e) =>
+                            updateSetting("email", e.target.value)
+                          }
+                          placeholder="your.email@example.com"
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="contactPhone">Phone Number</Label>
+                        <Input
+                          id="contactPhone"
+                          type="tel"
+                          value={settings.phone}
+                          onChange={(e) =>
+                            updateSetting("phone", e.target.value)
+                          }
+                          placeholder="+1 (555) 123-4567"
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               )}
 
               {/* Security */}
