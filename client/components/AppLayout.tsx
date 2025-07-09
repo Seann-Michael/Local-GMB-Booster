@@ -187,9 +187,6 @@ export function AppLayout({ children }: AppLayoutProps) {
                 <span className="font-bold text-base text-foreground">
                   GMB Booster
                 </span>
-                <p className="text-xs text-muted-foreground">
-                  Business Dashboard
-                </p>
               </div>
             </div>
             <Button
@@ -357,9 +354,6 @@ export function AppLayout({ children }: AppLayoutProps) {
                     <span className="font-bold text-base text-foreground">
                       GMB Booster
                     </span>
-                    <p className="text-xs text-muted-foreground">
-                      Business Dashboard
-                    </p>
                   </div>
                 </div>
               </div>
