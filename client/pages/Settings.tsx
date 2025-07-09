@@ -1672,6 +1672,338 @@ export default function Settings() {
                       </div>
                     </CardContent>
                   </Card>
+
+                  {/* Payment Method */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Payment Method</CardTitle>
+                      <CardDescription>
+                        Your current payment method on file
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center justify-between p-4 border rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <CreditCard className="h-8 w-8 text-muted-foreground" />
+                          <div>
+                            <p className="font-medium">
+                              {settings.creditCard.brand} ••••{" "}
+                              {settings.creditCard.last4}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              Expires {settings.creditCard.expMonth}/
+                              {settings.creditCard.expYear}
+                            </p>
+                          </div>
+                        </div>
+                        <Button variant="outline" size="sm">
+                          <Edit className="h-4 w-4 mr-2" />
+                          Update
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Invoice History */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Invoice History</CardTitle>
+                      <CardDescription>
+                        Download past invoices and view payment history
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        {settings.invoices.map((invoice) => (
+                          <div
+                            key={invoice.id}
+                            className="flex items-center justify-between p-3 border rounded-lg"
+                          >
+                            <div className="flex items-center gap-3">
+                              <Calendar className="h-4 w-4 text-muted-foreground" />
+                              <div>
+                                <p className="font-medium">
+                                  Invoice #{invoice.id}
+                                </p>
+                                <p className="text-sm text-muted-foreground">
+                                  {new Date(invoice.date).toLocaleDateString(
+                                    "en-US",
+                                    {
+                                      year: "numeric",
+                                      month: "long",
+                                      day: "numeric",
+                                    },
+                                  )}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <div className="text-right">
+                                <p className="font-medium">
+                                  ${invoice.amount.toFixed(2)}
+                                </p>
+                                <Badge
+                                  variant={
+                                    invoice.status === "paid"
+                                      ? "default"
+                                      : "secondary"
+                                  }
+                                  className="text-xs"
+                                >
+                                  {invoice.status}
+                                </Badge>
+                              </div>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  // In a real app, this would download the invoice
+                                  toast.success("Invoice download started");
+                                }}
+                              >
+                                <Download className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
+              {/* Users */}
+              {activeTab === "users" && (
+                <div className="space-y-6">
+                  {/* Current Users */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Team Members</CardTitle>
+                      <CardDescription>
+                        Manage user access and permissions
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {settings.users.map((user) => (
+                          <div
+                            key={user.id}
+                            className="flex items-center justify-between p-4 border rounded-lg"
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="h-10 w-10 bg-primary/10 rounded-full flex items-center justify-center">
+                                <Users className="h-5 w-5 text-primary" />
+                              </div>
+                              <div>
+                                <p className="font-medium">{user.name}</p>
+                                <p className="text-sm text-muted-foreground">
+                                  {user.email}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                  Last login:{" "}
+                                  {new Date(
+                                    user.lastLogin,
+                                  ).toLocaleDateString()}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <div className="text-right">
+                                <Badge
+                                  variant={
+                                    user.role === "owner"
+                                      ? "default"
+                                      : "secondary"
+                                  }
+                                  className="mb-1"
+                                >
+                                  {user.role}
+                                </Badge>
+                                <p className="text-xs text-muted-foreground">
+                                  {user.status}
+                                </p>
+                              </div>
+                              {user.role !== "owner" && (
+                                <div className="flex gap-1">
+                                  <Button variant="outline" size="sm">
+                                    <Edit className="h-4 w-4" />
+                                  </Button>
+                                  <Button variant="outline" size="sm">
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="pt-4 border-t">
+                        <Button className="gap-2">
+                          <Plus className="h-4 w-4" />
+                          Add User
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Roles & Permissions */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Roles & Permissions</CardTitle>
+                      <CardDescription>
+                        Configure what each role can access
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {/* Owner Role */}
+                        <div className="p-4 border rounded-lg">
+                          <div className="flex items-center justify-between mb-3">
+                            <div>
+                              <h4 className="font-medium">Owner</h4>
+                              <p className="text-sm text-muted-foreground">
+                                Full access to everything
+                              </p>
+                            </div>
+                            <Badge>System Role</Badge>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            <Badge variant="outline" className="text-xs">
+                              All Permissions
+                            </Badge>
+                          </div>
+                        </div>
+
+                        {/* Admin Role */}
+                        <div className="p-4 border rounded-lg">
+                          <div className="flex items-center justify-between mb-3">
+                            <div>
+                              <h4 className="font-medium">Admin</h4>
+                              <p className="text-sm text-muted-foreground">
+                                Manage projects, users, and billing
+                              </p>
+                            </div>
+                            <Button variant="outline" size="sm">
+                              <Edit className="h-4 w-4 mr-2" />
+                              Edit
+                            </Button>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            <Badge variant="outline" className="text-xs">
+                              Manage Projects
+                            </Badge>
+                            <Badge variant="outline" className="text-xs">
+                              Manage Users
+                            </Badge>
+                            <Badge variant="outline" className="text-xs">
+                              Manage Billing
+                            </Badge>
+                            <Badge variant="outline" className="text-xs">
+                              View Reports
+                            </Badge>
+                          </div>
+                        </div>
+
+                        {/* Editor Role */}
+                        <div className="p-4 border rounded-lg">
+                          <div className="flex items-center justify-between mb-3">
+                            <div>
+                              <h4 className="font-medium">Editor</h4>
+                              <p className="text-sm text-muted-foreground">
+                                Create and edit projects
+                              </p>
+                            </div>
+                            <Button variant="outline" size="sm">
+                              <Edit className="h-4 w-4 mr-2" />
+                              Edit
+                            </Button>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            <Badge variant="outline" className="text-xs">
+                              Manage Projects
+                            </Badge>
+                            <Badge variant="outline" className="text-xs">
+                              View Reports
+                            </Badge>
+                          </div>
+                        </div>
+
+                        {/* Viewer Role */}
+                        <div className="p-4 border rounded-lg">
+                          <div className="flex items-center justify-between mb-3">
+                            <div>
+                              <h4 className="font-medium">Viewer</h4>
+                              <p className="text-sm text-muted-foreground">
+                                Read-only access to projects
+                              </p>
+                            </div>
+                            <Button variant="outline" size="sm">
+                              <Edit className="h-4 w-4 mr-2" />
+                              Edit
+                            </Button>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            <Badge variant="outline" className="text-xs">
+                              View Projects
+                            </Badge>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Invite Users */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Invite New User</CardTitle>
+                      <CardDescription>
+                        Send an invitation to add a new team member
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="inviteEmail">Email Address</Label>
+                          <Input
+                            id="inviteEmail"
+                            type="email"
+                            placeholder="user@example.com"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="inviteRole">Role</Label>
+                          <Select defaultValue="viewer">
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select role" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="admin">Admin</SelectItem>
+                              <SelectItem value="editor">Editor</SelectItem>
+                              <SelectItem value="viewer">Viewer</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="inviteMessage">
+                          Personal Message (Optional)
+                        </Label>
+                        <Textarea
+                          id="inviteMessage"
+                          placeholder="Welcome to the team! Looking forward to working with you."
+                          className="resize-none"
+                          rows={3}
+                        />
+                      </div>
+
+                      <Button className="gap-2">
+                        <Mail className="h-4 w-4" />
+                        Send Invitation
+                      </Button>
+                    </CardContent>
+                  </Card>
                 </div>
               )}
             </div>
