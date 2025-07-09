@@ -3157,9 +3157,10 @@ export default function Settings() {
                     const webhook = {
                       name: formData.get("name") as string,
                       url: formData.get("url") as string,
-                      events: (formData.get("events") as string)
+                      events: ((formData.get("events") as string) || "")
                         .split(",")
-                        .map((e) => e.trim()),
+                        .map((e) => e.trim())
+                        .filter((e) => e.length > 0),
                       active: formData.get("active") === "on",
                     };
 
