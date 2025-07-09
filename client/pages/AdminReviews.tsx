@@ -302,31 +302,33 @@ export default function AdminReviews() {
 
   return (
     <AppLayout>
-      <div className="container px-4 py-6">
-        <div className="flex items-center justify-between mb-6">
+      <div className="max-w-full px-4 py-6 overflow-x-hidden">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
           <div>
             <h1 className="text-2xl font-bold">Review Management</h1>
             <p className="text-muted-foreground">
               Track and manage customer review requests
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <Button
               variant="outline"
               onClick={() => navigate("/review-demo")}
-              className="gap-2"
+              className="gap-2 whitespace-nowrap"
             >
               <ExternalLink className="h-4 w-4" />
-              Preview Review Gate
+              <span className="hidden sm:inline">Preview Review Gate</span>
+              <span className="sm:hidden">Preview</span>
             </Button>
             <Button
               onClick={() =>
                 sendReviewRequest("New Customer", "Recent Project")
               }
-              className="gap-2"
+              className="gap-2 whitespace-nowrap"
             >
               <Send className="h-4 w-4" />
-              Send Review Request
+              <span className="hidden sm:inline">Send Review Request</span>
+              <span className="sm:hidden">Send Request</span>
             </Button>
           </div>
         </div>
@@ -340,10 +342,12 @@ export default function AdminReviews() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
               <div className="text-center">
-                <p className="text-3xl font-bold text-blue-600">127</p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-2xl lg:text-3xl font-bold text-blue-600">
+                  127
+                </p>
+                <p className="text-xs lg:text-sm text-muted-foreground">
                   Total Google Reviews
                 </p>
                 <div className="flex items-center justify-center gap-1 mt-1">
@@ -352,8 +356,10 @@ export default function AdminReviews() {
                 </div>
               </div>
               <div className="text-center">
-                <div className="flex items-center justify-center gap-2 mb-1">
-                  <p className="text-3xl font-bold text-yellow-600">4.7</p>
+                <div className="flex items-center justify-center gap-1 lg:gap-2 mb-1">
+                  <p className="text-2xl lg:text-3xl font-bold text-yellow-600">
+                    4.7
+                  </p>
                   <StarRating
                     rating={5}
                     onRatingChange={() => {}}
@@ -361,14 +367,16 @@ export default function AdminReviews() {
                     size="sm"
                   />
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs lg:text-sm text-muted-foreground">
                   Average Google Rating
                 </p>
                 <span className="text-xs text-green-500">+0.2 this month</span>
               </div>
               <div className="text-center">
-                <p className="text-3xl font-bold text-green-600">23</p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-2xl lg:text-3xl font-bold text-green-600">
+                  23
+                </p>
+                <p className="text-xs lg:text-sm text-muted-foreground">
                   Added by Platform
                 </p>
                 <div className="flex items-center justify-center gap-1 mt-1">
@@ -379,8 +387,12 @@ export default function AdminReviews() {
                 </div>
               </div>
               <div className="text-center">
-                <p className="text-3xl font-bold text-purple-600">89%</p>
-                <p className="text-sm text-muted-foreground">5-Star Rate</p>
+                <p className="text-2xl lg:text-3xl font-bold text-purple-600">
+                  89%
+                </p>
+                <p className="text-xs lg:text-sm text-muted-foreground">
+                  5-Star Rate
+                </p>
                 <span className="text-xs text-green-500">Above average</span>
               </div>
             </div>
@@ -519,192 +531,206 @@ export default function AdminReviews() {
           <CardHeader>
             <CardTitle>Review Requests</CardTitle>
           </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead
-                    className="cursor-pointer hover:bg-gray-50"
-                    onClick={() =>
-                      setSortBy(
-                        sortBy === "customerName"
-                          ? "customerName-desc"
-                          : "customerName",
-                      )
-                    }
-                  >
-                    Customer
-                    {sortBy.includes("customerName") && (
-                      <span className="ml-1">
-                        {sortBy.includes("desc") ? "↓" : "↑"}
-                      </span>
-                    )}
-                  </TableHead>
-                  <TableHead>Project</TableHead>
-                  <TableHead
-                    className="cursor-pointer hover:bg-gray-50"
-                    onClick={() =>
-                      setSortBy(sortBy === "status" ? "status-desc" : "status")
-                    }
-                  >
-                    Status
-                    {sortBy.includes("status") && (
-                      <span className="ml-1">
-                        {sortBy.includes("desc") ? "↓" : "↑"}
-                      </span>
-                    )}
-                  </TableHead>
-                  <TableHead
-                    className="cursor-pointer hover:bg-gray-50"
-                    onClick={() =>
-                      setSortBy(sortBy === "rating" ? "rating-desc" : "rating")
-                    }
-                  >
-                    Rating
-                    {sortBy.includes("rating") && (
-                      <span className="ml-1">
-                        {sortBy.includes("desc") ? "↓" : "↑"}
-                      </span>
-                    )}
-                  </TableHead>
-                  <TableHead
-                    className="cursor-pointer hover:bg-gray-50"
-                    onClick={() =>
-                      setSortBy(sortBy === "sentAt" ? "sentAt-desc" : "sentAt")
-                    }
-                  >
-                    Sent Date
-                    {sortBy.includes("sentAt") && (
-                      <span className="ml-1">
-                        {sortBy.includes("desc") ? "↓" : "↑"}
-                      </span>
-                    )}
-                  </TableHead>
-                  <TableHead className="min-w-[300px]">Review Text</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredRequests.map((request) => (
-                  <TableRow key={request.id}>
-                    <TableCell>
-                      <div>
-                        <p className="font-medium">{request.customerName}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {request.customerPhone}
-                        </p>
-                      </div>
-                    </TableCell>
-                    <TableCell>{request.projectName}</TableCell>
-                    <TableCell>
-                      {getStatusBadge(request.status, request.linkClicked)}
-                    </TableCell>
-                    <TableCell>
-                      {request.rating ? (
-                        <div className="flex items-center gap-2">
-                          <StarRating
-                            rating={request.rating}
-                            onRatingChange={() => {}}
-                            readonly
-                            size="sm"
-                          />
-                          <span className="text-sm">{request.rating}</span>
-                        </div>
-                      ) : (
-                        <span className="text-muted-foreground">-</span>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <div className="text-sm">
-                        {new Date(request.sentAt).toLocaleDateString()}
-                        <p className="text-xs text-muted-foreground">
-                          {new Date(request.sentAt).toLocaleTimeString()}
-                        </p>
-                      </div>
-                    </TableCell>
-                    <TableCell className="max-w-xs">
-                      {request.reviewText ? (
-                        <div className="space-y-2">
-                          <p className="text-sm line-clamp-3">
-                            {request.reviewText}
-                          </p>
-                          {request.reviewText.length > 100 && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() =>
-                                toast.info(request.reviewText, {
-                                  duration: 10000,
-                                })
-                              }
-                              className="h-6 px-2 text-xs"
-                            >
-                              Read More
-                            </Button>
-                          )}
-                        </div>
-                      ) : (
-                        <span className="text-muted-foreground text-sm">
-                          No review yet
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead
+                      className="cursor-pointer hover:bg-gray-50 min-w-[140px]"
+                      onClick={() =>
+                        setSortBy(
+                          sortBy === "customerName"
+                            ? "customerName-desc"
+                            : "customerName",
+                        )
+                      }
+                    >
+                      Customer
+                      {sortBy.includes("customerName") && (
+                        <span className="ml-1">
+                          {sortBy.includes("desc") ? "↓" : "↑"}
                         </span>
                       )}
-                    </TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem
-                            onClick={() => copyReviewLink(request.id)}
-                          >
-                            <Copy className="h-4 w-4 mr-2" />
-                            Copy Link
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() =>
-                              sendReviewRequest(
-                                request.customerName,
-                                request.projectName,
-                              )
-                            }
-                          >
-                            <Send className="h-4 w-4 mr-2" />
-                            Resend Request
-                          </DropdownMenuItem>
-                          {request.status === "sent" && (
+                    </TableHead>
+                    <TableHead className="min-w-[120px]">Project</TableHead>
+                    <TableHead
+                      className="cursor-pointer hover:bg-gray-50 min-w-[100px]"
+                      onClick={() =>
+                        setSortBy(
+                          sortBy === "status" ? "status-desc" : "status",
+                        )
+                      }
+                    >
+                      Status
+                      {sortBy.includes("status") && (
+                        <span className="ml-1">
+                          {sortBy.includes("desc") ? "↓" : "↑"}
+                        </span>
+                      )}
+                    </TableHead>
+                    <TableHead
+                      className="cursor-pointer hover:bg-gray-50 min-w-[80px]"
+                      onClick={() =>
+                        setSortBy(
+                          sortBy === "rating" ? "rating-desc" : "rating",
+                        )
+                      }
+                    >
+                      Rating
+                      {sortBy.includes("rating") && (
+                        <span className="ml-1">
+                          {sortBy.includes("desc") ? "↓" : "↑"}
+                        </span>
+                      )}
+                    </TableHead>
+                    <TableHead
+                      className="cursor-pointer hover:bg-gray-50 min-w-[100px]"
+                      onClick={() =>
+                        setSortBy(
+                          sortBy === "sentAt" ? "sentAt-desc" : "sentAt",
+                        )
+                      }
+                    >
+                      Sent Date
+                      {sortBy.includes("sentAt") && (
+                        <span className="ml-1">
+                          {sortBy.includes("desc") ? "↓" : "↑"}
+                        </span>
+                      )}
+                    </TableHead>
+                    <TableHead className="min-w-[200px]">Review Text</TableHead>
+                    <TableHead className="min-w-[80px]">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredRequests.map((request) => (
+                    <TableRow key={request.id}>
+                      <TableCell>
+                        <div className="min-w-0">
+                          <p className="font-medium truncate">
+                            {request.customerName}
+                          </p>
+                          <p className="text-xs text-muted-foreground truncate">
+                            {request.customerPhone}
+                          </p>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <p className="truncate">{request.projectName}</p>
+                      </TableCell>
+                      <TableCell>
+                        {getStatusBadge(request.status, request.linkClicked)}
+                      </TableCell>
+                      <TableCell>
+                        {request.rating ? (
+                          <div className="flex items-center gap-2">
+                            <StarRating
+                              rating={request.rating}
+                              onRatingChange={() => {}}
+                              readonly
+                              size="sm"
+                            />
+                            <span className="text-sm">{request.rating}</span>
+                          </div>
+                        ) : (
+                          <span className="text-muted-foreground">-</span>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-sm">
+                          {new Date(request.sentAt).toLocaleDateString()}
+                          <p className="text-xs text-muted-foreground">
+                            {new Date(request.sentAt).toLocaleTimeString()}
+                          </p>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        {request.reviewText ? (
+                          <div className="space-y-2 max-w-[200px]">
+                            <p className="text-sm line-clamp-2 break-words">
+                              {request.reviewText.length > 60
+                                ? `${request.reviewText.substring(0, 60)}...`
+                                : request.reviewText}
+                            </p>
+                            {request.reviewText.length > 60 && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() =>
+                                  toast.info(request.reviewText, {
+                                    duration: 10000,
+                                  })
+                                }
+                                className="h-6 px-2 text-xs"
+                              >
+                                Read More
+                              </Button>
+                            )}
+                          </div>
+                        ) : (
+                          <span className="text-muted-foreground text-sm">
+                            No review yet
+                          </span>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
                             <DropdownMenuItem
-                              onClick={() =>
-                                cancelReviewRequest(
-                                  request.id,
-                                  request.customerName,
-                                )
-                              }
-                              className="text-red-600 focus:text-red-600"
-                            >
-                              <X className="h-4 w-4 mr-2" />
-                              Cancel Request
-                            </DropdownMenuItem>
-                          )}
-                          {request.reviewText && (
-                            <DropdownMenuItem
-                              onClick={() =>
-                                copyReviewText(request.reviewText!)
-                              }
+                              onClick={() => copyReviewLink(request.id)}
                             >
                               <Copy className="h-4 w-4 mr-2" />
-                              Copy Review Text
+                              Copy Link
                             </DropdownMenuItem>
-                          )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                            <DropdownMenuItem
+                              onClick={() =>
+                                sendReviewRequest(
+                                  request.customerName,
+                                  request.projectName,
+                                )
+                              }
+                            >
+                              <Send className="h-4 w-4 mr-2" />
+                              Resend Request
+                            </DropdownMenuItem>
+                            {request.status === "sent" && (
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  cancelReviewRequest(
+                                    request.id,
+                                    request.customerName,
+                                  )
+                                }
+                                className="text-red-600 focus:text-red-600"
+                              >
+                                <X className="h-4 w-4 mr-2" />
+                                Cancel Request
+                              </DropdownMenuItem>
+                            )}
+                            {request.reviewText && (
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  copyReviewText(request.reviewText!)
+                                }
+                              >
+                                <Copy className="h-4 w-4 mr-2" />
+                                Copy Review Text
+                              </DropdownMenuItem>
+                            )}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
       </div>
