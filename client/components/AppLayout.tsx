@@ -449,12 +449,10 @@ export function AppLayout({ children }: AppLayoutProps) {
                     </Avatar>
                     <div className="flex-1 min-w-0 text-left">
                       <p className="text-sm font-medium truncate">
-                        {currentUser?.name || "User"}
+                        {businessName || "My Business"}
                       </p>
                       <p className="text-xs text-muted-foreground truncate">
-                        {currentUser?.firstName && currentUser?.lastName
-                          ? `${currentUser.firstName} ${currentUser.lastName}`
-                          : "Business Owner"}
+                        {currentUser?.name || "Business Owner"}
                       </p>
                     </div>
                     <ChevronDown className="h-4 w-4 text-muted-foreground flex-shrink-0" />
