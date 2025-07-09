@@ -108,12 +108,8 @@ export default function AddProject() {
     }
   };
 
-  const handlePhotosChange = (photoUrls: string[]) => {
-    const newPhotos = photoUrls.map((url) => ({
-      url,
-      tags: [],
-    }));
-    setPhotos(newPhotos);
+  const handlePhotosChange = (enhancedPhotos: EnhancedPhoto[]) => {
+    setPhotos(enhancedPhotos);
   };
 
   const enhanceDescription = async () => {
