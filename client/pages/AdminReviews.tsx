@@ -263,13 +263,25 @@ export default function AdminReviews() {
               Track and manage customer review requests
             </p>
           </div>
-          <Button
-            onClick={() => sendReviewRequest("New Customer", "Recent Project")}
-            className="gap-2"
-          >
-            <Send className="h-4 w-4" />
-            Send Review Request
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={() => window.open("/review-demo", "_blank")}
+              className="gap-2"
+            >
+              <ExternalLink className="h-4 w-4" />
+              Preview Review Gate
+            </Button>
+            <Button
+              onClick={() =>
+                sendReviewRequest("New Customer", "Recent Project")
+              }
+              className="gap-2"
+            >
+              <Send className="h-4 w-4" />
+              Send Review Request
+            </Button>
+          </div>
         </div>
 
         {/* Stats Cards */}
