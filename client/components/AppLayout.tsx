@@ -385,9 +385,10 @@ export function AppLayout({ children }: AppLayoutProps) {
       {/* Static Sidebar - Always visible on desktop, collapsible */}
       <div
         className={cn(
-          "hidden md:flex bg-card border-r transition-all duration-300 flex-col shadow-sm fixed left-0 top-0 h-screen",
+          "hidden md:flex bg-card border-r transition-all duration-300 flex-col shadow-sm fixed left-0 h-screen",
           sidebarCollapsed ? "w-16" : "w-72",
         )}
+        style={{ top: "73px", height: "calc(100vh - 73px)" }}
       >
         {/* Business Selector - Now at top */}
         <div className="p-3 border-b bg-background relative">
