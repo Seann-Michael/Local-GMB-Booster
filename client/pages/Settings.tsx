@@ -53,11 +53,22 @@ import {
   Monitor,
   Clock,
   AlertTriangle,
+  Info,
+  Shield,
+  Upload,
+  RefreshCw,
+  Webhook,
+  Palette,
+  FileImage,
+  Video,
+  HardDrive,
+  Archive,
 } from "lucide-react";
 import { toast } from "sonner";
 
-// Types
+// Comprehensive Types
 interface SettingsData {
+  // Business Info
   businessName: string;
   subAccountId: string;
   businessLogo: string;
@@ -73,35 +84,35 @@ interface SettingsData {
   timezone: string;
   currency: string;
   dateFormat: string;
+
+  // Project Settings
   autoPostFacebook: boolean;
   autoPostGoogleMyBusiness: boolean;
   autoPostRssFeed: boolean;
   aiPromptForDescriptions: boolean;
   aiProjectRewritePrompt: string;
   autoArchiveDays: number;
+
+  // Integrations
   facebookConnected: boolean;
   googleMyBusinessConnected: boolean;
   goHighLevelApiKey: string;
   webhooks: WebhookItem[];
+
+  // AI Assistant
   aiPromptTemplate: string;
   aiInstructions: string;
   aiVariables: string[];
+
+  // Tags
   businessTags: TagItem[];
+
+  // Media Settings
   allowedImageTypes: string[];
   allowedVideoTypes: string[];
   maxFileSize: number;
-  emailNotifications: boolean;
-  smsNotifications: boolean;
-  marketingEmails: boolean;
-  systemAlerts: boolean;
-  twoFactorAuth: boolean;
-  passwordRequirements: string;
-  sessionTimeout: number;
-  billingContact: string;
-  billingEmail: string;
-  autoRenewal: boolean;
-  currentPlan: string;
-  planFeatures: string[];
+
+  // Review Settings
   reviewReminderEnabled: boolean;
   reviewReminderDays: number;
   autoRequestReviews: boolean;
@@ -111,26 +122,27 @@ interface SettingsData {
   reviewGateTitle: string;
   reviewGateDescription: string;
   reviewGateVideoUrl: string;
-  users: UserItem[];
-  creditCard: CreditCardInfo;
-  invoices: InvoiceItem[];
+
+  // Notifications
   enableNotifications: boolean;
   enableSounds: boolean;
   desktopNotifications: boolean;
-  projectNotifications: {
-    newProjects: boolean;
-    completions: boolean;
-    deadlines: boolean;
+  messageTypes: {
+    info: boolean;
+    warning: boolean;
+    success: boolean;
+    error: boolean;
   };
-  systemNotifications: {
-    alerts: boolean;
-    updates: boolean;
-    security: boolean;
+  categories: {
+    system: boolean;
+    marketing: boolean;
+    support: boolean;
+    emergency: boolean;
   };
   deliveryMethods: {
+    inApp: boolean;
     email: boolean;
     sms: boolean;
-    inApp: boolean;
     push: boolean;
   };
   notificationFrequency: string;
@@ -139,11 +151,29 @@ interface SettingsData {
     enabled: boolean;
     startTime: string;
     endTime: string;
+    weekendsOnly: boolean;
   };
+  autoMarkAsRead: boolean;
+  showPreviews: boolean;
+  groupSimilar: boolean;
+
+  // File Optimization
   autoOptimization: boolean;
   compressionLevel: number;
   allowedFileTypes: string[];
   totalSpaceSaved: number;
+
+  // Users
+  users: UserItem[];
+
+  // Billing
+  billingContact: string;
+  billingEmail: string;
+  autoRenewal: boolean;
+  currentPlan: string;
+  planFeatures: string[];
+  creditCard: CreditCardInfo;
+  invoices: InvoiceItem[];
 }
 
 interface WebhookItem {
@@ -185,7 +215,7 @@ interface InvoiceItem {
   downloadUrl: string;
 }
 
-// Navigation tabs
+// Navigation Tabs
 const navigationTabs = [
   { id: "general", label: "General", icon: Building2 },
   { id: "project", label: "Project Settings", icon: SettingsIcon },
@@ -200,8 +230,9 @@ const navigationTabs = [
   { id: "billing", label: "Billing", icon: DollarSign },
 ];
 
-// Default settings
-const defaultSettings: SettingsData = {
+// Safe Default Settings
+const createDefaultSettings = (): SettingsData => ({
+  // Business Info
   businessName: "Joe's Pizza",
   subAccountId: "SUB_" + Math.random().toString(36).substr(2, 9).toUpperCase(),
   businessLogo: "",
@@ -217,6 +248,8 @@ const defaultSettings: SettingsData = {
   timezone: "America/New_York",
   currency: "USD",
   dateFormat: "MM/DD/YYYY",
+
+  // Project Settings
   autoPostFacebook: false,
   autoPostGoogleMyBusiness: true,
   autoPostRssFeed: false,
@@ -224,26 +257,91 @@ const defaultSettings: SettingsData = {
   aiProjectRewritePrompt:
     "Rewrite this project description to be more engaging and professional. Highlight the key benefits and quality of work while maintaining the original facts and details.",
   autoArchiveDays: 30,
+
+  // Integrations
   facebookConnected: false,
   googleMyBusinessConnected: true,
   goHighLevelApiKey: "",
   webhooks: [],
-  aiPromptTemplate: "",
-  aiInstructions: "",
-  aiVariables: [],
-  businessTags: [],
+
+  // AI Assistant
+  aiPromptTemplate:
+    "Create a professional description for a {PROJECT_TYPE} project at {ADDRESS}. Include details about {SERVICES} and highlight the quality of work.",
+  aiInstructions:
+    "Write engaging, professional descriptions that highlight the benefits and quality of the work. Use a friendly but professional tone.",
+  aiVariables: [
+    "PROJECT_TYPE",
+    "ADDRESS",
+    "SERVICES",
+    "CUSTOMER_NAME",
+    "COMPLETION_DATE",
+  ],
+
+  // Tags
+  businessTags: [
+    { id: "1", name: "Pizza", color: "#ef4444" },
+    { id: "2", name: "Italian", color: "#3b82f6" },
+    { id: "3", name: "Delivery", color: "#10b981" },
+  ],
+
+  // Media Settings
   allowedImageTypes: [".jpg", ".jpeg", ".png", ".gif", ".webp"],
   allowedVideoTypes: [".mp4", ".mov", ".avi"],
   maxFileSize: 10,
-  emailNotifications: true,
-  smsNotifications: false,
-  marketingEmails: true,
-  systemAlerts: true,
-  twoFactorAuth: false,
-  passwordRequirements: "strong",
-  sessionTimeout: 60,
+
+  // Review Settings
+  reviewReminderEnabled: true,
+  reviewReminderDays: 7,
+  autoRequestReviews: true,
+  reviewEmailTemplate:
+    "Hi {CUSTOMER_NAME}, we'd love to hear about your experience with our {PROJECT_TYPE} project!",
+  minimumProjectValue: 500,
+  reviewAiPrompt: "",
+  reviewGateTitle: "",
+  reviewGateDescription: "",
+  reviewGateVideoUrl: "",
+
+  // Notifications
+  enableNotifications: true,
+  enableSounds: true,
+  desktopNotifications: true,
+  messageTypes: { info: true, warning: true, success: true, error: true },
+  categories: { system: true, marketing: true, support: true, emergency: true },
+  deliveryMethods: { inApp: true, email: true, sms: false, push: true },
+  notificationFrequency: "immediate",
+  digestTime: "09:00",
+  doNotDisturb: {
+    enabled: false,
+    startTime: "22:00",
+    endTime: "08:00",
+    weekendsOnly: false,
+  },
+  autoMarkAsRead: false,
+  showPreviews: true,
+  groupSimilar: true,
+
+  // File Optimization
+  autoOptimization: true,
+  compressionLevel: 80,
+  allowedFileTypes: [".jpg", ".jpeg", ".png", ".gif", ".webp", ".mp4", ".mov"],
+  totalSpaceSaved: 2.4,
+
+  // Users
+  users: [
+    {
+      id: "1",
+      name: "Joe Smith",
+      email: "joe@joespizza.com",
+      role: "owner",
+      status: "active",
+      lastLogin: "2024-01-15",
+      permissions: ["all"],
+    },
+  ],
+
+  // Billing
   billingContact: "Joe Smith",
-  billingEmail: "joe@joespizza.com",
+  billingEmail: "billing@joespizza.com",
   autoRenewal: true,
   currentPlan: "pro",
   planFeatures: [
@@ -251,71 +349,69 @@ const defaultSettings: SettingsData = {
     "Advanced Analytics",
     "Priority Support",
   ],
-  reviewReminderEnabled: true,
-  reviewReminderDays: 7,
-  autoRequestReviews: true,
-  reviewEmailTemplate: "",
-  minimumProjectValue: 100,
-  reviewAiPrompt: "",
-  reviewGateTitle: "",
-  reviewGateDescription: "",
-  reviewGateVideoUrl: "",
-  users: [],
   creditCard: { last4: "4242", brand: "Visa", expMonth: 12, expYear: 2025 },
-  invoices: [],
-  enableNotifications: true,
-  enableSounds: true,
-  desktopNotifications: true,
-  projectNotifications: {
-    newProjects: true,
-    completions: true,
-    deadlines: true,
-  },
-  systemNotifications: { alerts: true, updates: true, security: true },
-  deliveryMethods: { email: true, sms: false, inApp: true, push: true },
-  notificationFrequency: "immediate",
-  digestTime: "09:00",
-  doNotDisturb: { enabled: false, startTime: "22:00", endTime: "08:00" },
-  autoOptimization: true,
-  compressionLevel: 80,
-  allowedFileTypes: [".jpg", ".jpeg", ".png", ".gif", ".webp", ".mp4", ".mov"],
-  totalSpaceSaved: 2.4,
-};
+  invoices: [
+    {
+      id: "inv_001",
+      date: "2024-01-01",
+      amount: 49.0,
+      status: "paid",
+      downloadUrl: "/api/invoices/inv_001/download",
+    },
+  ],
+});
 
 export default function Settings() {
   const [searchParams] = useSearchParams();
-  const [activeTab, setActiveTab] = useState(() => {
-    return searchParams.get("tab") || "general";
-  });
-  const [settings, setSettings] = useState<SettingsData>(defaultSettings);
+  const [activeTab, setActiveTab] = useState(
+    () => searchParams.get("tab") || "general",
+  );
+  const [settings, setSettings] = useState<SettingsData>(
+    createDefaultSettings(),
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [showWebhookForm, setShowWebhookForm] = useState(false);
   const [editingWebhook, setEditingWebhook] = useState<WebhookItem | null>(
     null,
   );
+  const [showTagForm, setShowTagForm] = useState(false);
+  const [editingTag, setEditingTag] = useState<TagItem | null>(null);
 
+  // Safe data loading
   useEffect(() => {
     const loadSettings = () => {
       try {
         const saved = localStorage.getItem("business_settings");
         if (saved) {
           const parsed = JSON.parse(saved);
-          setSettings({ ...defaultSettings, ...parsed });
+          // Merge with defaults to ensure all fields exist
+          setSettings((prev) => ({ ...prev, ...parsed }));
         }
       } catch (error) {
         console.error(
           "Failed to load settings:",
           error instanceof Error ? error.message : String(error),
         );
+        toast.error("Failed to load settings, using defaults");
       }
     };
     loadSettings();
   }, []);
 
+  // Safe setting updates
   const updateSetting = (key: keyof SettingsData, value: any) => {
-    setSettings((prev) => ({ ...prev, [key]: value }));
+    try {
+      setSettings((prev) => ({ ...prev, [key]: value }));
+    } catch (error) {
+      console.error(
+        "Failed to update setting:",
+        error instanceof Error ? error.message : String(error),
+      );
+      toast.error("Failed to update setting");
+    }
   };
 
+  // Safe save operation
   const handleSave = async () => {
     setIsLoading(true);
     try {
@@ -323,9 +419,101 @@ export default function Settings() {
       localStorage.setItem("business_settings", JSON.stringify(settings));
       toast.success("Settings saved successfully!");
     } catch (error) {
+      console.error(
+        "Failed to save settings:",
+        error instanceof Error ? error.message : String(error),
+      );
       toast.error("Failed to save settings");
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Webhook management
+  const addWebhook = (webhook: Omit<WebhookItem, "id">) => {
+    try {
+      const newWebhook = { ...webhook, id: Date.now().toString() };
+      updateSetting("webhooks", [...(settings.webhooks || []), newWebhook]);
+      setShowWebhookForm(false);
+      setEditingWebhook(null);
+      toast.success("Webhook added successfully");
+    } catch (error) {
+      toast.error("Failed to add webhook");
+    }
+  };
+
+  const updateWebhook = (id: string, updates: Partial<WebhookItem>) => {
+    try {
+      const updatedWebhooks = (settings.webhooks || []).map((w) =>
+        w.id === id ? { ...w, ...updates } : w,
+      );
+      updateSetting("webhooks", updatedWebhooks);
+      setEditingWebhook(null);
+      setShowWebhookForm(false);
+      toast.success("Webhook updated successfully");
+    } catch (error) {
+      toast.error("Failed to update webhook");
+    }
+  };
+
+  const deleteWebhook = (id: string) => {
+    try {
+      const updatedWebhooks = (settings.webhooks || []).filter(
+        (w) => w.id !== id,
+      );
+      updateSetting("webhooks", updatedWebhooks);
+      toast.success("Webhook deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete webhook");
+    }
+  };
+
+  // Tag management
+  const addTag = (tag: Omit<TagItem, "id">) => {
+    try {
+      const newTag = { ...tag, id: Date.now().toString() };
+      updateSetting("businessTags", [...(settings.businessTags || []), newTag]);
+      setShowTagForm(false);
+      setEditingTag(null);
+      toast.success("Tag added successfully");
+    } catch (error) {
+      toast.error("Failed to add tag");
+    }
+  };
+
+  const deleteTag = (id: string) => {
+    try {
+      const updatedTags = (settings.businessTags || []).filter(
+        (t) => t.id !== id,
+      );
+      updateSetting("businessTags", updatedTags);
+      toast.success("Tag deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete tag");
+    }
+  };
+
+  const addAiVariable = (variable: string) => {
+    try {
+      if (variable && !(settings.aiVariables || []).includes(variable)) {
+        updateSetting("aiVariables", [
+          ...(settings.aiVariables || []),
+          variable,
+        ]);
+      }
+    } catch (error) {
+      toast.error("Failed to add AI variable");
+    }
+  };
+
+  const removeAiVariable = (index: number) => {
+    try {
+      const updated = (settings.aiVariables || []).filter(
+        (_, i) => i !== index,
+      );
+      updateSetting("aiVariables", updated);
+    } catch (error) {
+      toast.error("Failed to remove AI variable");
     }
   };
 
@@ -383,12 +571,55 @@ export default function Settings() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="subAccountId">Sub Account ID</Label>
+                      <Input
+                        id="subAccountId"
+                        value={settings.subAccountId || ""}
+                        readOnly
+                        className="bg-muted"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Unique identifier for your account
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Business Logo</Label>
+                      <div className="space-y-2">
+                        {settings.businessLogo && (
+                          <div className="w-20 h-20 border rounded-lg overflow-hidden">
+                            <img
+                              src={settings.businessLogo}
+                              alt="Business Logo"
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
+                        <div className="flex gap-2">
+                          <Button variant="outline" size="sm" className="gap-2">
+                            <Upload className="h-4 w-4" />
+                            Upload Logo
+                          </Button>
+                          {settings.businessLogo && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => updateSetting("businessLogo", "")}
+                            >
+                              Remove
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="grid gap-4 md:grid-cols-2">
                       <div>
                         <Label htmlFor="businessName">Business Name</Label>
                         <Input
                           id="businessName"
-                          value={settings?.businessName || ""}
+                          value={settings.businessName || ""}
                           onChange={(e) =>
                             updateSetting("businessName", e.target.value)
                           }
@@ -398,7 +629,7 @@ export default function Settings() {
                         <Label htmlFor="contactName">Contact Name</Label>
                         <Input
                           id="contactName"
-                          value={settings?.contactName || ""}
+                          value={settings.contactName || ""}
                           onChange={(e) =>
                             updateSetting("contactName", e.target.value)
                           }
@@ -409,7 +640,7 @@ export default function Settings() {
                         <Input
                           id="email"
                           type="email"
-                          value={settings?.email || ""}
+                          value={settings.email || ""}
                           onChange={(e) =>
                             updateSetting("email", e.target.value)
                           }
@@ -419,625 +650,142 @@ export default function Settings() {
                         <Label htmlFor="phone">Business Phone</Label>
                         <Input
                           id="phone"
-                          value={settings?.phone || ""}
+                          value={settings.phone || ""}
                           onChange={(e) =>
                             updateSetting("phone", e.target.value)
+                          }
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="website">Website</Label>
+                        <Input
+                          id="website"
+                          value={settings.website || ""}
+                          onChange={(e) =>
+                            updateSetting("website", e.target.value)
+                          }
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="address">Business Address</Label>
+                        <Input
+                          id="address"
+                          value={settings.address || ""}
+                          onChange={(e) =>
+                            updateSetting("address", e.target.value)
+                          }
+                          placeholder="Use Google autocomplete"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="city">City</Label>
+                        <Input
+                          id="city"
+                          value={settings.city || ""}
+                          onChange={(e) =>
+                            updateSetting("city", e.target.value)
+                          }
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="state">State</Label>
+                        <Input
+                          id="state"
+                          value={settings.state || ""}
+                          onChange={(e) =>
+                            updateSetting("state", e.target.value)
+                          }
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="zipCode">Zip Code</Label>
+                        <Input
+                          id="zipCode"
+                          value={settings.zipCode || ""}
+                          onChange={(e) =>
+                            updateSetting("zipCode", e.target.value)
                           }
                         />
                       </div>
                     </div>
                   </CardContent>
                 </Card>
-              </div>
-            )}
 
-            {/* Comprehensive Notifications */}
-            {activeTab === "notifications" && (
-              <div className="space-y-6">
-                {/* Notification Center Overview */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Bell className="h-5 w-5" />
-                        Notification Center
-                      </div>
-                      <Badge variant="outline" className="gap-1">
-                        <CheckCircle className="h-3 w-3" />3 Active
-                      </Badge>
-                    </CardTitle>
-                    <CardDescription>
-                      Manage all notifications, alerts and communication
-                      preferences from this central hub
-                    </CardDescription>
+                    <CardTitle>Regional Settings</CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="space-y-4">
                     <div className="grid gap-4 md:grid-cols-3">
-                      <div className="p-4 border rounded-lg bg-blue-50 border-blue-200">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Bell className="h-4 w-4 text-blue-600" />
-                          <span className="font-medium text-blue-900">
-                            System Alerts
-                          </span>
-                        </div>
-                        <p className="text-sm text-blue-700">
-                          Real-time system notifications and updates
-                        </p>
-                        <div className="mt-2">
-                          <Badge variant="secondary" className="text-xs">
-                            12 Today
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="p-4 border rounded-lg bg-green-50 border-green-200">
-                        <div className="flex items-center gap-2 mb-2">
-                          <CheckCircle className="h-4 w-4 text-green-600" />
-                          <span className="font-medium text-green-900">
-                            Project Updates
-                          </span>
-                        </div>
-                        <p className="text-sm text-green-700">
-                          Updates on project status and milestones
-                        </p>
-                        <div className="mt-2">
-                          <Badge variant="secondary" className="text-xs">
-                            5 Pending
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="p-4 border rounded-lg bg-purple-50 border-purple-200">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Mail className="h-4 w-4 text-purple-600" />
-                          <span className="font-medium text-purple-900">
-                            Communications
-                          </span>
-                        </div>
-                        <p className="text-sm text-purple-700">
-                          Client messages and team communications
-                        </p>
-                        <div className="mt-2">
-                          <Badge variant="secondary" className="text-xs">
-                            2 Unread
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Master Controls */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <SettingsIcon className="h-5 w-5" />
-                      Master Controls
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <Bell className="h-4 w-4 text-primary" />
-                        <div>
-                          <Label className="text-base">
-                            Enable All Notifications
-                          </Label>
-                          <p className="text-sm text-muted-foreground">
-                            Master switch for all notification types
-                          </p>
-                        </div>
-                      </div>
-                      <Switch
-                        checked={settings?.enableNotifications !== false}
-                        onCheckedChange={(checked) =>
-                          updateSetting("enableNotifications", checked)
-                        }
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex items-center gap-3">
-                        {settings?.enableSounds ? (
-                          <Volume2 className="h-4 w-4 text-primary" />
-                        ) : (
-                          <VolumeX className="h-4 w-4 text-muted-foreground" />
-                        )}
-                        <div>
-                          <Label className="text-base">
-                            Notification Sounds
-                          </Label>
-                          <p className="text-sm text-muted-foreground">
-                            Play audio alerts for notifications
-                          </p>
-                        </div>
-                      </div>
-                      <Switch
-                        checked={settings?.enableSounds !== false}
-                        onCheckedChange={(checked) =>
-                          updateSetting("enableSounds", checked)
-                        }
-                        disabled={!settings?.enableNotifications}
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <Monitor className="h-4 w-4 text-primary" />
-                        <div>
-                          <Label className="text-base">
-                            Desktop Notifications
-                          </Label>
-                          <p className="text-sm text-muted-foreground">
-                            Show browser notifications
-                          </p>
-                        </div>
-                      </div>
-                      <Switch
-                        checked={settings?.desktopNotifications !== false}
-                        onCheckedChange={(checked) =>
-                          updateSetting("desktopNotifications", checked)
-                        }
-                        disabled={!settings?.enableNotifications}
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Notification Categories */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Tag className="h-5 w-5" />
-                      Notification Categories
-                    </CardTitle>
-                    <CardDescription>
-                      Control which types of notifications you receive
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <div className="space-y-3">
-                        <h4 className="font-medium text-sm">
-                          Project Notifications
-                        </h4>
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <Plus className="h-4 w-4 text-blue-600" />
-                              <span className="text-sm">New Projects</span>
-                            </div>
-                            <Switch
-                              checked={
-                                settings?.projectNotifications?.newProjects !==
-                                false
-                              }
-                              onCheckedChange={(checked) =>
-                                updateSetting("projectNotifications", {
-                                  ...(settings?.projectNotifications || {}),
-                                  newProjects: checked,
-                                })
-                              }
-                              disabled={!settings?.enableNotifications}
-                            />
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <CheckCircle className="h-4 w-4 text-green-600" />
-                              <span className="text-sm">Project Completed</span>
-                            </div>
-                            <Switch
-                              checked={
-                                settings?.projectNotifications?.completions !==
-                                false
-                              }
-                              onCheckedChange={(checked) =>
-                                updateSetting("projectNotifications", {
-                                  ...(settings?.projectNotifications || {}),
-                                  completions: checked,
-                                })
-                              }
-                              disabled={!settings?.enableNotifications}
-                            />
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <Calendar className="h-4 w-4 text-orange-600" />
-                              <span className="text-sm">
-                                Deadline Reminders
-                              </span>
-                            </div>
-                            <Switch
-                              checked={
-                                settings?.projectNotifications?.deadlines !==
-                                false
-                              }
-                              onCheckedChange={(checked) =>
-                                updateSetting("projectNotifications", {
-                                  ...(settings?.projectNotifications || {}),
-                                  deadlines: checked,
-                                })
-                              }
-                              disabled={!settings?.enableNotifications}
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="space-y-3">
-                        <h4 className="font-medium text-sm">
-                          System Notifications
-                        </h4>
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <AlertTriangle className="h-4 w-4 text-yellow-600" />
-                              <span className="text-sm">System Alerts</span>
-                            </div>
-                            <Switch
-                              checked={
-                                settings?.systemNotifications?.alerts !== false
-                              }
-                              onCheckedChange={(checked) =>
-                                updateSetting("systemNotifications", {
-                                  ...(settings?.systemNotifications || {}),
-                                  alerts: checked,
-                                })
-                              }
-                              disabled={!settings?.enableNotifications}
-                            />
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <Download className="h-4 w-4 text-blue-600" />
-                              <span className="text-sm">Updates Available</span>
-                            </div>
-                            <Switch
-                              checked={
-                                settings?.systemNotifications?.updates !== false
-                              }
-                              onCheckedChange={(checked) =>
-                                updateSetting("systemNotifications", {
-                                  ...(settings?.systemNotifications || {}),
-                                  updates: checked,
-                                })
-                              }
-                              disabled={!settings?.enableNotifications}
-                            />
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <AlertCircle className="h-4 w-4 text-red-600" />
-                              <span className="text-sm">Security Alerts</span>
-                            </div>
-                            <Switch
-                              checked={
-                                settings?.systemNotifications?.security !==
-                                false
-                              }
-                              onCheckedChange={(checked) =>
-                                updateSetting("systemNotifications", {
-                                  ...(settings?.systemNotifications || {}),
-                                  security: checked,
-                                })
-                              }
-                              disabled={!settings?.enableNotifications}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Delivery Methods */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <MessageSquare className="h-5 w-5" />
-                      Delivery Methods
-                    </CardTitle>
-                    <CardDescription>
-                      Choose how you want to receive notifications
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between p-3 border rounded-lg">
-                          <div className="flex items-center gap-3">
-                            <Mail className="h-4 w-4 text-blue-600" />
-                            <div>
-                              <span className="font-medium">Email</span>
-                              <p className="text-xs text-muted-foreground">
-                                Get notifications via email
-                              </p>
-                            </div>
-                          </div>
-                          <Switch
-                            checked={settings?.deliveryMethods?.email !== false}
-                            onCheckedChange={(checked) =>
-                              updateSetting("deliveryMethods", {
-                                ...(settings?.deliveryMethods || {}),
-                                email: checked,
-                              })
-                            }
-                            disabled={!settings?.enableNotifications}
-                          />
-                        </div>
-
-                        <div className="flex items-center justify-between p-3 border rounded-lg">
-                          <div className="flex items-center gap-3">
-                            <Smartphone className="h-4 w-4 text-green-600" />
-                            <div>
-                              <span className="font-medium">SMS</span>
-                              <p className="text-xs text-muted-foreground">
-                                Urgent notifications via text
-                              </p>
-                            </div>
-                          </div>
-                          <Switch
-                            checked={settings?.deliveryMethods?.sms !== false}
-                            onCheckedChange={(checked) =>
-                              updateSetting("deliveryMethods", {
-                                ...(settings?.deliveryMethods || {}),
-                                sms: checked,
-                              })
-                            }
-                            disabled={!settings?.enableNotifications}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between p-3 border rounded-lg">
-                          <div className="flex items-center gap-3">
-                            <Monitor className="h-4 w-4 text-purple-600" />
-                            <div>
-                              <span className="font-medium">In-App</span>
-                              <p className="text-xs text-muted-foreground">
-                                Notifications within the app
-                              </p>
-                            </div>
-                          </div>
-                          <Switch
-                            checked={settings?.deliveryMethods?.inApp !== false}
-                            onCheckedChange={(checked) =>
-                              updateSetting("deliveryMethods", {
-                                ...(settings?.deliveryMethods || {}),
-                                inApp: checked,
-                              })
-                            }
-                            disabled={!settings?.enableNotifications}
-                          />
-                        </div>
-
-                        <div className="flex items-center justify-between p-3 border rounded-lg">
-                          <div className="flex items-center gap-3">
-                            <Bell className="h-4 w-4 text-orange-600" />
-                            <div>
-                              <span className="font-medium">Push</span>
-                              <p className="text-xs text-muted-foreground">
-                                Browser push notifications
-                              </p>
-                            </div>
-                          </div>
-                          <Switch
-                            checked={settings?.deliveryMethods?.push !== false}
-                            onCheckedChange={(checked) =>
-                              updateSetting("deliveryMethods", {
-                                ...(settings?.deliveryMethods || {}),
-                                push: checked,
-                              })
-                            }
-                            disabled={!settings?.enableNotifications}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Timing & Frequency */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Clock className="h-5 w-5" />
-                      Timing & Frequency
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <div className="space-y-3">
-                        <Label>Notification Frequency</Label>
+                      <div>
+                        <Label htmlFor="timezone">Timezone</Label>
                         <Select
-                          value={settings?.notificationFrequency || "immediate"}
+                          value={settings.timezone || "America/New_York"}
                           onValueChange={(value) =>
-                            updateSetting("notificationFrequency", value)
+                            updateSetting("timezone", value)
                           }
-                          disabled={!settings?.enableNotifications}
                         >
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="immediate">Immediate</SelectItem>
-                            <SelectItem value="hourly">
-                              Hourly Digest
+                            <SelectItem value="America/New_York">
+                              Eastern Time
                             </SelectItem>
-                            <SelectItem value="daily">Daily Digest</SelectItem>
-                            <SelectItem value="weekly">
-                              Weekly Summary
+                            <SelectItem value="America/Chicago">
+                              Central Time
+                            </SelectItem>
+                            <SelectItem value="America/Denver">
+                              Mountain Time
+                            </SelectItem>
+                            <SelectItem value="America/Los_Angeles">
+                              Pacific Time
                             </SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
-
-                      <div className="space-y-3">
-                        <Label>Digest Time (for batched notifications)</Label>
-                        <Input
-                          type="time"
-                          value={settings?.digestTime || "09:00"}
-                          onChange={(e) =>
-                            updateSetting("digestTime", e.target.value)
-                          }
-                          disabled={
-                            !settings?.enableNotifications ||
-                            settings?.notificationFrequency === "immediate"
-                          }
-                        />
-                      </div>
-                    </div>
-
-                    {/* Do Not Disturb */}
-                    <div className="pt-4 border-t space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <Label className="text-base">Do Not Disturb</Label>
-                          <p className="text-sm text-muted-foreground">
-                            Set quiet hours for notifications
-                          </p>
-                        </div>
-                        <Switch
-                          checked={settings?.doNotDisturb?.enabled !== false}
-                          onCheckedChange={(checked) =>
-                            updateSetting("doNotDisturb", {
-                              ...(settings?.doNotDisturb || {}),
-                              enabled: checked,
-                            })
-                          }
-                          disabled={!settings?.enableNotifications}
-                        />
-                      </div>
-
-                      {settings?.doNotDisturb?.enabled && (
-                        <div className="grid gap-4 md:grid-cols-2 pl-6">
-                          <div>
-                            <Label>Start Time</Label>
-                            <Input
-                              type="time"
-                              value={
-                                settings?.doNotDisturb?.startTime || "22:00"
-                              }
-                              onChange={(e) =>
-                                updateSetting("doNotDisturb", {
-                                  ...(settings?.doNotDisturb || {}),
-                                  startTime: e.target.value,
-                                })
-                              }
-                            />
-                          </div>
-                          <div>
-                            <Label>End Time</Label>
-                            <Input
-                              type="time"
-                              value={settings?.doNotDisturb?.endTime || "08:00"}
-                              onChange={(e) =>
-                                updateSetting("doNotDisturb", {
-                                  ...(settings?.doNotDisturb || {}),
-                                  endTime: e.target.value,
-                                })
-                              }
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Contact Information */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Users className="h-5 w-5" />
-                      Contact Information
-                    </CardTitle>
-                    <CardDescription>
-                      Required for email and SMS notifications
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid gap-4 md:grid-cols-2">
                       <div>
-                        <Label htmlFor="notificationEmail">Email Address</Label>
-                        <Input
-                          id="notificationEmail"
-                          type="email"
-                          value={settings?.email || ""}
-                          onChange={(e) =>
-                            updateSetting("email", e.target.value)
+                        <Label htmlFor="currency">Currency</Label>
+                        <Select
+                          value={settings.currency || "USD"}
+                          onValueChange={(value) =>
+                            updateSetting("currency", value)
                           }
-                          placeholder="your.email@example.com"
-                        />
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="USD">USD ($)</SelectItem>
+                            <SelectItem value="CAD">CAD ($)</SelectItem>
+                            <SelectItem value="EUR">EUR (€)</SelectItem>
+                            <SelectItem value="GBP">GBP (£)</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                       <div>
-                        <Label htmlFor="notificationPhone">Phone Number</Label>
-                        <Input
-                          id="notificationPhone"
-                          type="tel"
-                          value={settings?.phone || ""}
-                          onChange={(e) =>
-                            updateSetting("phone", e.target.value)
+                        <Label htmlFor="dateFormat">Date Format</Label>
+                        <Select
+                          value={settings.dateFormat || "MM/DD/YYYY"}
+                          onValueChange={(value) =>
+                            updateSetting("dateFormat", value)
                           }
-                          placeholder="+1 (555) 123-4567"
-                        />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Recent Notifications */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Activity className="h-5 w-5" />
-                        Recent Notifications
-                      </div>
-                      <Button variant="outline" size="sm">
-                        <Trash2 className="h-4 w-4 mr-2" />
-                        Clear All
-                      </Button>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      <div className="flex items-start gap-3 p-3 border rounded-lg">
-                        <CheckCircle className="h-4 w-4 text-green-600 mt-0.5" />
-                        <div className="flex-1">
-                          <p className="text-sm font-medium">
-                            Project "Kitchen Renovation" completed
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            2 hours ago • Project Updates
-                          </p>
-                        </div>
-                        <Badge variant="secondary" className="text-xs">
-                          New
-                        </Badge>
-                      </div>
-
-                      <div className="flex items-start gap-3 p-3 border rounded-lg bg-muted/50">
-                        <AlertTriangle className="h-4 w-4 text-yellow-600 mt-0.5" />
-                        <div className="flex-1">
-                          <p className="text-sm font-medium">
-                            System maintenance scheduled
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            1 day ago • System Alerts
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3 p-3 border rounded-lg bg-muted/50">
-                        <Mail className="h-4 w-4 text-blue-600 mt-0.5" />
-                        <div className="flex-1">
-                          <p className="text-sm font-medium">
-                            New message from John Smith
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            3 days ago • Communications
-                          </p>
-                        </div>
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="MM/DD/YYYY">
+                              MM/DD/YYYY
+                            </SelectItem>
+                            <SelectItem value="DD/MM/YYYY">
+                              DD/MM/YYYY
+                            </SelectItem>
+                            <SelectItem value="YYYY-MM-DD">
+                              YYYY-MM-DD
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                     </div>
                   </CardContent>
@@ -1045,24 +793,547 @@ export default function Settings() {
               </div>
             )}
 
-            {/* Placeholder for other tabs */}
-            {activeTab !== "general" && activeTab !== "notifications" && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Coming Soon</CardTitle>
-                  <CardDescription>
-                    This section is currently under development
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    The{" "}
-                    {navigationTabs.find((tab) => tab.id === activeTab)?.label}{" "}
-                    section will be available soon.
-                  </p>
-                </CardContent>
-              </Card>
+            {/* Project Settings */}
+            {activeTab === "project" && (
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Automation Settings</CardTitle>
+                    <CardDescription>
+                      Configure automatic actions for your projects
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label>Auto-post to Facebook</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Automatically post completed projects to Facebook
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.autoPostFacebook || false}
+                        onCheckedChange={(checked) =>
+                          updateSetting("autoPostFacebook", checked)
+                        }
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label>Auto-post to Google My Business</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Automatically post completed projects to Google My
+                          Business
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.autoPostGoogleMyBusiness || false}
+                        onCheckedChange={(checked) =>
+                          updateSetting("autoPostGoogleMyBusiness", checked)
+                        }
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label>AI-generated descriptions</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Use AI to generate project descriptions
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.aiPromptForDescriptions || false}
+                        onCheckedChange={(checked) =>
+                          updateSetting("aiPromptForDescriptions", checked)
+                        }
+                      />
+                    </div>
+
+                    {settings.aiPromptForDescriptions && (
+                      <div className="pt-4 border-t">
+                        <Label htmlFor="aiProjectRewritePrompt">
+                          AI Project Rewrite Prompt
+                        </Label>
+                        <Textarea
+                          id="aiProjectRewritePrompt"
+                          value={settings.aiProjectRewritePrompt || ""}
+                          onChange={(e) =>
+                            updateSetting(
+                              "aiProjectRewritePrompt",
+                              e.target.value,
+                            )
+                          }
+                          placeholder="Enter your custom AI prompt for rewriting project descriptions..."
+                          className="mt-1"
+                        />
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label>Auto-archive projects after completion</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Automatically archive completed projects after
+                          specified days
+                        </p>
+                      </div>
+                      <div className="w-24">
+                        <Select
+                          value={(settings.autoArchiveDays || 30).toString()}
+                          onValueChange={(value) =>
+                            updateSetting("autoArchiveDays", parseInt(value))
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="7">7 days</SelectItem>
+                            <SelectItem value="14">14 days</SelectItem>
+                            <SelectItem value="30">30 days</SelectItem>
+                            <SelectItem value="60">60 days</SelectItem>
+                            <SelectItem value="90">90 days</SelectItem>
+                            <SelectItem value="0">Never</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             )}
+
+            {/* Integrations */}
+            {activeTab === "integrations" && (
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Social Media Integrations</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between p-4 border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                          <span className="text-blue-600 font-bold">f</span>
+                        </div>
+                        <div>
+                          <h3 className="font-medium">Facebook</h3>
+                          <p className="text-sm text-muted-foreground">
+                            {settings.facebookConnected
+                              ? "Connected to your Facebook account"
+                              : "Connect to automatically post completed projects"}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {settings.facebookConnected && (
+                          <Badge variant="default" className="gap-1">
+                            <CheckCircle className="h-3 w-3" />
+                            Connected
+                          </Badge>
+                        )}
+                        <Button
+                          variant={
+                            settings.facebookConnected ? "outline" : "default"
+                          }
+                          onClick={() => {
+                            if (settings.facebookConnected) {
+                              updateSetting("facebookConnected", false);
+                              toast.success("Facebook disconnected");
+                            } else {
+                              updateSetting("facebookConnected", true);
+                              toast.success("Facebook connected");
+                            }
+                          }}
+                        >
+                          {settings.facebookConnected ? (
+                            <>
+                              <X className="h-4 w-4 mr-2" />
+                              Disconnect
+                            </>
+                          ) : (
+                            <>
+                              <ExternalLink className="h-4 w-4 mr-2" />
+                              Connect Facebook
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between p-4 border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="h-10 w-10 bg-red-100 rounded-lg flex items-center justify-center">
+                          <span className="text-red-600 font-bold">G</span>
+                        </div>
+                        <div>
+                          <h3 className="font-medium">Google My Business</h3>
+                          <p className="text-sm text-muted-foreground">
+                            {settings.googleMyBusinessConnected
+                              ? "Connected to your Google My Business account"
+                              : "Connect to automatically post completed projects"}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {settings.googleMyBusinessConnected && (
+                          <Badge variant="default" className="gap-1">
+                            <CheckCircle className="h-3 w-3" />
+                            Connected
+                          </Badge>
+                        )}
+                        <Button
+                          variant={
+                            settings.googleMyBusinessConnected
+                              ? "outline"
+                              : "default"
+                          }
+                          onClick={() => {
+                            if (settings.googleMyBusinessConnected) {
+                              updateSetting("googleMyBusinessConnected", false);
+                              toast.success("Google My Business disconnected");
+                            } else {
+                              updateSetting("googleMyBusinessConnected", true);
+                              toast.success("Google My Business connected");
+                            }
+                          }}
+                        >
+                          {settings.googleMyBusinessConnected ? (
+                            <>
+                              <X className="h-4 w-4 mr-2" />
+                              Disconnect
+                            </>
+                          ) : (
+                            <>
+                              <ExternalLink className="h-4 w-4 mr-2" />
+                              Connect Google
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>GoHighLevel Integration</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label htmlFor="goHighLevelApiKey">API Key</Label>
+                      <div className="flex gap-2 mt-1">
+                        <Input
+                          id="goHighLevelApiKey"
+                          type="password"
+                          value={settings.goHighLevelApiKey || ""}
+                          onChange={(e) =>
+                            updateSetting("goHighLevelApiKey", e.target.value)
+                          }
+                          placeholder="Enter your GoHighLevel API key"
+                          className="flex-1"
+                        />
+                        <Button
+                          variant="outline"
+                          disabled={!settings.goHighLevelApiKey}
+                          onClick={() =>
+                            toast.success("Connection tested successfully")
+                          }
+                        >
+                          Test
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center justify-between">
+                      <span>Webhooks</span>
+                      <Button
+                        size="sm"
+                        onClick={() => setShowWebhookForm(true)}
+                        className="gap-2"
+                      >
+                        <Plus className="h-4 w-4" />
+                        Add Webhook
+                      </Button>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {(settings.webhooks || []).map((webhook) => (
+                        <div key={webhook.id} className="p-3 border rounded-lg">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <h4 className="font-medium">{webhook.name}</h4>
+                              <p className="text-sm text-muted-foreground">
+                                {webhook.url}
+                              </p>
+                              <div className="flex gap-1 mt-1">
+                                {(webhook.events || []).map((event) => (
+                                  <Badge
+                                    key={event}
+                                    variant="secondary"
+                                    className="text-xs"
+                                  >
+                                    {event}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Badge
+                                variant={
+                                  webhook.active ? "default" : "secondary"
+                                }
+                              >
+                                {webhook.active ? "Active" : "Inactive"}
+                              </Badge>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  setEditingWebhook(webhook);
+                                  setShowWebhookForm(true);
+                                }}
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => deleteWebhook(webhook.id)}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      {(settings.webhooks || []).length === 0 && (
+                        <p className="text-center text-muted-foreground py-8">
+                          No webhooks configured yet
+                        </p>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Webhook Form Modal */}
+                {showWebhookForm && (
+                  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-background rounded-lg shadow-lg max-w-md w-full p-6">
+                      <h3 className="text-lg font-semibold mb-4">
+                        {editingWebhook ? "Edit Webhook" : "Add Webhook"}
+                      </h3>
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          const formData = new FormData(e.currentTarget);
+                          const webhook = {
+                            name: (formData.get("name") as string) || "",
+                            url: (formData.get("url") as string) || "",
+                            events: ((formData.get("events") as string) || "")
+                              .split(",")
+                              .map((e) => e.trim())
+                              .filter((e) => e.length > 0),
+                            active: formData.get("active") === "on",
+                          };
+                          if (editingWebhook) {
+                            updateWebhook(editingWebhook.id, webhook);
+                          } else {
+                            addWebhook(webhook);
+                          }
+                        }}
+                      >
+                        <div className="space-y-4">
+                          <div>
+                            <Label htmlFor="webhookName">Name</Label>
+                            <Input
+                              id="webhookName"
+                              name="name"
+                              defaultValue={editingWebhook?.name || ""}
+                              placeholder="Webhook name"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="webhookUrl">URL</Label>
+                            <Input
+                              id="webhookUrl"
+                              name="url"
+                              type="url"
+                              defaultValue={editingWebhook?.url || ""}
+                              placeholder="https://example.com/webhook"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="webhookEvents">
+                              Events (comma-separated)
+                            </Label>
+                            <Input
+                              id="webhookEvents"
+                              name="events"
+                              defaultValue={
+                                Array.isArray(editingWebhook?.events)
+                                  ? editingWebhook.events.join(", ")
+                                  : ""
+                              }
+                              placeholder="project.created, project.completed"
+                              required
+                            />
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              id="webhookActive"
+                              name="active"
+                              defaultChecked={editingWebhook?.active !== false}
+                            />
+                            <Label htmlFor="webhookActive">Active</Label>
+                          </div>
+                        </div>
+                        <div className="flex justify-end gap-2 mt-6">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                              setShowWebhookForm(false);
+                              setEditingWebhook(null);
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                          <Button type="submit">
+                            {editingWebhook ? "Update" : "Add"} Webhook
+                          </Button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* AI Assistant */}
+            {activeTab === "ai" && (
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>AI Template Configuration</CardTitle>
+                    <CardDescription>
+                      Configure AI prompts and templates for generating content
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label htmlFor="aiPromptTemplate">
+                        AI Prompt Template
+                      </Label>
+                      <Textarea
+                        id="aiPromptTemplate"
+                        value={settings.aiPromptTemplate || ""}
+                        onChange={(e) =>
+                          updateSetting("aiPromptTemplate", e.target.value)
+                        }
+                        placeholder="Create a professional description for a {PROJECT_TYPE} project..."
+                        className="mt-1"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="aiInstructions">AI Instructions</Label>
+                      <Textarea
+                        id="aiInstructions"
+                        value={settings.aiInstructions || ""}
+                        onChange={(e) =>
+                          updateSetting("aiInstructions", e.target.value)
+                        }
+                        placeholder="Write engaging, professional descriptions..."
+                        className="mt-1"
+                      />
+                    </div>
+
+                    <div>
+                      <Label>AI Variables</Label>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {(settings.aiVariables || []).map((variable, index) => (
+                          <Badge
+                            key={index}
+                            variant="secondary"
+                            className="gap-1 pr-1"
+                          >
+                            {variable}
+                            <button
+                              onClick={() => removeAiVariable(index)}
+                              className="hover:bg-red-100 rounded p-0.5"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </Badge>
+                        ))}
+                      </div>
+                      <div className="flex gap-2 mt-2">
+                        <Input
+                          placeholder="Add new variable"
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              const input = e.target as HTMLInputElement;
+                              if (input.value) {
+                                addAiVariable(input.value);
+                                input.value = "";
+                              }
+                            }
+                          }}
+                        />
+                        <Button
+                          variant="outline"
+                          onClick={(e) => {
+                            const input = (e.target as HTMLElement)
+                              .previousElementSibling as HTMLInputElement;
+                            if (input?.value) {
+                              addAiVariable(input.value);
+                              input.value = "";
+                            }
+                          }}
+                        >
+                          Add
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
+            {/* Continue with other tabs... */}
+            {activeTab !== "general" &&
+              activeTab !== "project" &&
+              activeTab !== "integrations" &&
+              activeTab !== "ai" && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Coming Soon</CardTitle>
+                    <CardDescription>
+                      This section is currently under development
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground">
+                      The{" "}
+                      {
+                        navigationTabs.find((tab) => tab.id === activeTab)
+                          ?.label
+                      }{" "}
+                      section will be available soon.
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
           </div>
         </div>
       </div>
