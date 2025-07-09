@@ -74,16 +74,31 @@ export default function ReviewGate() {
   }, [id]);
 
   const generateSeoReview = (originalText: string, request: ReviewRequest) => {
+    // Simulate AI enhancement using the configured prompt
+    // In real implementation, this would call an AI service with the custom prompt
+
+    const aiPrompt = `You are helping enhance customer reviews to be more discoverable and helpful. Take the customer's original review and enhance it by: 1) Adding location-specific keywords (${request.businessCity}, ${request.businessState}), 2) Including relevant service categories (${request.serviceCategory}), 3) Making it more descriptive while keeping the customer's authentic voice, 4) Adding helpful details that would assist other potential customers. Keep the enhancement natural and genuine.`;
+
     if (!originalText) {
+      // Generate a template review when no original text exists
       const templates = [
-        `Exceptional ${request.serviceCategory.toLowerCase()} service in ${request.businessCity}, ${request.businessState}! ${request.businessName} delivered outstanding ${request.seoKeywords[0]} work that exceeded our expectations. Their attention to detail and professional approach made this project seamless. Highly recommend their ${request.seoKeywords.slice(0, 2).join(" and ")} services to anyone in the ${request.businessCity} area!`,
+        `Outstanding ${request.serviceCategory.toLowerCase()} experience with ${request.businessName} in ${request.businessCity}, ${request.businessState}! Their professional team exceeded our expectations with exceptional ${request.seoKeywords[0]} work. The attention to detail and quality craftsmanship made this project seamless from start to finish. Highly recommend their ${request.seoKeywords.slice(0, 2).join(" and ")} services to anyone in the ${request.businessCity} area looking for reliable contractors!`,
+
+        `Excellent service from ${request.businessName}! Their ${request.serviceCategory.toLowerCase()} expertise in ${request.businessCity} is top-notch. The team's professionalism and ${request.seoKeywords[0]} skills made our project a complete success. Quality work, fair pricing, and great communication throughout. Perfect choice for ${request.seoKeywords.slice(0, 2).join(" or ")} in ${request.businessState}!`,
       ];
-      return templates[0];
+      return templates[Math.floor(Math.random() * templates.length)];
     } else {
-      const templates = [
-        `Exceptional ${request.serviceCategory.toLowerCase()} service in ${request.businessCity}, ${request.businessState}! ${request.businessName} delivered outstanding ${request.seoKeywords[0]} work. ${originalText.replace(/[.!]$/, "")} and exceeded our expectations. Highly recommend their ${request.seoKeywords.slice(0, 2).join(" and ")} services to anyone in the ${request.businessCity} area!`,
+      // Enhance the customer's original text with SEO elements
+      const enhancedVersions = [
+        `${originalText.replace(/[.!]$/, "")} - ${request.businessName} in ${request.businessCity}, ${request.businessState} truly excels at ${request.serviceCategory.toLowerCase()}. Their ${request.seoKeywords[0]} expertise and professional approach made this entire experience exceptional. I highly recommend their ${request.seoKeywords.slice(0, 2).join(" and ")} services to anyone in the ${request.businessCity} area!`,
+
+        `Outstanding ${request.serviceCategory.toLowerCase()} service in ${request.businessCity}! ${originalText} ${request.businessName}'s team demonstrated excellent ${request.seoKeywords[0]} skills and attention to detail. Their professionalism and quality work make them the perfect choice for ${request.seoKeywords.slice(0, 2).join(" or ")} throughout ${request.businessState}.`,
+
+        `${originalText.replace(/[.!]$/, "")} ${request.businessName} provides exceptional ${request.serviceCategory.toLowerCase()} services in ${request.businessCity}, ${request.businessState}. Their expertise in ${request.seoKeywords[0]} and commitment to quality made our project a complete success. Highly recommend to neighbors in the ${request.businessCity} area!`,
       ];
-      return templates[0];
+      return enhancedVersions[
+        Math.floor(Math.random() * enhancedVersions.length)
+      ];
     }
   };
 
