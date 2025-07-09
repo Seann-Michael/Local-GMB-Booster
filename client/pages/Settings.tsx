@@ -120,6 +120,7 @@ interface SettingsData {
   reviewReminderDays: number;
   autoRequestReviews: boolean;
   reviewEmailTemplate: string;
+  reviewSmsTemplate: string;
   minimumProjectValue: number;
   reviewAiPrompt: string;
   reviewGateTitle: string;
