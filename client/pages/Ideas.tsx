@@ -771,7 +771,7 @@ export default function Ideas() {
                 </Button>
               </div>
 
-              <div className="grid gap-6 lg:grid-cols-3">
+              <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
                 {/* Planned */}
                 <div>
                   <div className="bg-gray-50 rounded-t-lg p-4 border-l-4 border-teal-500">
@@ -952,11 +952,11 @@ export default function Ideas() {
                 {filteredIdeas.map((idea) => (
                   <div
                     key={idea.id}
-                    className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow"
+                    className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 hover:shadow-md transition-shadow"
                   >
-                    <div className="flex gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4">
                       {/* Vote Section */}
-                      <div className="flex flex-col items-center">
+                      <div className="flex sm:flex-col items-center sm:items-center justify-center sm:justify-start">
                         <Button
                           variant={idea.userVoted ? "default" : "outline"}
                           size="sm"
@@ -969,11 +969,11 @@ export default function Ideas() {
                       </div>
 
                       {/* Content */}
-                      <div className="flex-1">
-                        <div className="flex items-start justify-between mb-3">
-                          <div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
+                          <div className="min-w-0 flex-1">
                             <h3
-                              className="text-lg font-medium text-gray-900 mb-2 cursor-pointer hover:text-green-600 transition-colors"
+                              className="text-base sm:text-lg font-medium text-gray-900 mb-2 cursor-pointer hover:text-green-600 transition-colors"
                               onClick={() => navigate(`/ideas/${idea.id}`)}
                             >
                               {idea.title}
@@ -982,11 +982,13 @@ export default function Ideas() {
                               {idea.description}
                             </p>
                           </div>
-                          {getStatusBadge(idea.status)}
+                          <div className="flex-shrink-0">
+                            {getStatusBadge(idea.status)}
+                          </div>
                         </div>
 
-                        <div className="flex items-center justify-between text-xs text-gray-500">
-                          <div className="flex items-center gap-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-gray-500">
+                          <div className="flex flex-wrap items-center gap-2 sm:gap-4">
                             <span className="flex items-center gap-1">
                               <User className="h-3 w-3" />
                               {idea.author}
