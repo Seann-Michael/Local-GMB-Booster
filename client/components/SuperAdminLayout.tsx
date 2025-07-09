@@ -90,6 +90,12 @@ export function SuperAdminLayout({
       active: location.pathname.startsWith("/super-admin/staff"),
     },
     {
+      label: "Ideas Management",
+      href: "/super-admin/ideas",
+      icon: Lightbulb,
+      active: location.pathname.startsWith("/super-admin/ideas"),
+    },
+    {
       label: "Financial Dashboard",
       href: "/super-admin/financial",
       icon: DollarSign,
