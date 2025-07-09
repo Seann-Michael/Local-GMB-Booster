@@ -812,20 +812,93 @@ export default function Settings() {
                     <h4 className="font-medium">Review Collection Settings</h4>
                     <div className="grid gap-4 md:grid-cols-2">
                       <div className="space-y-2">
-                        <Label>Rating Threshold for Google Reviews</Label>
-                        <Select defaultValue="4">
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="3">3 Stars and Above</SelectItem>
-                            <SelectItem value="4">4 Stars and Above</SelectItem>
-                            <SelectItem value="5">5 Stars Only</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <Label>Google Review Redirect Settings</Label>
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between p-3 border rounded-lg">
+                            <div className="flex items-center gap-3">
+                              <span className="text-sm font-medium">
+                                1 Star Reviews
+                              </span>
+                              <div className="flex gap-1">
+                                {[1].map((star) => (
+                                  <Star
+                                    key={star}
+                                    className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                            <Switch defaultChecked={false} />
+                          </div>
+                          <div className="flex items-center justify-between p-3 border rounded-lg">
+                            <div className="flex items-center gap-3">
+                              <span className="text-sm font-medium">
+                                2 Star Reviews
+                              </span>
+                              <div className="flex gap-1">
+                                {[1, 2].map((star) => (
+                                  <Star
+                                    key={star}
+                                    className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                            <Switch defaultChecked={false} />
+                          </div>
+                          <div className="flex items-center justify-between p-3 border rounded-lg">
+                            <div className="flex items-center gap-3">
+                              <span className="text-sm font-medium">
+                                3 Star Reviews
+                              </span>
+                              <div className="flex gap-1">
+                                {[1, 2, 3].map((star) => (
+                                  <Star
+                                    key={star}
+                                    className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                            <Switch defaultChecked={false} />
+                          </div>
+                          <div className="flex items-center justify-between p-3 border rounded-lg">
+                            <div className="flex items-center gap-3">
+                              <span className="text-sm font-medium">
+                                4 Star Reviews
+                              </span>
+                              <div className="flex gap-1">
+                                {[1, 2, 3, 4].map((star) => (
+                                  <Star
+                                    key={star}
+                                    className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                            <Switch defaultChecked={true} />
+                          </div>
+                          <div className="flex items-center justify-between p-3 border rounded-lg">
+                            <div className="flex items-center gap-3">
+                              <span className="text-sm font-medium">
+                                5 Star Reviews
+                              </span>
+                              <div className="flex gap-1">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                  <Star
+                                    key={star}
+                                    className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                            <Switch defaultChecked={true} />
+                          </div>
+                        </div>
                         <p className="text-xs text-muted-foreground">
-                          Customers with this rating or higher will be
-                          redirected to leave a Google review
+                          Toggle which star ratings should redirect customers to
+                          leave a Google review. Lower ratings can be captured
+                          internally for feedback.
                         </p>
                       </div>
                       <div className="space-y-2">
