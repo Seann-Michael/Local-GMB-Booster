@@ -81,6 +81,7 @@ export function AppLayout({ children }: AppLayoutProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [profileSearchQuery, setProfileSearchQuery] = useState("");
+  const [businessName, setBusinessName] = useState("");
 
   const handleBusinessSwitch = (businessId: string) => {
     if (switchToBusiness(businessId)) {
