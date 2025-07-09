@@ -205,7 +205,6 @@ const navigationTabs = [
   { id: "project", label: "Project Settings", icon: SettingsIcon },
   { id: "integrations", label: "Integrations", icon: Globe },
   { id: "ai", label: "AI Assistant", icon: Bot },
-  { id: "webhooks", label: "Webhooks", icon: Webhook },
   { id: "tags", label: "Tags", icon: Tag },
   { id: "media", label: "Media Settings", icon: Image },
   { id: "reviews", label: "Review Settings", icon: Star },
