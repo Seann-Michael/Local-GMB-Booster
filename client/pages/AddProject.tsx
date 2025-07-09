@@ -17,15 +17,17 @@ import {
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import type { ProjectInfo } from "@/lib/mediaMetadata";
 
-interface TaggedPhoto {
+interface EnhancedPhoto {
   url: string;
-  tags: string[];
+  metadata: any;
+  enhancedFileName: string;
 }
 
 export default function AddProject() {
   const navigate = useNavigate();
-  const [photos, setPhotos] = useState<TaggedPhoto[]>([]);
+  const [photos, setPhotos] = useState<EnhancedPhoto[]>([]);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
