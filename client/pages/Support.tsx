@@ -607,6 +607,126 @@ export default function Support() {
           </CardContent>
         </Card>
 
+        {/* Error Logs Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Activity className="h-5 w-5" />
+                System Logs & Error Tracking
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm">
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                  Refresh
+                </Button>
+                <Button variant="outline" size="sm">
+                  <Download className="h-4 w-4 mr-2" />
+                  Export Logs
+                </Button>
+              </div>
+            </CardTitle>
+            <CardDescription>
+              Recent system activities and error logs for troubleshooting
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div>
+                  <h4 className="font-medium mb-2">Recent Errors</h4>
+                  <div className="space-y-2">
+                    <div className="flex items-start gap-2 p-2 border border-red-200 bg-red-50 rounded">
+                      <AlertTriangle className="h-4 w-4 text-red-600 mt-0.5" />
+                      <div className="text-sm">
+                        <div className="font-medium text-red-800">
+                          API Connection Failed
+                        </div>
+                        <div className="text-red-600">
+                          Unable to connect to webhook endpoint
+                        </div>
+                        <div className="text-red-500 text-xs">
+                          2 minutes ago
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2 p-2 border border-yellow-200 bg-yellow-50 rounded">
+                      <Clock className="h-4 w-4 text-yellow-600 mt-0.5" />
+                      <div className="text-sm">
+                        <div className="font-medium text-yellow-800">
+                          Session Timeout Warning
+                        </div>
+                        <div className="text-yellow-600">
+                          User session expiring soon
+                        </div>
+                        <div className="text-yellow-500 text-xs">
+                          15 minutes ago
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-medium mb-2">System Activity</h4>
+                  <div className="space-y-2">
+                    <div className="flex items-start gap-2 p-2 border border-green-200 bg-green-50 rounded">
+                      <CheckCircle className="h-4 w-4 text-green-600 mt-0.5" />
+                      <div className="text-sm">
+                        <div className="font-medium text-green-800">
+                          Backup Completed
+                        </div>
+                        <div className="text-green-600">
+                          Daily system backup successful
+                        </div>
+                        <div className="text-green-500 text-xs">1 hour ago</div>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2 p-2 border border-blue-200 bg-blue-50 rounded">
+                      <FileText className="h-4 w-4 text-blue-600 mt-0.5" />
+                      <div className="text-sm">
+                        <div className="font-medium text-blue-800">
+                          Log File Rotated
+                        </div>
+                        <div className="text-blue-600">
+                          System logs archived
+                        </div>
+                        <div className="text-blue-500 text-xs">3 hours ago</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 p-3 border rounded bg-muted/50">
+                <h5 className="font-medium mb-2">Log Analysis Summary</h5>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                  <div>
+                    <div className="font-medium text-red-600">3 Errors</div>
+                    <div className="text-muted-foreground">Last 24h</div>
+                  </div>
+                  <div>
+                    <div className="font-medium text-yellow-600">
+                      7 Warnings
+                    </div>
+                    <div className="text-muted-foreground">Last 24h</div>
+                  </div>
+                  <div>
+                    <div className="font-medium text-green-600">
+                      245 Success
+                    </div>
+                    <div className="text-muted-foreground">Last 24h</div>
+                  </div>
+                  <div>
+                    <div className="font-medium text-blue-600">
+                      98.7% Uptime
+                    </div>
+                    <div className="text-muted-foreground">Last 7 days</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Quick Help Section */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <Card>
