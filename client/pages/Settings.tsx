@@ -670,7 +670,7 @@ export default function Settings() {
                         <Input
                           id="email"
                           type="email"
-                          value={settings.email}
+                          value={settings?.email || ""}
                           onChange={(e) =>
                             updateSetting("email", e.target.value)
                           }
@@ -680,7 +680,7 @@ export default function Settings() {
                         <Label htmlFor="phone">Business Phone</Label>
                         <Input
                           id="phone"
-                          value={settings.phone}
+                          value={settings?.phone || ""}
                           onChange={(e) =>
                             updateSetting("phone", e.target.value)
                           }
