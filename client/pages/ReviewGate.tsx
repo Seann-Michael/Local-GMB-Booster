@@ -216,23 +216,17 @@ export default function ReviewGate() {
         {/* Business Header */}
         <Card className="mb-6">
           <CardContent className="p-6">
-            <div className="flex items-center gap-4 mb-4">
+            <div className="text-center mb-4">
               {reviewRequest.businessLogo && (
                 <img
                   src={reviewRequest.businessLogo}
                   alt={`${reviewRequest.businessName} logo`}
-                  className="h-16 w-16 rounded-lg object-cover"
+                  className="h-20 w-20 rounded-lg object-cover mx-auto mb-3"
                 />
               )}
-              <div>
-                <h1 className="text-2xl font-bold">
-                  {reviewRequest.businessName}
-                </h1>
-                <p className="text-muted-foreground flex items-center gap-1">
-                  <MapPin className="h-4 w-4" />
-                  {reviewRequest.businessAddress}
-                </p>
-              </div>
+              <h1 className="text-2xl font-bold">
+                {reviewRequest.businessName}
+              </h1>
             </div>
             <div className="bg-blue-50 rounded-lg p-4">
               <h3 className="font-medium mb-1">
