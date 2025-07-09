@@ -2595,6 +2595,192 @@ export default function SuperAdminSettings() {
               </Card>
             )}
 
+            {/* Review System Settings */}
+            {activeTab === "reviews" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Review System Configuration</CardTitle>
+                  <CardDescription>
+                    Manage review collection, thresholds, and integrations
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Global Review Settings */}
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Global Review Settings</h4>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label>Default Rating Threshold</Label>
+                        <Select defaultValue="4">
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="3">3 Stars</SelectItem>
+                            <SelectItem value="4">4 Stars</SelectItem>
+                            <SelectItem value="5">5 Stars</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <p className="text-xs text-muted-foreground">
+                          Minimum rating to redirect to Google Reviews
+                        </p>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Review Link Expiration (days)</Label>
+                        <Input type="number" defaultValue="30" />
+                        <p className="text-xs text-muted-foreground">
+                          How long review links remain active
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  {/* Twilio Configuration */}
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Twilio SMS Configuration</h4>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label>Account SID</Label>
+                        <Input
+                          type="password"
+                          placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Auth Token</Label>
+                        <Input type="password" placeholder="Enter auth token" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Phone Number</Label>
+                        <Input placeholder="+1234567890" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Webhook URL</Label>
+                        <Input placeholder="https://your-domain.com/webhook" />
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Button variant="outline" size="sm">
+                        Test Connection
+                      </Button>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                        <span className="text-sm text-muted-foreground">
+                          Not configured
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  {/* Google Maps API */}
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Google Maps API</h4>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label>API Key</Label>
+                        <Input
+                          type="password"
+                          placeholder="AIza...your-api-key"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Places API</Label>
+                        <div className="flex items-center gap-2 mt-2">
+                          <Switch defaultChecked />
+                          <span className="text-sm">Enable Places API</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  {/* Review Templates */}
+                  <div className="space-y-4">
+                    <h4 className="font-medium">SMS Templates</h4>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>Review Request Message</Label>
+                        <Textarea
+                          placeholder="Hi {customerName}, thanks for choosing {businessName}! We'd love your feedback on {projectName}. Please click: {reviewLink}"
+                          className="min-h-[80px]"
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          Available variables: {"{customerName}"},{" "}
+                          {"{businessName}"}, {"{projectName}"},{" "}
+                          {"{reviewLink}"}
+                        </p>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Follow-up Message (optional)</Label>
+                        <Textarea
+                          placeholder="Hi {customerName}, we noticed you haven't left a review yet. Your feedback helps us improve!"
+                          className="min-h-[60px]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  {/* SEO Enhancement */}
+                  <div className="space-y-4">
+                    <h4 className="font-medium">SEO Enhancement Settings</h4>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label>Enable SEO Review Optimization</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Automatically enhance reviews with SEO-friendly text
+                          </p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Default Keywords (comma separated)</Label>
+                        <Input placeholder="contractor, renovation, construction, local business" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Business Categories</Label>
+                        <Input placeholder="Home Improvement, Construction, Renovation Services" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  {/* Analytics & Reporting */}
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Analytics & Reporting</h4>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label>Track Review Performance</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Monitor completion rates and trends
+                          </p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label>Google Reviews Integration</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Sync with Google My Business reviews
+                          </p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             {/* Database Settings */}
             {activeTab === "database" && (
               <Card>
