@@ -600,7 +600,7 @@ export default function Settings() {
                       <Label htmlFor="subAccountId">Sub Account ID</Label>
                       <Input
                         id="subAccountId"
-                        value={settings.subAccountId}
+                        value={settings?.subAccountId || ""}
                         readOnly
                         className="bg-muted"
                         title="This is your unique sub account identifier"
@@ -649,7 +649,7 @@ export default function Settings() {
                         <Label htmlFor="businessName">Business Name</Label>
                         <Input
                           id="businessName"
-                          value={settings.businessName}
+                          value={settings?.businessName || ""}
                           onChange={(e) =>
                             updateSetting("businessName", e.target.value)
                           }
@@ -659,7 +659,7 @@ export default function Settings() {
                         <Label htmlFor="contactName">Contact Name</Label>
                         <Input
                           id="contactName"
-                          value={settings.contactName}
+                          value={settings?.contactName || ""}
                           onChange={(e) =>
                             updateSetting("contactName", e.target.value)
                           }
