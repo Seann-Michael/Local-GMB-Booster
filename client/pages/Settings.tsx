@@ -61,6 +61,9 @@ import {
   MessageSquare,
   Smartphone,
   Monitor,
+  Info,
+  Ban,
+  XCircle,
 } from "lucide-react";
 import { toast } from "sonner";
 
