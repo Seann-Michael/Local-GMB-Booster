@@ -2602,7 +2602,7 @@ export default function Settings() {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
-                        {settings.users.map((user) => (
+                        {(settings?.users || []).map((user) => (
                           <div
                             key={user.id}
                             className="flex items-center justify-between p-4 border rounded-lg"
