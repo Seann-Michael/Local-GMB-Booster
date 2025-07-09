@@ -420,6 +420,10 @@ export default function Settings() {
       // Special handling for business name - save to localStorage immediately
       if (key === "businessName") {
         localStorage.setItem("business_name", value || "");
+        // Dispatch custom event to update UI immediately
+        window.dispatchEvent(
+          new CustomEvent("businessNameChanged", { detail: value || "" }),
+        );
       }
     } catch (error) {
       console.error(
