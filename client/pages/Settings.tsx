@@ -1740,7 +1740,7 @@ export default function Settings() {
                               <p className="text-xs text-muted-foreground">
                                 Send notifications to your email
                               </p>
-                              {settings.deliveryMethods.email && (
+                              {settings?.deliveryMethods?.email && (
                                 <Badge
                                   variant="secondary"
                                   className="mt-1 text-xs"
@@ -1776,7 +1776,7 @@ export default function Settings() {
                               <p className="text-xs text-muted-foreground">
                                 Send text messages to your phone
                               </p>
-                              {settings.deliveryMethods.sms && (
+                              {settings?.deliveryMethods?.sms && (
                                 <Badge
                                   variant="secondary"
                                   className="mt-1 text-xs"
