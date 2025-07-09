@@ -109,7 +109,10 @@ export class MediaMetadataEnhancer {
   ): MediaMetadata {
     const businessInfo = this.getBusinessInfo();
     const timestamp = new Date().toISOString();
-    const cityState = this.extractCityStateFromAddress(projectInfo.address);
+    // Use PROJECT location (city, state) extracted from project address
+    const projectCityState = this.extractCityStateFromAddress(
+      projectInfo.address,
+    );
 
     // Combine project keywords with additional tags
     const allKeywords = [
@@ -126,7 +129,7 @@ export class MediaMetadataEnhancer {
     return {
       businessName: businessInfo.businessName,
       timestamp,
-      cityState,
+      cityState: projectCityState, // This is the PROJECT location (city, state)
       keywords: allKeywords,
       tags: additionalTags,
       projectId: projectInfo.id,
