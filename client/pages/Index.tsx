@@ -62,6 +62,10 @@ export default function Index() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
   const [showFilters, setShowFilters] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
+
+  const { track, trackPageView, trackFeatureUsage } = useAnalytics();
   const [projectSort, setProjectSort] = useState<
     "all" | "starred" | "my-projects" | "archived"
   >("all");
