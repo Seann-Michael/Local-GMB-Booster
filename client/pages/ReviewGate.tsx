@@ -238,66 +238,59 @@ export default function ReviewGate() {
 
         {/* Main Question Heading */}
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900">How did we do?</h2>
+          <h2 className="text-3xl font-bold text-gray-900">
+            How did we do?
+          </h2>
         </div>
 
         {/* Business Owner Video */}
         {reviewRequest.businessOwnerVideo && (
-          <Card className="mb-6 border-0 shadow-xl bg-white/80 backdrop-blur-sm">
-            <CardContent className="p-6">
-              <div className="text-center mb-6">
-                <h3 className="font-semibold text-xl text-gray-800 mb-2">
-                  💬 A Message from {reviewRequest.businessName}
-                </h3>
-                <p className="text-gray-600">
-                  Personal thank you message from the business owner
-                </p>
-              </div>
-              <div className="relative max-w-lg mx-auto">
-                <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-2xl blur opacity-20"></div>
-                <video
-                  controls
-                  className="relative w-full rounded-xl shadow-2xl"
-                  poster="/api/placeholder/600/400"
-                >
-                  <source
-                    src={reviewRequest.businessOwnerVideo}
-                    type="video/mp4"
-                  />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 mb-8">
+            <div className="text-center mb-4">
+              <h3 className="font-medium text-gray-900 mb-2">
+                A Message from {reviewRequest.businessName}
+              </h3>
+            </div>
+            <div className="max-w-lg mx-auto">
+              <video
+                controls
+                className="w-full rounded-lg"
+                poster="/api/placeholder/600/400"
+              >
+                <source
+                  src={reviewRequest.businessOwnerVideo}
+                  type="video/mp4"
+                />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
         )}
 
         {/* Review Form */}
-        <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
-          <CardContent className="space-y-8 p-8">
+        <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-200">
+          <div className="space-y-6">
             {/* Star Rating */}
             <div className="text-center">
-              <div className="relative inline-block mb-6">
-                <div className="absolute -inset-4 bg-gradient-to-r from-yellow-400/20 to-orange-400/20 rounded-full blur-xl"></div>
-                <StarRating
-                  rating={rating}
-                  onRatingChange={handleRatingChange}
-                  size="lg"
-                  className="justify-center relative z-10"
-                />
-              </div>
+              <StarRating
+                rating={rating}
+                onRatingChange={handleRatingChange}
+                size="lg"
+                className="justify-center mb-4"
+              />
               {rating > 0 && (
-                <div className="mt-4 p-4 rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 border border-blue-100">
-                  <p className="text-gray-700 font-medium">
+                <div className="mt-4 p-3 rounded-lg bg-gray-50 border border-gray-200">
+                  <p className="text-gray-700 text-sm">
                     {rating === 1 &&
-                      "😞 We're sorry to hear that. We'd love to make this right."}
+                      "We're sorry to hear that. We'd love to make this right."}
                     {rating === 2 &&
-                      "😐 Thank you for the feedback. How can we improve?"}
+                      "Thank you for the feedback. How can we improve?"}
                     {rating === 3 &&
-                      "🙂 Thanks for your feedback. Tell us more about your experience."}
+                      "Thanks for your feedback. Tell us more about your experience."}
                     {rating === 4 &&
-                      "😊 Great! We're glad you had a good experience."}
+                      "Great! We're glad you had a good experience."}
                     {rating === 5 &&
-                      "🤩 Excellent! We're thrilled you loved our service."}
+                      "Excellent! We're thrilled you loved our service."}
                   </p>
                 </div>
               )}
