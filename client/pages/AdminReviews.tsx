@@ -268,7 +268,7 @@ export default function AdminReviews() {
           <div className="flex gap-2">
             <Button
               variant="outline"
-              onClick={() => window.open("/review-demo", "_blank")}
+              onClick={() => navigate("/review-demo")}
               className="gap-2"
             >
               <ExternalLink className="h-4 w-4" />
