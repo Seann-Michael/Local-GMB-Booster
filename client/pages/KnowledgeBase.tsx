@@ -1785,6 +1785,24 @@ Contact our billing support team:
             </div>
           </div>
         )}
+
+        {/* Status Page Section at Bottom */}
+        <div className="mt-16 pt-8 border-t bg-gray-50">
+          <div className="text-center py-8">
+            <h3 className="text-lg font-semibold mb-2">System Status</h3>
+            <p className="text-muted-foreground mb-4">
+              Check the current status of our services and any ongoing incidents
+            </p>
+            <Button
+              variant="outline"
+              onClick={() => window.open("/status", "_blank")}
+              className="gap-2"
+            >
+              <ExternalLink className="h-4 w-4" />
+              View System Status
+            </Button>
+          </div>
+        </div>
       </div>
     </LayoutComponent>
   );
