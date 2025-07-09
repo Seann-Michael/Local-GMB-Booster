@@ -355,7 +355,7 @@ const defaultSettings: SettingsData = {
       downloadUrl: "/api/invoices/inv_003/download",
     },
   ],
-  // Notification Preferences
+  // Comprehensive Notification Preferences
   enableNotifications: true,
   enableSounds: true,
   messageTypes: {
@@ -370,6 +370,15 @@ const defaultSettings: SettingsData = {
     push: true,
     inApp: true,
   },
+  notificationFrequency: "immediate",
+  digestTime: "09:00",
+  doNotDisturbEnabled: false,
+  doNotDisturbStart: "22:00",
+  doNotDisturbEnd: "08:00",
+  doNotDisturbWeekendsOnly: false,
+  autoMarkAsRead: false,
+  showPreviews: true,
+  groupSimilar: true,
   // File Optimization
   autoOptimization: true,
   compressionLevel: 80,
