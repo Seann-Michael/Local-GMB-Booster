@@ -540,41 +540,78 @@ export default function Gallery() {
           </Card>
         ) : (
           <div className="space-y-8">
-            {/* Group photos by date */}
-            {Object.entries(
-              filteredPhotos.reduce(
-                (groups, photo) => {
-                  const date = new Date(photo.uploadedAt).toLocaleDateString(
-                    "en-US",
-                    {
-                      weekday: "long",
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    },
-                  );
-                  if (!groups[date]) groups[date] = [];
-                  groups[date].push(photo);
-                  return groups;
-                },
-                {} as Record<string, PhotoWithMetadata[]>,
-              ),
-            ).map(([date, datePhotos]) => (
-              <div key={date} className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Checkbox className="rounded" />
-                  <h2 className="text-lg font-semibold">{date}</h2>
-                </div>
+            {/* Enhanced Media Viewer with Metadata */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Images className="h-5 w-5" />
+                  Media Gallery ({filteredPhotos.length} items)
+                  <Badge variant="secondary" className="ml-auto">
+                    Enhanced Metadata Available
+                  </Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <MediaViewer
+                  photos={filteredPhotos.map((photo) => ({
+                    url: photo.url,
+                    tags: photo.tags,
+                    uploadedAt: photo.uploadedAt,
+                    uploadedBy: photo.uploadedBy,
+                    isPrimary: photo.isPrimary,
+                  }))}
+                  selectedPhoto={selectedPhoto}
+                  onPhotoSelect={setSelectedPhoto}
+                  projectName="Gallery"
+                  showMetadata={true}
+                />
+              </CardContent>
+            </Card>
 
-                <div
-                  className={`grid gap-6 ${
-                    filters.thumbnailSize === "small"
-                      ? "sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
-                      : filters.thumbnailSize === "large"
-                        ? "sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3"
-                        : "sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                  }`}
-                >
+            {/* Group photos by date - Traditional View */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Calendar className="h-5 w-5" />
+                  Timeline View
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {Object.entries(
+                  filteredPhotos.reduce(
+                    (groups, photo) => {
+                      const date = new Date(photo.uploadedAt).toLocaleDateString(
+                        "en-US",
+                        {
+                          weekday: "long",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        },
+                      );
+                      if (!groups[date]) groups[date] = [];
+                      groups[date].push(photo);
+                      return groups;
+                    },
+                    {} as Record<string, PhotoWithMetadata[]>,
+                  ),
+                ).map(([date, datePhotos]) => (
+                  <div key={date} className="space-y-4 mb-8">
+                    <div className="flex items-center gap-2">
+                      <Checkbox className="rounded" />
+                      <h2 className="text-lg font-semibold">{date}</h2>
+                      <Badge variant="outline">{datePhotos.length} items</Badge>
+                    </div>
+
+                    <div
+                      className={`grid gap-6 ${
+                        filters.thumbnailSize === "small"
+                          ? "sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
+                          : filters.thumbnailSize === "large"
+                            ? "sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3"
+                            : "sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                      }`}
+                    >
                   {datePhotos.map((photo, index) => (
                     <Card key={`${date}-${index}`} className="overflow-hidden">
                       <div
