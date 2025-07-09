@@ -1310,30 +1310,1121 @@ export default function Settings() {
               </div>
             )}
 
-            {/* Continue with other tabs... */}
-            {activeTab !== "general" &&
-              activeTab !== "project" &&
-              activeTab !== "integrations" &&
-              activeTab !== "ai" && (
+            {/* Tags */}
+            {activeTab === "tags" && (
+              <div className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Coming Soon</CardTitle>
+                    <CardTitle className="flex items-center justify-between">
+                      <span>Business Tags</span>
+                      <Button
+                        size="sm"
+                        onClick={() => setShowTagForm(true)}
+                        className="gap-2"
+                      >
+                        <Plus className="h-4 w-4" />
+                        Add Tag
+                      </Button>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid gap-3">
+                      {(settings.businessTags || []).map((tag) => (
+                        <div
+                          key={tag.id}
+                          className="flex items-center justify-between p-3 border rounded-lg"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div
+                              className="w-4 h-4 rounded-full"
+                              style={{ backgroundColor: tag.color }}
+                            />
+                            <span className="font-medium">{tag.name}</span>
+                          </div>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => deleteTag(tag.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                      {(settings.businessTags || []).length === 0 && (
+                        <p className="text-center text-muted-foreground py-8">
+                          No tags created yet
+                        </p>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Tag Form Modal */}
+                {showTagForm && (
+                  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-background rounded-lg shadow-lg max-w-md w-full p-6">
+                      <h3 className="text-lg font-semibold mb-4">Add Tag</h3>
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          const formData = new FormData(e.currentTarget);
+                          const tag = {
+                            name: (formData.get("name") as string) || "",
+                            color: (formData.get("color") as string) || "#000000",
+                          };
+                          addTag(tag);
+                          setShowTagForm(false);
+                        }}
+                      >
+                        <div className="space-y-4">
+                          <div>
+                            <Label htmlFor="tagName">Tag Name</Label>
+                            <Input
+                              id="tagName"
+                              name="name"
+                              placeholder="Enter tag name"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="tagColor">Color</Label>
+                            <Input
+                              id="tagColor"
+                              name="color"
+                              type="color"
+                              defaultValue="#3b82f6"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="flex justify-end gap-2 mt-6">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => setShowTagForm(false)}
+                          >
+                            Cancel
+                          </Button>
+                          <Button type="submit">Add Tag</Button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Media Settings */}
+            {activeTab === "media" && (
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Image Settings</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label>Allowed Image Types</Label>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {(settings.allowedImageTypes || []).map((type) => (
+                          <Badge
+                            key={type}
+                            variant="secondary"
+                            className="gap-1 pr-1"
+                          >
+                            {type}
+                            <button
+                              onClick={() => {
+                                const updated = (
+                                  settings.allowedImageTypes || []
+                                ).filter((t) => t !== type);
+                                updateSetting("allowedImageTypes", updated);
+                              }}
+                              className="hover:bg-red-100 rounded p-0.5"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Video Settings</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label>Allowed Video Types</Label>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {(settings.allowedVideoTypes || []).map((type) => (
+                          <Badge
+                            key={type}
+                            variant="secondary"
+                            className="gap-1 pr-1"
+                          >
+                            {type}
+                            <button
+                              onClick={() => {
+                                const updated = (
+                                  settings.allowedVideoTypes || []
+                                ).filter((t) => t !== type);
+                                updateSetting("allowedVideoTypes", updated);
+                              }}
+                              className="hover:bg-red-100 rounded p-0.5"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="maxFileSize">
+                        Maximum File Size (MB)
+                      </Label>
+                      <Input
+                        id="maxFileSize"
+                        type="number"
+                        value={settings.maxFileSize || 10}
+                        onChange={(e) =>
+                          updateSetting("maxFileSize", parseInt(e.target.value))
+                        }
+                        min="1"
+                        max="100"
+                        className="w-32 mt-1"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
+            {/* Reviews */}
+            {activeTab === "reviews" && (
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Review Settings</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label>Enable Review Reminders</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Send automatic review request reminders
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.reviewReminderEnabled || false}
+                        onCheckedChange={(checked) =>
+                          updateSetting("reviewReminderEnabled", checked)
+                        }
+                      />
+                    </div>
+
+                    {settings.reviewReminderEnabled && (
+                      <div>
+                        <Label htmlFor="reviewReminderDays">
+                          Reminder Frequency (days)
+                        </Label>
+                        <Input
+                          id="reviewReminderDays"
+                          type="number"
+                          value={settings.reviewReminderDays || 7}
+                          onChange={(e) =>
+                            updateSetting(
+                              "reviewReminderDays",
+                              parseInt(e.target.value),
+                            )
+                          }
+                          min="1"
+                          max="30"
+                          className="w-32 mt-1"
+                        />
+                        <p className="text-sm text-muted-foreground mt-1">
+                          Send reminders every {settings.reviewReminderDays || 7}{" "}
+                          days after project completion
+                        </p>
+                      </div>
+                    )}
+
+                    <div>
+                      <Label htmlFor="reviewEmailTemplate">
+                        Review Email Template
+                      </Label>
+                      <Textarea
+                        id="reviewEmailTemplate"
+                        value={settings.reviewEmailTemplate || ""}
+                        onChange={(e) =>
+                          updateSetting("reviewEmailTemplate", e.target.value)
+                        }
+                        placeholder="Hi {CUSTOMER_NAME}, we'd love to hear about your experience..."
+                        className="mt-1"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="minimumProjectValue">
+                        Minimum Project Value for Reviews ($)
+                      </Label>
+                      <Input
+                        id="minimumProjectValue"
+                        type="number"
+                        value={settings.minimumProjectValue || 0}
+                        onChange={(e) =>
+                          updateSetting(
+                            "minimumProjectValue",
+                            parseInt(e.target.value),
+                          )
+                        }
+                        min="0"
+                        className="w-32 mt-1"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="reviewAiPrompt">
+                        AI Review Request Prompt
+                      </Label>
+                      <Textarea
+                        id="reviewAiPrompt"
+                        value={settings.reviewAiPrompt || ""}
+                        onChange={(e) =>
+                          updateSetting("reviewAiPrompt", e.target.value)
+                        }
+                        placeholder="Generate a personalized review request for this project..."
+                        className="mt-1"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Review Gate Customization</CardTitle>
                     <CardDescription>
-                      This section is currently under development
+                      Customize the review gate page that clients see
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label htmlFor="reviewGateTitle">Title</Label>
+                      <Input
+                        id="reviewGateTitle"
+                        value={settings.reviewGateTitle || ""}
+                        onChange={(e) =>
+                          updateSetting("reviewGateTitle", e.target.value)
+                        }
+                        placeholder="We'd Love Your Feedback!"
+                        className="mt-1"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="reviewGateDescription">Description</Label>
+                      <Textarea
+                        id="reviewGateDescription"
+                        value={settings.reviewGateDescription || ""}
+                        onChange={(e) =>
+                          updateSetting("reviewGateDescription", e.target.value)
+                        }
+                        placeholder="Your feedback helps us improve..."
+                        className="mt-1"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="reviewGateVideoUrl">
+                        Video URL (optional)
+                      </Label>
+                      <div className="flex gap-2 mt-1">
+                        <Input
+                          id="reviewGateVideoUrl"
+                          value={settings.reviewGateVideoUrl || ""}
+                          onChange={(e) =>
+                            updateSetting("reviewGateVideoUrl", e.target.value)
+                          }
+                          placeholder="https://youtube.com/watch?v=..."
+                        />
+                        {settings.reviewGateVideoUrl && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              updateSetting("reviewGateVideoUrl", "")
+                            }
+                          >
+                            Remove
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
+            {/* Notifications - Comprehensive System */}
+            {activeTab === "notifications" && (
+              <div className="space-y-6">
+                {/* Notification Center Overview */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Bell className="h-5 w-5" />
+                        Notification Center
+                      </div>
+                      <Badge variant="outline" className="gap-1">
+                        <CheckCircle className="h-3 w-3" />
+                        Active
+                      </Badge>
+                    </CardTitle>
+                    <CardDescription>
+                      Manage all notifications, alerts and communication
+                      preferences from this central hub
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-muted-foreground">
-                      The{" "}
-                      {
-                        navigationTabs.find((tab) => tab.id === activeTab)
-                          ?.label
-                      }{" "}
-                      section will be available soon.
-                    </p>
+                    <div className="grid gap-4 md:grid-cols-3">
+                      <div className="p-4 border rounded-lg bg-blue-50 border-blue-200">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Info className="h-4 w-4 text-blue-600" />
+                          <span className="font-medium text-blue-900">
+                            System Updates
+                          </span>
+                        </div>
+                        <p className="text-sm text-blue-700">
+                          System alerts and maintenance notifications
+                        </p>
+                        <div className="mt-2">
+                          <Badge variant="secondary" className="text-xs">
+                            3 Today
+                          </Badge>
+                        </div>
+                      </div>
+                      <div className="p-4 border rounded-lg bg-green-50 border-green-200">
+                        <div className="flex items-center gap-2 mb-2">
+                          <CheckCircle className="h-4 w-4 text-green-600" />
+                          <span className="font-medium text-green-900">
+                            Project Updates
+                          </span>
+                        </div>
+                        <p className="text-sm text-green-700">
+                          Updates on project status and milestones
+                        </p>
+                        <div className="mt-2">
+                          <Badge variant="secondary" className="text-xs">
+                            12 This Week
+                          </Badge>
+                        </div>
+                      </div>
+                      <div className="p-4 border rounded-lg bg-purple-50 border-purple-200">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Mail className="h-4 w-4 text-purple-600" />
+                          <span className="font-medium text-purple-900">
+                            Communications
+                          </span>
+                        </div>
+                        <p className="text-sm text-purple-700">
+                          Client messages and team communications
+                        </p>
+                        <div className="mt-2">
+                          <Badge variant="secondary" className="text-xs">
+                            2 Unread
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
-              )}
+
+                {/* Master Controls */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <SettingsIcon className="h-5 w-5" />
+                      Master Controls
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between p-3 border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <Bell className="h-4 w-4 text-primary" />
+                        <div>
+                          <Label className="text-base">
+                            Enable All Notifications
+                          </Label>
+                          <p className="text-sm text-muted-foreground">
+                            Master switch for all notification types
+                          </p>
+                        </div>
+                      </div>
+                      <Switch
+                        checked={settings.enableNotifications !== false}
+                        onCheckedChange={(checked) =>
+                          updateSetting("enableNotifications", checked)
+                        }
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        {settings.enableSounds ? (
+                          <Volume2 className="h-4 w-4 text-primary" />
+                        ) : (
+                          <VolumeX className="h-4 w-4 text-muted-foreground" />
+                        )}
+                        <div>
+                          <Label className="text-base">
+                            Notification Sounds
+                          </Label>
+                          <p className="text-sm text-muted-foreground">
+                            Play audio alerts for notifications
+                          </p>
+                        </div>
+                      </div>
+                      <Switch
+                        checked={settings.enableSounds !== false}
+                        onCheckedChange={(checked) =>
+                          updateSetting("enableSounds", checked)
+                        }
+                        disabled={!settings.enableNotifications}
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between p-3 border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <Monitor className="h-4 w-4 text-primary" />
+                        <div>
+                          <Label className="text-base">
+                            Desktop Notifications
+                          </Label>
+                          <p className="text-sm text-muted-foreground">
+                            Show browser notifications
+                          </p>
+                        </div>
+                      </div>
+                      <Switch
+                        checked={settings.desktopNotifications !== false}
+                        onCheckedChange={(checked) =>
+                          updateSetting("desktopNotifications", checked)
+                        }
+                        disabled={!settings.enableNotifications}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Notification Categories */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Tag className="h-5 w-5" />
+                      Notification Categories
+                    </CardTitle>
+                    <CardDescription>
+                      Control which types of notifications you receive
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-3">
+                        <h4 className="font-medium text-sm">
+                          Message Types
+                        </h4>
+                        <div className="space-y-3">
+                          {Object.entries(settings.messageTypes || {}).map(
+                            ([type, enabled]) => (
+                              <div
+                                key={type}
+                                className="flex items-center justify-between"
+                              >
+                                <div className="flex items-center gap-2">
+                                  {type === "info" && (
+                                    <Info className="h-4 w-4 text-blue-600" />
+                                  )}
+                                  {type === "warning" && (
+                                    <AlertTriangle className="h-4 w-4 text-yellow-600" />
+                                  )}
+                                  {type === "success" && (
+                                    <CheckCircle className="h-4 w-4 text-green-600" />
+                                  )}
+                                  {type === "error" && (
+                                    <AlertCircle className="h-4 w-4 text-red-600" />
+                                  )}
+                                  <span className="text-sm capitalize">
+                                    {type}
+                                  </span>
+                                </div>
+                                <Switch
+                                  checked={enabled}
+                                  onCheckedChange={(checked) => {
+                                    const newMessageTypes = {
+                                      ...(settings.messageTypes || {}),
+                                      [type]: checked,
+                                    };
+                                    updateSetting(
+                                      "messageTypes",
+                                      newMessageTypes,
+                                    );
+                                  }}
+                                  disabled={!settings.enableNotifications}
+                                />
+                              </div>
+                            ),
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <h4 className="font-medium text-sm">
+                          Categories
+                        </h4>
+                        <div className="space-y-3">
+                          {Object.entries(settings.categories || {}).map(
+                            ([category, enabled]) => (
+                              <div
+                                key={category}
+                                className="flex items-center justify-between"
+                              >
+                                <div className="flex items-center gap-2">
+                                  {category === "system" && (
+                                    <SettingsIcon className="h-4 w-4 text-gray-600" />
+                                  )}
+                                  {category === "marketing" && (
+                                    <MessageSquare className="h-4 w-4 text-purple-600" />
+                                  )}
+                                  {category === "support" && (
+                                    <Users className="h-4 w-4 text-blue-600" />
+                                  )}
+                                  {category === "emergency" && (
+                                    <AlertTriangle className="h-4 w-4 text-red-600" />
+                                  )}
+                                  <span className="text-sm capitalize">
+                                    {category}
+                                  </span>
+                                </div>
+                                <Switch
+                                  checked={enabled}
+                                  onCheckedChange={(checked) => {
+                                    const newCategories = {
+                                      ...(settings.categories || {}),
+                                      [category]: checked,
+                                    };
+                                    updateSetting("categories", newCategories);
+                                  }}
+                                  disabled={!settings.enableNotifications}
+                                />
+                              </div>
+                            ),
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Delivery Methods */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <MessageSquare className="h-5 w-5" />
+                      Delivery Methods
+                    </CardTitle>
+                    <CardDescription>
+                      Choose how you want to receive notifications
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid gap-4 md:grid-cols-2">
+                      {Object.entries(settings.deliveryMethods || {}).map(
+                        ([method, enabled]) => (
+                          <div
+                            key={method}
+                            className="flex items-center justify-between p-3 border rounded-lg"
+                          >
+                            <div className="flex items-center gap-3">
+                              {method === "email" && (
+                                <Mail className="h-4 w-4 text-blue-600" />
+                              )}
+                              {method === "sms" && (
+                                <Smartphone className="h-4 w-4 text-green-600" />
+                              )}
+                              {method === "inApp" && (
+                                <Monitor className="h-4 w-4 text-purple-600" />
+                              )}
+                              {method === "push" && (
+                                <Bell className="h-4 w-4 text-orange-600" />
+                              )}
+                              <div>
+                                <span className="font-medium capitalize">
+                                  {method === "inApp" ? "In-App" : method}
+                                </span>
+                                <p className="text-xs text-muted-foreground">
+                                  {method === "email" &&
+                                    "Get notifications via email"}
+                                  {method === "sms" &&
+                                    "Urgent notifications via text"}
+                                  {method === "inApp" &&
+                                    "Notifications within the app"}
+                                  {method === "push" &&
+                                    "Browser push notifications"}
+                                </p>
+                              </div>
+                            </div>
+                            <Switch
+                              checked={enabled}
+                              onCheckedChange={(checked) => {
+                                const newDeliveryMethods = {
+                                  ...(settings.deliveryMethods || {}),
+                                  [method]: checked,
+                                };
+                                updateSetting(
+                                  "deliveryMethods",
+                                  newDeliveryMethods,
+                                );
+                              }}
+                              disabled={!settings.enableNotifications}
+                            />
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Timing & Frequency */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Clock className="h-5 w-5" />
+                      Timing & Frequency
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-3">
+                        <Label>Notification Frequency</Label>
+                        <Select
+                          value={settings.notificationFrequency || "immediate"}
+                          onValueChange={(value) =>
+                            updateSetting("notificationFrequency", value)
+                          }
+                          disabled={!settings.enableNotifications}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="immediate">Immediate</SelectItem>
+                            <SelectItem value="hourly">
+                              Hourly Digest
+                            </SelectItem>
+                            <SelectItem value="daily">Daily Digest</SelectItem>
+                            <SelectItem value="weekly">
+                              Weekly Summary
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-3">
+                        <Label>Digest Time</Label>
+                        <Input
+                          type="time"
+                          value={settings.digestTime || "09:00"}
+                          onChange={(e) =>
+                            updateSetting("digestTime", e.target.value)
+                          }
+                          disabled={
+                            !settings.enableNotifications ||
+                            settings.notificationFrequency === "immediate"
+                          }
+                        />
+                      </div>
+                    </div>
+
+                    {/* Do Not Disturb */}
+                    <div className="pt-4 border-t space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <Label className="text-base">Do Not Disturb</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Set quiet hours for notifications
+                          </p>
+                        </div>
+                        <Switch
+                          checked={settings.doNotDisturb?.enabled !== false}
+                          onCheckedChange={(checked) =>
+                            updateSetting("doNotDisturb", {
+                              ...(settings.doNotDisturb || {}),
+                              enabled: checked,
+                            })
+                          }
+                          disabled={!settings.enableNotifications}
+                        />
+                      </div>
+
+                      {settings.doNotDisturb?.enabled && (
+                        <div className="grid gap-4 md:grid-cols-2 pl-6">
+                          <div>
+                            <Label>Start Time</Label>
+                            <Input
+                              type="time"
+                              value={
+                                settings.doNotDisturb?.startTime || "22:00"
+                              }
+                              onChange={(e) =>
+                                updateSetting("doNotDisturb", {
+                                  ...(settings.doNotDisturb || {}),
+                                  startTime: e.target.value,
+                                })
+                              }
+                            />
+                          </div>
+                          <div>
+                            <Label>End Time</Label>
+                            <Input
+                              type="time"
+                              value={settings.doNotDisturb?.endTime || "08:00"}
+                              onChange={(e) =>
+                                updateSetting("doNotDisturb", {
+                                  ...(settings.doNotDisturb || {}),
+                                  endTime: e.target.value,
+                                })
+                              }
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Advanced Settings */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Advanced Settings</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label className="text-base">Auto Mark as Read</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Automatically mark notifications as read after viewing
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.autoMarkAsRead || false}
+                        onCheckedChange={(checked) =>
+                          updateSetting("autoMarkAsRead", checked)
+                        }
+                        disabled={!settings.enableNotifications}
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label className="text-base">Show Previews</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Show notification content in previews
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.showPreviews !== false}
+                        onCheckedChange={(checked) =>
+                          updateSetting("showPreviews", checked)
+                        }
+                        disabled={!settings.enableNotifications}
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label className="text-base">
+                          Group Similar Messages
+                        </Label>
+                        <p className="text-sm text-muted-foreground">
+                          Combine similar notifications into groups
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.groupSimilar !== false}
+                        onCheckedChange={(checked) =>
+                          updateSetting("groupSimilar", checked)
+                        }
+                        disabled={!settings.enableNotifications}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Contact Information */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Users className="h-5 w-5" />
+                      Contact Information
+                    </CardTitle>
+                    <CardDescription>
+                      Required for email and SMS notifications
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div>
+                        <Label htmlFor="contactEmail">Email Address</Label>
+                        <Input
+                          id="contactEmail"
+                          type="email"
+                          value={settings.email || ""}
+                          onChange={(e) =>
+                            updateSetting("email", e.target.value)
+                          }
+                          placeholder="your.email@example.com"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="contactPhone">Phone Number</Label>
+                        <Input
+                          id="contactPhone"
+                          type="tel"
+                          value={settings.phone || ""}
+                          onChange={(e) =>
+                            updateSetting("phone", e.target.value)
+                          }
+                          placeholder="+1 (555) 123-4567"
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
+            {/* File Optimization */}
+            {activeTab === "file-optimization" && (
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Optimization Settings</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label>Auto Optimization</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Automatically optimize uploaded files
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.autoOptimization !== false}
+                        onCheckedChange={(checked) =>
+                          updateSetting("autoOptimization", checked)
+                        }
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="compressionLevel">
+                        Compression Level (%)
+                      </Label>
+                      <Input
+                        id="compressionLevel"
+                        type="number"
+                        value={settings.compressionLevel || 80}
+                        onChange={(e) =>
+                          updateSetting(
+                            "compressionLevel",
+                            parseInt(e.target.value),
+                          )
+                        }
+                        min="10"
+                        max="100"
+                        className="w-32 mt-1"
+                      />
+                    </div>
+
+                    <div>
+                      <Label>Storage Saved</Label>
+                      <div className="mt-2 p-4 border rounded-lg bg-green-50">
+                        <div className="flex items-center gap-2">
+                          <HardDrive className="h-5 w-5 text-green-600" />
+                          <span className="font-semibold text-green-900">
+                            {settings.totalSpaceSaved || 0} GB saved
+                          </span>
+                        </div>
+                        <p className="text-sm text-green-700 mt-1">
+                          Through file optimization
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
+            {/* Users */}
+            {activeTab === "users" && (
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center justify-between">
+                      <span>Team Members</span>
+                      <Button size="sm" className="gap-2">
+                        <Plus className="h-4 w-4" />
+                        Invite User
+                      </Button>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {(settings.users || []).map((user) => (
+                        <div
+                          key={user.id}
+                          className="flex items-center justify-between p-3 border rounded-lg"
+                        >
+                          <div>
+                            <h4 className="font-medium">{user.name}</h4>
+                            <p className="text-sm text-muted-foreground">
+                              {user.email}
+                            </p>
+                            <div className="flex gap-2 mt-1">
+                              <Badge variant="secondary">{user.role}</Badge>
+                              <Badge
+                                variant={
+                                  user.status === "active"
+                                    ? "default"
+                                    : "secondary"
+                                }
+                              >
+                                {user.status}
+                              </Badge>
+                            </div>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button variant="outline" size="sm">
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
+            {/* Billing */}
+            {activeTab === "billing" && (
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Current Plan</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h3 className="text-lg font-semibold capitalize">
+                          {settings.currentPlan || "Pro"} Plan
+                        </h3>
+                        <p className="text-muted-foreground">
+                          $49/month • Renews monthly
+                        </p>
+                      </div>
+                      <Badge variant="default">Active</Badge>
+                    </div>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      {(settings.planFeatures || []).map((feature, index) => (
+                        <li key={index} className="flex items-center gap-2">
+                          <CheckCircle className="h-4 w-4 text-green-600" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Payment Method</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <CreditCard className="h-8 w-8 text-muted-foreground" />
+                        <div>
+                          <p className="font-medium">
+                            {settings.creditCard?.brand || "Visa"} ending in{" "}
+                            {settings.creditCard?.last4 || "4242"}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            Expires{" "}
+                            {settings.creditCard?.expMonth || 12}/
+                            {settings.creditCard?.expYear || 2025}
+                          </p>
+                        </div>
+                      </div>
+                      <Button variant="outline">Update</Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Billing History</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {(settings.invoices || []).map((invoice) => (
+                        <div
+                          key={invoice.id}
+                          className="flex items-center justify-between p-3 border rounded-lg"
+                        >
+                          <div>
+                            <p className="font-medium">
+                              ${invoice.amount.toFixed(2)}
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              {invoice.date}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Badge
+                              variant={
+                                invoice.status === "paid"
+                                  ? "default"
+                                  : invoice.status === "pending"
+                                    ? "secondary"
+                                    : "destructive"
+                              }
+                            >
+                              {invoice.status}
+                            </Badge>
+                            <Button variant="outline" size="sm">
+                              <Download className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </AppLayout>
+  );
+}
           </div>
         </div>
       </div>
