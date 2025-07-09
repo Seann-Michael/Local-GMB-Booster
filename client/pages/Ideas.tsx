@@ -233,17 +233,39 @@ export default function Ideas() {
     setRoadmapItems(mockRoadmap);
   };
 
-  const handleVote = (ideaId: string) => {
+  const handleVote = (ideaId: string, voteType: "up" | "down") => {
     setIdeas((prev) =>
       prev.map((idea) => {
         if (idea.id === ideaId) {
-          const newVotes = idea.userVoted ? idea.votes - 1 : idea.votes + 1;
-          const updatedIdea = {
+          let newUpvotes = idea.upvotes;
+          let newDownvotes = idea.downvotes;
+          let newUserVote: "up" | "down" | null = voteType;
+
+          // Remove previous vote if exists
+          if (idea.userVote === "up") {
+            newUpvotes--;
+          } else if (idea.userVote === "down") {
+            newDownvotes--;
+          }
+
+          // If clicking the same vote type, remove the vote
+          if (idea.userVote === voteType) {
+            newUserVote = null;
+          } else {
+            // Add new vote
+            if (voteType === "up") {
+              newUpvotes++;
+            } else {
+              newDownvotes++;
+            }
+          }
+
+          return {
             ...idea,
-            votes: newVotes,
-            userVoted: !idea.userVoted,
+            upvotes: newUpvotes,
+            downvotes: newDownvotes,
+            userVote: newUserVote,
           };
-          return updatedIdea;
         }
         return idea;
       }),
