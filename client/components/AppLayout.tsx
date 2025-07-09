@@ -83,6 +83,31 @@ export function AppLayout({ children }: AppLayoutProps) {
   const [profileSearchQuery, setProfileSearchQuery] = useState("");
   const [businessName, setBusinessName] = useState("");
 
+  // Load business name on mount and listen for changes
+  useEffect(() => {
+    const loadBusinessName = () => {
+      const name = localStorage.getItem("business_name") || "My Business";
+      setBusinessName(name);
+    };
+
+    // Load initially
+    loadBusinessName();
+
+    // Listen for storage changes (in case updated from another tab/window)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "business_name") {
+        setBusinessName(e.newValue || "My Business");
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    // Clean up listener
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
   const handleBusinessSwitch = (businessId: string) => {
     if (switchToBusiness(businessId)) {
       toast.success(
