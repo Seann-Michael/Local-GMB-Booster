@@ -2507,3 +2507,13 @@ function SettingsMain() {
     </AppLayout>
   );
 }
+
+// Error boundary wrapper
+export default function Settings() {
+  try {
+    return <SettingsMain />;
+  } catch (error) {
+    console.error("Settings component error:", error);
+    return <SettingsFallback />;
+  }
+}
