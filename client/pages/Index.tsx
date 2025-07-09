@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 import { AppLayout } from "@/components/AppLayout";
 import { ProjectCard } from "@/components/ProjectCard";
-import { BroadcastAlert } from "@/components/BroadcastAlert";
+import { EnhancedBroadcastAlert } from "@/components/EnhancedBroadcastAlert";
 import { FolderOpen, Plus, Search, Filter, X, RotateCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
