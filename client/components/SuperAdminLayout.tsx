@@ -111,6 +111,12 @@ export function SuperAdminLayout({
       active: location.pathname.startsWith("/super-admin/templates"),
     },
     {
+      label: "Analytics",
+      href: "/super-admin/analytics",
+      icon: BarChart3,
+      active: location.pathname.startsWith("/super-admin/analytics"),
+    },
+    {
       label: "Financial Dashboard",
       href: "/super-admin/financial",
       icon: DollarSign,
