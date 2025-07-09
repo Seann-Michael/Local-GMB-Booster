@@ -1,0 +1,210 @@
+import React, { createContext, useContext, useEffect, useState } from "react";
+
+type Theme = "dark" | "light" | "system";
+
+type ThemeProviderProps = {
+  children: React.ReactNode;
+  defaultTheme?: Theme;
+  storageKey?: string;
+};
+
+type ThemeProviderState = {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+  actualTheme: "dark" | "light";
+};
+
+const initialState: ThemeProviderState = {
+  theme: "system",
+  setTheme: () => null,
+  actualTheme: "light",
+};
+
+const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
+
+export function ThemeProvider({
+  children,
+  defaultTheme = "system",
+  storageKey = "vite-ui-theme",
+  ...props
+}: ThemeProviderProps) {
+  const [theme, setTheme] = useState<Theme>(
+    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme,
+  );
+
+  const [actualTheme, setActualTheme] = useState<"dark" | "light">("light");
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+
+    root.classList.remove("light", "dark");
+
+    let resolvedTheme: "dark" | "light";
+
+    if (theme === "system") {
+      resolvedTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    } else {
+      resolvedTheme = theme;
+    }
+
+    root.classList.add(resolvedTheme);
+    setActualTheme(resolvedTheme);
+
+    // Update meta theme-color for mobile browsers
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute(
+        "content",
+        resolvedTheme === "dark" ? "#0f172a" : "#ffffff",
+      );
+    }
+  }, [theme]);
+
+  // Listen for system theme changes
+  useEffect(() => {
+    if (theme !== "system") return;
+
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const handleChange = () => {
+      const resolvedTheme = mediaQuery.matches ? "dark" : "light";
+      const root = window.document.documentElement;
+      root.classList.remove("light", "dark");
+      root.classList.add(resolvedTheme);
+      setActualTheme(resolvedTheme);
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, [theme]);
+
+  const value = {
+    theme,
+    setTheme: (theme: Theme) => {
+      localStorage.setItem(storageKey, theme);
+      setTheme(theme);
+    },
+    actualTheme,
+  };
+
+  return (
+    <ThemeProviderContext.Provider {...props} value={value}>
+      {children}
+    </ThemeProviderContext.Provider>
+  );
+}
+
+export const useTheme = () => {
+  const context = useContext(ThemeProviderContext);
+
+  if (context === undefined)
+    throw new Error("useTheme must be used within a ThemeProvider");
+
+  return context;
+};
+
+// Theme toggle component
+export function ThemeToggle() {
+  const { theme, setTheme, actualTheme } = useTheme();
+
+  return (
+    <div className="flex items-center space-x-2">
+      <button
+        onClick={() => setTheme("light")}
+        className={`p-2 rounded-md ${
+          theme === "light"
+            ? "bg-primary text-primary-foreground"
+            : "bg-muted hover:bg-muted/80"
+        }`}
+        aria-label="Light theme"
+      >
+        <svg
+          className="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+          />
+        </svg>
+      </button>
+
+      <button
+        onClick={() => setTheme("system")}
+        className={`p-2 rounded-md ${
+          theme === "system"
+            ? "bg-primary text-primary-foreground"
+            : "bg-muted hover:bg-muted/80"
+        }`}
+        aria-label="System theme"
+      >
+        <svg
+          className="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+          />
+        </svg>
+      </button>
+
+      <button
+        onClick={() => setTheme("dark")}
+        className={`p-2 rounded-md ${
+          theme === "dark"
+            ? "bg-primary text-primary-foreground"
+            : "bg-muted hover:bg-muted/80"
+        }`}
+        aria-label="Dark theme"
+      >
+        <svg
+          className="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+          />
+        </svg>
+      </button>
+    </div>
+  );
+}
+
+// Theme-aware optimization for images
+export function useThemeOptimizedImage(lightSrc: string, darkSrc?: string) {
+  const { actualTheme } = useTheme();
+  return darkSrc && actualTheme === "dark" ? darkSrc : lightSrc;
+}
+
+// Theme transition helper
+export function useThemeTransition() {
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const startTransition = () => {
+    setIsTransitioning(true);
+    document.documentElement.classList.add("theme-transitioning");
+
+    setTimeout(() => {
+      setIsTransitioning(false);
+      document.documentElement.classList.remove("theme-transitioning");
+    }, 200);
+  };
+
+  return { isTransitioning, startTransition };
+}
