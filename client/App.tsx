@@ -52,6 +52,7 @@ import IdeaDetail from "./pages/IdeaDetail";
 import SuperAdminIdeas from "./pages/SuperAdminIdeas";
 import SuperAdminBroadcast from "./pages/SuperAdminBroadcast";
 import SuperAdminMessageTemplates from "./pages/SuperAdminMessageTemplates";
+import SuperAdminAnalytics from "./pages/SuperAdminAnalytics";
 import NotificationPreferences from "./pages/NotificationPreferences";
 
 const queryClient = new QueryClient();
