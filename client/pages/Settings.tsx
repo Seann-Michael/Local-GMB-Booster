@@ -700,6 +700,31 @@ export default function Settings() {
                         }
                       />
                     </div>
+
+                    {settings.aiPromptForDescriptions && (
+                      <div className="pt-4 border-t">
+                        <Label htmlFor="aiProjectRewritePrompt">
+                          AI Project Rewrite Prompt
+                        </Label>
+                        <Textarea
+                          id="aiProjectRewritePrompt"
+                          value={settings.aiProjectRewritePrompt}
+                          onChange={(e) =>
+                            updateSetting(
+                              "aiProjectRewritePrompt",
+                              e.target.value,
+                            )
+                          }
+                          rows={4}
+                          className="mt-2"
+                          placeholder="Enter the AI prompt for rewriting project descriptions..."
+                        />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          This prompt will be used when AI rewrites existing
+                          project descriptions
+                        </p>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               )}
