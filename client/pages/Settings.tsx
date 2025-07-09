@@ -306,7 +306,7 @@ export default function Settings() {
   const deleteWebhook = (webhookId: string) => {
     setSettings((prev) => ({
       ...prev,
-      webhooks: (prev.webhooks || []).filter(
+      webhooks: (prev?.webhooks || []).filter(
         (webhook) => webhook.id !== webhookId,
       ),
     }));
@@ -341,7 +341,9 @@ export default function Settings() {
   const deleteTag = (tagId: string) => {
     setSettings((prev) => ({
       ...prev,
-      businessTags: (prev.businessTags || []).filter((tag) => tag.id !== tagId),
+      businessTags: (prev?.businessTags || []).filter(
+        (tag) => tag.id !== tagId,
+      ),
     }));
     toast.success("Tag deleted successfully!");
   };
@@ -706,10 +708,9 @@ export default function Settings() {
                                 size="sm"
                                 className="h-auto p-0 ml-1"
                                 onClick={() => {
-                                  const newVariables =
-                                    settings.aiVariables.filter(
-                                      (_, i) => i !== index,
-                                    );
+                                  const newVariables = (
+                                    settings?.aiVariables || []
+                                  ).filter((_, i) => i !== index);
                                   updateSetting("aiVariables", newVariables);
                                 }}
                               >
@@ -1526,10 +1527,9 @@ export default function Settings() {
                                     size="sm"
                                     className="h-auto p-0 ml-1"
                                     onClick={() => {
-                                      const newTypes =
-                                        settings.allowedImageTypes.filter(
-                                          (_, i) => i !== index,
-                                        );
+                                      const newTypes = (
+                                        settings?.allowedImageTypes || []
+                                      ).filter((_, i) => i !== index);
                                       updateSetting(
                                         "allowedImageTypes",
                                         newTypes,
@@ -1585,10 +1585,9 @@ export default function Settings() {
                                     size="sm"
                                     className="h-auto p-0 ml-1"
                                     onClick={() => {
-                                      const newTypes =
-                                        settings.allowedVideoTypes.filter(
-                                          (_, i) => i !== index,
-                                        );
+                                      const newTypes = (
+                                        settings?.allowedVideoTypes || []
+                                      ).filter((_, i) => i !== index);
                                       updateSetting(
                                         "allowedVideoTypes",
                                         newTypes,
