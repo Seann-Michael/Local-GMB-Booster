@@ -693,29 +693,31 @@ export default function Settings() {
                     <div className="space-y-2">
                       <Label>Available Variables</Label>
                       <div className="flex flex-wrap gap-2">
-                        {(settings.aiVariables || []).map((variable, index) => (
-                          <Badge
-                            key={index}
-                            variant="outline"
-                            className="gap-1"
-                          >
-                            {"{" + variable + "}"}
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-auto p-0 ml-1"
-                              onClick={() => {
-                                const newVariables =
-                                  settings.aiVariables.filter(
-                                    (_, i) => i !== index,
-                                  );
-                                updateSetting("aiVariables", newVariables);
-                              }}
+                        {(settings?.aiVariables || []).map(
+                          (variable, index) => (
+                            <Badge
+                              key={index}
+                              variant="outline"
+                              className="gap-1"
                             >
-                              <X className="h-3 w-3" />
-                            </Button>
-                          </Badge>
-                        ))}
+                              {"{" + variable + "}"}
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-auto p-0 ml-1"
+                                onClick={() => {
+                                  const newVariables =
+                                    settings.aiVariables.filter(
+                                      (_, i) => i !== index,
+                                    );
+                                  updateSetting("aiVariables", newVariables);
+                                }}
+                              >
+                                <X className="h-3 w-3" />
+                              </Button>
+                            </Badge>
+                          ),
+                        )}
                         <Button
                           variant="outline"
                           size="sm"
@@ -1196,8 +1198,8 @@ export default function Settings() {
                           </p>
                           <ul className="text-xs text-yellow-700 space-y-1">
                             <li>
-                              ��� Send initial request 24-48 hours after project
-                              completion
+                              ���� Send initial request 24-48 hours after
+                              project completion
                             </li>
                             <li>
                               • Limit follow-ups to 2-3 attempts to avoid being
@@ -1360,7 +1362,7 @@ export default function Settings() {
                     </div>
 
                     <div className="space-y-3">
-                      {(settings.webhooks || []).map((webhook) => (
+                      {(settings?.webhooks || []).map((webhook) => (
                         <div key={webhook.id} className="p-3 border rounded-lg">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
@@ -1436,7 +1438,7 @@ export default function Settings() {
                   </div>
 
                   <div className="grid gap-3">
-                    {(settings.businessTags || []).map((tag) => (
+                    {(settings?.businessTags || []).map((tag) => (
                       <div
                         key={tag.id}
                         className="flex items-center justify-between p-3 border rounded-lg"
@@ -1511,7 +1513,7 @@ export default function Settings() {
                             Image Types
                           </Label>
                           <div className="flex flex-wrap gap-2 mb-2">
-                            {(settings.allowedImageTypes || []).map(
+                            {(settings?.allowedImageTypes || []).map(
                               (type, index) => (
                                 <Badge
                                   key={index}
@@ -1568,7 +1570,7 @@ export default function Settings() {
                             Video Types
                           </Label>
                           <div className="flex flex-wrap gap-2 mb-2">
-                            {(settings.allowedVideoTypes || []).map(
+                            {(settings?.allowedVideoTypes || []).map(
                               (type, index) => (
                                 <Badge
                                   key={index}
