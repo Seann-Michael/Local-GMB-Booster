@@ -797,6 +797,191 @@ export default function Settings() {
               </Card>
             )}
 
+            {/* Review Settings */}
+            {activeTab === "reviews" && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Review Settings</CardTitle>
+                  <CardDescription>
+                    Configure review collection and customer experience settings
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Review Threshold */}
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Review Collection Settings</h4>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label>Rating Threshold for Google Reviews</Label>
+                        <Select defaultValue="4">
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="3">3 Stars and Above</SelectItem>
+                            <SelectItem value="4">4 Stars and Above</SelectItem>
+                            <SelectItem value="5">5 Stars Only</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <p className="text-xs text-muted-foreground">
+                          Customers with this rating or higher will be
+                          redirected to leave a Google review
+                        </p>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Review Request Expiration</Label>
+                        <Select defaultValue="30">
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="7">7 Days</SelectItem>
+                            <SelectItem value="14">14 Days</SelectItem>
+                            <SelectItem value="30">30 Days</SelectItem>
+                            <SelectItem value="60">60 Days</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <p className="text-xs text-muted-foreground">
+                          How long review links remain active
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  {/* Business Owner Video */}
+                  <div className="space-y-4">
+                    <h4 className="font-medium">
+                      Personal Video Message (Optional)
+                    </h4>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>Upload Personal Video</Label>
+                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                          <div className="space-y-3">
+                            <Video className="mx-auto h-12 w-12 text-gray-400" />
+                            <div>
+                              <p className="text-sm font-medium text-gray-700">
+                                Upload a personal video message
+                              </p>
+                              <p className="text-xs text-gray-500 mt-1">
+                                A short, personal thank you video increases
+                                review completion rates
+                              </p>
+                            </div>
+                            <div className="space-y-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="gap-2"
+                              >
+                                <Upload className="h-4 w-4" />
+                                Choose Video File
+                              </Button>
+                              <p className="text-xs text-gray-500">
+                                MP4, MOV, or WebM • Max 50MB • 30-60 seconds
+                                recommended
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Preview existing video if uploaded */}
+                      <div className="hidden bg-gray-50 p-4 rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-sm font-medium">
+                            Current Video
+                          </span>
+                          <Button variant="ghost" size="sm" className="gap-1">
+                            <Trash2 className="h-3 w-3" />
+                            Remove
+                          </Button>
+                        </div>
+                        <div className="bg-black rounded aspect-video flex items-center justify-center">
+                          <span className="text-white text-sm">
+                            Video Preview
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="bg-blue-50 p-4 rounded-lg">
+                        <div className="flex gap-3">
+                          <Camera className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <p className="text-sm font-medium text-blue-900 mb-1">
+                              Video Tips for Higher Review Rates
+                            </p>
+                            <ul className="text-xs text-blue-700 space-y-1">
+                              <li>
+                                • Keep it personal and authentic (30-60 seconds)
+                              </li>
+                              <li>• Thank them for choosing your business</li>
+                              <li>
+                                • Mention the specific project they completed
+                              </li>
+                              <li>• Ask them to share their experience</li>
+                              <li>
+                                • Record in good lighting with clear audio
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  {/* Google My Business */}
+                  <div className="space-y-4">
+                    <h4 className="font-medium">
+                      Google My Business Integration
+                    </h4>
+                    <div className="space-y-2">
+                      <Label>Google Review URL</Label>
+                      <Input
+                        placeholder="https://g.page/r/YOUR_BUSINESS_ID/review"
+                        className="font-mono text-sm"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Direct link to your Google My Business review page
+                      </p>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  {/* SEO Keywords */}
+                  <div className="space-y-4">
+                    <h4 className="font-medium">SEO Enhancement Keywords</h4>
+                    <div className="space-y-2">
+                      <Label>Business Keywords</Label>
+                      <Input
+                        placeholder="contractor, renovation, construction, remodeling"
+                        defaultValue="construction, renovation, contractor"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Keywords to include in enhanced reviews (comma
+                        separated)
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Service Categories</Label>
+                      <Input
+                        placeholder="Home Improvement, Kitchen Renovation, Bathroom Remodel"
+                        defaultValue="Home Construction, Kitchen & Bath Renovation"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Main service categories for SEO optimization
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             {/* Integrations Settings */}
             {activeTab === "integrations" && (
               <Card>
