@@ -40,6 +40,7 @@ import {
   calculateCompressionRatio,
   type OptimizedFile,
 } from "@/lib/fileOptimization";
+import { FileProcessingErrorBoundary } from "@/components/FileProcessingErrorBoundary";
 
 interface OptimizedEnhancedPhoto {
   url: string;
