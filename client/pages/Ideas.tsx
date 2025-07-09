@@ -825,6 +825,69 @@ export default function Ideas() {
               </div>
             </div>
           )}
+
+          {/* Changelog Tab */}
+          {activeTab === "changelog" && (
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900 mb-6">
+                Changelog
+              </h2>
+              <div className="space-y-6">
+                {changelogEntries.map((entry) => (
+                  <div
+                    key={entry.id}
+                    className="bg-white rounded-lg border border-gray-200 p-6"
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className="text-xl font-semibold text-gray-900">
+                            {entry.title}
+                          </h3>
+                          <Badge
+                            variant={
+                              entry.type === "feature"
+                                ? "default"
+                                : entry.type === "improvement"
+                                  ? "secondary"
+                                  : entry.type === "bugfix"
+                                    ? "destructive"
+                                    : "outline"
+                            }
+                            className="text-xs"
+                          >
+                            {entry.type}
+                          </Badge>
+                        </div>
+                        <p className="text-gray-600 mb-3">
+                          {entry.description}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm font-medium text-gray-900">
+                          v{entry.version}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {new Date(entry.date).toLocaleDateString()}
+                        </div>
+                      </div>
+                    </div>
+                    <ul className="space-y-2">
+                      {entry.items.map((item, index) => (
+                        <li
+                          key={index}
+                          className="flex items-start gap-2 text-sm text-gray-700"
+                        >
+                          <div className="w-1.5 h-1.5 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </AppLayout>
