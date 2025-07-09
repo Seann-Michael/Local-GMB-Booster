@@ -46,6 +46,10 @@ import {
   Eye,
   MessageCircle,
   Paperclip,
+  Activity,
+  FileText,
+  Download,
+  RefreshCw,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
