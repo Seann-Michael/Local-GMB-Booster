@@ -221,20 +221,48 @@ export default function AdminReviews() {
         !request.customerName
           .toLowerCase()
           .includes(searchTerm.toLowerCase()) &&
-        !request.projectName.toLowerCase().includes(searchTerm.toLowerCase())
+        !request.projectName.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        !(request.reviewText || "")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
       ) {
         return false;
       }
       return true;
     })
     .sort((a, b) => {
-      if (sortBy === "sentAt") {
-        return new Date(b.sentAt).getTime() - new Date(a.sentAt).getTime();
+      const isDesc = sortBy.includes("-desc");
+      const sortField = sortBy.replace("-desc", "");
+
+      let aVal, bVal;
+
+      switch (sortField) {
+        case "sentAt":
+          aVal = new Date(a.sentAt).getTime();
+          bVal = new Date(b.sentAt).getTime();
+          break;
+        case "rating":
+          aVal = a.rating || 0;
+          bVal = b.rating || 0;
+          break;
+        case "customerName":
+          aVal = a.customerName.toLowerCase();
+          bVal = b.customerName.toLowerCase();
+          break;
+        case "status":
+          const statusOrder = { completed: 4, viewed: 3, sent: 2, expired: 1 };
+          aVal = statusOrder[a.status as keyof typeof statusOrder] || 0;
+          bVal = statusOrder[b.status as keyof typeof statusOrder] || 0;
+          break;
+        default:
+          return 0;
       }
-      if (sortBy === "rating") {
-        return (b.rating || 0) - (a.rating || 0);
+
+      if (typeof aVal === "string") {
+        return isDesc ? bVal.localeCompare(aVal) : aVal.localeCompare(bVal);
       }
-      return 0;
+
+      return isDesc ? bVal - aVal : aVal - bVal;
     });
 
   const getStatusBadge = (status: string, linkClicked?: boolean) => {
