@@ -128,6 +128,14 @@ const App = () => (
             }
           />
           <Route
+            path="/ideas/:id"
+            element={
+              <ProtectedRoute>
+                <IdeaDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/admin/settings"
             element={
               <ProtectedRoute>
