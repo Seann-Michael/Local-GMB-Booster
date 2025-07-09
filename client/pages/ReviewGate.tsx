@@ -112,10 +112,10 @@ export default function ReviewGate() {
 
   if (!reviewRequest) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 w-full max-w-md text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading review form...</p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-xl p-6 shadow-md border border-blue-100 w-full max-w-md text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-blue-900">Loading review form...</p>
         </div>
       </div>
     );
@@ -123,22 +123,24 @@ export default function ReviewGate() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 w-full max-w-md text-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-xl p-6 shadow-md border border-blue-100 w-full max-w-md text-center">
           <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold mb-2">Thank You!</h2>
+          <h2 className="text-xl font-semibold text-blue-900 mb-2">
+            Thank You!
+          </h2>
           {redirectToGoogle ? (
             <div className="space-y-3">
-              <p className="text-gray-600">
+              <p className="text-blue-700">
                 You'll be redirected to Google to complete your review.
               </p>
-              <Badge variant="secondary" className="gap-1">
+              <Badge className="bg-blue-100 text-blue-700 gap-1">
                 <ExternalLink className="h-3 w-3" />
                 Redirecting to Google...
               </Badge>
             </div>
           ) : (
-            <p className="text-gray-600">
+            <p className="text-blue-700">
               Your feedback has been recorded. We appreciate your input!
             </p>
           )}
