@@ -2316,7 +2316,7 @@ export default function Settings() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      {!settings.twoFactorAuth && (
+                      {!settings?.twoFactorAuth && (
                         <div className="flex items-center justify-between p-4 border border-yellow-200 bg-yellow-50 rounded-lg">
                           <div className="flex items-center gap-3">
                             <AlertTriangle className="h-5 w-5 text-yellow-600" />
@@ -2374,7 +2374,7 @@ export default function Settings() {
                           </p>
                         </div>
                         <Switch
-                          checked={settings.twoFactorAuth}
+                          checked={settings?.twoFactorAuth || false}
                           onCheckedChange={(checked) =>
                             updateSetting("twoFactorAuth", checked)
                           }
