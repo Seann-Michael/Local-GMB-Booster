@@ -329,14 +329,28 @@ This feature has been highly requested by our user base, especially those who wo
               </div>
               <div className="flex items-center gap-3">
                 {getStatusBadge(idea.status)}
-                <Button
-                  variant={idea.userVoted ? "default" : "outline"}
-                  onClick={handleVote}
-                  className="flex items-center gap-2"
-                >
-                  <ThumbsUp className="h-4 w-4" />
-                  {idea.votes}
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant={idea.userVote === "up" ? "default" : "outline"}
+                    onClick={() => handleVote("up")}
+                    className="flex items-center gap-2"
+                    size="sm"
+                  >
+                    <ThumbsUp className="h-4 w-4" />
+                    {idea.upvotes}
+                  </Button>
+                  <Button
+                    variant={
+                      idea.userVote === "down" ? "destructive" : "outline"
+                    }
+                    onClick={() => handleVote("down")}
+                    className="flex items-center gap-2"
+                    size="sm"
+                  >
+                    <ThumbsDown className="h-4 w-4" />
+                    {idea.downvotes}
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
@@ -361,21 +375,62 @@ This feature has been highly requested by our user base, especially those who wo
 
             {/* Comment Form */}
             <div className="mb-8">
-              <Textarea
-                placeholder="Share your thoughts on this idea..."
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                className="mb-3"
-                rows={3}
-              />
-              <Button
-                onClick={handleSubmitComment}
-                disabled={!newComment.trim() || isSubmittingComment}
-                className="flex items-center gap-2"
-              >
-                <Send className="h-4 w-4" />
-                {isSubmittingComment ? "Posting..." : "Post Comment"}
-              </Button>
+              {currentUser ? (
+                <div className="space-y-4">
+                  <Textarea
+                    placeholder="Share your thoughts on this idea..."
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    className="mb-3"
+                    rows={3}
+                  />
+
+                  {/* Simple Captcha */}
+                  {showCaptcha && (
+                    <div className="p-4 border rounded-lg bg-gray-50">
+                      <p className="text-sm font-medium mb-2">Security Check</p>
+                      <p className="text-sm text-gray-600 mb-3">
+                        Please verify you're human by clicking the button below:
+                      </p>
+                      <Button
+                        variant="outline"
+                        onClick={handleCaptchaVerify}
+                        className="gap-2"
+                      >
+                        <Shield className="h-4 w-4" />
+                        I'm not a robot
+                      </Button>
+                    </div>
+                  )}
+
+                  <div className="flex items-center gap-2">
+                    <Button
+                      onClick={handleSubmitComment}
+                      disabled={!newComment.trim() || isSubmittingComment}
+                      className="flex items-center gap-2"
+                    >
+                      <Send className="h-4 w-4" />
+                      {isSubmittingComment ? "Posting..." : "Post Comment"}
+                    </Button>
+                    {captchaVerified && (
+                      <Badge variant="secondary" className="gap-1">
+                        <Shield className="h-3 w-3" />
+                        Verified
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center p-6 border rounded-lg bg-gray-50">
+                  <MessageSquare className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+                  <p className="text-sm text-gray-600 mb-3">
+                    You must be logged in to leave a comment
+                  </p>
+                  <Button onClick={() => navigate("/signin")}>
+                    Sign In to Comment
+                  </Button>
+                </div>
+              )}
             </div>
 
             {/* Comments List */}
