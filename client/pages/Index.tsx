@@ -262,7 +262,7 @@ export default function Index() {
     <AppLayout>
       <div className="container px-4 py-6">
         {/* Broadcast Messages */}
-        <BroadcastAlert />
+        <EnhancedBroadcastAlert />
 
         <div className="mb-6">
           <h1 className="text-3xl font-bold mb-4">Projects</h1>
