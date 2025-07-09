@@ -122,7 +122,36 @@ interface BusinessSettings {
   autoRenewal: boolean;
 }
 
-export default function Settings() {
+// Fallback Settings component to handle errors
+function SettingsFallback() {
+  return (
+    <AppLayout>
+      <div className="container mx-auto px-4 py-6">
+        <div className="max-w-6xl mx-auto space-y-6">
+          <div className="text-center py-8">
+            <h1 className="text-2xl font-bold mb-4">Settings</h1>
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 max-w-md mx-auto">
+              <p className="text-yellow-800 mb-2">
+                Settings are temporarily unavailable
+              </p>
+              <p className="text-sm text-yellow-600">
+                Please refresh the page or try again later.
+              </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="mt-3 px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700"
+              >
+                Refresh Page
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </AppLayout>
+  );
+}
+
+function SettingsMain() {
   const [settings, setSettings] = useState<BusinessSettings>({
     // Business Information
     businessName: "Joe's Pizza",
