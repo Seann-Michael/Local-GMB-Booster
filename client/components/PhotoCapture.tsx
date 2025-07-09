@@ -120,30 +120,93 @@ export function PhotoCapture({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
+      {/* Metadata Configuration */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Tag className="h-5 w-5" />
+            Media Metadata Configuration
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="additional-tags">
+              Additional Tags (comma-separated)
+            </Label>
+            <Input
+              id="additional-tags"
+              placeholder="e.g., before, bathroom, renovation"
+              value={additionalTags}
+              onChange={(e) => setAdditionalTags(e.target.value)}
+            />
+            <p className="text-xs text-muted-foreground">
+              These tags will be added to all uploaded files along with project
+              keywords
+            </p>
+          </div>
+
+          {projectInfo && (
+            <div className="bg-muted/50 p-4 rounded-lg">
+              <h4 className="font-medium mb-2">Auto-generated Metadata</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                <div>
+                  <span className="font-medium">Business:</span>{" "}
+                  {MediaMetadataEnhancer.getBusinessInfo().businessName}
+                </div>
+                <div>
+                  <span className="font-medium">Location:</span>{" "}
+                  {MediaMetadataEnhancer.extractCityStateFromAddress(
+                    projectInfo.address,
+                  )}
+                </div>
+                <div>
+                  <span className="font-medium">Project:</span>{" "}
+                  {projectInfo.name}
+                </div>
+                <div>
+                  <span className="font-medium">Customer:</span>{" "}
+                  {projectInfo.customerName}
+                </div>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* File Upload Area */}
       <Card
         className={`border-2 border-dashed transition-colors cursor-pointer ${
           isDragging
             ? "border-primary bg-primary/5"
             : "border-muted-foreground/25 hover:border-primary/50"
-        }`}
+        } ${isProcessing ? "opacity-50 pointer-events-none" : ""}`}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
-        onClick={() => fileInputRef.current?.click()}
+        onClick={() => !isProcessing && fileInputRef.current?.click()}
       >
         <CardContent className="flex flex-col items-center justify-center py-8">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 mb-4">
             <Camera className="h-8 w-8 text-primary" />
           </div>
-          <h3 className="text-lg font-semibold mb-2">Add Photos</h3>
+          <h3 className="text-lg font-semibold mb-2">
+            {isProcessing ? "Processing Files..." : "Add Photos & Videos"}
+          </h3>
           <p className="text-sm text-muted-foreground text-center mb-4">
-            Drag and drop photos here, or click to select files
+            {isProcessing
+              ? "Adding metadata and processing files"
+              : "Drag and drop media files here, or click to select files"}
           </p>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              disabled={isProcessing}
+            >
               <Upload className="h-4 w-4" />
-              Choose Files
+              {isProcessing ? "Processing..." : "Choose Files"}
             </Button>
           </div>
         </CardContent>
@@ -153,30 +216,101 @@ export function PhotoCapture({
         ref={fileInputRef}
         type="file"
         multiple
-        accept="image/*"
+        accept="image/*,video/*"
         className="hidden"
         onChange={(e) => handleFileSelect(e.target.files)}
       />
 
+      {/* Enhanced Photo Grid with Metadata */}
       {photos.length > 0 && (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {photos.map((photo, index) => (
-            <div key={index} className="relative group">
-              <img
-                src={photo}
-                alt={`Photo ${index + 1}`}
-                className="aspect-square w-full rounded-lg object-cover"
-              />
-              <Button
-                variant="destructive"
-                size="icon"
-                className="absolute -top-2 -right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
-                onClick={() => removePhoto(index)}
-              >
-                <X className="h-3 w-3" />
-              </Button>
-            </div>
-          ))}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold">
+              Uploaded Media ({photos.length})
+            </h3>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowMetadataPreview(!showMetadataPreview)}
+              className="gap-2"
+            >
+              <Info className="h-4 w-4" />
+              {showMetadataPreview ? "Hide" : "Show"} Metadata
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {photos.map((photo, index) => (
+              <Card key={index} className="overflow-hidden">
+                <div className="relative group">
+                  {photo.metadata.fileType.startsWith("video/") ? (
+                    <video
+                      src={photo.url}
+                      className="aspect-square w-full object-cover"
+                      controls
+                    />
+                  ) : (
+                    <img
+                      src={photo.url}
+                      alt={`Photo ${index + 1}`}
+                      className="aspect-square w-full object-cover"
+                    />
+                  )}
+                  <div className="absolute top-2 right-2 flex gap-1">
+                    <Button
+                      variant="secondary"
+                      size="icon"
+                      className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={() => downloadMetadata(photo)}
+                      title="Download metadata"
+                    >
+                      <Download className="h-3 w-3" />
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={() => removePhoto(index)}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+
+                {showMetadataPreview && (
+                  <CardContent className="p-4">
+                    <div className="space-y-2">
+                      <div className="text-xs font-medium text-muted-foreground">
+                        {photo.enhancedFileName}
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {photo.metadata.keywords.slice(0, 4).map((keyword) => (
+                          <Badge
+                            key={keyword}
+                            variant="secondary"
+                            className="text-xs"
+                          >
+                            {keyword}
+                          </Badge>
+                        ))}
+                        {photo.metadata.keywords.length > 4 && (
+                          <Badge variant="outline" className="text-xs">
+                            +{photo.metadata.keywords.length - 4}
+                          </Badge>
+                        )}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {new Date(
+                          photo.metadata.timestamp,
+                        ).toLocaleDateString()}{" "}
+                        • {photo.metadata.cityState}
+                      </div>
+                    </div>
+                  </CardContent>
+                )}
+              </Card>
+            ))}
+          </div>
         </div>
       )}
     </div>
