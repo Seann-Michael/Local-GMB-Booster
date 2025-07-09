@@ -92,6 +92,7 @@ interface SettingsData {
   autoPostRssFeed: boolean;
   aiPromptForDescriptions: boolean;
   aiProjectRewritePrompt: string;
+  autoArchiveDays: number;
   facebookConnected: boolean;
   googleMyBusinessConnected: boolean;
   goHighLevelApiKey: string;
