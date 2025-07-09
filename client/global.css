@@ -2,6 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global responsive utilities */
+@layer utilities {
+  /* Prevent horizontal overflow on main containers */
+  .prevent-overflow {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /* Make tables responsive */
+  .responsive-table {
+    @apply overflow-x-auto;
+  }
+
+  .responsive-table table {
+    @apply min-w-full;
+  }
+
+  /* Responsive text sizing */
+  .responsive-text {
+    @apply text-sm sm:text-base;
+  }
+
+  /* Responsive spacing */
+  .responsive-padding {
+    @apply p-3 sm:p-4 lg:p-6;
+  }
+
+  .responsive-gap {
+    @apply gap-2 sm:gap-4 lg:gap-6;
+  }
+}
+
+/* Ensure body and html never overflow horizontally */
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Make all main containers responsive by default */
+.container {
+  max-width: 100%;
+}
+
+/* Responsive table utilities */
+@media (max-width: 768px) {
+  .mobile-stack > * {
+    display: block !important;
+    width: 100% !important;
+    margin-bottom: 0.5rem;
+  }
+
+  .mobile-hide {
+    display: none !important;
+  }
+
+  .mobile-full-width {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
 @layer base {
   /**
    * Tailwind CSS theme
