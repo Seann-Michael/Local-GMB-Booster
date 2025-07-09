@@ -3202,7 +3202,11 @@ export default function Settings() {
                       <Input
                         id="webhookEvents"
                         name="events"
-                        defaultValue={editingWebhook?.events?.join(", ")}
+                        defaultValue={
+                          Array.isArray(editingWebhook?.events)
+                            ? editingWebhook.events.join(", ")
+                            : ""
+                        }
                         placeholder="project.created, project.completed"
                         required
                       />
