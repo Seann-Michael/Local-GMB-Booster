@@ -2699,6 +2699,44 @@ export default function SuperAdminSettings() {
 
                   <Separator />
 
+                  {/* Business Owner Video */}
+                  <div className="space-y-4">
+                    <h4 className="font-medium">
+                      Business Owner Video (Optional)
+                    </h4>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>Upload Personal Video</Label>
+                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                          <div className="space-y-2">
+                            <Upload className="mx-auto h-8 w-8 text-gray-400" />
+                            <p className="text-sm text-gray-600">
+                              Upload a personal video message from the business
+                              owner
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              MP4, MOV, or WebM • Max 50MB • Recommended: 30-60
+                              seconds
+                            </p>
+                            <Button variant="outline" size="sm">
+                              Choose Video File
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="bg-blue-50 p-3 rounded-lg">
+                        <p className="text-sm text-blue-700">
+                          💡 <strong>Tip:</strong> A short, personal video from
+                          the business owner thanking customers can
+                          significantly increase positive review completion
+                          rates. Keep it authentic and under 60 seconds.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator />
+
                   {/* Review Templates */}
                   <div className="space-y-4">
                     <h4 className="font-medium">SMS Templates</h4>
