@@ -98,6 +98,12 @@ export function SuperAdminLayout({
       active: location.pathname.startsWith("/super-admin/ideas"),
     },
     {
+      label: "Broadcast Messages",
+      href: "/super-admin/broadcast",
+      icon: Megaphone,
+      active: location.pathname.startsWith("/super-admin/broadcast"),
+    },
+    {
       label: "Financial Dashboard",
       href: "/super-admin/financial",
       icon: DollarSign,
