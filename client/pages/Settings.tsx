@@ -664,7 +664,7 @@ export default function Settings() {
                     <div className="space-y-2">
                       <Label>Available Variables</Label>
                       <div className="flex flex-wrap gap-2">
-                        {settings.aiVariables.map((variable, index) => (
+                        {(settings.aiVariables || []).map((variable, index) => (
                           <Badge
                             key={index}
                             variant="outline"
