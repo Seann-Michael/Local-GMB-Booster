@@ -78,6 +78,16 @@ interface CategoryBoard {
   color: string;
 }
 
+interface ChangelogEntry {
+  id: string;
+  version: string;
+  date: string;
+  type: "feature" | "improvement" | "bugfix" | "breaking";
+  title: string;
+  description: string;
+  items: string[];
+}
+
 export default function Ideas() {
   const navigate = useNavigate();
   const [ideas, setIdeas] = useState<Idea[]>([]);
