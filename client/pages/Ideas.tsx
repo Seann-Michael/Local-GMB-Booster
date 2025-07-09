@@ -525,7 +525,7 @@ export default function Ideas() {
                       <SelectValue placeholder="Sort by" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="votes">Most Votes</SelectItem>
+                      <SelectItem value="popular">Most Popular</SelectItem>
                       <SelectItem value="newest">Newest</SelectItem>
                       <SelectItem value="oldest">Oldest</SelectItem>
                     </SelectContent>
