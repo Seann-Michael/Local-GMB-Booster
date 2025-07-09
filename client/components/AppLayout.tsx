@@ -133,6 +133,22 @@ export function AppLayout({ children }: AppLayoutProps) {
       active: location.pathname === "/admin/reviews",
       comingSoon: false,
     },
+    {
+      id: "leads",
+      label: "Lead Management",
+      href: "/admin/leads",
+      icon: Users,
+      active: location.pathname === "/admin/leads",
+      comingSoon: false,
+    },
+    {
+      id: "project-value",
+      label: "Project Value",
+      href: "/admin/project-value",
+      icon: DollarSign,
+      active: location.pathname === "/admin/project-value",
+      comingSoon: false,
+    },
   ];
 
   const bottomSidebarItems = [

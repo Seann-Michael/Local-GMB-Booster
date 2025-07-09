@@ -216,6 +216,22 @@ const App = () => (
             }
           />
           <Route
+            path="/admin/leads"
+            element={
+              <ProtectedRoute>
+                <LeadManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/project-value"
+            element={
+              <ProtectedRoute>
+                <ProjectValue />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/notification-preferences"
             element={
               <ProtectedRoute>
