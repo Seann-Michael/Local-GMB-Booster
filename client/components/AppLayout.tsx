@@ -167,13 +167,6 @@ export function AppLayout({ children }: AppLayoutProps) {
       active: location.pathname === "/admin/help",
     },
     {
-      id: "security",
-      label: "Security",
-      href: "/admin/security",
-      icon: Shield,
-      active: location.pathname === "/admin/security",
-    },
-    {
       id: "settings",
       label: "Settings",
       href: "/admin/settings",
