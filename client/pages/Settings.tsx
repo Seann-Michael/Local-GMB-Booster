@@ -47,6 +47,20 @@ import {
   Calendar,
   Mail,
   Shield as ShieldIcon,
+  Zap,
+  Archive,
+  TrendingDown,
+  HardDrive,
+  BarChart3,
+  FileImage,
+  Video,
+  FileText,
+  Activity,
+  Volume2,
+  VolumeX,
+  MessageSquare,
+  Smartphone,
+  Monitor,
 } from "lucide-react";
 import { toast } from "sonner";
 
