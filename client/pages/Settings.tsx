@@ -71,6 +71,7 @@ import { toast } from "sonner";
 interface SettingsData {
   // Business Info
   businessName: string;
+  businessType: string;
   subAccountId: string;
   businessLogo: string;
   contactName: string;
@@ -235,6 +236,7 @@ const navigationTabs = [
 const createDefaultSettings = (): SettingsData => ({
   // Business Info
   businessName: "Joe's Pizza",
+  businessType: "restaurant",
   subAccountId: "SUB_" + Math.random().toString(36).substr(2, 9).toUpperCase(),
   businessLogo: "",
   contactName: "Joe Smith",
