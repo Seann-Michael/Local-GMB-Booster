@@ -44,6 +44,8 @@ export function MediaViewer({
   showMetadata = true,
 }: MediaViewerProps) {
   const [showMetadataPanel, setShowMetadataPanel] = useState(false);
+  const [loadingImages, setLoadingImages] = useState<Set<number>>(new Set());
+  const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
 
   const downloadPhotoMetadata = (photo: EnhancedPhoto) => {
     if (!photo.metadata) {
