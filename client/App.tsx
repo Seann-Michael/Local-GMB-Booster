@@ -83,10 +83,32 @@ const App = () => (
           <Sonner />
           <Suspense
             fallback={
-              <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center space-y-4">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-                  <p className="text-muted-foreground">Loading...</p>
+              <div className="min-h-screen bg-background">
+                <div className="container px-4 py-6">
+                  <div className="animate-pulse space-y-6">
+                    {/* Header skeleton */}
+                    <div className="h-16 bg-muted rounded-lg"></div>
+
+                    {/* Stats grid skeleton */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {Array.from({ length: 4 }).map((_, i) => (
+                        <div key={i} className="h-24 bg-muted rounded-lg"></div>
+                      ))}
+                    </div>
+
+                    {/* Content grid skeleton */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {Array.from({ length: 6 }).map((_, i) => (
+                        <div key={i} className="space-y-3">
+                          <div className="aspect-video bg-muted rounded-lg"></div>
+                          <div className="space-y-2">
+                            <div className="h-4 bg-muted rounded w-3/4"></div>
+                            <div className="h-3 bg-muted rounded w-1/2"></div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             }
