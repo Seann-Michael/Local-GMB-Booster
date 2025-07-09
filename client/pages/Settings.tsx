@@ -430,6 +430,7 @@ export default function Settings() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       localStorage.setItem("business_settings", JSON.stringify(settings));
+      localStorage.setItem("business_name", settings.businessName || "");
       toast.success("Settings saved successfully!");
     } catch (error) {
       console.error(
