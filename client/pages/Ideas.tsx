@@ -608,7 +608,10 @@ export default function Ideas() {
                               {item.votes}
                             </Button>
                           </div>
-                          <h4 className="font-medium text-gray-900 mb-2">
+                          <h4
+                            className="font-medium text-gray-900 mb-2 cursor-pointer hover:text-green-600 transition-colors"
+                            onClick={() => navigate(`/ideas/r${item.id}`)}
+                          >
                             {item.title}
                           </h4>
                           <p className="text-sm text-gray-600 mb-3">
