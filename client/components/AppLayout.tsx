@@ -389,26 +389,8 @@ export function AppLayout({ children }: AppLayoutProps) {
           sidebarCollapsed ? "w-16" : "w-72",
         )}
       >
-        {/* Sidebar Header */}
-        <div className="p-3 border-b bg-primary/5">
-          <div className="flex items-center justify-end">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="h-8 w-8 hover:bg-primary/10 flex-shrink-0"
-            >
-              {sidebarCollapsed ? (
-                <ChevronRight className="h-4 w-4" />
-              ) : (
-                <ChevronLeft className="h-4 w-4" />
-              )}
-            </Button>
-          </div>
-        </div>
-
-        {/* Profile Switcher */}
-        <div className="p-3 border-b bg-background">
+        {/* Business Selector - Now at top */}
+        <div className="p-3 border-b bg-background relative">
           {!sidebarCollapsed && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
