@@ -1013,7 +1013,7 @@ export default function Settings() {
                             <Input
                               id="goHighLevelApiKey"
                               type="password"
-                              value={settings.goHighLevelApiKey}
+                              value={settings?.goHighLevelApiKey || ""}
                               onChange={(e) =>
                                 updateSetting(
                                   "goHighLevelApiKey",
@@ -1025,7 +1025,7 @@ export default function Settings() {
                             />
                             <Button
                               variant="outline"
-                              disabled={!settings.goHighLevelApiKey}
+                              disabled={!settings?.goHighLevelApiKey}
                               onClick={() =>
                                 toast.success("Connection tested successfully")
                               }
