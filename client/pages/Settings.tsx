@@ -822,7 +822,7 @@ export default function Settings() {
                               <div className="flex gap-1">
                                 {[1].map((star) => (
                                   <Star
-                                    key={star}
+                                    key={`1star-${star}`}
                                     className="h-4 w-4 fill-yellow-400 text-yellow-400"
                                   />
                                 ))}
