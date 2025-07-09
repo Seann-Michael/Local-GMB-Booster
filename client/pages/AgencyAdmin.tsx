@@ -115,6 +115,9 @@ export default function AgencyAdmin() {
   return (
     <AgencyAdminLayout>
       <div className="space-y-6">
+        {/* Broadcast Messages */}
+        <BroadcastAlert />
+
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
