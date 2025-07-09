@@ -2834,6 +2834,135 @@ export default function Settings() {
                   </Card>
                 </div>
               )}
+
+              {/* Billing */}
+              {activeTab === "billing" && (
+                <div className="space-y-6">
+                  {/* Current Plan */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Current Plan</CardTitle>
+                      <CardDescription>
+                        Manage your subscription and billing
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="p-4 border rounded-lg bg-primary/5">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h3 className="font-semibold text-lg capitalize">
+                              {settings.currentPlan} Plan
+                            </h3>
+                            <p className="text-sm text-muted-foreground">
+                              $49/month • Billed monthly
+                            </p>
+                          </div>
+                          <Badge variant="default">Active</Badge>
+                        </div>
+                        <div className="mt-4">
+                          <p className="text-sm font-medium mb-2">
+                            Plan Features:
+                          </p>
+                          <ul className="text-sm text-muted-foreground space-y-1">
+                            {(settings?.planFeatures || []).map(
+                              (feature, index) => (
+                                <li
+                                  key={index}
+                                  className="flex items-center gap-2"
+                                >
+                                  <CheckCircle className="h-3 w-3 text-green-500" />
+                                  {feature}
+                                </li>
+                              ),
+                            )}
+                          </ul>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Billing Information */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Billing Information</CardTitle>
+                      <CardDescription>
+                        Manage your payment details and billing preferences
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="billingContact">
+                            Billing Contact
+                          </Label>
+                          <Input
+                            id="billingContact"
+                            value={settings.billingContact}
+                            onChange={(e) =>
+                              updateSetting("billingContact", e.target.value)
+                            }
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="billingEmail">Billing Email</Label>
+                          <Input
+                            id="billingEmail"
+                            type="email"
+                            value={settings.billingEmail}
+                            onChange={(e) =>
+                              updateSetting("billingEmail", e.target.value)
+                            }
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <Label>Auto Renewal</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Automatically renew your subscription
+                          </p>
+                        </div>
+                        <Switch
+                          checked={settings.autoRenewal}
+                          onCheckedChange={(checked) =>
+                            updateSetting("autoRenewal", checked)
+                          }
+                        />
+                      </div>
+
+                      <div className="pt-4 border-t">
+                        <div className="flex flex-col sm:flex-row gap-3">
+                          <Button variant="outline" className="gap-2">
+                            <CreditCard className="h-4 w-4" />
+                            Update Payment Method
+                          </Button>
+                          <Button variant="outline" className="gap-2">
+                            <Download className="h-4 w-4" />
+                            Download Invoice
+                          </Button>
+                          <Button
+                            variant="destructive"
+                            className="gap-2"
+                            onClick={() => {
+                              if (
+                                confirm(
+                                  "Are you sure you want to cancel your subscription?",
+                                )
+                              ) {
+                                // Handle cancellation
+                              }
+                            }}
+                          >
+                            <X className="h-4 w-4" />
+                            Cancel Subscription
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
             </div>
           </div>
 
