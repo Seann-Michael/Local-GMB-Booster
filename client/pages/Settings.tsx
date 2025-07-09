@@ -1112,6 +1112,79 @@ export default function Settings() {
 
                 <Card>
                   <CardHeader>
+                    <CardTitle>RSS Feed</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between p-4 border rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                            <span className="text-orange-600 font-bold">
+                              RSS
+                            </span>
+                          </div>
+                          <div>
+                            <h3 className="font-medium">RSS Feed</h3>
+                            <p className="text-sm text-muted-foreground">
+                              Generate and manage RSS feed for your projects
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="default" className="gap-1">
+                            <CheckCircle className="h-3 w-3" />
+                            Active
+                          </Badge>
+                          <Button variant="outline">
+                            <ExternalLink className="h-4 w-4 mr-2" />
+                            View Feed
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="rssFeedUrl">RSS Feed URL</Label>
+                        <div className="flex gap-2 mt-1">
+                          <Input
+                            id="rssFeedUrl"
+                            value={`${window.location.origin}/api/rss/${settings.subAccountId}`}
+                            readOnly
+                            className="bg-muted"
+                          />
+                          <Button
+                            variant="outline"
+                            onClick={() => {
+                              navigator.clipboard.writeText(
+                                `${window.location.origin}/api/rss/${settings.subAccountId}`,
+                              );
+                              toast.success("RSS URL copied to clipboard");
+                            }}
+                          >
+                            <Copy className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <Label>Include Project Images</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Include project images in RSS feed
+                          </p>
+                        </div>
+                        <Switch
+                          checked={settings.rssIncludeImages !== false}
+                          onCheckedChange={(checked) =>
+                            updateSetting("rssIncludeImages", checked)
+                          }
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
                     <CardTitle>GoHighLevel Integration</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
