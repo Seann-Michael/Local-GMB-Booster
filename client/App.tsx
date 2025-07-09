@@ -50,6 +50,7 @@ import AdminReviews from "./pages/AdminReviews";
 import StatusPage from "./pages/StatusPage";
 import Ideas from "./pages/Ideas";
 import IdeaDetail from "./pages/IdeaDetail";
+import SuperAdminIdeas from "./pages/SuperAdminIdeas";
 
 const queryClient = new QueryClient();
 
@@ -391,6 +392,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <SuperAdminStaff />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/super-admin/ideas"
+            element={
+              <ProtectedRoute>
+                <SuperAdminIdeas />
               </ProtectedRoute>
             }
           />
