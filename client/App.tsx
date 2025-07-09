@@ -61,6 +61,8 @@ import SuperAdminProjectMessaging from "./pages/SuperAdminProjectMessaging";
 import SuperAdminAdvancedFeatures from "./pages/SuperAdminAdvancedFeatures";
 import SuperAdminPerformance from "./pages/SuperAdminPerformance";
 import SuperAdminQuality from "./pages/SuperAdminQuality";
+import LeadManagement from "./pages/LeadManagement";
+import ProjectValue from "./pages/ProjectValue";
 import NotificationPreferences from "./pages/NotificationPreferences";
 
 const queryClient = new QueryClient();
