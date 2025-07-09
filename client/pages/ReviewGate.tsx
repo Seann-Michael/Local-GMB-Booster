@@ -62,6 +62,8 @@ export default function ReviewGate() {
         businessCity: "Springfield",
         businessState: "Illinois",
         serviceCategory: "Home Renovation",
+        businessOwnerVideo:
+          "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4", // Demo video
       };
       setReviewRequest(mockRequest);
     };
