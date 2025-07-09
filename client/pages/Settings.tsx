@@ -1117,7 +1117,7 @@ export default function Settings() {
                       <Label htmlFor="aiPromptTemplate">Prompt Template</Label>
                       <Textarea
                         id="aiPromptTemplate"
-                        value={settings.aiPromptTemplate}
+                        value={settings?.aiPromptTemplate || ""}
                         onChange={(e) =>
                           updateSetting("aiPromptTemplate", e.target.value)
                         }
@@ -1501,7 +1501,7 @@ export default function Settings() {
                       </Label>
                       <Textarea
                         id="reviewEmailTemplate"
-                        value={settings.reviewEmailTemplate}
+                        value={settings?.reviewEmailTemplate || ""}
                         onChange={(e) =>
                           updateSetting("reviewEmailTemplate", e.target.value)
                         }
