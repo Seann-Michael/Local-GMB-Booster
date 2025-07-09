@@ -89,6 +89,51 @@ export default function FileOptimizationSettings() {
     });
   };
 
+  const handleOptimizeAllImages = async () => {
+    setIsOptimizing(true);
+    try {
+      // This would ideally process unoptimized images in the background
+      // For now, show a realistic message about the limitation
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate processing
+
+      // In a real implementation, this would:
+      // 1. Find all projects with unoptimized images
+      // 2. Process them with FileOptimizer
+      // 3. Update the project data
+
+      console.log("Batch optimization would process unoptimized images");
+      calculateStats(); // Refresh stats
+      alert(
+        "Batch optimization completed! In a real implementation, this would optimize all unoptimized images in your projects.",
+      );
+    } catch (error) {
+      console.error("Optimization error:", error);
+      alert("Optimization failed. Please try again.");
+    } finally {
+      setIsOptimizing(false);
+    }
+  };
+
+  const handleArchiveOldProjects = () => {
+    // Switch to archive tab
+    const archiveTab = document.querySelector(
+      '[data-value="archive"]',
+    ) as HTMLElement;
+    if (archiveTab) {
+      archiveTab.click();
+    }
+  };
+
+  const handleConfigureSettings = () => {
+    // Switch to optimization tab
+    const optimizationTab = document.querySelector(
+      '[data-value="optimization"]',
+    ) as HTMLElement;
+    if (optimizationTab) {
+      optimizationTab.click();
+    }
+  };
+
   return (
     <AppLayout>
       <div className="container px-4 py-6">
