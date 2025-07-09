@@ -294,7 +294,7 @@ export default function Settings() {
   const updateWebhook = (webhookId: string, updatedWebhook: any) => {
     setSettings((prev) => ({
       ...prev,
-      webhooks: prev.webhooks.map((webhook) =>
+      webhooks: (prev.webhooks || []).map((webhook) =>
         webhook.id === webhookId ? { ...webhook, ...updatedWebhook } : webhook,
       ),
     }));
@@ -327,7 +327,7 @@ export default function Settings() {
   const updateTag = (tagId: string, updatedTag: any) => {
     setSettings((prev) => ({
       ...prev,
-      businessTags: prev.businessTags.map((tag) =>
+      businessTags: (prev.businessTags || []).map((tag) =>
         tag.id === tagId ? { ...tag, ...updatedTag } : tag,
       ),
     }));
