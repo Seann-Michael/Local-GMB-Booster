@@ -224,6 +224,8 @@ const defaultSettings: SettingsData = {
   autoPostGoogleMyBusiness: true,
   autoPostRssFeed: false,
   aiPromptForDescriptions: true,
+  aiProjectRewritePrompt:
+    "Rewrite this project description to be more engaging and professional. Highlight the key benefits and quality of work while maintaining the original facts and details.",
   facebookConnected: false,
   googleMyBusinessConnected: true,
   goHighLevelApiKey: "",
@@ -278,6 +280,12 @@ const defaultSettings: SettingsData = {
   reviewEmailTemplate:
     "Hi {CUSTOMER_NAME}, we'd love to hear about your experience with our {PROJECT_TYPE} project!",
   minimumProjectValue: 500,
+  reviewAiPrompt:
+    "Generate a personalized review request message based on the project details. Make it friendly, professional, and specific to the work completed.",
+  reviewGateTitle: "We'd Love Your Feedback!",
+  reviewGateDescription:
+    "Your review helps us improve and helps other customers make informed decisions. Thank you for taking the time to share your experience.",
+  reviewGateVideoUrl: "",
   // Users
   users: [
     {
