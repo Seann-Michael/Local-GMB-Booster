@@ -691,7 +691,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               <ThemeToggle />
 
               {/* Notifications - Now in Settings */}
-              <Link to="/admin/settings"
+              <Link to="/admin/settings">
                 <Button variant="ghost" size="icon" className="relative">
                   <Bell className="h-4 w-4 md:h-5 md:w-5" />
                   {notificationCount > 0 && (
