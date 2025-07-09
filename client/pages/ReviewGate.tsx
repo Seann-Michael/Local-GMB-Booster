@@ -214,7 +214,7 @@ export default function ReviewGate() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-2xl mx-auto py-4">
         {/* Business Header */}
-        <Card className="mb-6">
+        <Card className="mb-4">
           <CardContent className="p-6">
             <div className="text-center mb-4">
               {reviewRequest.businessLogo && (
