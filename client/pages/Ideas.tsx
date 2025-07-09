@@ -299,6 +299,88 @@ export default function Ideas() {
     setRoadmapItems(mockRoadmap);
   };
 
+  const loadChangelog = () => {
+    const mockChangelog: ChangelogEntry[] = [
+      {
+        id: "v2.1.0",
+        version: "2.1.0",
+        date: "2024-03-15",
+        type: "feature",
+        title: "Ideas & Roadmap System",
+        description:
+          "Launched comprehensive ideas and roadmap management with voting",
+        items: [
+          "Added category boards for organizing feature requests",
+          "Implemented voting system with thumbs up/down",
+          "Created roadmap visualization with planned, in-progress, and completed columns",
+          "Added individual idea detail pages with commenting",
+          "Integrated changelog for tracking platform updates",
+        ],
+      },
+      {
+        id: "v2.0.5",
+        version: "2.0.5",
+        date: "2024-03-10",
+        type: "improvement",
+        title: "Review System Enhancements",
+        description: "Enhanced review collection and management capabilities",
+        items: [
+          "Improved review gate UI with better mobile responsiveness",
+          "Added AI-powered review enhancement with SEO optimization",
+          "Enhanced admin review dashboard with sorting and filtering",
+          "Added Google My Business integration metrics",
+          "Implemented review request cancellation",
+        ],
+      },
+      {
+        id: "v2.0.4",
+        version: "2.0.4",
+        date: "2024-03-05",
+        type: "bugfix",
+        title: "Bug Fixes & Stability",
+        description: "Fixed critical issues and improved system stability",
+        items: [
+          "Fixed React key warnings in project detail and settings pages",
+          "Resolved sidebar navigation issues on mobile devices",
+          "Fixed photo upload issues in gallery management",
+          "Improved error handling in review submission flow",
+          "Fixed timezone issues in analytics reporting",
+        ],
+      },
+      {
+        id: "v2.0.3",
+        version: "2.0.3",
+        date: "2024-02-28",
+        type: "feature",
+        title: "Status Page & System Monitoring",
+        description: "Added comprehensive system status monitoring",
+        items: [
+          "Launched public status page for system monitoring",
+          "Added real-time service health indicators",
+          "Implemented incident tracking and notifications",
+          "Added historical uptime metrics",
+          "Integrated service response time monitoring",
+        ],
+      },
+      {
+        id: "v2.0.2",
+        version: "2.0.2",
+        date: "2024-02-20",
+        type: "improvement",
+        title: "Admin Dashboard Improvements",
+        description: "Enhanced admin interface and user experience",
+        items: [
+          "Redesigned admin sidebar with collapsible navigation",
+          "Added business profile switching for multi-business users",
+          "Improved breadcrumb navigation system",
+          "Enhanced user avatar and profile management",
+          "Added notification center with badge indicators",
+        ],
+      },
+    ];
+    setChangelogEntries(mockChangelog);
+  };
+
   const handleVote = (ideaId: string) => {
     setIdeas((prev) =>
       prev.map((idea) => {
