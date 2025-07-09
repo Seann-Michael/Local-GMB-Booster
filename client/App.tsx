@@ -381,6 +381,14 @@ const App = () => (
             }
           />
           <Route
+            path="/super-admin/broadcast"
+            element={
+              <ProtectedRoute>
+                <SuperAdminBroadcast />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/super-admin/help"
             element={
               <ProtectedRoute>
