@@ -117,6 +117,27 @@ interface SettingsData {
   // Enhanced Billing
   creditCard: CreditCardInfo;
   invoices: InvoiceItem[];
+  // Notification Preferences
+  enableNotifications: boolean;
+  enableSounds: boolean;
+  messageTypes: {
+    info: boolean;
+    warning: boolean;
+    error: boolean;
+    success: boolean;
+  };
+  deliveryMethods: {
+    email: boolean;
+    sms: boolean;
+    push: boolean;
+    inApp: boolean;
+  };
+  // File Optimization
+  autoOptimization: boolean;
+  compressionLevel: number;
+  maxFileSize: number;
+  allowedFileTypes: string[];
+  totalSpaceSaved: number;
 }
 
 interface WebhookItem {
