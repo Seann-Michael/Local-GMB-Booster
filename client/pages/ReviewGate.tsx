@@ -278,21 +278,37 @@ export default function ReviewGate() {
               )}
             </div>
 
-            {/* Enhanced Review - Show immediately for high ratings */}
+            {/* Review Text Input */}
+            {rating > 0 && (
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Tell us about your experience:
+                </label>
+                <Textarea
+                  value={reviewText}
+                  onChange={(e) => handleReviewTextChange(e.target.value)}
+                  placeholder="Share details about your experience..."
+                  className="min-h-[100px]"
+                />
+              </div>
+            )}
+
+            {/* Enhanced Review - Show after user types their review */}
             {showSeoVersion && seoReviewText && (
               <Card className="bg-blue-50 border-blue-200">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm flex items-center gap-2">
                     <Star className="h-4 w-4 text-blue-600" />
-                    🎉 We've Pre-Written Your Review!
+                    🎉 Enhanced Version of Your Review
                   </CardTitle>
                   <p className="text-sm text-blue-700 leading-relaxed">
-                    Since you had such a great experience, we've crafted a
-                    review that will help other customers find{" "}
-                    {reviewRequest.businessName}. This optimized version
-                    includes location details and service keywords that make it
-                    easier for people in your area to discover this business
-                    when they need similar work.
+                    We've enhanced your review with location details and service
+                    keywords that help other customers in{" "}
+                    {reviewRequest.businessCity} find{" "}
+                    {reviewRequest.businessName} when they need similar work.
+                    This version is more likely to be discovered by people
+                    searching for {reviewRequest.serviceCategory.toLowerCase()}{" "}
+                    services in your area.
                   </p>
                 </CardHeader>
                 <CardContent className="pt-0 space-y-3">
@@ -305,37 +321,22 @@ export default function ReviewGate() {
                       className="gap-2 flex-1"
                     >
                       <Copy className="h-3 w-3" />
-                      Use This Review
+                      Use Enhanced Version
                     </Button>
                     <Button
                       variant="outline"
-                      onClick={() => setShowSeoVersion(false)}
+                      onClick={() => copyToClipboard(reviewText)}
                       className="gap-2"
                     >
-                      Write My Own
+                      Use Original
                     </Button>
                   </div>
                   <p className="text-xs text-blue-600 text-center">
-                    💡 The enhanced version helps local customers find great
+                    💡 Enhanced reviews help local customers discover quality
                     businesses like this one
                   </p>
                 </CardContent>
               </Card>
-            )}
-
-            {/* Review Text - Only show if not using enhanced version */}
-            {rating > 0 && !showSeoVersion && (
-              <div>
-                <label className="block text-sm font-medium mb-2">
-                  Tell us about your experience:
-                </label>
-                <Textarea
-                  value={reviewText}
-                  onChange={(e) => handleReviewTextChange(e.target.value)}
-                  placeholder="Share details about your experience..."
-                  className="min-h-[100px]"
-                />
-              </div>
             )}
 
             {/* Submit Button */}
