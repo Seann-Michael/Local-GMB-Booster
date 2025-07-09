@@ -29,16 +29,18 @@ export const StarRating: React.FC<StarRatingProps> = ({
   };
 
   return (
-    <div className={`flex gap-1 ${className}`}>
+    <div className={`flex gap-2 ${className}`}>
       {[1, 2, 3, 4, 5].map((star) => (
         <Star
           key={star}
           className={`${sizeClasses[size]} ${
             readonly ? "cursor-default" : "cursor-pointer"
-          } transition-colors ${
+          } transition-all duration-300 transform ${
+            readonly ? "" : "hover:scale-110"
+          } ${
             star <= rating
-              ? "fill-yellow-400 text-yellow-400"
-              : "text-gray-300 hover:text-yellow-300"
+              ? "fill-yellow-400 text-yellow-500 drop-shadow-lg"
+              : "text-gray-300 hover:text-yellow-400 hover:fill-yellow-200"
           }`}
           onClick={() => handleStarClick(star)}
         />
