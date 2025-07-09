@@ -87,6 +87,7 @@ interface SettingsData {
   autoPostGoogleMyBusiness: boolean;
   autoPostRssFeed: boolean;
   aiPromptForDescriptions: boolean;
+  aiProjectRewritePrompt: string;
   facebookConnected: boolean;
   googleMyBusinessConnected: boolean;
   goHighLevelApiKey: string;
@@ -116,6 +117,10 @@ interface SettingsData {
   autoRequestReviews: boolean;
   reviewEmailTemplate: string;
   minimumProjectValue: number;
+  reviewAiPrompt: string;
+  reviewGateTitle: string;
+  reviewGateDescription: string;
+  reviewGateVideoUrl: string;
   // Users
   users: UserItem[];
   // Enhanced Billing
