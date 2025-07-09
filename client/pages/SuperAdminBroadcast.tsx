@@ -624,6 +624,122 @@ export default function SuperAdminBroadcast() {
               </DialogFooter>
             </DialogContent>
           </Dialog>
+
+          {/* Preview Dialog */}
+          <Dialog open={showPreview} onOpenChange={setShowPreview}>
+            <DialogContent className="max-w-2xl">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  <Monitor className="h-5 w-5" />
+                  Message Preview
+                </DialogTitle>
+                <DialogDescription>
+                  This is how your broadcast message will appear to users on
+                  their dashboard.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="py-6">
+                <div className="bg-muted/30 p-4 rounded-lg border-2 border-dashed border-muted-foreground/20">
+                  <p className="text-sm text-muted-foreground mb-4 text-center">
+                    User Dashboard Preview
+                  </p>
+                  <Alert
+                    variant={
+                      formData.type === "error" ? "destructive" : "default"
+                    }
+                    className={`relative ${formData.type !== "error" ? getPreviewAlertStyle(formData.type) : ""}`}
+                  >
+                    {getPreviewAlertIcon(formData.type)}
+                    <div className="flex-1 pr-8">
+                      <AlertTitle className="flex items-center gap-2 mb-2">
+                        {formData.title || "Your Message Title"}
+                        {formData.type !== "info" && (
+                          <Badge
+                            variant={
+                              formData.type === "error"
+                                ? "destructive"
+                                : "secondary"
+                            }
+                            className="text-xs"
+                          >
+                            {formData.type.toUpperCase()}
+                          </Badge>
+                        )}
+                      </AlertTitle>
+                      <AlertDescription className="text-sm mb-3">
+                        {formData.content ||
+                          "Your message content will appear here..."}
+                      </AlertDescription>
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-xs opacity-75">
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                          <span>Just now</span>
+                        </div>
+                        {formData.expiresAt && (
+                          <div className="flex items-center gap-1">
+                            <span>Expires:</span>
+                            <span>
+                              {new Date(
+                                formData.expiresAt,
+                              ).toLocaleDateString()}
+                            </span>
+                          </div>
+                        )}
+                        <div className="flex items-center gap-1">
+                          <Users className="h-3 w-3" />
+                          <span>
+                            {getPreviewAudienceText(formData.targetAudience)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute top-2 right-2 h-6 w-6 hover:bg-white/20"
+                      disabled
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </Alert>
+                </div>
+                <div className="mt-4 text-center">
+                  <p className="text-sm text-muted-foreground">
+                    {formData.isImmediate
+                      ? "This message will be sent immediately to users"
+                      : formData.scheduledFor
+                        ? `This message will be sent on ${new Date(formData.scheduledFor).toLocaleString()}`
+                        : "This message will be scheduled for later delivery"}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Target audience:{" "}
+                    <strong>
+                      {getPreviewAudienceText(formData.targetAudience)}
+                    </strong>
+                  </p>
+                </div>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setShowPreview(false)}>
+                  Back to Edit
+                </Button>
+                <Button
+                  onClick={() => {
+                    setShowPreview(false);
+                    editingMessage
+                      ? handleUpdateMessage()
+                      : handleCreateMessage();
+                  }}
+                >
+                  {editingMessage
+                    ? "Update Message"
+                    : formData.isImmediate
+                      ? "Send Now"
+                      : "Schedule Message"}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Stats Cards */}
