@@ -1501,199 +1501,200 @@ export default function Settings() {
                       Configure allowed media file types and storage preferences
                     </CardDescription>
                   </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="space-y-4">
-                    <h4 className="font-medium">Allowed File Types</h4>
+                  <CardContent className="space-y-6">
+                    <div className="space-y-4">
+                      <h4 className="font-medium">Allowed File Types</h4>
+
+                      <div className="space-y-4">
+                        <div>
+                          <Label className="text-sm font-medium mb-2 block">
+                            Image Types
+                          </Label>
+                          <div className="flex flex-wrap gap-2 mb-2">
+                            {(settings.allowedImageTypes || []).map(
+                              (type, index) => (
+                                <Badge
+                                  key={index}
+                                  variant="outline"
+                                  className="gap-1"
+                                >
+                                  {type}
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-auto p-0 ml-1"
+                                    onClick={() => {
+                                      const newTypes =
+                                        settings.allowedImageTypes.filter(
+                                          (_, i) => i !== index,
+                                        );
+                                      updateSetting(
+                                        "allowedImageTypes",
+                                        newTypes,
+                                      );
+                                    }}
+                                  >
+                                    <X className="h-3 w-3" />
+                                  </Button>
+                                </Badge>
+                              ),
+                            )}
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                const newType = prompt(
+                                  "Enter image file extension (e.g., .jpg):",
+                                );
+                                if (
+                                  newType &&
+                                  !settings.allowedImageTypes.includes(newType)
+                                ) {
+                                  updateSetting("allowedImageTypes", [
+                                    ...settings.allowedImageTypes,
+                                    newType,
+                                  ]);
+                                }
+                              }}
+                            >
+                              <Plus className="h-3 w-3" />
+                              Add Type
+                            </Button>
+                          </div>
+                        </div>
+
+                        <div>
+                          <Label className="text-sm font-medium mb-2 block">
+                            Video Types
+                          </Label>
+                          <div className="flex flex-wrap gap-2 mb-2">
+                            {(settings.allowedVideoTypes || []).map(
+                              (type, index) => (
+                                <Badge
+                                  key={index}
+                                  variant="outline"
+                                  className="gap-1"
+                                >
+                                  {type}
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-auto p-0 ml-1"
+                                    onClick={() => {
+                                      const newTypes =
+                                        settings.allowedVideoTypes.filter(
+                                          (_, i) => i !== index,
+                                        );
+                                      updateSetting(
+                                        "allowedVideoTypes",
+                                        newTypes,
+                                      );
+                                    }}
+                                  >
+                                    <X className="h-3 w-3" />
+                                  </Button>
+                                </Badge>
+                              ),
+                            )}
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                const newType = prompt(
+                                  "Enter video file extension (e.g., .mp4):",
+                                );
+                                if (
+                                  newType &&
+                                  !settings.allowedVideoTypes.includes(newType)
+                                ) {
+                                  updateSetting("allowedVideoTypes", [
+                                    ...settings.allowedVideoTypes,
+                                    newType,
+                                  ]);
+                                }
+                              }}
+                            >
+                              <Plus className="h-3 w-3" />
+                              Add Type
+                            </Button>
+                          </div>
+                        </div>
+
+                        <div>
+                          <Label
+                            htmlFor="maxFileSize"
+                            className="text-sm font-medium mb-2 block"
+                          >
+                            Maximum File Size (MB)
+                          </Label>
+                          <Input
+                            id="maxFileSize"
+                            type="number"
+                            min="1"
+                            max="100"
+                            value={settings.maxFileSize}
+                            onChange={(e) =>
+                              updateSetting(
+                                "maxFileSize",
+                                parseInt(e.target.value),
+                              )
+                            }
+                            className="w-32"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <Separator />
 
                     <div className="space-y-4">
-                      <div>
-                        <Label className="text-sm font-medium mb-2 block">
-                          Image Types
-                        </Label>
-                        <div className="flex flex-wrap gap-2 mb-2">
-                          {(settings.allowedImageTypes || []).map(
-                            (type, index) => (
-                              <Badge
-                                key={index}
-                                variant="outline"
-                                className="gap-1"
-                              >
-                                {type}
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-auto p-0 ml-1"
-                                  onClick={() => {
-                                    const newTypes =
-                                      settings.allowedImageTypes.filter(
-                                        (_, i) => i !== index,
-                                      );
-                                    updateSetting(
-                                      "allowedImageTypes",
-                                      newTypes,
-                                    );
-                                  }}
-                                >
-                                  <X className="h-3 w-3" />
-                                </Button>
-                              </Badge>
-                            ),
-                          )}
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              const newType = prompt(
-                                "Enter image file extension (e.g., .jpg):",
-                              );
-                              if (
-                                newType &&
-                                !settings.allowedImageTypes.includes(newType)
-                              ) {
-                                updateSetting("allowedImageTypes", [
-                                  ...settings.allowedImageTypes,
-                                  newType,
-                                ]);
-                              }
-                            }}
-                          >
-                            <Plus className="h-3 w-3" />
-                            Add Type
-                          </Button>
+                      <h4 className="font-medium">Storage Management</h4>
+
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm">Total Storage Used</span>
+                          <span className="text-sm font-medium">
+                            2.4 GB / 10 GB
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className="bg-blue-600 h-2 rounded-full"
+                            style={{ width: "24%" }}
+                          ></div>
                         </div>
                       </div>
 
-                      <div>
-                        <Label className="text-sm font-medium mb-2 block">
-                          Video Types
-                        </Label>
-                        <div className="flex flex-wrap gap-2 mb-2">
-                          {(settings.allowedVideoTypes || []).map(
-                            (type, index) => (
-                              <Badge
-                                key={index}
-                                variant="outline"
-                                className="gap-1"
-                              >
-                                {type}
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-auto p-0 ml-1"
-                                  onClick={() => {
-                                    const newTypes =
-                                      settings.allowedVideoTypes.filter(
-                                        (_, i) => i !== index,
-                                      );
-                                    updateSetting(
-                                      "allowedVideoTypes",
-                                      newTypes,
-                                    );
-                                  }}
-                                >
-                                  <X className="h-3 w-3" />
-                                </Button>
-                              </Badge>
-                            ),
-                          )}
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              const newType = prompt(
-                                "Enter video file extension (e.g., .mp4):",
-                              );
-                              if (
-                                newType &&
-                                !settings.allowedVideoTypes.includes(newType)
-                              ) {
-                                updateSetting("allowedVideoTypes", [
-                                  ...settings.allowedVideoTypes,
-                                  newType,
-                                ]);
-                              }
-                            }}
-                          >
-                            <Plus className="h-3 w-3" />
-                            Add Type
-                          </Button>
+                      <div className="grid gap-2">
+                        <Button variant="outline" className="gap-2">
+                          <Download className="h-4 w-4" />
+                          Export All Media
+                        </Button>
+                        <Button variant="outline" className="gap-2">
+                          <Trash2 className="h-4 w-4" />
+                          Clear Cache
+                        </Button>
+                      </div>
+                    </div>
+
+                    <Separator />
+
+                    <div className="space-y-4">
+                      <h4 className="font-medium">Media Library</h4>
+                      <div className="bg-muted p-4 rounded-lg">
+                        <div className="flex items-center gap-3 mb-2">
+                          <FileText className="h-5 w-5" />
+                          <span className="font-medium">Recent Media</span>
                         </div>
-                      </div>
-
-                      <div>
-                        <Label
-                          htmlFor="maxFileSize"
-                          className="text-sm font-medium mb-2 block"
-                        >
-                          Maximum File Size (MB)
-                        </Label>
-                        <Input
-                          id="maxFileSize"
-                          type="number"
-                          min="1"
-                          max="100"
-                          value={settings.maxFileSize}
-                          onChange={(e) =>
-                            updateSetting(
-                              "maxFileSize",
-                              parseInt(e.target.value),
-                            )
-                          }
-                          className="w-32"
-                        />
+                        <p className="text-sm text-muted-foreground">
+                          Your uploaded images and videos will appear here for
+                          easy access and management.
+                        </p>
                       </div>
                     </div>
-                  </div>
-
-                  <Separator />
-
-                  <div className="space-y-4">
-                    <h4 className="font-medium">Storage Management</h4>
-
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm">Total Storage Used</span>
-                        <span className="text-sm font-medium">
-                          2.4 GB / 10 GB
-                        </span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div
-                          className="bg-blue-600 h-2 rounded-full"
-                          style={{ width: "24%" }}
-                        ></div>
-                      </div>
-                    </div>
-
-                    <div className="grid gap-2">
-                      <Button variant="outline" className="gap-2">
-                        <Download className="h-4 w-4" />
-                        Export All Media
-                      </Button>
-                      <Button variant="outline" className="gap-2">
-                        <Trash2 className="h-4 w-4" />
-                        Clear Cache
-                      </Button>
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  <div className="space-y-4">
-                    <h4 className="font-medium">Media Library</h4>
-                    <div className="bg-muted p-4 rounded-lg">
-                      <div className="flex items-center gap-3 mb-2">
-                        <FileText className="h-5 w-5" />
-                        <span className="font-medium">Recent Media</span>
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Your uploaded images and videos will appear here for
-                        easy access and management.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </div>
             )}
 
             {/* Notification Settings */}
