@@ -211,51 +211,34 @@ export default function ReviewGate() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-4 relative overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-green-400/20 to-blue-600/20 rounded-full blur-3xl"></div>
-      </div>
-
-      <div className="max-w-2xl mx-auto py-6 relative z-10">
+    <div className="min-h-screen bg-gray-50 p-4">
+      <div className="max-w-xl mx-auto py-8">
         {/* Business Header */}
-        <Card className="mb-6 border-0 shadow-xl bg-white/80 backdrop-blur-sm">
-          <CardContent className="p-6">
-            <div className="text-center mb-4">
-              {reviewRequest.businessLogo && (
-                <div className="relative inline-block mb-4">
-                  <img
-                    src={reviewRequest.businessLogo}
-                    alt={`${reviewRequest.businessName} logo`}
-                    className="h-24 w-24 rounded-2xl object-cover mx-auto shadow-lg"
-                  />
-                  <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl blur opacity-30"></div>
-                </div>
-              )}
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-                {reviewRequest.businessName}
-              </h1>
-            </div>
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-100">
-              <h3 className="font-semibold text-gray-800 mb-2 text-lg">
-                📋 Project: {reviewRequest.projectName}
-              </h3>
-              <p className="text-gray-600 leading-relaxed">
-                {reviewRequest.projectDescription}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="text-center mb-8">
+          {reviewRequest.businessLogo && (
+            <img
+              src={reviewRequest.businessLogo}
+              alt={`${reviewRequest.businessName} logo`}
+              className="h-16 w-16 rounded-lg object-cover mx-auto mb-4"
+            />
+          )}
+          <h1 className="text-2xl font-semibold text-gray-900 mb-6">
+            {reviewRequest.businessName}
+          </h1>
+
+          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200 mb-8">
+            <h3 className="font-medium text-gray-900 mb-1">
+              {reviewRequest.projectName}
+            </h3>
+            <p className="text-sm text-gray-600">
+              {reviewRequest.projectDescription}
+            </p>
+          </div>
+        </div>
 
         {/* Main Question Heading */}
-        <div className="text-center my-8">
-          <div className="relative inline-block">
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent mb-2">
-              How did we do?
-            </h2>
-            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"></div>
-          </div>
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900">How did we do?</h2>
         </div>
 
         {/* Business Owner Video */}
