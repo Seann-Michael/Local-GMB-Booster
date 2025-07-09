@@ -19,9 +19,7 @@ const EditProject = lazy(() => import("./pages/EditProject"));
 const Gallery = lazy(() => import("./pages/Gallery"));
 const Settings = lazy(() => import("./pages/Settings"));
 const SecurityDashboard = lazy(() => import("./pages/SecurityDashboard"));
-const FileOptimizationSettings = lazy(
-  () => import("./pages/FileOptimizationSettings"),
-);
+
 import SuperAdmin from "./pages/SuperAdmin";
 import BusinessDetail from "./pages/BusinessDetail";
 import BusinessManagement from "./pages/BusinessManagement";
@@ -73,7 +71,6 @@ import SuperAdminPerformance from "./pages/SuperAdminPerformance";
 import SuperAdminQuality from "./pages/SuperAdminQuality";
 import LeadManagement from "./pages/LeadManagement";
 import ProjectValue from "./pages/ProjectValue";
-import NotificationPreferences from "./pages/NotificationPreferences";
 
 const queryClient = new QueryClient();
 
