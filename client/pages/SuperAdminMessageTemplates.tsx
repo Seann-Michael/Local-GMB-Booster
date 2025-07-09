@@ -39,7 +39,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Plus,
-  Template,
+  FileText,
   Edit,
   Trash2,
   Copy,
