@@ -33,6 +33,7 @@ import {
   Calendar,
   CreditCard,
   Briefcase,
+  Lightbulb,
   Target,
   Workflow,
   Building2,
