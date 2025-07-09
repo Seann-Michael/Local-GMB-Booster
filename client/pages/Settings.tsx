@@ -65,6 +65,8 @@ import {
   Ban,
   XCircle,
   RefreshCw,
+  Moon,
+  Clock,
 } from "lucide-react";
 import { toast } from "sonner";
 
