@@ -192,8 +192,8 @@ export class SecureSession {
       rememberMe,
     };
 
-    safeStorage.set(this.SESSION_KEY, sessionData);
-    safeStorage.set(this.TIMEOUT_KEY, expiryTime);
+    localSafeStorage.set(this.SESSION_KEY, sessionData);
+    localSafeStorage.set(this.TIMEOUT_KEY, expiryTime);
     this.updateActivity();
 
     return sessionId;
@@ -205,8 +205,8 @@ export class SecureSession {
     warningTime?: number;
   } {
     try {
-      const session = safeStorage.get(this.SESSION_KEY);
-      const lastActivity = safeStorage.get(this.ACTIVITY_KEY, 0);
+      const session = localSafeStorage.get(this.SESSION_KEY);
+      const lastActivity = localSafeStorage.get(this.ACTIVITY_KEY, 0);
 
       if (!session) {
         return { valid: false };
@@ -242,18 +242,18 @@ export class SecureSession {
   }
 
   static extendSession(): void {
-    const session = safeStorage.get(this.SESSION_KEY);
+    const session = localSafeStorage.get(this.SESSION_KEY);
     if (session && !session.rememberMe) {
       session.expiresAt = Date.now() + this.MAX_IDLE_TIME;
-      safeStorage.set(this.SESSION_KEY, session);
-      safeStorage.set(this.TIMEOUT_KEY, session.expiresAt);
+      localSafeStorage.set(this.SESSION_KEY, session);
+      localSafeStorage.set(this.TIMEOUT_KEY, session.expiresAt);
     }
     this.updateActivity();
   }
 
   static updateActivity(): void {
     try {
-      safeStorage.set(this.ACTIVITY_KEY, Date.now());
+      localSafeStorage.set(this.ACTIVITY_KEY, Date.now());
     } catch (error) {
       console.error("Failed to update session activity:", error);
     }
@@ -261,9 +261,9 @@ export class SecureSession {
 
   static destroySession(): void {
     try {
-      safeStorage.remove(this.SESSION_KEY);
-      safeStorage.remove(this.TIMEOUT_KEY);
-      safeStorage.remove(this.ACTIVITY_KEY);
+      localSafeStorage.remove(this.SESSION_KEY);
+      localSafeStorage.remove(this.TIMEOUT_KEY);
+      localSafeStorage.remove(this.ACTIVITY_KEY);
     } catch (error) {
       console.error("Failed to destroy session:", error);
     }
