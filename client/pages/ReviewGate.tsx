@@ -284,8 +284,53 @@ export default function ReviewGate() {
               )}
             </div>
 
-            {/* Review Text */}
-            {rating > 0 && (
+            {/* Enhanced Review - Show immediately for high ratings */}
+            {showSeoVersion && seoReviewText && (
+              <Card className="bg-blue-50 border-blue-200">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm flex items-center gap-2">
+                    <Star className="h-4 w-4 text-blue-600" />
+                    🎉 We've Pre-Written Your Review!
+                  </CardTitle>
+                  <p className="text-sm text-blue-700 leading-relaxed">
+                    Since you had such a great experience, we've crafted a
+                    review that will help other customers find{" "}
+                    {reviewRequest.businessName}. This optimized version
+                    includes location details and service keywords that make it
+                    easier for people in your area to discover this business
+                    when they need similar work.
+                  </p>
+                </CardHeader>
+                <CardContent className="pt-0 space-y-3">
+                  <div className="bg-white p-4 rounded border text-sm leading-relaxed">
+                    {seoReviewText}
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => copyToClipboard(seoReviewText)}
+                      className="gap-2 flex-1"
+                    >
+                      <Copy className="h-3 w-3" />
+                      Use This Review
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowSeoVersion(false)}
+                      className="gap-2"
+                    >
+                      Write My Own
+                    </Button>
+                  </div>
+                  <p className="text-xs text-blue-600 text-center">
+                    💡 The enhanced version helps local customers find great
+                    businesses like this one
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Review Text - Only show if not using enhanced version */}
+            {rating > 0 && !showSeoVersion && (
               <div>
                 <label className="block text-sm font-medium mb-2">
                   Tell us about your experience:
@@ -297,36 +342,6 @@ export default function ReviewGate() {
                   className="min-h-[100px]"
                 />
               </div>
-            )}
-
-            {/* SEO Optimized Version */}
-            {showSeoVersion && seoReviewText && (
-              <Card className="bg-green-50 border-green-200">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm flex items-center gap-2">
-                    <Star className="h-4 w-4 text-green-600" />
-                    Enhanced Review (Recommended)
-                  </CardTitle>
-                  <p className="text-xs text-green-700">
-                    We've enhanced your review to help other customers find{" "}
-                    {reviewRequest.businessName} more easily
-                  </p>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="bg-white p-3 rounded border text-sm mb-3">
-                    {seoReviewText}
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => copyToClipboard(seoReviewText)}
-                    className="gap-2"
-                  >
-                    <Copy className="h-3 w-3" />
-                    Copy Enhanced Review
-                  </Button>
-                </CardContent>
-              </Card>
             )}
 
             {/* Submit Button */}
