@@ -478,11 +478,64 @@ export default function AdminReviews() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Customer</TableHead>
+                  <TableHead
+                    className="cursor-pointer hover:bg-gray-50"
+                    onClick={() =>
+                      setSortBy(
+                        sortBy === "customerName"
+                          ? "customerName-desc"
+                          : "customerName",
+                      )
+                    }
+                  >
+                    Customer
+                    {sortBy.includes("customerName") && (
+                      <span className="ml-1">
+                        {sortBy.includes("desc") ? "↓" : "↑"}
+                      </span>
+                    )}
+                  </TableHead>
                   <TableHead>Project</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Rating</TableHead>
-                  <TableHead>Sent Date</TableHead>
+                  <TableHead
+                    className="cursor-pointer hover:bg-gray-50"
+                    onClick={() =>
+                      setSortBy(sortBy === "status" ? "status-desc" : "status")
+                    }
+                  >
+                    Status
+                    {sortBy.includes("status") && (
+                      <span className="ml-1">
+                        {sortBy.includes("desc") ? "↓" : "↑"}
+                      </span>
+                    )}
+                  </TableHead>
+                  <TableHead
+                    className="cursor-pointer hover:bg-gray-50"
+                    onClick={() =>
+                      setSortBy(sortBy === "rating" ? "rating-desc" : "rating")
+                    }
+                  >
+                    Rating
+                    {sortBy.includes("rating") && (
+                      <span className="ml-1">
+                        {sortBy.includes("desc") ? "↓" : "↑"}
+                      </span>
+                    )}
+                  </TableHead>
+                  <TableHead
+                    className="cursor-pointer hover:bg-gray-50"
+                    onClick={() =>
+                      setSortBy(sortBy === "sentAt" ? "sentAt-desc" : "sentAt")
+                    }
+                  >
+                    Sent Date
+                    {sortBy.includes("sentAt") && (
+                      <span className="ml-1">
+                        {sortBy.includes("desc") ? "↓" : "↑"}
+                      </span>
+                    )}
+                  </TableHead>
+                  <TableHead className="min-w-[300px]">Review Text</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -517,7 +570,39 @@ export default function AdminReviews() {
                       )}
                     </TableCell>
                     <TableCell>
-                      {new Date(request.sentAt).toLocaleDateString()}
+                      <div className="text-sm">
+                        {new Date(request.sentAt).toLocaleDateString()}
+                        <p className="text-xs text-muted-foreground">
+                          {new Date(request.sentAt).toLocaleTimeString()}
+                        </p>
+                      </div>
+                    </TableCell>
+                    <TableCell className="max-w-xs">
+                      {request.reviewText ? (
+                        <div className="space-y-2">
+                          <p className="text-sm line-clamp-3">
+                            {request.reviewText}
+                          </p>
+                          {request.reviewText.length > 100 && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() =>
+                                toast.info(request.reviewText, {
+                                  duration: 10000,
+                                })
+                              }
+                              className="h-6 px-2 text-xs"
+                            >
+                              Read More
+                            </Button>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-muted-foreground text-sm">
+                          No review yet
+                        </span>
+                      )}
                     </TableCell>
                     <TableCell>
                       <DropdownMenu>
@@ -544,16 +629,34 @@ export default function AdminReviews() {
                             <Send className="h-4 w-4 mr-2" />
                             Resend Request
                           </DropdownMenuItem>
+                          {request.status === "sent" && (
+                            <DropdownMenuItem
+                              onClick={() => {
+                                toast.success(
+                                  `Review request for ${request.customerName} cancelled`,
+                                );
+                                // In real app, would cancel the request
+                              }}
+                              className="text-red-600 focus:text-red-600"
+                            >
+                              <X className="h-4 w-4 mr-2" />
+                              Cancel Request
+                            </DropdownMenuItem>
+                          )}
                           {request.reviewText && (
                             <DropdownMenuItem
                               onClick={() =>
-                                toast.info(request.reviewText, {
-                                  duration: 5000,
-                                })
+                                navigator.clipboard
+                                  .writeText(request.reviewText!)
+                                  .then(() =>
+                                    toast.success(
+                                      "Review text copied to clipboard!",
+                                    ),
+                                  )
                               }
                             >
-                              <MessageSquare className="h-4 w-4 mr-2" />
-                              View Review
+                              <Copy className="h-4 w-4 mr-2" />
+                              Copy Review Text
                             </DropdownMenuItem>
                           )}
                         </DropdownMenuContent>
