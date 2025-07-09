@@ -2513,11 +2513,16 @@ export default function Settings() {
                             <input
                               type="checkbox"
                               id={`filetype-${type}`}
-                              checked={settings.allowedFileTypes.includes(type)}
+                              checked={(
+                                settings?.allowedFileTypes || []
+                              ).includes(type)}
                               onChange={(e) => {
                                 const newTypes = e.target.checked
-                                  ? [...settings.allowedFileTypes, type]
-                                  : settings.allowedFileTypes.filter(
+                                  ? [
+                                      ...(settings?.allowedFileTypes || []),
+                                      type,
+                                    ]
+                                  : (settings?.allowedFileTypes || []).filter(
                                       (t) => t !== type,
                                     );
                                 updateSetting("allowedFileTypes", newTypes);
