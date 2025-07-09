@@ -116,6 +116,7 @@ interface MessageTemplate {
 
 export default function SuperAdminBroadcast() {
   const [messages, setMessages] = useState<BroadcastMessage[]>([]);
+  const [templates, setTemplates] = useState<MessageTemplate[]>([]);
   const [stats, setStats] = useState<BroadcastStats>({
     totalMessages: 0,
     activeMessages: 0,
@@ -131,6 +132,11 @@ export default function SuperAdminBroadcast() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
+  const [selectedTemplate, setSelectedTemplate] = useState("");
+  const [showTemplateVars, setShowTemplateVars] = useState(false);
+  const [templateVariables, setTemplateVariables] = useState<
+    Record<string, string>
+  >({});
 
   // Form state
   const [formData, setFormData] = useState({
