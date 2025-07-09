@@ -774,7 +774,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         {/* Page Content */}
         <main
           className={cn(
-            "flex-1 overflow-auto pb-24 md:pb-0 transition-all duration-300",
+            "flex-1 overflow-auto pb-24 md:pb-0 transition-all duration-300 max-w-full overflow-x-hidden",
             sidebarCollapsed ? "md:ml-16" : "md:ml-72",
           )}
         >
