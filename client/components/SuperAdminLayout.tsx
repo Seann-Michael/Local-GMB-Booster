@@ -141,6 +141,12 @@ export function SuperAdminLayout({
       active: location.pathname.startsWith("/super-admin/email"),
     },
     {
+      label: "API Management",
+      href: "/super-admin/api",
+      icon: Code,
+      active: location.pathname.startsWith("/super-admin/api"),
+    },
+    {
       label: "Financial Dashboard",
       href: "/super-admin/financial",
       icon: DollarSign,
