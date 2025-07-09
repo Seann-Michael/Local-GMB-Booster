@@ -228,7 +228,7 @@ const navigationTabs = [
   { id: "media", label: "Media Settings", icon: Image },
   { id: "reviews", label: "Review Settings", icon: Star },
   { id: "notifications", label: "Notifications", icon: Bell },
-  { id: "file-optimization", label: "File Optimization", icon: Zap },
+
   { id: "users", label: "Users", icon: Users },
   { id: "billing", label: "Billing", icon: DollarSign },
 ];
@@ -2684,68 +2684,6 @@ export default function Settings() {
                           }
                           placeholder="+1 (555) 123-4567"
                         />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-
-            {/* File Optimization */}
-            {activeTab === "file-optimization" && (
-              <div className="space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Optimization Settings</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label>Auto Optimization</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Automatically optimize uploaded files
-                        </p>
-                      </div>
-                      <Switch
-                        checked={settings.autoOptimization !== false}
-                        onCheckedChange={(checked) =>
-                          updateSetting("autoOptimization", checked)
-                        }
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="compressionLevel">
-                        Compression Level (%)
-                      </Label>
-                      <Input
-                        id="compressionLevel"
-                        type="number"
-                        value={settings.compressionLevel || 80}
-                        onChange={(e) =>
-                          updateSetting(
-                            "compressionLevel",
-                            parseInt(e.target.value),
-                          )
-                        }
-                        min="10"
-                        max="100"
-                        className="w-32 mt-1"
-                      />
-                    </div>
-
-                    <div>
-                      <Label>Storage Saved</Label>
-                      <div className="mt-2 p-4 border rounded-lg bg-green-50">
-                        <div className="flex items-center gap-2">
-                          <HardDrive className="h-5 w-5 text-green-600" />
-                          <span className="font-semibold text-green-900">
-                            {settings.totalSpaceSaved || 0} GB saved
-                          </span>
-                        </div>
-                        <p className="text-sm text-green-700 mt-1">
-                          Through file optimization
-                        </p>
                       </div>
                     </div>
                   </CardContent>
