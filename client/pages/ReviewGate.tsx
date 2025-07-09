@@ -260,20 +260,21 @@ export default function ReviewGate() {
 
         {/* Business Owner Video */}
         {reviewRequest.businessOwnerVideo && (
-          <Card>
+          <Card className="mb-6 border-0 shadow-xl bg-white/80 backdrop-blur-sm">
             <CardContent className="p-6">
-              <div className="text-center mb-4">
-                <h3 className="font-medium text-lg mb-2">
-                  A Message from {reviewRequest.businessName}
+              <div className="text-center mb-6">
+                <h3 className="font-semibold text-xl text-gray-800 mb-2">
+                  💬 A Message from {reviewRequest.businessName}
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-gray-600">
                   Personal thank you message from the business owner
                 </p>
               </div>
               <div className="relative max-w-lg mx-auto">
+                <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-2xl blur opacity-20"></div>
                 <video
                   controls
-                  className="w-full rounded-lg shadow-lg"
+                  className="relative w-full rounded-xl shadow-2xl"
                   poster="/api/placeholder/600/400"
                 >
                   <source
