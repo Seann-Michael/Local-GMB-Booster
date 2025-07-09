@@ -211,6 +211,22 @@ export default function AdminReviews() {
     toast.success("Review link copied to clipboard!");
   };
 
+  const cancelReviewRequest = (id: string, customerName: string) => {
+    setReviewRequests((prev) =>
+      prev.map((request) =>
+        request.id === id
+          ? { ...request, status: "expired" as const }
+          : request,
+      ),
+    );
+    toast.success(`Review request for ${customerName} has been cancelled`);
+  };
+
+  const copyReviewText = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success("Review text copied to clipboard!");
+  };
+
   const filteredRequests = reviewRequests
     .filter((request) => {
       if (statusFilter !== "all" && request.status !== statusFilter) {
