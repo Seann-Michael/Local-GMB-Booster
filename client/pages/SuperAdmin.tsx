@@ -160,6 +160,9 @@ export default function SuperAdmin() {
   return (
     <SuperAdminLayout>
       <div className="space-y-6">
+        {/* Broadcast Messages */}
+        <BroadcastAlert />
+
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
