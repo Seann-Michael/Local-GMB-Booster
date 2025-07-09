@@ -93,6 +93,9 @@ export default function Ideas() {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [roadmapItems, setRoadmapItems] = useState<RoadmapItem[]>([]);
   const [categoryBoards, setCategoryBoards] = useState<CategoryBoard[]>([]);
+  const [changelogEntries, setChangelogEntries] = useState<ChangelogEntry[]>(
+    [],
+  );
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("boards");
