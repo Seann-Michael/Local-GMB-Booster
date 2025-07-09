@@ -66,6 +66,7 @@ interface ReviewStats {
 }
 
 export default function AdminReviews() {
+  const navigate = useNavigate();
   const [reviewRequests, setReviewRequests] = useState<ReviewRequest[]>([]);
   const [stats, setStats] = useState<ReviewStats>({
     totalRequests: 0,
