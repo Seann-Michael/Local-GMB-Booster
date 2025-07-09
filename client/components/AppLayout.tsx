@@ -390,26 +390,8 @@ export function AppLayout({ children }: AppLayoutProps) {
         )}
       >
         {/* Sidebar Header */}
-        <div className="p-4 border-b bg-primary/5">
-          <div className="flex items-center justify-between">
-            {!sidebarCollapsed ? (
-              <div className="flex-1 mr-2">
-                <div className="flex items-center space-x-3 mb-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary shadow-sm">
-                    <Building2 className="h-5 w-5 text-primary-foreground" />
-                  </div>
-                  <div>
-                    <span className="font-bold text-base text-foreground">
-                      GMB Booster
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary shadow-sm">
-                <Building2 className="h-5 w-5 text-primary-foreground" />
-              </div>
-            )}
+        <div className="p-3 border-b bg-primary/5">
+          <div className="flex items-center justify-end">
             <Button
               variant="ghost"
               size="icon"
