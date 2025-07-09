@@ -30,7 +30,6 @@ import {
   TrendingUp,
   Clock,
   Users,
-  Memory,
   Cpu,
   HardDrive,
   Network,
@@ -496,7 +495,7 @@ export default function SuperAdminPerformance() {
       case "throughput":
         return TrendingUp;
       case "memory":
-        return Memory;
+        return HardDrive;
       case "cpu":
         return Cpu;
       case "database":
