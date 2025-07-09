@@ -815,11 +815,6 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
         </div>
 
-        {/* Breadcrumbs for mobile */}
-        <div className="lg:hidden bg-background border-b p-4">
-          <Breadcrumbs />
-        </div>
-
         {/* Contextual Header */}
         <div
           className={cn(
