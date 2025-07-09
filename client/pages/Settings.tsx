@@ -937,7 +937,7 @@ export default function Settings() {
                           <div>
                             <h3 className="font-medium">Google My Business</h3>
                             <p className="text-sm text-muted-foreground">
-                              {settings.googleMyBusinessConnected
+                              {settings?.googleMyBusinessConnected
                                 ? "Connected to your Google My Business account"
                                 : "Connect to automatically post completed projects"}
                             </p>
