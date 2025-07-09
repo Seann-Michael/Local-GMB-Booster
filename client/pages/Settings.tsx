@@ -215,7 +215,27 @@ export default function Settings() {
     // Load settings from localStorage
     const savedSettings = localStorage.getItem("business_settings");
     if (savedSettings) {
-      setSettings(JSON.parse(savedSettings));
+      const parsedSettings = JSON.parse(savedSettings);
+      // Ensure all array properties exist to prevent map errors
+      setSettings({
+        ...parsedSettings,
+        webhooks: parsedSettings.webhooks || [],
+        aiVariables: parsedSettings.aiVariables || [],
+        businessTags: parsedSettings.businessTags || [],
+        allowedImageTypes: parsedSettings.allowedImageTypes || [
+          ".jpg",
+          ".jpeg",
+          ".png",
+          ".gif",
+          ".webp",
+        ],
+        allowedVideoTypes: parsedSettings.allowedVideoTypes || [
+          ".mp4",
+          ".mov",
+          ".avi",
+          ".wmv",
+        ],
+      });
     }
   }, []);
 
