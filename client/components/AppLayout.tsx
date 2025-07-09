@@ -87,6 +87,7 @@ export function AppLayout({ children }: AppLayoutProps) {
   useEffect(() => {
     const loadBusinessName = () => {
       const name = localStorage.getItem("business_name") || "My Business";
+      console.log("Loading business name:", name);
       setBusinessName(name);
     };
 
