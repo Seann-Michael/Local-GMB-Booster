@@ -809,7 +809,7 @@ export default function Settings() {
                       </div>
                       <div className="w-24">
                         <Select
-                          value={settings.autoArchiveDays.toString()}
+                          value={settings?.autoArchiveDays?.toString() || "30"}
                           onValueChange={(value) =>
                             updateSetting("autoArchiveDays", parseInt(value))
                           }
@@ -2753,7 +2753,7 @@ export default function Settings() {
                         <div className="text-center p-4 border rounded-lg">
                           <Activity className="h-8 w-8 mx-auto mb-2 text-blue-500" />
                           <div className="text-2xl font-bold text-blue-600">
-                            {settings.allowedFileTypes.length}
+                            {settings?.allowedFileTypes?.length || 0}
                           </div>
                           <p className="text-sm text-muted-foreground">
                             File Types
