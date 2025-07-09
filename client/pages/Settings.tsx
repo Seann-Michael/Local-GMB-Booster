@@ -410,6 +410,11 @@ export default function Settings() {
   const updateSetting = (key: keyof SettingsData, value: any) => {
     try {
       setSettings((prev) => ({ ...prev, [key]: value }));
+
+      // Special handling for business name - save to localStorage immediately
+      if (key === "businessName") {
+        localStorage.setItem("business_name", value || "");
+      }
     } catch (error) {
       console.error(
         "Failed to update setting:",
