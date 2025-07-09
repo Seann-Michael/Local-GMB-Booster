@@ -329,6 +329,27 @@ const defaultSettings: SettingsData = {
       downloadUrl: "/api/invoices/inv_003/download",
     },
   ],
+  // Notification Preferences
+  enableNotifications: true,
+  enableSounds: true,
+  messageTypes: {
+    info: true,
+    warning: true,
+    error: true,
+    success: true,
+  },
+  deliveryMethods: {
+    email: true,
+    sms: false,
+    push: true,
+    inApp: true,
+  },
+  // File Optimization
+  autoOptimization: true,
+  compressionLevel: 80,
+  maxFileSize: 10,
+  allowedFileTypes: [".jpg", ".jpeg", ".png", ".gif", ".webp", ".mp4", ".mov"],
+  totalSpaceSaved: 2.4,
 };
 
 export default function Settings() {
