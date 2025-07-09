@@ -3255,8 +3255,8 @@ export default function Settings() {
                     e.preventDefault();
                     const formData = new FormData(e.currentTarget);
                     const tag = {
-                      name: formData.get("name") as string,
-                      color: formData.get("color") as string,
+                      name: (formData.get("name") as string) || "",
+                      color: (formData.get("color") as string) || "#000000",
                     };
                     addTag(tag);
                     setShowTagForm(false);
