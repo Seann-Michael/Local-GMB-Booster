@@ -2558,7 +2558,7 @@ export default function Settings() {
                         <div className="text-center p-4 border rounded-lg">
                           <HardDrive className="h-8 w-8 mx-auto mb-2 text-primary" />
                           <div className="text-2xl font-bold text-primary">
-                            {settings.totalSpaceSaved.toFixed(1)} GB
+                            {(settings?.totalSpaceSaved || 0).toFixed(1)} GB
                           </div>
                           <p className="text-sm text-muted-foreground">
                             Space Saved
