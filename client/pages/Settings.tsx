@@ -98,6 +98,11 @@ interface SettingsData {
   autoRequestReviews: boolean;
   reviewEmailTemplate: string;
   minimumProjectValue: number;
+  // Users
+  users: UserItem[];
+  // Enhanced Billing
+  creditCard: CreditCardInfo;
+  invoices: InvoiceItem[];
 }
 
 interface WebhookItem {
