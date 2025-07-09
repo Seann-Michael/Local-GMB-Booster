@@ -531,10 +531,8 @@ export default function Settings() {
                             className="gap-1"
                           >
                             {variable}
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-4 w-4 p-0"
+                            <span
+                              className="cursor-pointer hover:bg-muted rounded-sm p-0.5 ml-1"
                               onClick={() => {
                                 const newVariables =
                                   settings.aiVariables.filter(
@@ -544,7 +542,7 @@ export default function Settings() {
                               }}
                             >
                               <X className="h-3 w-3" />
-                            </Button>
+                            </span>
                           </Badge>
                         ))}
                       </div>
@@ -699,10 +697,8 @@ export default function Settings() {
                               className="gap-1"
                             >
                               {type}
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-4 w-4 p-0"
+                              <span
+                                className="cursor-pointer hover:bg-muted rounded-sm p-0.5 ml-1"
                                 onClick={() => {
                                   const newTypes =
                                     settings.allowedImageTypes.filter(
@@ -712,7 +708,7 @@ export default function Settings() {
                                 }}
                               >
                                 <X className="h-3 w-3" />
-                              </Button>
+                              </span>
                             </Badge>
                           ))}
                           <Button
@@ -750,10 +746,8 @@ export default function Settings() {
                               className="gap-1"
                             >
                               {type}
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-4 w-4 p-0"
+                              <span
+                                className="cursor-pointer hover:bg-muted rounded-sm p-0.5 ml-1"
                                 onClick={() => {
                                   const newTypes =
                                     settings.allowedVideoTypes.filter(
@@ -763,7 +757,7 @@ export default function Settings() {
                                 }}
                               >
                                 <X className="h-3 w-3" />
-                              </Button>
+                              </span>
                             </Badge>
                           ))}
                           <Button
