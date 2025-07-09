@@ -1885,7 +1885,7 @@ export default function Settings() {
                         </Select>
                       </div>
 
-                      {settings.notificationFrequency &&
+                      {settings?.notificationFrequency &&
                         settings.notificationFrequency !== "immediate" && (
                           <div className="grid gap-2">
                             <Label htmlFor="digestTime">Digest Time</Label>
