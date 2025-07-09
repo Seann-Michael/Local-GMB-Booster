@@ -245,6 +245,35 @@ export default function ReviewGate() {
           </CardContent>
         </Card>
 
+        {/* Business Owner Video */}
+        {reviewRequest.businessOwnerVideo && (
+          <Card>
+            <CardContent className="p-6">
+              <div className="text-center mb-4">
+                <h3 className="font-medium text-lg mb-2">
+                  A Message from {reviewRequest.businessName}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Personal thank you message from the business owner
+                </p>
+              </div>
+              <div className="relative max-w-lg mx-auto">
+                <video
+                  controls
+                  className="w-full rounded-lg shadow-lg"
+                  poster="/api/placeholder/600/400"
+                >
+                  <source
+                    src={reviewRequest.businessOwnerVideo}
+                    type="video/mp4"
+                  />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Review Form */}
         <Card>
           <CardHeader>
