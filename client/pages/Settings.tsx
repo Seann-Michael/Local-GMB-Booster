@@ -1490,13 +1490,17 @@ export default function Settings() {
 
             {/* Media Settings */}
             {activeTab === "media" && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Media Settings</CardTitle>
-                  <CardDescription>
-                    Configure media handling and storage preferences
-                  </CardDescription>
-                </CardHeader>
+              <div className="space-y-6">
+                {/* Enhanced Metadata Settings */}
+                <MetadataSettings />
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>File Type Settings</CardTitle>
+                    <CardDescription>
+                      Configure allowed media file types and storage preferences
+                    </CardDescription>
+                  </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-4">
                     <h4 className="font-medium">Allowed File Types</h4>
