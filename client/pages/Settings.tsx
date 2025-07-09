@@ -1198,7 +1198,7 @@ export default function Settings() {
                   </div>
 
                   <div className="grid gap-3">
-                    {settings.businessTags.map((tag) => (
+                    {(settings.businessTags || []).map((tag) => (
                       <div
                         key={tag.id}
                         className="flex items-center justify-between p-3 border rounded-lg"
