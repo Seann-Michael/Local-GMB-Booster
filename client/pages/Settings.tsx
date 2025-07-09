@@ -1269,29 +1269,34 @@ export default function Settings() {
                           Image Types
                         </Label>
                         <div className="flex flex-wrap gap-2 mb-2">
-                          {settings.allowedImageTypes.map((type, index) => (
-                            <Badge
-                              key={index}
-                              variant="outline"
-                              className="gap-1"
-                            >
-                              {type}
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-auto p-0 ml-1"
-                                onClick={() => {
-                                  const newTypes =
-                                    settings.allowedImageTypes.filter(
-                                      (_, i) => i !== index,
-                                    );
-                                  updateSetting("allowedImageTypes", newTypes);
-                                }}
+                          {(settings.allowedImageTypes || []).map(
+                            (type, index) => (
+                              <Badge
+                                key={index}
+                                variant="outline"
+                                className="gap-1"
                               >
-                                <X className="h-3 w-3" />
-                              </Button>
-                            </Badge>
-                          ))}
+                                {type}
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-auto p-0 ml-1"
+                                  onClick={() => {
+                                    const newTypes =
+                                      settings.allowedImageTypes.filter(
+                                        (_, i) => i !== index,
+                                      );
+                                    updateSetting(
+                                      "allowedImageTypes",
+                                      newTypes,
+                                    );
+                                  }}
+                                >
+                                  <X className="h-3 w-3" />
+                                </Button>
+                              </Badge>
+                            ),
+                          )}
                           <Button
                             variant="outline"
                             size="sm"
