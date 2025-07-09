@@ -16,6 +16,7 @@ const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
 const EditProject = lazy(() => import("./pages/EditProject"));
 const Gallery = lazy(() => import("./pages/Gallery"));
 const Settings = lazy(() => import("./pages/Settings"));
+const SecurityDashboard = lazy(() => import("./pages/SecurityDashboard"));
 import SuperAdmin from "./pages/SuperAdmin";
 import BusinessDetail from "./pages/BusinessDetail";
 import BusinessManagement from "./pages/BusinessManagement";
