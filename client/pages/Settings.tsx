@@ -244,7 +244,6 @@ export default function Settings() {
 
   const [activeTab, setActiveTab] = useState("general");
   const [isLoading, setIsLoading] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
   const [editingWebhook, setEditingWebhook] = useState<any>(null);
   const [editingTag, setEditingTag] = useState<any>(null);
   const [showWebhookForm, setShowWebhookForm] = useState(false);
@@ -252,38 +251,14 @@ export default function Settings() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Load settings from localStorage with proper error handling
     try {
       const savedSettings = localStorage.getItem("business_settings");
       if (savedSettings) {
-        const parsedSettings = JSON.parse(savedSettings);
-        // Ensure all required arrays exist
-        setSettings((prev) => ({
-          ...prev,
-          ...parsedSettings,
-          webhooks: Array.isArray(parsedSettings.webhooks)
-            ? parsedSettings.webhooks
-            : prev.webhooks,
-          aiVariables: Array.isArray(parsedSettings.aiVariables)
-            ? parsedSettings.aiVariables
-            : prev.aiVariables,
-          businessTags: Array.isArray(parsedSettings.businessTags)
-            ? parsedSettings.businessTags
-            : prev.businessTags,
-          allowedImageTypes: Array.isArray(parsedSettings.allowedImageTypes)
-            ? parsedSettings.allowedImageTypes
-            : prev.allowedImageTypes,
-          allowedVideoTypes: Array.isArray(parsedSettings.allowedVideoTypes)
-            ? parsedSettings.allowedVideoTypes
-            : prev.allowedVideoTypes,
-        }));
+        setSettings(JSON.parse(savedSettings));
       }
     } catch (error) {
       console.error("Failed to load settings:", error);
-      // Keep default settings if loading fails
     }
-    // Always set initialized to true, regardless of localStorage success
-    setIsInitialized(true);
   }, []);
 
   const handleSave = async () => {
@@ -303,14 +278,7 @@ export default function Settings() {
   };
 
   const updateSetting = (key: keyof BusinessSettings, value: any) => {
-    try {
-      setSettings((prev) => {
-        if (!prev) return prev;
-        return { ...prev, [key]: value };
-      });
-    } catch (error) {
-      console.error("Error updating setting:", error);
-    }
+    setSettings((prev) => ({ ...prev, [key]: value }));
   };
 
   const updateWebhook = (webhookId: string, updatedWebhook: any) => {
@@ -378,24 +346,6 @@ export default function Settings() {
       console.error("Error deleting tag:", error);
     }
   };
-
-  // Only show loading if not initialized yet
-  if (!isInitialized) {
-    return (
-      <AppLayout>
-        <div className="container mx-auto px-4 py-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex items-center justify-center min-h-[400px]">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-muted-foreground">Loading settings...</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </AppLayout>
-    );
-  }
 
   return (
     <AppLayout>
