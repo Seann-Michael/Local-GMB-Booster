@@ -180,16 +180,16 @@ export default function ReviewGate() {
 
         {/* Business Owner Video */}
         {reviewRequest.businessOwnerVideo && (
-          <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 mb-8">
+          <div className="bg-white rounded-xl p-6 shadow-md border border-blue-100 mb-8">
             <div className="text-center mb-4">
-              <h3 className="font-medium text-gray-900 mb-2">
+              <h3 className="font-semibold text-blue-900 mb-2">
                 A Message from {reviewRequest.businessName}
               </h3>
             </div>
             <div className="max-w-lg mx-auto">
               <video
                 controls
-                className="w-full rounded-lg"
+                className="w-full rounded-lg shadow-lg"
                 poster="/api/placeholder/600/400"
               >
                 <source
@@ -203,7 +203,7 @@ export default function ReviewGate() {
         )}
 
         {/* Review Form */}
-        <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-200">
+        <div className="bg-white rounded-xl p-8 shadow-md border border-blue-100">
           <div className="space-y-6">
             {/* Star Rating */}
             <div className="text-center">
