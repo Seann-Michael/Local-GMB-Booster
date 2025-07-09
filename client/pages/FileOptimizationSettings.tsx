@@ -332,9 +332,15 @@ export default function FileOptimizationSettings() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <Button className="gap-2 h-auto p-4 flex-col">
+                  <Button
+                    className="gap-2 h-auto p-4 flex-col"
+                    onClick={handleOptimizeAllImages}
+                    disabled={isOptimizing}
+                  >
                     <Zap className="h-6 w-6" />
-                    <span>Optimize All Images</span>
+                    <span>
+                      {isOptimizing ? "Optimizing..." : "Optimize All Images"}
+                    </span>
                     <span className="text-xs opacity-75">
                       Batch optimize unoptimized files
                     </span>
@@ -343,6 +349,7 @@ export default function FileOptimizationSettings() {
                   <Button
                     variant="outline"
                     className="gap-2 h-auto p-4 flex-col"
+                    onClick={handleArchiveOldProjects}
                   >
                     <Archive className="h-6 w-6" />
                     <span>Archive Old Projects</span>
@@ -354,6 +361,7 @@ export default function FileOptimizationSettings() {
                   <Button
                     variant="outline"
                     className="gap-2 h-auto p-4 flex-col"
+                    onClick={handleConfigureSettings}
                   >
                     <Settings className="h-6 w-6" />
                     <span>Configure Settings</span>
