@@ -64,6 +64,7 @@ import {
   Info,
   Ban,
   XCircle,
+  RefreshCw,
 } from "lucide-react";
 import { toast } from "sonner";
 
