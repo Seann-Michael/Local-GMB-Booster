@@ -684,15 +684,19 @@ export default function Settings() {
                           }
                         />
                       </div>
-                      <div>
-                        <Label htmlFor="address">Address</Label>
+                      <div className="sm:col-span-2">
+                        <Label htmlFor="address">Business Address</Label>
                         <Input
                           id="address"
                           value={settings.address}
                           onChange={(e) =>
                             updateSetting("address", e.target.value)
                           }
+                          placeholder="Enter business address (Google autocomplete available)"
                         />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Start typing to see address suggestions
+                        </p>
                       </div>
                       <div>
                         <Label htmlFor="city">City</Label>
