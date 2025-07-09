@@ -588,14 +588,125 @@ export default function Ideas() {
                 </button>
               </div>
 
-              <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                <Input
-                  placeholder="Search..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 w-64"
-                />
+              <div className="flex items-center gap-4">
+                <Dialog
+                  open={showSuggestionForm}
+                  onOpenChange={setShowSuggestionForm}
+                >
+                  <DialogTrigger asChild>
+                    <Button className="gap-2">
+                      <Plus className="h-4 w-4" />
+                      Suggest Feature
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[525px]">
+                    <DialogHeader>
+                      <DialogTitle>Suggest a New Feature</DialogTitle>
+                      <DialogDescription>
+                        Share your idea with our team. All suggestions are
+                        reviewed before being published.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                      <div className="grid gap-2">
+                        <Label htmlFor="title">Feature Title *</Label>
+                        <Input
+                          id="title"
+                          value={suggestionForm.title}
+                          onChange={(e) =>
+                            setSuggestionForm((prev) => ({
+                              ...prev,
+                              title: e.target.value,
+                            }))
+                          }
+                          placeholder="Brief, descriptive title for your feature idea"
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="category">Category *</Label>
+                        <Select
+                          value={suggestionForm.category}
+                          onValueChange={(value) =>
+                            setSuggestionForm((prev) => ({
+                              ...prev,
+                              category: value,
+                            }))
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a category" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {categoryBoards.map((board) => (
+                              <SelectItem key={board.id} value={board.id}>
+                                {board.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="description">
+                          Feature Description *
+                        </Label>
+                        <Textarea
+                          id="description"
+                          value={suggestionForm.description}
+                          onChange={(e) =>
+                            setSuggestionForm((prev) => ({
+                              ...prev,
+                              description: e.target.value,
+                            }))
+                          }
+                          placeholder="Describe your feature idea in detail. What problem does it solve? How would it work?"
+                          className="min-h-[100px]"
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="justification">
+                          Why is this important? (Optional)
+                        </Label>
+                        <Textarea
+                          id="justification"
+                          value={suggestionForm.justification}
+                          onChange={(e) =>
+                            setSuggestionForm((prev) => ({
+                              ...prev,
+                              justification: e.target.value,
+                            }))
+                          }
+                          placeholder="Help us understand the value and impact of this feature"
+                          className="min-h-[80px]"
+                        />
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button
+                        variant="outline"
+                        onClick={() => setShowSuggestionForm(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={handleSuggestionSubmit}
+                        className="gap-2"
+                      >
+                        <Send className="h-4 w-4" />
+                        Submit Suggestion
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+
+                <div className="relative">
+                  <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <Input
+                    placeholder="Search..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 w-64"
+                  />
+                </div>
               </div>
             </div>
           </div>
