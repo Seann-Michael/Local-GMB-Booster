@@ -73,6 +73,8 @@ import { toast } from "sonner";
 // Types
 interface SettingsData {
   businessName: string;
+  subAccountId: string;
+  businessLogo: string;
   contactName: string;
   email: string;
   phone: string;
