@@ -237,7 +237,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         {/* Business Name */}
         <div className="px-3 pb-2">
           <div className="text-sm font-medium text-foreground truncate">
-            {localStorage.getItem("business_name") || "My Business"}
+            {businessName}
           </div>
         </div>
 
