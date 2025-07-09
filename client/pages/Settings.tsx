@@ -301,6 +301,8 @@ const createDefaultSettings = (): SettingsData => ({
   autoRequestReviews: true,
   reviewEmailTemplate:
     "Hi {CUSTOMER_NAME}, we'd love to hear about your experience with our {PROJECT_TYPE} project!",
+  reviewSmsTemplate:
+    "Hi {CUSTOMER_NAME}! How was your experience with {BUSINESS_NAME}? Leave a review: {REVIEW_LINK}",
   minimumProjectValue: 500,
   reviewAiPrompt: "",
   reviewGateTitle: "",
@@ -3304,7 +3306,7 @@ export default function Settings() {
                             </td>
                             <td className="p-3">2023-12-15</td>
                             <td className="p-3 font-medium">$49.00</td>
-                            <td className="p-3">Visa •••• 4242</td>
+                            <td className="p-3">Visa •••��� 4242</td>
                             <td className="p-3">
                               <Badge variant="secondary">Refunded</Badge>
                             </td>
