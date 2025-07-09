@@ -126,7 +126,7 @@ interface SettingsData {
   // Enhanced Billing
   creditCard: CreditCardInfo;
   invoices: InvoiceItem[];
-  // Notification Preferences
+  // Comprehensive Notification Preferences
   enableNotifications: boolean;
   enableSounds: boolean;
   messageTypes: {
@@ -141,6 +141,15 @@ interface SettingsData {
     push: boolean;
     inApp: boolean;
   };
+  notificationFrequency: string;
+  digestTime: string;
+  doNotDisturbEnabled: boolean;
+  doNotDisturbStart: string;
+  doNotDisturbEnd: string;
+  doNotDisturbWeekendsOnly: boolean;
+  autoMarkAsRead: boolean;
+  showPreviews: boolean;
+  groupSimilar: boolean;
   // File Optimization
   autoOptimization: boolean;
   compressionLevel: number;
