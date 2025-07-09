@@ -13,10 +13,15 @@ import { AppLayout } from "@/components/AppLayout";
 import { ProjectCard } from "@/components/ProjectCard";
 import { EnhancedBroadcastAlert } from "@/components/EnhancedBroadcastAlert";
 import { FolderOpen, Plus, Search, Filter, X, RotateCcw } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCurrentUser } from "@/lib/auth";
 import { toast } from "sonner";
+import { AdvancedSearch } from "@/components/AdvancedSearch";
+import { VirtualProjectList } from "@/components/VirtualScroll";
+import { ProjectGridSkeleton } from "@/components/SkeletonLoader";
+import { useAnalytics } from "@/lib/analytics";
+import { ThemeToggle } from "@/components/ThemeProvider";
 
 interface TaggedPhoto {
   url: string;
