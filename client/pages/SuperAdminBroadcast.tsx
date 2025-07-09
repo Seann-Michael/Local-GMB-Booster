@@ -604,7 +604,7 @@ export default function SuperAdminBroadcast() {
                         {templates.map((template) => (
                           <SelectItem key={template.id} value={template.id}>
                             <div className="flex items-center gap-2">
-                              <Template className="h-4 w-4" />
+                              <FileText className="h-4 w-4" />
                               <span>{template.name}</span>
                               <Badge variant="outline" className="text-xs">
                                 {template.category}
