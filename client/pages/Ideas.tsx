@@ -318,7 +318,11 @@ export default function Ideas() {
       return true;
     })
     .sort((a, b) => {
-      if (sortBy === "votes") return b.votes - a.votes;
+      if (sortBy === "popular") {
+        const aScore = a.upvotes - a.downvotes;
+        const bScore = b.upvotes - b.downvotes;
+        return bScore - aScore;
+      }
       if (sortBy === "newest")
         return (
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
