@@ -230,9 +230,9 @@ export function AppLayout({ children }: AppLayoutProps) {
               variant="ghost"
               size="icon"
               onClick={() => setMobileSidebarOpen(false)}
-              className="h-8 w-8 hover:bg-primary/10"
+              className="h-10 w-10 min-h-[44px] min-w-[44px] hover:bg-muted text-foreground"
             >
-              <X className="h-4 w-4" />
+              <X className="h-5 w-5" />
             </Button>
           </div>
         </div>
@@ -675,7 +675,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden"
+                className="md:hidden text-foreground hover:bg-muted"
                 onClick={() => setMobileSidebarOpen(true)}
               >
                 <Menu className="h-5 w-5" />
@@ -716,10 +716,8 @@ export function AppLayout({ children }: AppLayoutProps) {
                 <Search className="h-5 w-5" />
               </Button>
 
-              {/* Theme Toggle */}
-              <div className="hidden md:block">
-                <ThemeToggle />
-              </div>
+              {/* Theme Toggle - Now visible on mobile too */}
+              <ThemeToggle />
 
               {/* Notifications */}
               <Link to="/notifications">
