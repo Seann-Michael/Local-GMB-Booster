@@ -397,6 +397,11 @@ const defaultSettings: SettingsData = {
   maxFileSize: 10,
   allowedFileTypes: [".jpg", ".jpeg", ".png", ".gif", ".webp", ".mp4", ".mov"],
   totalSpaceSaved: 2.4,
+  // Additional Security Settings
+  rememberLogin: false,
+  activityLogging: true,
+  sessionMonitoring: true,
+  dataEncryption: true,
 };
 
 export default function Settings() {
