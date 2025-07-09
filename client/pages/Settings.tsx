@@ -155,7 +155,8 @@ const navigationTabs = [
   { id: "media", label: "Media Settings", icon: Image },
   { id: "reviews", label: "Review Settings", icon: Star },
   { id: "notifications", label: "Notifications", icon: Bell },
-  { id: "security", label: "Security", icon: Shield },
+  { id: "file-optimization", label: "File Optimization", icon: Zap },
+  { id: "security", label: "System Security", icon: Shield },
   { id: "users", label: "Users", icon: Users },
   { id: "billing", label: "Billing", icon: DollarSign },
 ];
