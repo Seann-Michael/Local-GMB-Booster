@@ -100,6 +100,7 @@ interface SettingsData {
   googleMyBusinessConnected: boolean;
   goHighLevelApiKey: string;
   webhooks: WebhookItem[];
+  rssIncludeImages: boolean;
 
   // AI Assistant
   aiPromptTemplate: string;
@@ -266,6 +267,7 @@ const createDefaultSettings = (): SettingsData => ({
   googleMyBusinessConnected: true,
   goHighLevelApiKey: "",
   webhooks: [],
+  rssIncludeImages: true,
 
   // AI Assistant
   aiPromptTemplate:
