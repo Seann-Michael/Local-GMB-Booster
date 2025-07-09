@@ -690,7 +690,7 @@ export default function Settings() {
                         <Label htmlFor="website">Website</Label>
                         <Input
                           id="website"
-                          value={settings.website}
+                          value={settings?.website || ""}
                           onChange={(e) =>
                             updateSetting("website", e.target.value)
                           }
@@ -700,7 +700,7 @@ export default function Settings() {
                         <Label htmlFor="address">Business Address</Label>
                         <Input
                           id="address"
-                          value={settings.address}
+                          value={settings?.address || ""}
                           onChange={(e) =>
                             updateSetting("address", e.target.value)
                           }
@@ -714,7 +714,7 @@ export default function Settings() {
                         <Label htmlFor="city">City</Label>
                         <Input
                           id="city"
-                          value={settings.city}
+                          value={settings?.city || ""}
                           onChange={(e) =>
                             updateSetting("city", e.target.value)
                           }
@@ -724,7 +724,7 @@ export default function Settings() {
                         <Label htmlFor="state">State</Label>
                         <Input
                           id="state"
-                          value={settings.state}
+                          value={settings?.state || ""}
                           onChange={(e) =>
                             updateSetting("state", e.target.value)
                           }
@@ -734,7 +734,7 @@ export default function Settings() {
                         <Label htmlFor="zipCode">Zip Code</Label>
                         <Input
                           id="zipCode"
-                          value={settings.zipCode}
+                          value={settings?.zipCode || ""}
                           onChange={(e) =>
                             updateSetting("zipCode", e.target.value)
                           }
