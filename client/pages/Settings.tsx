@@ -5,7 +5,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { AppLayout } from "@/components/AppLayout";
 import { MetadataSettings } from "@/components/MetadataSettings";
 import {
@@ -137,9 +143,17 @@ export default function Settings() {
     webhooks: [],
 
     // AI Assistance Settings
-    aiPromptTemplate: "Create a professional description for a {PROJECT_TYPE} project at {ADDRESS}. Include details about {SERVICES} and highlight the quality of work.",
-    aiInstructions: "Write engaging, professional descriptions that highlight the benefits and quality of the work. Use a friendly but professional tone.",
-    aiVariables: ["PROJECT_TYPE", "ADDRESS", "SERVICES", "CUSTOMER_NAME", "COMPLETION_DATE"],
+    aiPromptTemplate:
+      "Create a professional description for a {PROJECT_TYPE} project at {ADDRESS}. Include details about {SERVICES} and highlight the quality of work.",
+    aiInstructions:
+      "Write engaging, professional descriptions that highlight the benefits and quality of the work. Use a friendly but professional tone.",
+    aiVariables: [
+      "PROJECT_TYPE",
+      "ADDRESS",
+      "SERVICES",
+      "CUSTOMER_NAME",
+      "COMPLETION_DATE",
+    ],
 
     // Tags
     businessTags: [],
@@ -177,15 +191,25 @@ export default function Settings() {
       const savedSettings = localStorage.getItem("business_settings");
       if (savedSettings) {
         const parsedSettings = JSON.parse(savedSettings);
-        setSettings(prev => ({
+        setSettings((prev) => ({
           ...prev,
           ...parsedSettings,
           // Ensure arrays are always arrays
-          webhooks: Array.isArray(parsedSettings.webhooks) ? parsedSettings.webhooks : [],
-          aiVariables: Array.isArray(parsedSettings.aiVariables) ? parsedSettings.aiVariables : prev.aiVariables,
-          businessTags: Array.isArray(parsedSettings.businessTags) ? parsedSettings.businessTags : [],
-          allowedImageTypes: Array.isArray(parsedSettings.allowedImageTypes) ? parsedSettings.allowedImageTypes : prev.allowedImageTypes,
-          allowedVideoTypes: Array.isArray(parsedSettings.allowedVideoTypes) ? parsedSettings.allowedVideoTypes : prev.allowedVideoTypes,
+          webhooks: Array.isArray(parsedSettings.webhooks)
+            ? parsedSettings.webhooks
+            : [],
+          aiVariables: Array.isArray(parsedSettings.aiVariables)
+            ? parsedSettings.aiVariables
+            : prev.aiVariables,
+          businessTags: Array.isArray(parsedSettings.businessTags)
+            ? parsedSettings.businessTags
+            : [],
+          allowedImageTypes: Array.isArray(parsedSettings.allowedImageTypes)
+            ? parsedSettings.allowedImageTypes
+            : prev.allowedImageTypes,
+          allowedVideoTypes: Array.isArray(parsedSettings.allowedVideoTypes)
+            ? parsedSettings.allowedVideoTypes
+            : prev.allowedVideoTypes,
         }));
       }
     } catch (error) {
@@ -204,18 +228,18 @@ export default function Settings() {
       name: webhook.name || "",
       url: webhook.url || "",
       events: Array.isArray(webhook.events) ? webhook.events : [],
-      active: webhook.active !== false
+      active: webhook.active !== false,
     };
-    setSettings(prev => ({
+    setSettings((prev) => ({
       ...prev,
-      webhooks: [...(prev.webhooks || []), newWebhook]
+      webhooks: [...(prev.webhooks || []), newWebhook],
     }));
   };
 
   const removeWebhook = (id: string) => {
-    setSettings(prev => ({
+    setSettings((prev) => ({
       ...prev,
-      webhooks: (prev.webhooks || []).filter(w => w.id !== id)
+      webhooks: (prev.webhooks || []).filter((w) => w.id !== id),
     }));
   };
 
@@ -223,39 +247,39 @@ export default function Settings() {
     const newTag = {
       id: Date.now().toString(),
       name: tag.name || "",
-      color: tag.color || "#3b82f6"
+      color: tag.color || "#3b82f6",
     };
-    setSettings(prev => ({
+    setSettings((prev) => ({
       ...prev,
-      businessTags: [...(prev.businessTags || []), newTag]
+      businessTags: [...(prev.businessTags || []), newTag],
     }));
   };
 
   const removeTag = (id: string) => {
-    setSettings(prev => ({
+    setSettings((prev) => ({
       ...prev,
-      businessTags: (prev.businessTags || []).filter(t => t.id !== id)
+      businessTags: (prev.businessTags || []).filter((t) => t.id !== id),
     }));
   };
 
   const addFileType = (type: "image" | "video", extension: string) => {
     if (!extension) return;
     const key = type === "image" ? "allowedImageTypes" : "allowedVideoTypes";
-    setSettings(prev => {
+    setSettings((prev) => {
       const currentTypes = prev[key] || [];
       if (currentTypes.includes(extension)) return prev;
       return {
         ...prev,
-        [key]: [...currentTypes, extension]
+        [key]: [...currentTypes, extension],
       };
     });
   };
 
   const removeFileType = (type: "image" | "video", extension: string) => {
     const key = type === "image" ? "allowedImageTypes" : "allowedVideoTypes";
-    setSettings(prev => ({
+    setSettings((prev) => ({
       ...prev,
-      [key]: (prev[key] || []).filter(t => t !== extension)
+      [key]: (prev[key] || []).filter((t) => t !== extension),
     }));
   };
 
@@ -445,7 +469,8 @@ export default function Settings() {
                       <div>
                         <Label>Google My Business Auto-Post</Label>
                         <p className="text-sm text-muted-foreground">
-                          Automatically post completed projects to Google My Business
+                          Automatically post completed projects to Google My
+                          Business
                         </p>
                       </div>
                       <Switch
@@ -456,7 +481,9 @@ export default function Settings() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="goHighLevelApiKey">GoHighLevel API Key</Label>
+                      <Label htmlFor="goHighLevelApiKey">
+                        GoHighLevel API Key
+                      </Label>
                       <Input
                         id="goHighLevelApiKey"
                         type="password"
@@ -478,7 +505,9 @@ export default function Settings() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <Label htmlFor="aiPromptTemplate">AI Prompt Template</Label>
+                      <Label htmlFor="aiPromptTemplate">
+                        AI Prompt Template
+                      </Label>
                       <Textarea
                         id="aiPromptTemplate"
                         value={settings.aiPromptTemplate}
@@ -533,17 +562,27 @@ export default function Settings() {
                           <div className="flex items-center justify-between">
                             <div>
                               <h4 className="font-medium">{webhook.name}</h4>
-                              <p className="text-sm text-muted-foreground">{webhook.url}</p>
+                              <p className="text-sm text-muted-foreground">
+                                {webhook.url}
+                              </p>
                               <div className="flex gap-1 mt-1">
                                 {(webhook.events || []).map((event) => (
-                                  <Badge key={event} variant="secondary" className="text-xs">
+                                  <Badge
+                                    key={event}
+                                    variant="secondary"
+                                    className="text-xs"
+                                  >
                                     {event}
                                   </Badge>
                                 ))}
                               </div>
                             </div>
                             <div className="flex gap-2">
-                              <Badge variant={webhook.active ? "default" : "secondary"}>
+                              <Badge
+                                variant={
+                                  webhook.active ? "default" : "secondary"
+                                }
+                              >
                                 {webhook.active ? "Active" : "Inactive"}
                               </Badge>
                               <Button
@@ -578,7 +617,10 @@ export default function Settings() {
 
                     <div className="grid gap-3">
                       {(settings.businessTags || []).map((tag) => (
-                        <div key={tag.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div
+                          key={tag.id}
+                          className="flex items-center justify-between p-3 border rounded-lg"
+                        >
                           <div className="flex items-center gap-3">
                             <div
                               className="w-4 h-4 rounded-full"
@@ -611,7 +653,11 @@ export default function Settings() {
                         <Label>Allowed Image Types</Label>
                         <div className="flex flex-wrap gap-2 mt-2">
                           {(settings.allowedImageTypes || []).map((type) => (
-                            <Badge key={type} variant="outline" className="gap-1">
+                            <Badge
+                              key={type}
+                              variant="outline"
+                              className="gap-1"
+                            >
                               {type}
                               <Button
                                 variant="ghost"
@@ -627,7 +673,9 @@ export default function Settings() {
                             variant="outline"
                             size="sm"
                             onClick={() => {
-                              const newType = prompt("Enter image file extension (e.g., .webp):");
+                              const newType = prompt(
+                                "Enter image file extension (e.g., .webp):",
+                              );
                               if (newType) addFileType("image", newType);
                             }}
                             className="gap-1"
@@ -642,7 +690,11 @@ export default function Settings() {
                         <Label>Allowed Video Types</Label>
                         <div className="flex flex-wrap gap-2 mt-2">
                           {(settings.allowedVideoTypes || []).map((type) => (
-                            <Badge key={type} variant="outline" className="gap-1">
+                            <Badge
+                              key={type}
+                              variant="outline"
+                              className="gap-1"
+                            >
                               {type}
                               <Button
                                 variant="ghost"
@@ -658,7 +710,9 @@ export default function Settings() {
                             variant="outline"
                             size="sm"
                             onClick={() => {
-                              const newType = prompt("Enter video file extension (e.g., .mp4):");
+                              const newType = prompt(
+                                "Enter video file extension (e.g., .mp4):",
+                              );
                               if (newType) addFileType("video", newType);
                             }}
                             className="gap-1"
@@ -670,13 +724,18 @@ export default function Settings() {
                       </div>
 
                       <div>
-                        <Label htmlFor="maxFileSize">Maximum File Size (MB)</Label>
+                        <Label htmlFor="maxFileSize">
+                          Maximum File Size (MB)
+                        </Label>
                         <Input
                           id="maxFileSize"
                           type="number"
                           value={settings.maxFileSize}
                           onChange={(e) =>
-                            updateSetting("maxFileSize", parseInt(e.target.value))
+                            updateSetting(
+                              "maxFileSize",
+                              parseInt(e.target.value),
+                            )
                           }
                           className="w-32"
                         />
@@ -782,7 +841,9 @@ export default function Settings() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="passwordRequirements">Password Requirements</Label>
+                      <Label htmlFor="passwordRequirements">
+                        Password Requirements
+                      </Label>
                       <Select
                         value={settings.passwordRequirements}
                         onValueChange={(value) =>
@@ -795,18 +856,25 @@ export default function Settings() {
                         <SelectContent>
                           <SelectItem value="basic">Basic</SelectItem>
                           <SelectItem value="strong">Strong</SelectItem>
-                          <SelectItem value="very-strong">Very Strong</SelectItem>
+                          <SelectItem value="very-strong">
+                            Very Strong
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                     <div>
-                      <Label htmlFor="sessionTimeout">Session Timeout (minutes)</Label>
+                      <Label htmlFor="sessionTimeout">
+                        Session Timeout (minutes)
+                      </Label>
                       <Input
                         id="sessionTimeout"
                         type="number"
                         value={settings.sessionTimeout}
                         onChange={(e) =>
-                          updateSetting("sessionTimeout", parseInt(e.target.value))
+                          updateSetting(
+                            "sessionTimeout",
+                            parseInt(e.target.value),
+                          )
                         }
                         className="w-32"
                       />
@@ -906,7 +974,9 @@ export default function Settings() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="webhookEvents">Events (comma-separated)</Label>
+                      <Label htmlFor="webhookEvents">
+                        Events (comma-separated)
+                      </Label>
                       <Input
                         id="webhookEvents"
                         name="events"
@@ -991,19 +1061,6 @@ export default function Settings() {
               </div>
             </div>
           )}
-
-              {activeTab === "media" && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Media Settings</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <MetadataSettings />
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-          </div>
         </div>
       </div>
     </AppLayout>
