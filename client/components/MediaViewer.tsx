@@ -102,6 +102,40 @@ export function MediaViewer({
     });
   };
 
+  const handleImageLoad = (index: number) => {
+    setLoadingImages((prev) => {
+      const newSet = new Set(prev);
+      newSet.delete(index);
+      return newSet;
+    });
+    setFailedImages((prev) => {
+      const newSet = new Set(prev);
+      newSet.delete(index);
+      return newSet;
+    });
+  };
+
+  const handleImageError = (index: number) => {
+    setLoadingImages((prev) => {
+      const newSet = new Set(prev);
+      newSet.delete(index);
+      return newSet;
+    });
+    setFailedImages((prev) => {
+      const newSet = new Set(prev);
+      newSet.add(index);
+      return newSet;
+    });
+  };
+
+  const handleImageLoadStart = (index: number) => {
+    setLoadingImages((prev) => {
+      const newSet = new Set(prev);
+      newSet.add(index);
+      return newSet;
+    });
+  };
+
   return (
     <div className="space-y-4">
       {/* Photo Grid */}
