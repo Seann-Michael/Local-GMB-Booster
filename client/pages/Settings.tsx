@@ -565,25 +565,33 @@ export default function Settings() {
               <div className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Business Information</CardTitle>
+                    <CardTitle className="flex items-center justify-between">
+                      <span>Business Information</span>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <span>Sub Account ID:</span>
+                        <code className="bg-muted px-2 py-1 rounded text-xs">
+                          {settings.subAccountId}
+                        </code>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => {
+                            navigator.clipboard.writeText(
+                              settings.subAccountId,
+                            );
+                            toast.success("Sub Account ID copied to clipboard");
+                          }}
+                          className="h-6 w-6 p-0"
+                        >
+                          <Copy className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </CardTitle>
                     <CardDescription>
                       Basic information about your business
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="grid gap-2">
-                      <Label htmlFor="subAccountId">Sub Account ID</Label>
-                      <Input
-                        id="subAccountId"
-                        value={settings.subAccountId || ""}
-                        readOnly
-                        className="bg-muted"
-                      />
-                      <p className="text-xs text-muted-foreground">
-                        Unique identifier for your account
-                      </p>
-                    </div>
-
                     <div className="space-y-2">
                       <Label>Business Logo</Label>
                       <div className="space-y-2">
