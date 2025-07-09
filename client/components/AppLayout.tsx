@@ -171,6 +171,13 @@ export function AppLayout({ children }: AppLayoutProps) {
       active: location.pathname === "/admin/security",
     },
     {
+      id: "file-optimization",
+      label: "File Optimization",
+      href: "/admin/file-optimization",
+      icon: Zap,
+      active: location.pathname === "/admin/file-optimization",
+    },
+    {
       id: "preferences",
       label: "Notifications",
       href: "/notification-preferences",
