@@ -56,6 +56,9 @@ export function safeJsonParse<T = any>(
 export const safeStorage = {
   get<T = any>(key: string, fallback?: T): T | undefined {
     try {
+      if (typeof window === "undefined" || !window.localStorage) {
+        return fallback;
+      }
       const item = localStorage.getItem(key);
       return item ? JSON.parse(item) : fallback;
     } catch {
@@ -65,6 +68,9 @@ export const safeStorage = {
 
   set(key: string, value: any): boolean {
     try {
+      if (typeof window === "undefined" || !window.localStorage) {
+        return false;
+      }
       localStorage.setItem(key, JSON.stringify(value));
       return true;
     } catch {
@@ -75,6 +81,9 @@ export const safeStorage = {
 
   remove(key: string): boolean {
     try {
+      if (typeof window === "undefined" || !window.localStorage) {
+        return false;
+      }
       localStorage.removeItem(key);
       return true;
     } catch {
