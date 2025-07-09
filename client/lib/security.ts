@@ -387,42 +387,69 @@ export class SecureAPI {
     endpoint: string,
     options: RequestInit = {},
   ): Promise<Response> {
-    const url = `${this.baseUrl}${endpoint}`;
-
-    // Add CSRF token
-    const headers = CSRFProtection.addTokenToHeaders({
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-    });
-
-    // Add session validation
-    const session = SecureSession.validateSession();
-    if (session.valid && session.user) {
-      headers["Authorization"] = `Bearer ${session.user.token}`;
-    }
-
-    // Add security headers
-    headers["X-Requested-With"] = "XMLHttpRequest";
-    headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
-
-    const secureOptions: RequestInit = {
-      ...options,
-      headers,
-      credentials: "same-origin",
-    };
-
     try {
+      const url = `${this.baseUrl}${endpoint}`;
+
+      // Add CSRF token
+      const headers: Record<string, string> = {};
+
+      try {
+        const csrfHeaders = CSRFProtection.addTokenToHeaders({
+          "Content-Type": "application/json",
+          ...(options.headers || {}),
+        });
+        Object.assign(headers, csrfHeaders);
+      } catch (csrfError) {
+        console.error("CSRF token error:", csrfError);
+        // Continue without CSRF token as fallback
+        Object.assign(headers, {
+          "Content-Type": "application/json",
+          ...(options.headers || {}),
+        });
+      }
+
+      // Add session validation
+      try {
+        const session = SecureSession.validateSession();
+        if (session.valid && session.user && session.user.token) {
+          headers["Authorization"] = `Bearer ${session.user.token}`;
+        }
+      } catch (sessionError) {
+        console.error("Session validation error:", sessionError);
+        // Continue without session as fallback
+      }
+
+      // Add security headers
+      headers["X-Requested-With"] = "XMLHttpRequest";
+      headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+
+      const secureOptions: RequestInit = {
+        ...options,
+        headers,
+        credentials: "same-origin",
+      };
+
       const response = await fetch(url, secureOptions);
 
       // Update session activity
-      if (response.ok) {
-        SecureSession.updateActivity();
+      try {
+        if (response.ok) {
+          SecureSession.updateActivity();
+        }
+      } catch (activityError) {
+        console.error("Session activity update error:", activityError);
       }
 
       // Handle authentication errors
       if (response.status === 401) {
-        SecureSession.destroySession();
-        window.location.href = "/signin";
+        try {
+          SecureSession.destroySession();
+          if (typeof window !== "undefined") {
+            window.location.href = "/signin";
+          }
+        } catch (destroyError) {
+          console.error("Session destroy error:", destroyError);
+        }
       }
 
       return response;
