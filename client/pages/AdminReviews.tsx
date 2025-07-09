@@ -286,6 +286,62 @@ export default function AdminReviews() {
           </div>
         </div>
 
+        {/* Google My Business Overview */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Star className="h-5 w-5 text-yellow-500" />
+              Google My Business Overview
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="text-center">
+                <p className="text-3xl font-bold text-blue-600">127</p>
+                <p className="text-sm text-muted-foreground">
+                  Total Google Reviews
+                </p>
+                <div className="flex items-center justify-center gap-1 mt-1">
+                  <TrendingUp className="h-3 w-3 text-green-500" />
+                  <span className="text-xs text-green-500">+8 this month</span>
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <p className="text-3xl font-bold text-yellow-600">4.7</p>
+                  <StarRating
+                    rating={5}
+                    onRatingChange={() => {}}
+                    readonly
+                    size="sm"
+                  />
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Average Google Rating
+                </p>
+                <span className="text-xs text-green-500">+0.2 this month</span>
+              </div>
+              <div className="text-center">
+                <p className="text-3xl font-bold text-green-600">23</p>
+                <p className="text-sm text-muted-foreground">
+                  Added by Platform
+                </p>
+                <div className="flex items-center justify-center gap-1 mt-1">
+                  <TrendingUp className="h-3 w-3 text-green-500" />
+                  <span className="text-xs text-green-500">
+                    +18% conversion
+                  </span>
+                </div>
+              </div>
+              <div className="text-center">
+                <p className="text-3xl font-bold text-purple-600">89%</p>
+                <p className="text-sm text-muted-foreground">5-Star Rate</p>
+                <span className="text-xs text-green-500">Above average</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <Card>
@@ -293,7 +349,7 @@ export default function AdminReviews() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">
-                    Total Requests
+                    Review Requests
                   </p>
                   <p className="text-2xl font-bold">{stats.totalRequests}</p>
                 </div>
@@ -311,14 +367,17 @@ export default function AdminReviews() {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">
-                    Completion Rate
-                  </p>
+                  <p className="text-sm text-muted-foreground">Response Rate</p>
                   <p className="text-2xl font-bold">
                     {Math.round(stats.completionRate)}%
                   </p>
                 </div>
                 <MessageSquare className="h-8 w-8 text-blue-500" />
+              </div>
+              <div className="flex items-center mt-2 text-sm">
+                <span className="text-muted-foreground">
+                  Industry avg: 15-25%
+                </span>
               </div>
             </CardContent>
           </Card>
@@ -328,7 +387,7 @@ export default function AdminReviews() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">
-                    Average Rating
+                    Platform Rating
                   </p>
                   <div className="flex items-center gap-2">
                     <p className="text-2xl font-bold">
@@ -352,11 +411,19 @@ export default function AdminReviews() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">
-                    Google Reviews
+                    Google Redirects
                   </p>
                   <p className="text-2xl font-bold">{stats.googleRedirects}</p>
                 </div>
                 <ExternalLink className="h-8 w-8 text-green-500" />
+              </div>
+              <div className="flex items-center mt-2 text-sm">
+                <span className="text-muted-foreground">
+                  {Math.round(
+                    (stats.googleRedirects / stats.totalRequests) * 100,
+                  )}
+                  % of total
+                </span>
               </div>
             </CardContent>
           </Card>
