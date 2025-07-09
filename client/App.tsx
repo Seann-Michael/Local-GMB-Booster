@@ -55,6 +55,7 @@ import SuperAdminMessageTemplates from "./pages/SuperAdminMessageTemplates";
 import SuperAdminAnalytics from "./pages/SuperAdminAnalytics";
 import SuperAdminAutomation from "./pages/SuperAdminAutomation";
 import SuperAdminSegmentation from "./pages/SuperAdminSegmentation";
+import SuperAdminEmailIntegration from "./pages/SuperAdminEmailIntegration";
 import NotificationPreferences from "./pages/NotificationPreferences";
 
 const queryClient = new QueryClient();
