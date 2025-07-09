@@ -33,6 +33,7 @@ import {
   Target,
   Menu,
   X,
+  Mail,
 } from "lucide-react";
 import { useState, ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
