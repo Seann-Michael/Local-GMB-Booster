@@ -155,7 +155,7 @@ export function PhotoCapture({
                   {MediaMetadataEnhancer.getBusinessInfo().businessName}
                 </div>
                 <div>
-                  <span className="font-medium">Location:</span>{" "}
+                  <span className="font-medium">Project Location:</span>{" "}
                   {MediaMetadataEnhancer.extractCityStateFromAddress(
                     projectInfo.address,
                   )}
