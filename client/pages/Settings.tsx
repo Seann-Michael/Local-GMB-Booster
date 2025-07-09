@@ -121,6 +121,7 @@ const navigationTabs = [
   { id: "reviews", label: "Review Settings", icon: Star },
   { id: "notifications", label: "Notifications", icon: Bell },
   { id: "security", label: "Security", icon: Shield },
+  { id: "users", label: "Users", icon: Users },
   { id: "billing", label: "Billing", icon: DollarSign },
 ];
 
