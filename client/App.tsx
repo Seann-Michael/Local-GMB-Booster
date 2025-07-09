@@ -49,6 +49,7 @@ import ReviewGate from "./pages/ReviewGate";
 import AdminReviews from "./pages/AdminReviews";
 import StatusPage from "./pages/StatusPage";
 import Ideas from "./pages/Ideas";
+import IdeaDetail from "./pages/IdeaDetail";
 
 const queryClient = new QueryClient();
 
@@ -123,6 +124,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <Ideas />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ideas/:id"
+            element={
+              <ProtectedRoute>
+                <IdeaDetail />
               </ProtectedRoute>
             }
           />
