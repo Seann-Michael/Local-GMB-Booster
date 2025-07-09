@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { AppLayout } from "@/components/AppLayout";
-import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -29,16 +28,13 @@ import {
   MessageSquare,
   Plus,
   Search,
-  Filter,
   Lightbulb,
   Rocket,
   CheckCircle,
   Clock,
   Code,
-  Zap,
   Calendar,
   User,
-  ArrowRight,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -61,8 +57,6 @@ interface Idea {
   createdAt: string;
   comments: Comment[];
   priority: "low" | "medium" | "high";
-  images?: string[];
-  fullDescription?: string;
 }
 
 interface Comment {
@@ -84,18 +78,11 @@ interface RoadmapItem {
 }
 
 export default function Ideas() {
-  const navigate = useNavigate();
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [roadmapItems, setRoadmapItems] = useState<RoadmapItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [sortBy, setSortBy] = useState("popular");
-  const [showNewIdeaDialog, setShowNewIdeaDialog] = useState(false);
-  const [newIdea, setNewIdea] = useState({
-    title: "",
-    description: "",
-    category: "",
-  });
 
   useEffect(() => {
     loadIdeas();
@@ -103,96 +90,39 @@ export default function Ideas() {
   }, []);
 
   const loadIdeas = () => {
-    // Load from localStorage or API
-    const savedIdeas = localStorage.getItem("userIdeas");
-    if (savedIdeas) {
-      setIdeas(JSON.parse(savedIdeas));
-    } else {
-      // Mock data
-      const mockIdeas: Idea[] = [
-        {
-          id: "1",
-          title: "Dark Mode Support",
-          description:
-            "Add a dark theme option for better usability in low light environments",
-          fullDescription:
-            "Add a comprehensive dark theme option that works across the entire application. This would include proper contrast ratios, accessibility compliance, and user preference persistence. The dark mode should be toggleable from the user settings and remember the user's choice across sessions.",
-          category: "UI/UX",
-          status: "planned",
-          upvotes: 42,
-          downvotes: 3,
-          userVote: null,
-          author: "John Smith",
-          createdAt: "2024-01-15T10:30:00Z",
-          comments: [
-            {
-              id: "c1",
-              author: "Admin",
-              content: "Great suggestion! This is now on our roadmap for Q2.",
-              createdAt: "2024-01-16T14:20:00Z",
-              isAdmin: true,
-            },
-          ],
-          priority: "high",
-          images: ["/api/placeholder/600/400"],
-        },
-        {
-          id: "2",
-          title: "Mobile App",
-          description:
-            "Native mobile application for iOS and Android to manage projects on the go",
-          fullDescription:
-            "Develop native mobile applications for both iOS and Android platforms. The app should include core functionality like project management, photo uploads, customer communication, and review management. Push notifications for new reviews and project updates would be essential.",
-          category: "Mobile",
-          status: "under-review",
-          upvotes: 58,
-          downvotes: 9,
-          userVote: "up",
-          author: "Sarah Johnson",
-          createdAt: "2024-01-10T09:15:00Z",
-          comments: [],
-          priority: "high",
-          images: ["/api/placeholder/400/600", "/api/placeholder/400/600"],
-        },
-        {
-          id: "3",
-          title: "Bulk Photo Upload",
-          description:
-            "Allow uploading multiple photos at once with drag-and-drop support",
-          fullDescription:
-            "Implement a drag-and-drop interface for bulk photo uploads. This should support multiple file formats, automatic resizing, and batch processing. Progress indicators and error handling for failed uploads would be important for user experience.",
-          category: "Features",
-          status: "completed",
-          upvotes: 21,
-          downvotes: 2,
-          userVote: null,
-          author: "Mike Davis",
-          createdAt: "2024-01-05T16:45:00Z",
-          comments: [],
-          priority: "medium",
-          images: ["/api/placeholder/500/300"],
-        },
-        {
-          id: "4",
-          title: "Integration with QuickBooks",
-          description:
-            "Sync project costs and billing information with QuickBooks",
-          fullDescription:
-            "Create a seamless integration with QuickBooks to automatically sync project costs, expenses, and billing information. This would save time on bookkeeping and ensure accurate financial records. Support for both QuickBooks Online and Desktop versions would be ideal.",
-          category: "Integrations",
-          status: "submitted",
-          upvotes: 28,
-          downvotes: 3,
-          userVote: null,
-          author: "Lisa Brown",
-          createdAt: "2024-01-12T11:20:00Z",
-          comments: [],
-          priority: "medium",
-        },
-      ];
-      setIdeas(mockIdeas);
-      localStorage.setItem("userIdeas", JSON.stringify(mockIdeas));
-    }
+    const mockIdeas: Idea[] = [
+      {
+        id: "1",
+        title: "Dark Mode Support",
+        description:
+          "Add a dark theme option for better usability in low light environments",
+        category: "UI/UX",
+        status: "planned",
+        upvotes: 42,
+        downvotes: 3,
+        userVote: null,
+        author: "John Smith",
+        createdAt: "2024-01-15T10:30:00Z",
+        comments: [],
+        priority: "high",
+      },
+      {
+        id: "2",
+        title: "Mobile App",
+        description:
+          "Native mobile application for iOS and Android to manage projects on the go",
+        category: "Mobile",
+        status: "under-review",
+        upvotes: 58,
+        downvotes: 9,
+        userVote: "up",
+        author: "Sarah Johnson",
+        createdAt: "2024-01-10T09:15:00Z",
+        comments: [],
+        priority: "high",
+      },
+    ];
+    setIdeas(mockIdeas);
   };
 
   const loadRoadmap = () => {
@@ -213,22 +143,6 @@ export default function Ideas() {
         category: "Analytics",
         estimatedCompletion: "2024-04-15",
       },
-      {
-        id: "r3",
-        title: "API Rate Limiting",
-        description: "Implement proper API rate limiting and monitoring",
-        status: "completed",
-        category: "Performance",
-        completedAt: "2024-01-20",
-      },
-      {
-        id: "r4",
-        title: "Two-Factor Authentication",
-        description: "Add 2FA security feature for all user accounts",
-        status: "in-progress",
-        category: "Security",
-        estimatedCompletion: "2024-03-30",
-      },
     ];
     setRoadmapItems(mockRoadmap);
   };
@@ -241,18 +155,15 @@ export default function Ideas() {
           let newDownvotes = idea.downvotes;
           let newUserVote: "up" | "down" | null = voteType;
 
-          // Remove previous vote if exists
           if (idea.userVote === "up") {
             newUpvotes--;
           } else if (idea.userVote === "down") {
             newDownvotes--;
           }
 
-          // If clicking the same vote type, remove the vote
           if (idea.userVote === voteType) {
             newUserVote = null;
           } else {
-            // Add new vote
             if (voteType === "up") {
               newUpvotes++;
             } else {
@@ -272,67 +183,6 @@ export default function Ideas() {
     );
     toast.success("Vote recorded!");
   };
-
-  const handleSubmitIdea = () => {
-    if (!newIdea.title || !newIdea.description || !newIdea.category) {
-      toast.error("Please fill in all fields");
-      return;
-    }
-
-    const idea: Idea = {
-      id: Date.now().toString(),
-      title: newIdea.title,
-      description: newIdea.description,
-      category: newIdea.category,
-      status: "submitted",
-      upvotes: 1,
-      downvotes: 0,
-      userVote: "up",
-      author: "Current User",
-      createdAt: new Date().toISOString(),
-      comments: [],
-      priority: "medium",
-    };
-
-    const updatedIdeas = [...ideas, idea];
-    setIdeas(updatedIdeas);
-    localStorage.setItem("userIdeas", JSON.stringify(updatedIdeas));
-
-    setNewIdea({ title: "", description: "", category: "" });
-    setShowNewIdeaDialog(false);
-    toast.success("Idea submitted successfully!");
-  };
-
-  const filteredIdeas = ideas
-    .filter((idea) => {
-      if (categoryFilter !== "all" && idea.category !== categoryFilter) {
-        return false;
-      }
-      if (
-        searchTerm &&
-        !idea.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        !idea.description.toLowerCase().includes(searchTerm.toLowerCase())
-      ) {
-        return false;
-      }
-      return true;
-    })
-    .sort((a, b) => {
-      if (sortBy === "popular") {
-        const aScore = a.upvotes - a.downvotes;
-        const bScore = b.upvotes - b.downvotes;
-        return bScore - aScore;
-      }
-      if (sortBy === "newest")
-        return (
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-      if (sortBy === "oldest")
-        return (
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
-      return 0;
-    });
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -371,27 +221,18 @@ export default function Ideas() {
     }
   };
 
-  const getPriorityBadge = (priority: string) => {
-    switch (priority) {
-      case "high":
-        return <Badge variant="destructive">High</Badge>;
-      case "medium":
-        return <Badge className="bg-yellow-500">Medium</Badge>;
-      case "low":
-        return <Badge variant="secondary">Low</Badge>;
-      default:
-        return null;
+  const filteredIdeas = ideas.filter((idea) => {
+    if (categoryFilter !== "all" && idea.category !== categoryFilter) {
+      return false;
     }
-  };
-
-  const categories = [
-    "UI/UX",
-    "Features",
-    "Mobile",
-    "Integrations",
-    "Performance",
-    "Security",
-  ];
+    if (
+      searchTerm &&
+      !idea.title.toLowerCase().includes(searchTerm.toLowerCase())
+    ) {
+      return false;
+    }
+    return true;
+  });
 
   return (
     <AppLayout>
@@ -403,77 +244,6 @@ export default function Ideas() {
               Share your ideas and see what's coming next
             </p>
           </div>
-          <Dialog open={showNewIdeaDialog} onOpenChange={setShowNewIdeaDialog}>
-            <DialogTrigger asChild>
-              <Button className="gap-2">
-                <Plus className="h-4 w-4" />
-                Submit Idea
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Submit New Idea</DialogTitle>
-                <DialogDescription>
-                  Share your feature request or improvement idea
-                </DialogDescription>
-              </DialogHeader>
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Title</label>
-                  <Input
-                    value={newIdea.title}
-                    onChange={(e) =>
-                      setNewIdea((prev) => ({ ...prev, title: e.target.value }))
-                    }
-                    placeholder="Brief title for your idea"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Category</label>
-                  <Select
-                    value={newIdea.category}
-                    onValueChange={(value) =>
-                      setNewIdea((prev) => ({ ...prev, category: value }))
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {categories.map((cat) => (
-                        <SelectItem key={cat} value={cat}>
-                          {cat}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Description</label>
-                  <Textarea
-                    value={newIdea.description}
-                    onChange={(e) =>
-                      setNewIdea((prev) => ({
-                        ...prev,
-                        description: e.target.value,
-                      }))
-                    }
-                    placeholder="Detailed description of your idea..."
-                    className="min-h-[100px]"
-                  />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button
-                  variant="outline"
-                  onClick={() => setShowNewIdeaDialog(false)}
-                >
-                  Cancel
-                </Button>
-                <Button onClick={handleSubmitIdea}>Submit Idea</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
         </div>
 
         <Tabs defaultValue="ideas" className="space-y-6">
@@ -513,21 +283,9 @@ export default function Ideas() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Categories</SelectItem>
-                      {categories.map((cat) => (
-                        <SelectItem key={cat} value={cat}>
-                          {cat}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Select value={sortBy} onValueChange={setSortBy}>
-                    <SelectTrigger className="w-48">
-                      <SelectValue placeholder="Sort by" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="popular">Most Popular</SelectItem>
-                      <SelectItem value="newest">Newest</SelectItem>
-                      <SelectItem value="oldest">Oldest</SelectItem>
+                      <SelectItem value="UI/UX">UI/UX</SelectItem>
+                      <SelectItem value="Mobile">Mobile</SelectItem>
+                      <SelectItem value="Features">Features</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -577,42 +335,14 @@ export default function Ideas() {
                       <div className="flex-1">
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex-1">
-                            <div
-                              className="cursor-pointer"
-                              onClick={() => navigate(`/ideas/${idea.id}`)}
-                            >
-                              <h3 className="font-semibold text-lg mb-1 hover:text-blue-600 transition-colors">
-                                {idea.title}
-                              </h3>
-                              <p className="text-muted-foreground">
-                                {idea.description.length > 150
-                                  ? `${idea.description.substring(0, 150)}...`
-                                  : idea.description}
-                              </p>
-                            </div>
-                            {idea.images && idea.images.length > 0 && (
-                              <div className="flex gap-2 mt-3">
-                                {idea.images.slice(0, 3).map((image, index) => (
-                                  <img
-                                    key={index}
-                                    src={image}
-                                    alt={`Idea image ${index + 1}`}
-                                    className="w-16 h-16 object-cover rounded border cursor-pointer"
-                                    onClick={() =>
-                                      navigate(`/ideas/${idea.id}`)
-                                    }
-                                  />
-                                ))}
-                                {idea.images.length > 3 && (
-                                  <div className="w-16 h-16 bg-gray-100 rounded border flex items-center justify-center text-xs text-gray-500">
-                                    +{idea.images.length - 3}
-                                  </div>
-                                )}
-                              </div>
-                            )}
+                            <h3 className="font-semibold text-lg mb-1 cursor-pointer hover:text-blue-600 transition-colors">
+                              {idea.title}
+                            </h3>
+                            <p className="text-muted-foreground">
+                              {idea.description}
+                            </p>
                           </div>
                           <div className="flex gap-2 ml-4">
-                            {getPriorityBadge(idea.priority)}
                             {getStatusBadge(idea.status)}
                           </div>
                         </div>
@@ -628,20 +358,9 @@ export default function Ideas() {
                               {new Date(idea.createdAt).toLocaleDateString()}
                             </span>
                           </div>
-                          <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-1">
-                              <MessageSquare className="h-3 w-3" />
-                              <span>{idea.comments.length} comments</span>
-                            </div>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => navigate(`/ideas/${idea.id}`)}
-                              className="gap-1 h-7 px-2"
-                            >
-                              View Details
-                              <ArrowRight className="h-3 w-3" />
-                            </Button>
+                          <div className="flex items-center gap-1">
+                            <MessageSquare className="h-3 w-3" />
+                            <span>{idea.comments.length} comments</span>
                           </div>
                         </div>
                       </div>
