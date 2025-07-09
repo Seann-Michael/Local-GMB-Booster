@@ -789,6 +789,36 @@ export default function Settings() {
                       />
                     </div>
 
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label>Auto-archive projects after completion</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Automatically archive completed projects after
+                          specified days
+                        </p>
+                      </div>
+                      <div className="w-24">
+                        <Select
+                          value={settings.autoArchiveDays.toString()}
+                          onValueChange={(value) =>
+                            updateSetting("autoArchiveDays", parseInt(value))
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="7">7 days</SelectItem>
+                            <SelectItem value="14">14 days</SelectItem>
+                            <SelectItem value="30">30 days</SelectItem>
+                            <SelectItem value="60">60 days</SelectItem>
+                            <SelectItem value="90">90 days</SelectItem>
+                            <SelectItem value="0">Never</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
                     {settings.aiPromptForDescriptions && (
                       <div className="pt-4 border-t">
                         <Label htmlFor="aiProjectRewritePrompt">
