@@ -315,20 +315,32 @@ export default function ReviewGate() {
                   <div className="bg-white p-4 rounded border text-sm leading-relaxed">
                     {seoReviewText}
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex flex-col gap-2">
                     <Button
-                      onClick={() => copyToClipboard(seoReviewText)}
-                      className="gap-2 flex-1"
+                      onClick={() => {
+                        copyToClipboard(seoReviewText);
+                        setTimeout(() => {
+                          window.open(reviewRequest.googleReviewUrl, "_blank");
+                        }, 500);
+                      }}
+                      className="gap-2 w-full"
                     >
                       <Copy className="h-3 w-3" />
-                      Use Enhanced Version
+                      Copy Enhanced & Continue to Google
+                      <ExternalLink className="h-3 w-3" />
                     </Button>
                     <Button
                       variant="outline"
-                      onClick={() => copyToClipboard(reviewText)}
-                      className="gap-2"
+                      onClick={() => {
+                        copyToClipboard(reviewText);
+                        setTimeout(() => {
+                          window.open(reviewRequest.googleReviewUrl, "_blank");
+                        }, 500);
+                      }}
+                      className="gap-2 w-full"
                     >
-                      Use Original
+                      Use Original & Continue to Google
+                      <ExternalLink className="h-3 w-3" />
                     </Button>
                   </div>
                   <p className="text-xs text-blue-600 text-center">
