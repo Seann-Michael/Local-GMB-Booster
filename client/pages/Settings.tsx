@@ -1143,7 +1143,9 @@ export default function Settings() {
                               );
                               if (
                                 newType &&
-                                !settings.allowedImageTypes.includes(newType)
+                                !(settings?.allowedImageTypes || []).includes(
+                                  newType,
+                                )
                               ) {
                                 addFileType("image", newType);
                               }
@@ -1183,7 +1185,9 @@ export default function Settings() {
                               );
                               if (
                                 newType &&
-                                !settings.allowedVideoTypes.includes(newType)
+                                !(settings?.allowedVideoTypes || []).includes(
+                                  newType,
+                                )
                               ) {
                                 addFileType("video", newType);
                               }
