@@ -967,21 +967,23 @@ export default function Settings() {
                     <div>
                       <Label>Available Variables</Label>
                       <div className="flex flex-wrap gap-2 mt-2">
-                        {settings.aiVariables.map((variable, index) => (
-                          <Badge
-                            key={index}
-                            variant="outline"
-                            className="gap-1"
-                          >
-                            {variable}
-                            <span
-                              className="cursor-pointer hover:bg-muted rounded-sm p-0.5 ml-1"
-                              onClick={() => removeAIVariable(index)}
+                        {(settings?.aiVariables || []).map(
+                          (variable, index) => (
+                            <Badge
+                              key={index}
+                              variant="outline"
+                              className="gap-1"
                             >
-                              <X className="h-3 w-3" />
-                            </span>
-                          </Badge>
-                        ))}
+                              {variable}
+                              <span
+                                className="cursor-pointer hover:bg-muted rounded-sm p-0.5 ml-1"
+                                onClick={() => removeAIVariable(index)}
+                              >
+                                <X className="h-3 w-3" />
+                              </span>
+                            </Badge>
+                          ),
+                        )}
                       </div>
                     </div>
                   </CardContent>
@@ -1007,7 +1009,7 @@ export default function Settings() {
                     </Button>
 
                     <div className="space-y-3">
-                      {settings.webhooks.map((webhook) => (
+                      {(settings?.webhooks || []).map((webhook) => (
                         <div key={webhook.id} className="p-3 border rounded-lg">
                           <div className="flex items-center justify-between">
                             <div>
@@ -1077,7 +1079,7 @@ export default function Settings() {
                     </Button>
 
                     <div className="grid gap-3">
-                      {settings.businessTags.map((tag) => (
+                      {(settings?.businessTags || []).map((tag) => (
                         <div
                           key={tag.id}
                           className="flex items-center justify-between p-3 border rounded-lg"
@@ -1117,7 +1119,7 @@ export default function Settings() {
                       <div>
                         <Label>Allowed Image Types</Label>
                         <div className="flex flex-wrap gap-2 mt-2">
-                          {settings.allowedImageTypes.map((type) => (
+                          {(settings?.allowedImageTypes || []).map((type) => (
                             <Badge
                               key={type}
                               variant="outline"
@@ -1157,7 +1159,7 @@ export default function Settings() {
                       <div>
                         <Label>Allowed Video Types</Label>
                         <div className="flex flex-wrap gap-2 mt-2">
-                          {settings.allowedVideoTypes.map((type) => (
+                          {(settings?.allowedVideoTypes || []).map((type) => (
                             <Badge
                               key={type}
                               variant="outline"
