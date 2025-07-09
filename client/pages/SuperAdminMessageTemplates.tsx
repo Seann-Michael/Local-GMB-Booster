@@ -799,7 +799,7 @@ export default function SuperAdminMessageTemplates() {
                   </p>
                   <p className="text-2xl font-bold">{stats.totalTemplates}</p>
                 </div>
-                <Template className="h-8 w-8 text-primary" />
+                <FileText className="h-8 w-8 text-primary" />
               </div>
             </CardContent>
           </Card>
