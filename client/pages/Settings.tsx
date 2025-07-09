@@ -415,7 +415,7 @@ export default function Settings() {
           </Card>
 
           {/* Settings Content */}
-          <div className="lg:col-span-3 space-y-6">
+          <div className="lg:col-span-3 space-y-6 min-w-0 overflow-x-hidden">
             {/* General Settings */}
             {activeTab === "general" && (
               <Card>
