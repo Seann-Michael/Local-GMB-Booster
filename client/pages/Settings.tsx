@@ -582,7 +582,56 @@ export default function Settings() {
                       Basic information about your business
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-4">
+                  <CardContent className="space-y-6">
+                    {/* Sub Account ID */}
+                    <div>
+                      <Label htmlFor="subAccountId">Sub Account ID</Label>
+                      <Input
+                        id="subAccountId"
+                        value={settings.subAccountId}
+                        readOnly
+                        className="bg-muted"
+                        title="This is your unique sub account identifier"
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        This is your unique sub account identifier
+                      </p>
+                    </div>
+
+                    {/* Business Logo */}
+                    <div>
+                      <Label htmlFor="businessLogo">Business Logo</Label>
+                      <div className="space-y-2">
+                        {settings.businessLogo && (
+                          <div className="w-20 h-20 border rounded-lg overflow-hidden">
+                            <img
+                              src={settings.businessLogo}
+                              alt="Business Logo"
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
+                        <div className="flex gap-2">
+                          <Button variant="outline" size="sm" className="gap-2">
+                            <FileImage className="h-4 w-4" />
+                            Upload Logo
+                          </Button>
+                          {settings.businessLogo && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => updateSetting("businessLogo", "")}
+                            >
+                              Remove
+                            </Button>
+                          )}
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          Upload your business logo (recommended: 200x200px)
+                        </p>
+                      </div>
+                    </div>
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="businessName">Business Name</Label>
@@ -605,7 +654,7 @@ export default function Settings() {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="email">Email</Label>
+                        <Label htmlFor="email">Business Email</Label>
                         <Input
                           id="email"
                           type="email"
@@ -616,7 +665,7 @@ export default function Settings() {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="phone">Phone</Label>
+                        <Label htmlFor="phone">Business Phone</Label>
                         <Input
                           id="phone"
                           value={settings.phone}
