@@ -234,6 +234,75 @@ export class SecureInput {
   }
 }
 
+// Minimal Audit Logger
+export class AuditLogger {
+  static log(
+    action: string,
+    resource: string,
+    details?: any,
+    userId?: string,
+  ): void {
+    try {
+      console.log("Audit Log:", {
+        action,
+        resource,
+        details,
+        userId,
+        timestamp: Date.now(),
+      });
+    } catch (error) {
+      console.error("Audit logging failed:", error);
+    }
+  }
+
+  static getAuditLogs(): Array<any> {
+    return [];
+  }
+}
+
+// Minimal Security Monitor
+export class SecurityMonitor {
+  static logSecurityEvent(type: string, details: any): void {
+    try {
+      console.warn("Security Event:", { type, details, timestamp: Date.now() });
+    } catch (error) {
+      console.error("Security monitoring failed:", error);
+    }
+  }
+
+  static getSecurityEvents(): Array<any> {
+    return [];
+  }
+}
+
+// Minimal Data Protection
+export class DataProtection {
+  static detectPII(text: string): { hasPII: boolean; types: string[] } {
+    try {
+      // Simple email detection
+      const hasEmail =
+        /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/.test(text);
+      return {
+        hasPII: hasEmail,
+        types: hasEmail ? ["email"] : [],
+      };
+    } catch {
+      return { hasPII: false, types: [] };
+    }
+  }
+
+  static maskPII(text: string): string {
+    try {
+      return text.replace(
+        /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g,
+        "***@***.***",
+      );
+    } catch {
+      return text;
+    }
+  }
+}
+
 // Initialize CSRF protection safely
 if (typeof window !== "undefined") {
   try {
