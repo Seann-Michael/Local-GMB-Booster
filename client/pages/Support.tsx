@@ -727,6 +727,195 @@ export default function Support() {
           </CardContent>
         </Card>
 
+        {/* Detailed Crash Logs */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5" />
+                User Crash Reports
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm">
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                  Refresh
+                </Button>
+                <Button variant="outline" size="sm">
+                  <Download className="h-4 w-4 mr-2" />
+                  Export All
+                </Button>
+              </div>
+            </CardTitle>
+            <CardDescription>
+              Detailed error reports and crash logs from user sessions
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {/* Critical Crashes */}
+              <div>
+                <h4 className="font-medium mb-3 text-red-800">
+                  Critical Application Crashes
+                </h4>
+                <div className="space-y-2">
+                  <div className="p-3 border border-red-200 bg-red-50 rounded-lg">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <AlertTriangle className="h-4 w-4 text-red-600" />
+                        <span className="font-medium text-red-800">
+                          Settings Module Crash
+                        </span>
+                      </div>
+                      <span className="text-xs text-red-600">2 hours ago</span>
+                    </div>
+                    <div className="text-sm text-red-700 mb-2">
+                      <strong>Error:</strong> Cannot read property 'events' of
+                      undefined at Settings.tsx:3206:116
+                    </div>
+                    <div className="text-xs text-red-600 font-mono bg-red-100 p-2 rounded">
+                      TypeError: Cannot read properties of undefined (reading
+                      'join')
+                      <br />
+                      at Settings (Settings.tsx:3206:116)
+                      <br />
+                      at renderWithHooks (chunk-WPQCFWW4.js:11596:35)
+                    </div>
+                    <div className="mt-2 flex gap-2">
+                      <Badge variant="destructive" className="text-xs">
+                        High Priority
+                      </Badge>
+                      <Badge variant="outline" className="text-xs">
+                        User: joe@joespizza.com
+                      </Badge>
+                      <Badge variant="outline" className="text-xs">
+                        Browser: Chrome
+                      </Badge>
+                    </div>
+                  </div>
+
+                  <div className="p-3 border border-red-200 bg-red-50 rounded-lg">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <AlertTriangle className="h-4 w-4 text-red-600" />
+                        <span className="font-medium text-red-800">
+                          Notifications System Crash
+                        </span>
+                      </div>
+                      <span className="text-xs text-red-600">5 hours ago</span>
+                    </div>
+                    <div className="text-sm text-red-700 mb-2">
+                      <strong>Error:</strong> Cannot access property before
+                      initialization
+                    </div>
+                    <div className="text-xs text-red-600 font-mono bg-red-100 p-2 rounded">
+                      ReferenceError: Cannot access 'NotificationPreferences'
+                      before initialization
+                      <br />
+                      at NotificationPreferences.tsx:47:12
+                      <br />
+                      at App.tsx:258:32
+                    </div>
+                    <div className="mt-2 flex gap-2">
+                      <Badge variant="destructive" className="text-xs">
+                        High Priority
+                      </Badge>
+                      <Badge variant="outline" className="text-xs">
+                        User: maria@sarahssalon.com
+                      </Badge>
+                      <Badge variant="outline" className="text-xs">
+                        Browser: Safari
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* JavaScript Errors */}
+              <div>
+                <h4 className="font-medium mb-3 text-yellow-800">
+                  JavaScript Runtime Errors
+                </h4>
+                <div className="space-y-2">
+                  <div className="p-3 border border-yellow-200 bg-yellow-50 rounded-lg">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <AlertTriangle className="h-4 w-4 text-yellow-600" />
+                        <span className="font-medium text-yellow-800">
+                          Webhook Form Validation Error
+                        </span>
+                      </div>
+                      <span className="text-xs text-yellow-600">
+                        1 hour ago
+                      </span>
+                    </div>
+                    <div className="text-sm text-yellow-700 mb-2">
+                      <strong>Error:</strong> FormData.get() returned null for
+                      'events' field
+                    </div>
+                    <div className="text-xs text-yellow-600 font-mono bg-yellow-100 p-2 rounded">
+                      TypeError: Cannot read properties of null (reading
+                      'split')
+                      <br />
+                      at addWebhook (Settings.tsx:1160:25)
+                      <br />
+                      at onSubmit (Settings.tsx:3170:15)
+                    </div>
+                    <div className="mt-2 flex gap-2">
+                      <Badge
+                        variant="default"
+                        className="text-xs bg-yellow-600"
+                      >
+                        Medium Priority
+                      </Badge>
+                      <Badge variant="outline" className="text-xs">
+                        User: admin@mikesauto.com
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* User Impact */}
+              <div>
+                <h4 className="font-medium mb-3 text-purple-800">
+                  User Impact Summary
+                </h4>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <div className="p-4 border rounded-lg bg-red-50 border-red-200">
+                    <div className="font-medium text-red-800 mb-1">
+                      Affected Users
+                    </div>
+                    <div className="text-2xl font-bold text-red-600">23</div>
+                    <div className="text-xs text-red-600">
+                      Out of 156 total users
+                    </div>
+                  </div>
+                  <div className="p-4 border rounded-lg bg-yellow-50 border-yellow-200">
+                    <div className="font-medium text-yellow-800 mb-1">
+                      Sessions with Errors
+                    </div>
+                    <div className="text-2xl font-bold text-yellow-600">47</div>
+                    <div className="text-xs text-yellow-600">
+                      12% of all sessions
+                    </div>
+                  </div>
+                  <div className="p-4 border rounded-lg bg-blue-50 border-blue-200">
+                    <div className="font-medium text-blue-800 mb-1">
+                      Most Problematic Feature
+                    </div>
+                    <div className="text-lg font-bold text-blue-600">
+                      Settings
+                    </div>
+                    <div className="text-xs text-blue-600">
+                      67% of all crashes
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Quick Help Section */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <Card>
