@@ -1326,29 +1326,34 @@ export default function Settings() {
                           Video Types
                         </Label>
                         <div className="flex flex-wrap gap-2 mb-2">
-                          {settings.allowedVideoTypes.map((type, index) => (
-                            <Badge
-                              key={index}
-                              variant="outline"
-                              className="gap-1"
-                            >
-                              {type}
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-auto p-0 ml-1"
-                                onClick={() => {
-                                  const newTypes =
-                                    settings.allowedVideoTypes.filter(
-                                      (_, i) => i !== index,
-                                    );
-                                  updateSetting("allowedVideoTypes", newTypes);
-                                }}
+                          {(settings.allowedVideoTypes || []).map(
+                            (type, index) => (
+                              <Badge
+                                key={index}
+                                variant="outline"
+                                className="gap-1"
                               >
-                                <X className="h-3 w-3" />
-                              </Button>
-                            </Badge>
-                          ))}
+                                {type}
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-auto p-0 ml-1"
+                                  onClick={() => {
+                                    const newTypes =
+                                      settings.allowedVideoTypes.filter(
+                                        (_, i) => i !== index,
+                                      );
+                                    updateSetting(
+                                      "allowedVideoTypes",
+                                      newTypes,
+                                    );
+                                  }}
+                                >
+                                  <X className="h-3 w-3" />
+                                </Button>
+                              </Badge>
+                            ),
+                          )}
                           <Button
                             variant="outline"
                             size="sm"
