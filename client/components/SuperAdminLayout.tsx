@@ -321,6 +321,16 @@ export function SuperAdminLayout({
         <header className="bg-background border-b p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
+              {/* Mobile menu button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setMobileSidebarOpen(true)}
+                className="md:hidden"
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+
               {/* Mobile app title - only show on mobile */}
               <div className="md:hidden flex items-center space-x-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
