@@ -214,29 +214,34 @@ export default function Settings() {
 
   useEffect(() => {
     // Load settings from localStorage
-    const savedSettings = localStorage.getItem("business_settings");
-    if (savedSettings) {
-      const parsedSettings = JSON.parse(savedSettings);
-      // Ensure all array properties exist to prevent map errors
-      setSettings({
-        ...parsedSettings,
-        webhooks: parsedSettings.webhooks || [],
-        aiVariables: parsedSettings.aiVariables || [],
-        businessTags: parsedSettings.businessTags || [],
-        allowedImageTypes: parsedSettings.allowedImageTypes || [
-          ".jpg",
-          ".jpeg",
-          ".png",
-          ".gif",
-          ".webp",
-        ],
-        allowedVideoTypes: parsedSettings.allowedVideoTypes || [
-          ".mp4",
-          ".mov",
-          ".avi",
-          ".wmv",
-        ],
-      });
+    try {
+      const savedSettings = localStorage.getItem("business_settings");
+      if (savedSettings) {
+        const parsedSettings = JSON.parse(savedSettings);
+        // Ensure all array properties exist to prevent map errors
+        setSettings((prev) => ({
+          ...prev,
+          ...parsedSettings,
+          webhooks: Array.isArray(parsedSettings.webhooks)
+            ? parsedSettings.webhooks
+            : [],
+          aiVariables: Array.isArray(parsedSettings.aiVariables)
+            ? parsedSettings.aiVariables
+            : [],
+          businessTags: Array.isArray(parsedSettings.businessTags)
+            ? parsedSettings.businessTags
+            : [],
+          allowedImageTypes: Array.isArray(parsedSettings.allowedImageTypes)
+            ? parsedSettings.allowedImageTypes
+            : [".jpg", ".jpeg", ".png", ".gif", ".webp"],
+          allowedVideoTypes: Array.isArray(parsedSettings.allowedVideoTypes)
+            ? parsedSettings.allowedVideoTypes
+            : [".mp4", ".mov", ".avi", ".wmv"],
+        }));
+      }
+    } catch (error) {
+      console.error("Failed to load settings from localStorage:", error);
+      // Keep the default settings if loading fails
     }
   }, []);
 
