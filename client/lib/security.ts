@@ -658,6 +658,14 @@ export class SecurityMonitor {
 }
 
 // Initialize CSRF protection
-if (typeof window !== "undefined") {
-  CSRFProtection.generateToken();
+if (
+  typeof window !== "undefined" &&
+  typeof crypto !== "undefined" &&
+  crypto.getRandomValues
+) {
+  try {
+    CSRFProtection.generateToken();
+  } catch (error) {
+    console.error("Failed to initialize CSRF protection:", error);
+  }
 }
