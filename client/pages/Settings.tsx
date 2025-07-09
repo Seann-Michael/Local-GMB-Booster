@@ -282,7 +282,7 @@ export default function Settings() {
   const updateWebhook = (webhookId: string, updatedWebhook: any) => {
     setSettings((prev) => ({
       ...prev,
-      webhooks: prev.webhooks.map((webhook) =>
+      webhooks: (prev.webhooks || []).map((webhook) =>
         webhook.id === webhookId ? { ...webhook, ...updatedWebhook } : webhook,
       ),
     }));
@@ -291,14 +291,16 @@ export default function Settings() {
   const deleteWebhook = (webhookId: string) => {
     setSettings((prev) => ({
       ...prev,
-      webhooks: prev.webhooks.filter((webhook) => webhook.id !== webhookId),
+      webhooks: (prev.webhooks || []).filter(
+        (webhook) => webhook.id !== webhookId,
+      ),
     }));
   };
 
   const updateTag = (tagId: string, updatedTag: any) => {
     setSettings((prev) => ({
       ...prev,
-      businessTags: prev.businessTags.map((tag) =>
+      businessTags: (prev.businessTags || []).map((tag) =>
         tag.id === tagId ? { ...tag, ...updatedTag } : tag,
       ),
     }));
@@ -307,7 +309,7 @@ export default function Settings() {
   const deleteTag = (tagId: string) => {
     setSettings((prev) => ({
       ...prev,
-      businessTags: prev.businessTags.filter((tag) => tag.id !== tagId),
+      businessTags: (prev.businessTags || []).filter((tag) => tag.id !== tagId),
     }));
   };
 
@@ -531,7 +533,7 @@ export default function Settings() {
                     <div>
                       <Label>Available Variables</Label>
                       <div className="flex flex-wrap gap-2">
-                        {settings.aiVariables.map((variable, index) => (
+                        {(settings.aiVariables || []).map((variable, index) => (
                           <Badge
                             key={index}
                             variant="outline"
@@ -541,10 +543,9 @@ export default function Settings() {
                             <span
                               className="cursor-pointer hover:bg-muted rounded-sm p-0.5 ml-1"
                               onClick={() => {
-                                const newVariables =
-                                  settings.aiVariables.filter(
-                                    (_, i) => i !== index,
-                                  );
+                                const newVariables = (
+                                  settings.aiVariables || []
+                                ).filter((_, i) => i !== index);
                                 updateSetting("aiVariables", newVariables);
                               }}
                             >
@@ -578,7 +579,7 @@ export default function Settings() {
                     </Button>
 
                     <div className="space-y-3">
-                      {settings.webhooks.map((webhook) => (
+                      {(settings.webhooks || []).map((webhook) => (
                         <div key={webhook.id} className="p-3 border rounded-lg">
                           <div className="flex items-center justify-between">
                             <div>
@@ -648,7 +649,7 @@ export default function Settings() {
                     </Button>
 
                     <div className="grid gap-3">
-                      {settings.businessTags.map((tag) => (
+                      {(settings.businessTags || []).map((tag) => (
                         <div
                           key={tag.id}
                           className="flex items-center justify-between p-3 border rounded-lg"
@@ -697,27 +698,31 @@ export default function Settings() {
                       <div>
                         <Label>Allowed Image Types</Label>
                         <div className="flex flex-wrap gap-2 mb-2">
-                          {settings.allowedImageTypes.map((type, index) => (
-                            <Badge
-                              key={index}
-                              variant="outline"
-                              className="gap-1"
-                            >
-                              {type}
-                              <span
-                                className="cursor-pointer hover:bg-muted rounded-sm p-0.5 ml-1"
-                                onClick={() => {
-                                  const newTypes =
-                                    settings.allowedImageTypes.filter(
-                                      (_, i) => i !== index,
-                                    );
-                                  updateSetting("allowedImageTypes", newTypes);
-                                }}
+                          {(settings.allowedImageTypes || []).map(
+                            (type, index) => (
+                              <Badge
+                                key={index}
+                                variant="outline"
+                                className="gap-1"
                               >
-                                <X className="h-3 w-3" />
-                              </span>
-                            </Badge>
-                          ))}
+                                {type}
+                                <span
+                                  className="cursor-pointer hover:bg-muted rounded-sm p-0.5 ml-1"
+                                  onClick={() => {
+                                    const newTypes = (
+                                      settings.allowedImageTypes || []
+                                    ).filter((_, i) => i !== index);
+                                    updateSetting(
+                                      "allowedImageTypes",
+                                      newTypes,
+                                    );
+                                  }}
+                                >
+                                  <X className="h-3 w-3" />
+                                </span>
+                              </Badge>
+                            ),
+                          )}
                           <Button
                             variant="outline"
                             size="sm"
@@ -727,10 +732,12 @@ export default function Settings() {
                               );
                               if (
                                 newType &&
-                                !settings.allowedImageTypes.includes(newType)
+                                !(settings.allowedImageTypes || []).includes(
+                                  newType,
+                                )
                               ) {
                                 updateSetting("allowedImageTypes", [
-                                  ...settings.allowedImageTypes,
+                                  ...(settings.allowedImageTypes || []),
                                   newType,
                                 ]);
                               }
@@ -746,27 +753,31 @@ export default function Settings() {
                       <div>
                         <Label>Allowed Video Types</Label>
                         <div className="flex flex-wrap gap-2 mb-2">
-                          {settings.allowedVideoTypes.map((type, index) => (
-                            <Badge
-                              key={index}
-                              variant="outline"
-                              className="gap-1"
-                            >
-                              {type}
-                              <span
-                                className="cursor-pointer hover:bg-muted rounded-sm p-0.5 ml-1"
-                                onClick={() => {
-                                  const newTypes =
-                                    settings.allowedVideoTypes.filter(
-                                      (_, i) => i !== index,
-                                    );
-                                  updateSetting("allowedVideoTypes", newTypes);
-                                }}
+                          {(settings.allowedVideoTypes || []).map(
+                            (type, index) => (
+                              <Badge
+                                key={index}
+                                variant="outline"
+                                className="gap-1"
                               >
-                                <X className="h-3 w-3" />
-                              </span>
-                            </Badge>
-                          ))}
+                                {type}
+                                <span
+                                  className="cursor-pointer hover:bg-muted rounded-sm p-0.5 ml-1"
+                                  onClick={() => {
+                                    const newTypes = (
+                                      settings.allowedVideoTypes || []
+                                    ).filter((_, i) => i !== index);
+                                    updateSetting(
+                                      "allowedVideoTypes",
+                                      newTypes,
+                                    );
+                                  }}
+                                >
+                                  <X className="h-3 w-3" />
+                                </span>
+                              </Badge>
+                            ),
+                          )}
                           <Button
                             variant="outline"
                             size="sm"
@@ -776,10 +787,12 @@ export default function Settings() {
                               );
                               if (
                                 newType &&
-                                !settings.allowedVideoTypes.includes(newType)
+                                !(settings.allowedVideoTypes || []).includes(
+                                  newType,
+                                )
                               ) {
                                 updateSetting("allowedVideoTypes", [
-                                  ...settings.allowedVideoTypes,
+                                  ...(settings.allowedVideoTypes || []),
                                   newType,
                                 ]);
                               }
