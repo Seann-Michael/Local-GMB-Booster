@@ -1718,7 +1718,7 @@ export default function Settings() {
                             checked={settings?.deliveryMethods?.inApp || false}
                             onCheckedChange={(checked) => {
                               const newDeliveryMethods = {
-                                ...settings.deliveryMethods,
+                                ...(settings?.deliveryMethods || {}),
                                 inApp: checked,
                               };
                               updateSetting(
@@ -1754,7 +1754,7 @@ export default function Settings() {
                             checked={settings?.deliveryMethods?.email || false}
                             onCheckedChange={(checked) => {
                               const newDeliveryMethods = {
-                                ...settings.deliveryMethods,
+                                ...(settings?.deliveryMethods || {}),
                                 email: checked,
                               };
                               updateSetting(
@@ -1790,7 +1790,7 @@ export default function Settings() {
                             checked={settings?.deliveryMethods?.sms || false}
                             onCheckedChange={(checked) => {
                               const newDeliveryMethods = {
-                                ...settings.deliveryMethods,
+                                ...(settings?.deliveryMethods || {}),
                                 sms: checked,
                               };
                               updateSetting(
@@ -1818,7 +1818,7 @@ export default function Settings() {
                             checked={settings?.deliveryMethods?.push || false}
                             onCheckedChange={(checked) => {
                               const newDeliveryMethods = {
-                                ...settings.deliveryMethods,
+                                ...(settings?.deliveryMethods || {}),
                                 push: checked,
                               };
                               updateSetting(
