@@ -819,14 +819,16 @@ export function AppLayout({ children }: AppLayoutProps) {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="flex-1 flex flex-col items-center gap-1 h-auto py-2 px-1"
+                  className="flex-1 flex flex-col items-center gap-1 h-auto py-3 px-1 min-h-[58px]"
                   size="sm"
                 >
                   <MoreVertical className="h-5 w-5" />
-                  <span className="text-xs font-medium">More</span>
+                  <span className="text-xs font-medium leading-tight">
+                    More
+                  </span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuContent align="end" className="w-48 mb-3">
                 {sidebarItems.slice(4).map((item) => (
                   <DropdownMenuItem key={item.id} asChild>
                     <Link to={item.href} className="flex items-center gap-2">
