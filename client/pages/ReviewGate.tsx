@@ -214,8 +214,8 @@ export default function ReviewGate() {
                 className="justify-center mb-4"
               />
               {rating > 0 && (
-                <div className="mt-4 p-3 rounded-lg bg-gray-50 border border-gray-200">
-                  <p className="text-gray-700 text-sm">
+                <div className="mt-4 p-4 rounded-lg bg-blue-50 border border-blue-200">
+                  <p className="text-blue-900 font-medium">
                     {rating === 1 &&
                       "We're sorry to hear that. We'd love to make this right."}
                     {rating === 2 &&
