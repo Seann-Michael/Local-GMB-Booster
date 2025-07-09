@@ -1370,7 +1370,8 @@ export default function Settings() {
                           const formData = new FormData(e.currentTarget);
                           const tag = {
                             name: (formData.get("name") as string) || "",
-                            color: (formData.get("color") as string) || "#000000",
+                            color:
+                              (formData.get("color") as string) || "#000000",
                           };
                           addTag(tag);
                           setShowTagForm(false);
@@ -1545,8 +1546,9 @@ export default function Settings() {
                           className="w-32 mt-1"
                         />
                         <p className="text-sm text-muted-foreground mt-1">
-                          Send reminders every {settings.reviewReminderDays || 7}{" "}
-                          days after project completion
+                          Send reminders every{" "}
+                          {settings.reviewReminderDays || 7} days after project
+                          completion
                         </p>
                       </div>
                     )}
@@ -1833,9 +1835,7 @@ export default function Settings() {
                   <CardContent className="space-y-4">
                     <div className="grid gap-4 md:grid-cols-2">
                       <div className="space-y-3">
-                        <h4 className="font-medium text-sm">
-                          Message Types
-                        </h4>
+                        <h4 className="font-medium text-sm">Message Types</h4>
                         <div className="space-y-3">
                           {Object.entries(settings.messageTypes || {}).map(
                             ([type, enabled]) => (
@@ -1881,9 +1881,7 @@ export default function Settings() {
                       </div>
 
                       <div className="space-y-3">
-                        <h4 className="font-medium text-sm">
-                          Categories
-                        </h4>
+                        <h4 className="font-medium text-sm">Categories</h4>
                         <div className="space-y-3">
                           {Object.entries(settings.categories || {}).map(
                             ([category, enabled]) => (
@@ -2366,8 +2364,7 @@ export default function Settings() {
                             {settings.creditCard?.last4 || "4242"}
                           </p>
                           <p className="text-sm text-muted-foreground">
-                            Expires{" "}
-                            {settings.creditCard?.expMonth || 12}/
+                            Expires {settings.creditCard?.expMonth || 12}/
                             {settings.creditCard?.expYear || 2025}
                           </p>
                         </div>
@@ -2419,12 +2416,6 @@ export default function Settings() {
                 </Card>
               </div>
             )}
-          </div>
-        </div>
-      </div>
-    </AppLayout>
-  );
-}
           </div>
         </div>
       </div>
