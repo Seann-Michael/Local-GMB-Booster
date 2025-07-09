@@ -33,6 +33,7 @@ import {
 } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import React from "react";
 
 interface PageConfig {
   title: string;
@@ -177,8 +178,8 @@ export function ContextualHeader() {
           <Breadcrumb>
             <BreadcrumbList>
               {breadcrumbs.map((crumb, index) => (
-                <>
-                  <BreadcrumbItem key={index}>
+                <React.Fragment key={`breadcrumb-${index}`}>
+                  <BreadcrumbItem>
                     {crumb.href && index < breadcrumbs.length - 1 ? (
                       <BreadcrumbLink asChild>
                         <Link to={crumb.href}>{crumb.label}</Link>
@@ -188,7 +189,7 @@ export function ContextualHeader() {
                     )}
                   </BreadcrumbItem>
                   {index < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
-                </>
+                </React.Fragment>
               ))}
             </BreadcrumbList>
           </Breadcrumb>
