@@ -376,7 +376,7 @@ export class SecureAPI {
     // Add CSRF token
     const headers = CSRFProtection.addTokenToHeaders({
       "Content-Type": "application/json",
-      ...options.headers,
+      ...(options.headers || {}),
     });
 
     // Add session validation
