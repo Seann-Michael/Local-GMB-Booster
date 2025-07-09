@@ -362,14 +362,20 @@ export default function Settings() {
     <AppLayout>
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold">Business Settings</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold">
+              Business Settings
+            </h1>
             <p className="text-muted-foreground">
               Manage your business profile, preferences, and configurations
             </p>
           </div>
-          <Button onClick={handleSave} disabled={isLoading} className="gap-2">
+          <Button
+            onClick={handleSave}
+            disabled={isLoading}
+            className="gap-2 w-full sm:w-auto"
+          >
             {isLoading ? (
               <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
             ) : (
@@ -379,10 +385,10 @@ export default function Settings() {
           </Button>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-4">
+        <div className="grid gap-6 lg:grid-cols-4 max-w-full overflow-x-hidden">
           {/* Sidebar Navigation */}
           <Card className="lg:col-span-1">
-            <CardHeader>
+            <CardHeader className="pb-3">
               <CardTitle>Settings</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
@@ -1189,7 +1195,7 @@ export default function Settings() {
                           </p>
                           <ul className="text-xs text-yellow-700 space-y-1">
                             <li>
-                              • Send initial request 24-48 hours after project
+                              ��� Send initial request 24-48 hours after project
                               completion
                             </li>
                             <li>
