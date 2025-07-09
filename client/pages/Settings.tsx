@@ -1521,7 +1521,7 @@ export default function Settings() {
                       </Label>
                       <Textarea
                         id="reviewAiPrompt"
-                        value={settings.reviewAiPrompt}
+                        value={settings?.reviewAiPrompt || ""}
                         onChange={(e) =>
                           updateSetting("reviewAiPrompt", e.target.value)
                         }
