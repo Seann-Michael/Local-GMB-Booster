@@ -303,41 +303,80 @@ export default function Settings() {
   };
 
   const updateSetting = (key: keyof BusinessSettings, value: any) => {
-    setSettings((prev) => ({ ...prev, [key]: value }));
+    try {
+      setSettings((prev) => {
+        if (!prev) return prev;
+        return { ...prev, [key]: value };
+      });
+    } catch (error) {
+      console.error("Error updating setting:", error);
+    }
   };
 
   const updateWebhook = (webhookId: string, updatedWebhook: any) => {
-    setSettings((prev) => ({
-      ...prev,
-      webhooks: (prev.webhooks || []).map((webhook) =>
-        webhook.id === webhookId ? { ...webhook, ...updatedWebhook } : webhook,
-      ),
-    }));
+    try {
+      setSettings((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          webhooks: (prev.webhooks || []).map((webhook) =>
+            webhook.id === webhookId
+              ? { ...webhook, ...updatedWebhook }
+              : webhook,
+          ),
+        };
+      });
+    } catch (error) {
+      console.error("Error updating webhook:", error);
+    }
   };
 
   const deleteWebhook = (webhookId: string) => {
-    setSettings((prev) => ({
-      ...prev,
-      webhooks: (prev.webhooks || []).filter(
-        (webhook) => webhook.id !== webhookId,
-      ),
-    }));
+    try {
+      setSettings((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          webhooks: (prev.webhooks || []).filter(
+            (webhook) => webhook.id !== webhookId,
+          ),
+        };
+      });
+    } catch (error) {
+      console.error("Error deleting webhook:", error);
+    }
   };
 
   const updateTag = (tagId: string, updatedTag: any) => {
-    setSettings((prev) => ({
-      ...prev,
-      businessTags: (prev.businessTags || []).map((tag) =>
-        tag.id === tagId ? { ...tag, ...updatedTag } : tag,
-      ),
-    }));
+    try {
+      setSettings((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          businessTags: (prev.businessTags || []).map((tag) =>
+            tag.id === tagId ? { ...tag, ...updatedTag } : tag,
+          ),
+        };
+      });
+    } catch (error) {
+      console.error("Error updating tag:", error);
+    }
   };
 
   const deleteTag = (tagId: string) => {
-    setSettings((prev) => ({
-      ...prev,
-      businessTags: (prev.businessTags || []).filter((tag) => tag.id !== tagId),
-    }));
+    try {
+      setSettings((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          businessTags: (prev.businessTags || []).filter(
+            (tag) => tag.id !== tagId,
+          ),
+        };
+      });
+    } catch (error) {
+      console.error("Error deleting tag:", error);
+    }
   };
 
   // Don't render until settings are properly initialized
@@ -588,10 +627,17 @@ export default function Settings() {
                             <span
                               className="cursor-pointer hover:bg-muted rounded-sm p-0.5 ml-1"
                               onClick={() => {
-                                const newVariables = (
-                                  settings.aiVariables || []
-                                ).filter((_, i) => i !== index);
-                                updateSetting("aiVariables", newVariables);
+                                try {
+                                  const newVariables = (
+                                    settings?.aiVariables || []
+                                  ).filter((_, i) => i !== index);
+                                  updateSetting("aiVariables", newVariables);
+                                } catch (error) {
+                                  console.error(
+                                    "Error removing AI variable:",
+                                    error,
+                                  );
+                                }
                               }}
                             >
                               <X className="h-3 w-3" />
@@ -754,13 +800,20 @@ export default function Settings() {
                                 <span
                                   className="cursor-pointer hover:bg-muted rounded-sm p-0.5 ml-1"
                                   onClick={() => {
-                                    const newTypes = (
-                                      settings.allowedImageTypes || []
-                                    ).filter((_, i) => i !== index);
-                                    updateSetting(
-                                      "allowedImageTypes",
-                                      newTypes,
-                                    );
+                                    try {
+                                      const newTypes = (
+                                        settings?.allowedImageTypes || []
+                                      ).filter((_, i) => i !== index);
+                                      updateSetting(
+                                        "allowedImageTypes",
+                                        newTypes,
+                                      );
+                                    } catch (error) {
+                                      console.error(
+                                        "Error removing image type:",
+                                        error,
+                                      );
+                                    }
                                   }}
                                 >
                                   <X className="h-3 w-3" />
@@ -809,13 +862,20 @@ export default function Settings() {
                                 <span
                                   className="cursor-pointer hover:bg-muted rounded-sm p-0.5 ml-1"
                                   onClick={() => {
-                                    const newTypes = (
-                                      settings.allowedVideoTypes || []
-                                    ).filter((_, i) => i !== index);
-                                    updateSetting(
-                                      "allowedVideoTypes",
-                                      newTypes,
-                                    );
+                                    try {
+                                      const newTypes = (
+                                        settings?.allowedVideoTypes || []
+                                      ).filter((_, i) => i !== index);
+                                      updateSetting(
+                                        "allowedVideoTypes",
+                                        newTypes,
+                                      );
+                                    } catch (error) {
+                                      console.error(
+                                        "Error removing video type:",
+                                        error,
+                                      );
+                                    }
                                   }}
                                 >
                                   <X className="h-3 w-3" />
