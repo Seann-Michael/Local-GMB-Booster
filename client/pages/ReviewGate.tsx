@@ -275,14 +275,7 @@ export default function ReviewGate() {
 
         {/* Review Form */}
         <Card>
-          <CardHeader>
-            <CardTitle className="text-center">
-              How was your experience, {reviewRequest.customerName}?
-            </CardTitle>
-            <p className="text-center text-muted-foreground">
-              Your feedback helps us serve you better
-            </p>
-          </CardHeader>
+          <CardHeader></CardHeader>
           <CardContent className="space-y-6">
             {/* Star Rating */}
             <div className="text-center">
