@@ -295,7 +295,7 @@ export default function Settings() {
   const updateWebhook = (webhookId: string, updatedWebhook: any) => {
     setSettings((prev) => ({
       ...prev,
-      webhooks: (prev.webhooks || []).map((webhook) =>
+      webhooks: (prev?.webhooks || []).map((webhook) =>
         webhook.id === webhookId ? { ...webhook, ...updatedWebhook } : webhook,
       ),
     }));
@@ -330,7 +330,7 @@ export default function Settings() {
   const updateTag = (tagId: string, updatedTag: any) => {
     setSettings((prev) => ({
       ...prev,
-      businessTags: (prev.businessTags || []).map((tag) =>
+      businessTags: (prev?.businessTags || []).map((tag) =>
         tag.id === tagId ? { ...tag, ...updatedTag } : tag,
       ),
     }));
@@ -1198,8 +1198,8 @@ export default function Settings() {
                           </p>
                           <ul className="text-xs text-yellow-700 space-y-1">
                             <li>
-                              ���� Send initial request 24-48 hours after
-                              project completion
+                              ��� Send initial request 24-48 hours after project
+                              completion
                             </li>
                             <li>
                               • Limit follow-ups to 2-3 attempts to avoid being
