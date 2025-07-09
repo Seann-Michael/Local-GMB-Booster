@@ -316,14 +316,7 @@ const App = () => (
                     </ProtectedRoute>
                   }
                 />
-                <Route
-                  path="/notification-preferences"
-                  element={
-                    <ProtectedRoute>
-                      <NotificationPreferences />
-                    </ProtectedRoute>
-                  }
-                />
+
                 <Route
                   path="/support"
                   element={
