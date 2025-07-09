@@ -23,8 +23,8 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  ChevronUp,
-  ChevronDown,
+  ThumbsUp,
+  ThumbsDown,
   MessageSquare,
   Plus,
   Search,
@@ -37,6 +37,7 @@ import {
   Zap,
   Calendar,
   User,
+  ArrowRight,
 } from "lucide-react";
 import { toast } from "sonner";
 
