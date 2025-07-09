@@ -1519,7 +1519,7 @@ export default function Settings() {
                             </div>
                           </div>
                           <Switch
-                            checked={settings.messageTypes.info}
+                            checked={settings?.messageTypes?.info || false}
                             onCheckedChange={(checked) => {
                               const newMessageTypes = {
                                 ...settings.messageTypes,
@@ -1542,7 +1542,7 @@ export default function Settings() {
                             </div>
                           </div>
                           <Switch
-                            checked={settings.messageTypes.warning}
+                            checked={settings?.messageTypes?.warning || false}
                             onCheckedChange={(checked) => {
                               const newMessageTypes = {
                                 ...settings.messageTypes,
@@ -1565,7 +1565,7 @@ export default function Settings() {
                             </div>
                           </div>
                           <Switch
-                            checked={settings.messageTypes.success}
+                            checked={settings?.messageTypes?.success || false}
                             onCheckedChange={(checked) => {
                               const newMessageTypes = {
                                 ...settings.messageTypes,
@@ -1588,7 +1588,7 @@ export default function Settings() {
                             </div>
                           </div>
                           <Switch
-                            checked={settings.messageTypes.error}
+                            checked={settings?.messageTypes?.error || false}
                             onCheckedChange={(checked) => {
                               const newMessageTypes = {
                                 ...settings.messageTypes,
