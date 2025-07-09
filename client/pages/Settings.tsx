@@ -1440,14 +1440,14 @@ export default function Settings() {
                         </p>
                       </div>
                       <Switch
-                        checked={settings.reviewReminderEnabled}
+                        checked={settings?.reviewReminderEnabled || false}
                         onCheckedChange={(checked) =>
                           updateSetting("reviewReminderEnabled", checked)
                         }
                       />
                     </div>
 
-                    {settings.reviewReminderEnabled && (
+                    {settings?.reviewReminderEnabled && (
                       <div>
                         <Label htmlFor="reviewReminderDays">
                           Reminder Frequency (days)
@@ -1455,7 +1455,7 @@ export default function Settings() {
                         <Input
                           id="reviewReminderDays"
                           type="number"
-                          value={settings.reviewReminderDays}
+                          value={settings?.reviewReminderDays || 7}
                           onChange={(e) =>
                             updateSetting(
                               "reviewReminderDays",
@@ -1467,8 +1467,8 @@ export default function Settings() {
                           max="30"
                         />
                         <p className="text-xs text-muted-foreground mt-1">
-                          Send reminders every {settings.reviewReminderDays}{" "}
-                          days
+                          Send reminders every{" "}
+                          {settings?.reviewReminderDays || 7} days
                         </p>
                       </div>
                     )}
