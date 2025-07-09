@@ -63,7 +63,11 @@ export default function ReviewGate() {
         businessOwnerVideo:
           "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
       };
-      setReviewRequest(mockRequest);
+
+      // Force set the review request immediately
+      setTimeout(() => {
+        setReviewRequest(mockRequest);
+      }, 100);
     };
 
     loadReviewRequest();
