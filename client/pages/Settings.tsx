@@ -1607,10 +1607,12 @@ export default function Settings() {
                                 );
                                 if (
                                   newType &&
-                                  !settings.allowedVideoTypes.includes(newType)
+                                  !(settings?.allowedVideoTypes || []).includes(
+                                    newType,
+                                  )
                                 ) {
                                   updateSetting("allowedVideoTypes", [
-                                    ...settings.allowedVideoTypes,
+                                    ...(settings?.allowedVideoTypes || []),
                                     newType,
                                   ]);
                                 }
