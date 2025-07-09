@@ -1601,14 +1601,7 @@ Contact our billing support team:
                               </Badge>
                             </TableCell>
                             <TableCell className="text-sm text-muted-foreground">
-                              {new Date(ticket.createdAt).toLocaleDateString(
-                                "en-US",
-                                {
-                                  month: "2-digit",
-                                  day: "2-digit",
-                                  year: "numeric",
-                                },
-                              )}
+                              {formatTableDate(ticket.createdAt)}
                             </TableCell>
                             <TableCell>
                               <Button
