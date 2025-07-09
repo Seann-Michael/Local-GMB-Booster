@@ -214,6 +214,62 @@ export default function SuperAdminBroadcast() {
       isImmediate: true,
     });
     setEditingMessage(null);
+    setShowPreview(false);
+  };
+
+  const handlePreviewMessage = () => {
+    if (!formData.title.trim() || !formData.content.trim()) {
+      toast.error("Please fill in title and content to preview");
+      return;
+    }
+    setShowPreview(true);
+  };
+
+  const getPreviewAlertIcon = (type: string) => {
+    switch (type) {
+      case "info":
+        return <Info className="h-4 w-4" />;
+      case "warning":
+        return <AlertCircle className="h-4 w-4" />;
+      case "success":
+        return <CheckCircle className="h-4 w-4" />;
+      case "error":
+        return <XCircle className="h-4 w-4" />;
+      default:
+        return <Info className="h-4 w-4" />;
+    }
+  };
+
+  const getPreviewAlertStyle = (type: string) => {
+    switch (type) {
+      case "info":
+        return "border-blue-200 bg-blue-50 text-blue-800 [&>svg]:text-blue-600";
+      case "warning":
+        return "border-yellow-200 bg-yellow-50 text-yellow-800 [&>svg]:text-yellow-600";
+      case "success":
+        return "border-green-200 bg-green-50 text-green-800 [&>svg]:text-green-600";
+      case "error":
+        return ""; // Use default destructive variant
+      default:
+        return "";
+    }
+  };
+
+  const getPreviewAudienceText = (targetAudience: string) => {
+    switch (targetAudience) {
+      case "all":
+        return "All Users";
+      case "business-owners":
+        return "Business Owners";
+      case "agency-admins":
+        return "Agency Admins";
+      case "staff":
+        return "Staff Members";
+      case "custom":
+        return "Custom Selection";
+      default:
+        return targetAudience;
+    }
   };
 
   const handleCreateMessage = () => {
