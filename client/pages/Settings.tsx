@@ -2271,8 +2271,7 @@ export default function Settings() {
                 </div>
               )}
 
-              {/* Security */}
-              {activeTab === "security" && (
+
                 <div className="space-y-6">
                   {/* Security Score Overview */}
                   <Card>
