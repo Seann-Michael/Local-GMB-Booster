@@ -97,10 +97,17 @@ const DEFAULT_TEMPLATES: MessageTemplate[] = [
     id: "system-maintenance",
     name: "System Maintenance",
     title: "Scheduled System Maintenance",
-    content: "We will be performing scheduled maintenance on {{date}} from {{start_time}} to {{end_time}} {{timezone}}. During this time, {{affected_services}} may be temporarily unavailable. We apologize for any inconvenience.",
+    content:
+      "We will be performing scheduled maintenance on {{date}} from {{start_time}} to {{end_time}} {{timezone}}. During this time, {{affected_services}} may be temporarily unavailable. We apologize for any inconvenience.",
     type: "warning",
     category: "system",
-    variables: ["date", "start_time", "end_time", "timezone", "affected_services"],
+    variables: [
+      "date",
+      "start_time",
+      "end_time",
+      "timezone",
+      "affected_services",
+    ],
     version: 1,
     isActive: true,
     isDefault: true,
@@ -111,13 +118,14 @@ const DEFAULT_TEMPLATES: MessageTemplate[] = [
     approvedBy: "System",
     approvedAt: "2024-01-01T00:00:00Z",
     usageCount: 15,
-    description: "Template for scheduled maintenance notifications"
+    description: "Template for scheduled maintenance notifications",
   },
   {
     id: "feature-launch",
     name: "New Feature Launch",
     title: "Exciting New Feature: {{feature_name}}",
-    content: "We're thrilled to announce the launch of {{feature_name}}! {{feature_description}} You can access this new feature by {{access_instructions}}. Check out our documentation for more details.",
+    content:
+      "We're thrilled to announce the launch of {{feature_name}}! {{feature_description}} You can access this new feature by {{access_instructions}}. Check out our documentation for more details.",
     type: "success",
     category: "marketing",
     variables: ["feature_name", "feature_description", "access_instructions"],
@@ -131,13 +139,14 @@ const DEFAULT_TEMPLATES: MessageTemplate[] = [
     approvedBy: "System",
     approvedAt: "2024-01-01T00:00:00Z",
     usageCount: 8,
-    description: "Template for announcing new feature releases"
+    description: "Template for announcing new feature releases",
   },
   {
     id: "security-alert",
     name: "Security Alert",
     title: "Important Security Alert",
-    content: "We've detected {{security_issue}} and have taken immediate action to {{action_taken}}. Your account remains secure. Please {{user_action}} as a precautionary measure. Contact support if you have any concerns.",
+    content:
+      "We've detected {{security_issue}} and have taken immediate action to {{action_taken}}. Your account remains secure. Please {{user_action}} as a precautionary measure. Contact support if you have any concerns.",
     type: "error",
     category: "emergency",
     variables: ["security_issue", "action_taken", "user_action"],
@@ -151,13 +160,14 @@ const DEFAULT_TEMPLATES: MessageTemplate[] = [
     approvedBy: "System",
     approvedAt: "2024-01-01T00:00:00Z",
     usageCount: 3,
-    description: "Template for security-related alerts"
+    description: "Template for security-related alerts",
   },
   {
     id: "support-update",
     name: "Support Hours Update",
     title: "Support Hours Update",
-    content: "Our support hours have been updated. We're now available {{new_hours}} {{timezone}}. You can still submit tickets anytime through {{ticket_system}}, and we'll respond during business hours.",
+    content:
+      "Our support hours have been updated. We're now available {{new_hours}} {{timezone}}. You can still submit tickets anytime through {{ticket_system}}, and we'll respond during business hours.",
     type: "info",
     category: "support",
     variables: ["new_hours", "timezone", "ticket_system"],
@@ -171,13 +181,14 @@ const DEFAULT_TEMPLATES: MessageTemplate[] = [
     approvedBy: "System",
     approvedAt: "2024-01-01T00:00:00Z",
     usageCount: 5,
-    description: "Template for support-related updates"
+    description: "Template for support-related updates",
   },
   {
     id: "system-upgrade",
     name: "System Upgrade",
     title: "System Upgrade Complete",
-    content: "We've successfully upgraded our system to improve {{improvement_areas}}. You may notice {{visible_changes}}. If you experience any issues, please contact our support team.",
+    content:
+      "We've successfully upgraded our system to improve {{improvement_areas}}. You may notice {{visible_changes}}. If you experience any issues, please contact our support team.",
     type: "success",
     category: "system",
     variables: ["improvement_areas", "visible_changes"],
@@ -191,8 +202,8 @@ const DEFAULT_TEMPLATES: MessageTemplate[] = [
     approvedBy: "System",
     approvedAt: "2024-01-01T00:00:00Z",
     usageCount: 12,
-    description: "Template for system upgrade notifications"
-  }
+    description: "Template for system upgrade notifications",
+  },
 ];
 
 export default function SuperAdminMessageTemplates() {
@@ -205,8 +216,10 @@ export default function SuperAdminMessageTemplates() {
   });
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showPreviewDialog, setShowPreviewDialog] = useState(false);
-  const [editingTemplate, setEditingTemplate] = useState<MessageTemplate | null>(null);
-  const [previewTemplate, setPreviewTemplate] = useState<MessageTemplate | null>(null);
+  const [editingTemplate, setEditingTemplate] =
+    useState<MessageTemplate | null>(null);
+  const [previewTemplate, setPreviewTemplate] =
+    useState<MessageTemplate | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -236,7 +249,7 @@ export default function SuperAdminMessageTemplates() {
       // Merge with defaults, ensuring defaults exist
       const existingIds = stored.map((t: MessageTemplate) => t.id);
       const missingDefaults = DEFAULT_TEMPLATES.filter(
-        (def) => !existingIds.includes(def.id)
+        (def) => !existingIds.includes(def.id),
       );
       allTemplates = [...stored, ...missingDefaults];
     } else {
@@ -250,7 +263,9 @@ export default function SuperAdminMessageTemplates() {
     setStats({
       totalTemplates: allTemplates.length,
       activeTemplates: allTemplates.filter((t) => t.isActive).length,
-      pendingApproval: allTemplates.filter((t) => t.approvalStatus === "pending").length,
+      pendingApproval: allTemplates.filter(
+        (t) => t.approvalStatus === "pending",
+      ).length,
       totalUsage,
     });
 
@@ -287,7 +302,11 @@ export default function SuperAdminMessageTemplates() {
   };
 
   const handleCreateTemplate = () => {
-    if (!formData.name.trim() || !formData.title.trim() || !formData.content.trim()) {
+    if (
+      !formData.name.trim() ||
+      !formData.title.trim() ||
+      !formData.content.trim()
+    ) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -295,7 +314,9 @@ export default function SuperAdminMessageTemplates() {
     // Auto-extract variables from title and content
     const titleVars = extractVariables(formData.title);
     const contentVars = extractVariables(formData.content);
-    const allVariables = [...new Set([...titleVars, ...contentVars, ...formData.variables])];
+    const allVariables = [
+      ...new Set([...titleVars, ...contentVars, ...formData.variables]),
+    ];
 
     const newTemplate: MessageTemplate = {
       id: Date.now().toString(),
@@ -347,7 +368,9 @@ export default function SuperAdminMessageTemplates() {
     // Auto-extract variables
     const titleVars = extractVariables(formData.title);
     const contentVars = extractVariables(formData.content);
-    const allVariables = [...new Set([...titleVars, ...contentVars, ...formData.variables])];
+    const allVariables = [
+      ...new Set([...titleVars, ...contentVars, ...formData.variables]),
+    ];
 
     const updatedTemplate: MessageTemplate = {
       ...editingTemplate,
@@ -364,7 +387,7 @@ export default function SuperAdminMessageTemplates() {
     };
 
     const updatedTemplates = templates.map((t) =>
-      t.id === editingTemplate.id ? updatedTemplate : t
+      t.id === editingTemplate.id ? updatedTemplate : t,
     );
     setTemplates(updatedTemplates);
     localStorage.setItem("messageTemplates", JSON.stringify(updatedTemplates));
@@ -385,7 +408,7 @@ export default function SuperAdminMessageTemplates() {
             approvedBy: "Super Admin",
             approvedAt: new Date().toISOString(),
           }
-        : t
+        : t,
     );
     setTemplates(updatedTemplates);
     localStorage.setItem("messageTemplates", JSON.stringify(updatedTemplates));
@@ -401,7 +424,7 @@ export default function SuperAdminMessageTemplates() {
             approvalStatus: "rejected" as const,
             isActive: false,
           }
-        : t
+        : t,
     );
     setTemplates(updatedTemplates);
     localStorage.setItem("messageTemplates", JSON.stringify(updatedTemplates));
@@ -411,7 +434,7 @@ export default function SuperAdminMessageTemplates() {
 
   const handleToggleActive = (templateId: string) => {
     const updatedTemplates = templates.map((t) =>
-      t.id === templateId ? { ...t, isActive: !t.isActive } : t
+      t.id === templateId ? { ...t, isActive: !t.isActive } : t,
     );
     setTemplates(updatedTemplates);
     localStorage.setItem("messageTemplates", JSON.stringify(updatedTemplates));
@@ -420,7 +443,7 @@ export default function SuperAdminMessageTemplates() {
   };
 
   const handleDeleteTemplate = (templateId: string) => {
-    const template = templates.find(t => t.id === templateId);
+    const template = templates.find((t) => t.id === templateId);
     if (template?.isDefault) {
       toast.error("Cannot delete default templates");
       return;
@@ -455,8 +478,11 @@ export default function SuperAdminMessageTemplates() {
   };
 
   const addVariable = () => {
-    if (formData.newVariable.trim() && !formData.variables.includes(formData.newVariable.trim())) {
-      setFormData(prev => ({
+    if (
+      formData.newVariable.trim() &&
+      !formData.variables.includes(formData.newVariable.trim())
+    ) {
+      setFormData((prev) => ({
         ...prev,
         variables: [...prev.variables, prev.newVariable.trim()],
         newVariable: "",
@@ -465,9 +491,9 @@ export default function SuperAdminMessageTemplates() {
   };
 
   const removeVariable = (variable: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      variables: prev.variables.filter(v => v !== variable),
+      variables: prev.variables.filter((v) => v !== variable),
     }));
   };
 
@@ -517,8 +543,10 @@ export default function SuperAdminMessageTemplates() {
   };
 
   const filteredTemplates = templates.filter((template) => {
-    if (categoryFilter !== "all" && template.category !== categoryFilter) return false;
-    if (statusFilter !== "all" && template.approvalStatus !== statusFilter) return false;
+    if (categoryFilter !== "all" && template.category !== categoryFilter)
+      return false;
+    if (statusFilter !== "all" && template.approvalStatus !== statusFilter)
+      return false;
     if (
       searchTerm &&
       !template.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -550,10 +578,12 @@ export default function SuperAdminMessageTemplates() {
             <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>
-                  {editingTemplate ? "Edit Template" : "Create Message Template"}
+                  {editingTemplate
+                    ? "Edit Template"
+                    : "Create Message Template"}
                 </DialogTitle>
                 <DialogDescription>
-                  {editingTemplate 
+                  {editingTemplate
                     ? "Update the template details and variables."
                     : "Create a reusable message template with placeholder variables."}
                 </DialogDescription>
@@ -564,7 +594,7 @@ export default function SuperAdminMessageTemplates() {
                   <TabsTrigger value="content">Content</TabsTrigger>
                   <TabsTrigger value="variables">Variables</TabsTrigger>
                 </TabsList>
-                
+
                 <TabsContent value="details" className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="grid gap-2">
@@ -573,7 +603,10 @@ export default function SuperAdminMessageTemplates() {
                         id="name"
                         value={formData.name}
                         onChange={(e) =>
-                          setFormData(prev => ({ ...prev, name: e.target.value }))
+                          setFormData((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
                         }
                         placeholder="e.g., System Maintenance"
                       />
@@ -583,7 +616,7 @@ export default function SuperAdminMessageTemplates() {
                       <Select
                         value={formData.category}
                         onValueChange={(value: any) =>
-                          setFormData(prev => ({ ...prev, category: value }))
+                          setFormData((prev) => ({ ...prev, category: value }))
                         }
                       >
                         <SelectTrigger>
@@ -604,7 +637,10 @@ export default function SuperAdminMessageTemplates() {
                       id="description"
                       value={formData.description}
                       onChange={(e) =>
-                        setFormData(prev => ({ ...prev, description: e.target.value }))
+                        setFormData((prev) => ({
+                          ...prev,
+                          description: e.target.value,
+                        }))
                       }
                       placeholder="Brief description of when to use this template..."
                       rows={3}
@@ -615,7 +651,7 @@ export default function SuperAdminMessageTemplates() {
                     <Select
                       value={formData.type}
                       onValueChange={(value: any) =>
-                        setFormData(prev => ({ ...prev, type: value }))
+                        setFormData((prev) => ({ ...prev, type: value }))
                       }
                     >
                       <SelectTrigger>
@@ -638,12 +674,15 @@ export default function SuperAdminMessageTemplates() {
                       id="title"
                       value={formData.title}
                       onChange={(e) =>
-                        setFormData(prev => ({ ...prev, title: e.target.value }))
+                        setFormData((prev) => ({
+                          ...prev,
+                          title: e.target.value,
+                        }))
                       }
                       placeholder="e.g., Scheduled System Maintenance"
                     />
                     <p className="text-xs text-muted-foreground">
-                      Use {{'{'}variable_name{'}'}} for placeholders
+                      Use {`{{variable_name}}`} for placeholders
                     </p>
                   </div>
                   <div className="grid gap-2">
@@ -652,7 +691,10 @@ export default function SuperAdminMessageTemplates() {
                       id="content"
                       value={formData.content}
                       onChange={(e) =>
-                        setFormData(prev => ({ ...prev, content: e.target.value }))
+                        setFormData((prev) => ({
+                          ...prev,
+                          content: e.target.value,
+                        }))
                       }
                       placeholder="e.g., We will be performing maintenance on {{date}} from {{start_time}} to {{end_time}}..."
                       rows={6}
@@ -667,10 +709,18 @@ export default function SuperAdminMessageTemplates() {
                   <div className="grid gap-2">
                     <Label>Detected Variables</Label>
                     <div className="flex flex-wrap gap-2">
-                      {extractVariables(formData.title + " " + formData.content).map((variable) => (
-                        <Badge key={variable} variant="secondary" className="gap-1">
+                      {extractVariables(
+                        formData.title + " " + formData.content,
+                      ).map((variable) => (
+                        <Badge
+                          key={variable}
+                          variant="secondary"
+                          className="gap-1"
+                        >
                           {variable}
-                          <span className="text-xs text-muted-foreground">auto</span>
+                          <span className="text-xs text-muted-foreground">
+                            auto
+                          </span>
                         </Badge>
                       ))}
                     </div>
@@ -681,18 +731,29 @@ export default function SuperAdminMessageTemplates() {
                       <Input
                         value={formData.newVariable}
                         onChange={(e) =>
-                          setFormData(prev => ({ ...prev, newVariable: e.target.value }))
+                          setFormData((prev) => ({
+                            ...prev,
+                            newVariable: e.target.value,
+                          }))
                         }
                         placeholder="Add custom variable..."
                         onKeyPress={(e) => e.key === "Enter" && addVariable()}
                       />
-                      <Button type="button" onClick={addVariable} variant="outline">
+                      <Button
+                        type="button"
+                        onClick={addVariable}
+                        variant="outline"
+                      >
                         Add
                       </Button>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {formData.variables.map((variable) => (
-                        <Badge key={variable} variant="outline" className="gap-1">
+                        <Badge
+                          key={variable}
+                          variant="outline"
+                          className="gap-1"
+                        >
                           {variable}
                           <button
                             onClick={() => removeVariable(variable)}
@@ -707,10 +768,19 @@ export default function SuperAdminMessageTemplates() {
                 </TabsContent>
               </Tabs>
               <DialogFooter>
-                <Button variant="outline" onClick={() => setShowCreateDialog(false)}>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowCreateDialog(false)}
+                >
                   Cancel
                 </Button>
-                <Button onClick={editingTemplate ? handleUpdateTemplate : handleCreateTemplate}>
+                <Button
+                  onClick={
+                    editingTemplate
+                      ? handleUpdateTemplate
+                      : handleCreateTemplate
+                  }
+                >
                   {editingTemplate ? "Update Template" : "Create Template"}
                 </Button>
               </DialogFooter>
@@ -724,7 +794,9 @@ export default function SuperAdminMessageTemplates() {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Templates</p>
+                  <p className="text-sm text-muted-foreground">
+                    Total Templates
+                  </p>
                   <p className="text-2xl font-bold">{stats.totalTemplates}</p>
                 </div>
                 <Template className="h-8 w-8 text-primary" />
@@ -735,7 +807,9 @@ export default function SuperAdminMessageTemplates() {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">Active Templates</p>
+                  <p className="text-sm text-muted-foreground">
+                    Active Templates
+                  </p>
                   <p className="text-2xl font-bold">{stats.activeTemplates}</p>
                 </div>
                 <CheckCircle className="h-8 w-8 text-green-500" />
@@ -746,7 +820,9 @@ export default function SuperAdminMessageTemplates() {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">Pending Approval</p>
+                  <p className="text-sm text-muted-foreground">
+                    Pending Approval
+                  </p>
                   <p className="text-2xl font-bold">{stats.pendingApproval}</p>
                 </div>
                 <Clock className="h-8 w-8 text-yellow-500" />
@@ -780,7 +856,10 @@ export default function SuperAdminMessageTemplates() {
                 />
               </div>
               <div className="flex flex-col sm:flex-row gap-2">
-                <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                <Select
+                  value={categoryFilter}
+                  onValueChange={setCategoryFilter}
+                >
                   <SelectTrigger className="w-full sm:w-48">
                     <SelectValue placeholder="Filter by category" />
                   </SelectTrigger>
@@ -812,7 +891,9 @@ export default function SuperAdminMessageTemplates() {
         {/* Templates Table */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg sm:text-xl">Message Templates</CardTitle>
+            <CardTitle className="text-lg sm:text-xl">
+              Message Templates
+            </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             <div className="responsive-table">
@@ -820,11 +901,17 @@ export default function SuperAdminMessageTemplates() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Template</TableHead>
-                    <TableHead className="hidden sm:table-cell">Category</TableHead>
+                    <TableHead className="hidden sm:table-cell">
+                      Category
+                    </TableHead>
                     <TableHead className="hidden md:table-cell">Type</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead className="hidden lg:table-cell">Version</TableHead>
-                    <TableHead className="hidden lg:table-cell">Usage</TableHead>
+                    <TableHead className="hidden lg:table-cell">
+                      Version
+                    </TableHead>
+                    <TableHead className="hidden lg:table-cell">
+                      Usage
+                    </TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -838,10 +925,14 @@ export default function SuperAdminMessageTemplates() {
                               {template.name}
                             </p>
                             {template.isDefault && (
-                              <Badge variant="secondary" className="text-xs">Default</Badge>
+                              <Badge variant="secondary" className="text-xs">
+                                Default
+                              </Badge>
                             )}
                             {!template.isActive && (
-                              <Badge variant="outline" className="text-xs">Inactive</Badge>
+                              <Badge variant="outline" className="text-xs">
+                                Inactive
+                              </Badge>
                             )}
                           </div>
                           <p className="text-xs text-muted-foreground line-clamp-1">
@@ -861,7 +952,8 @@ export default function SuperAdminMessageTemplates() {
                               </span>
                             </div>
                             <div className="lg:hidden text-xs text-muted-foreground">
-                              v{template.version} | Used {template.usageCount} times
+                              v{template.version} | Used {template.usageCount}{" "}
+                              times
                             </div>
                           </div>
                         </div>
@@ -869,7 +961,9 @@ export default function SuperAdminMessageTemplates() {
                       <TableCell className="hidden sm:table-cell">
                         <div className="flex items-center gap-2">
                           {getCategoryIcon(template.category)}
-                          <span className="capitalize">{template.category}</span>
+                          <span className="capitalize">
+                            {template.category}
+                          </span>
                         </div>
                       </TableCell>
                       <TableCell className="hidden md:table-cell">
@@ -878,7 +972,9 @@ export default function SuperAdminMessageTemplates() {
                           <span className="capitalize">{template.type}</span>
                         </div>
                       </TableCell>
-                      <TableCell>{getStatusBadge(template.approvalStatus)}</TableCell>
+                      <TableCell>
+                        {getStatusBadge(template.approvalStatus)}
+                      </TableCell>
                       <TableCell className="hidden lg:table-cell">
                         <div className="flex items-center gap-1">
                           <GitBranch className="h-3 w-3 text-muted-foreground" />
@@ -891,7 +987,11 @@ export default function SuperAdminMessageTemplates() {
                       <TableCell>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                            >
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
@@ -905,25 +1005,33 @@ export default function SuperAdminMessageTemplates() {
                               <Eye className="h-4 w-4 mr-2" />
                               Preview
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleEditTemplate(template)}>
+                            <DropdownMenuItem
+                              onClick={() => handleEditTemplate(template)}
+                            >
                               <Edit className="h-4 w-4 mr-2" />
                               Edit
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleDuplicateTemplate(template)}>
+                            <DropdownMenuItem
+                              onClick={() => handleDuplicateTemplate(template)}
+                            >
                               <Copy className="h-4 w-4 mr-2" />
                               Duplicate
                             </DropdownMenuItem>
                             {template.approvalStatus === "pending" && (
                               <>
                                 <DropdownMenuItem
-                                  onClick={() => handleApproveTemplate(template.id)}
+                                  onClick={() =>
+                                    handleApproveTemplate(template.id)
+                                  }
                                   className="text-green-600 focus:text-green-600"
                                 >
                                   <CheckCircle className="h-4 w-4 mr-2" />
                                   Approve
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
-                                  onClick={() => handleRejectTemplate(template.id)}
+                                  onClick={() =>
+                                    handleRejectTemplate(template.id)
+                                  }
                                   className="text-red-600 focus:text-red-600"
                                 >
                                   <XCircle className="h-4 w-4 mr-2" />
@@ -932,14 +1040,18 @@ export default function SuperAdminMessageTemplates() {
                               </>
                             )}
                             {template.approvalStatus === "approved" && (
-                              <DropdownMenuItem onClick={() => handleToggleActive(template.id)}>
+                              <DropdownMenuItem
+                                onClick={() => handleToggleActive(template.id)}
+                              >
                                 <Zap className="h-4 w-4 mr-2" />
                                 {template.isActive ? "Deactivate" : "Activate"}
                               </DropdownMenuItem>
                             )}
                             {!template.isDefault && (
                               <DropdownMenuItem
-                                onClick={() => handleDeleteTemplate(template.id)}
+                                onClick={() =>
+                                  handleDeleteTemplate(template.id)
+                                }
                                 className="text-red-600 focus:text-red-600"
                               >
                                 <Trash2 className="h-4 w-4 mr-2" />
@@ -972,14 +1084,20 @@ export default function SuperAdminMessageTemplates() {
                   <Label>Template Information</Label>
                   <div className="bg-muted/30 p-4 rounded-lg space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="font-medium">{previewTemplate.name}</span>
+                      <span className="font-medium">
+                        {previewTemplate.name}
+                      </span>
                       <div className="flex items-center gap-2">
                         {getCategoryIcon(previewTemplate.category)}
-                        <span className="text-sm capitalize">{previewTemplate.category}</span>
+                        <span className="text-sm capitalize">
+                          {previewTemplate.category}
+                        </span>
                       </div>
                     </div>
                     {previewTemplate.description && (
-                      <p className="text-sm text-muted-foreground">{previewTemplate.description}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {previewTemplate.description}
+                      </p>
                     )}
                     <div className="flex items-center gap-4 text-xs text-muted-foreground">
                       <span>Version {previewTemplate.version}</span>
@@ -991,13 +1109,19 @@ export default function SuperAdminMessageTemplates() {
                 <div className="grid gap-2">
                   <Label>Message Preview</Label>
                   <div className="bg-muted/30 p-4 rounded-lg border">
-                    <h4 className="font-medium mb-2">{previewTemplate.title}</h4>
-                    <p className="text-sm whitespace-pre-wrap">{previewTemplate.content}</p>
+                    <h4 className="font-medium mb-2">
+                      {previewTemplate.title}
+                    </h4>
+                    <p className="text-sm whitespace-pre-wrap">
+                      {previewTemplate.content}
+                    </p>
                   </div>
                 </div>
                 {previewTemplate.variables.length > 0 && (
                   <div className="grid gap-2">
-                    <Label>Variables ({previewTemplate.variables.length})</Label>
+                    <Label>
+                      Variables ({previewTemplate.variables.length})
+                    </Label>
                     <div className="flex flex-wrap gap-2">
                       {previewTemplate.variables.map((variable) => (
                         <Badge key={variable} variant="outline">
@@ -1010,14 +1134,19 @@ export default function SuperAdminMessageTemplates() {
               </div>
             )}
             <DialogFooter>
-              <Button variant="outline" onClick={() => setShowPreviewDialog(false)}>
+              <Button
+                variant="outline"
+                onClick={() => setShowPreviewDialog(false)}
+              >
                 Close
               </Button>
               {previewTemplate && (
-                <Button onClick={() => {
-                  setShowPreviewDialog(false);
-                  handleEditTemplate(previewTemplate);
-                }}>
+                <Button
+                  onClick={() => {
+                    setShowPreviewDialog(false);
+                    handleEditTemplate(previewTemplate);
+                  }}
+                >
                   Edit Template
                 </Button>
               )}
