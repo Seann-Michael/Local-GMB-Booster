@@ -418,6 +418,22 @@ const App = () => (
             }
           />
           <Route
+            path="/super-admin/automation"
+            element={
+              <ProtectedRoute>
+                <SuperAdminAutomation />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/super-admin/segments"
+            element={
+              <ProtectedRoute>
+                <SuperAdminSegmentation />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/super-admin/help"
             element={
               <ProtectedRoute>
