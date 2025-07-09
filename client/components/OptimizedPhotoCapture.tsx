@@ -97,11 +97,20 @@ export function OptimizedPhotoCapture({
       return;
     }
 
+    // Check storage quota first
+    const storageCheck = FileOptimizer.checkStorageQuota();
+    if (!storageCheck.available) {
+      toast.error(storageCheck.error || "Storage quota exceeded");
+      return;
+    }
+
     setIsProcessing(true);
     setProcessingProgress(0);
 
+    const processedFiles: OptimizedEnhancedPhoto[] = [];
+    const failedFiles: string[] = [];
+
     try {
-      const newPhotos: OptimizedEnhancedPhoto[] = [];
       const tagArray = additionalTags
         .split(",")
         .map((tag) => tag.trim())
@@ -110,87 +119,124 @@ export function OptimizedPhotoCapture({
       const fileArray = Array.from(files);
       const totalFiles = fileArray.length;
 
-      for (let i = 0; i < fileArray.length; i++) {
-        const file = fileArray[i];
-        setCurrentlyProcessing(file.name);
+      // Process files with proper error handling for each
+      const results = await Promise.allSettled(
+        fileArray.map(async (file, index) => {
+          setCurrentlyProcessing(file.name);
+          setProcessingProgress(((index + 1) / totalFiles) * 100);
 
-        if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
-          // First, enhance with metadata
-          const enhancedFile = await MediaMetadataEnhancer.enhanceMediaFile(
-            file,
-            projectInfo,
-            tagArray,
-          );
+          // Validate file first
+          const validation = FileOptimizer.validateFile(file);
+          if (!validation.valid) {
+            throw new Error(`${file.name}: ${validation.error}`);
+          }
 
-          let optimizedFile: OptimizedFile;
+          if (
+            file.type.startsWith("image/") ||
+            file.type.startsWith("video/")
+          ) {
+            // First, enhance with metadata
+            const enhancedFile = await MediaMetadataEnhancer.enhanceMediaFile(
+              file,
+              projectInfo,
+              tagArray,
+            );
 
-          // Then optimize the file if enabled
-          if (optimizationSettings.enableOptimization) {
-            if (file.type.startsWith("image/")) {
-              optimizedFile = await FileOptimizer.optimizeImage(file, {
-                quality: optimizationSettings.quality,
-                maxWidth: optimizationSettings.maxWidth,
-                maxHeight: optimizationSettings.maxHeight,
-                format:
+            let optimizedFile: OptimizedFile;
+
+            // Then optimize the file if enabled
+            if (optimizationSettings.enableOptimization) {
+              if (file.type.startsWith("image/")) {
+                const format =
                   optimizationSettings.format === "auto"
-                    ? FileOptimizer.detectOptimalImageFormat()
-                    : (optimizationSettings.format as any),
-                generateThumbnail: optimizationSettings.generateThumbnails,
-              });
-            } else if (file.type.startsWith("video/")) {
-              optimizedFile = await FileOptimizer.optimizeVideo(file, {
-                maxWidth: optimizationSettings.maxWidth,
-                maxHeight: optimizationSettings.maxHeight,
-                generateThumbnail: optimizationSettings.generateThumbnails,
-                compressionLevel: "medium",
-              });
+                    ? await FileOptimizer.detectOptimalImageFormat()
+                    : optimizationSettings.format;
+
+                optimizedFile = await FileOptimizer.optimizeImage(file, {
+                  quality: optimizationSettings.quality,
+                  maxWidth: optimizationSettings.maxWidth,
+                  maxHeight: optimizationSettings.maxHeight,
+                  format: format as any,
+                  generateThumbnail: optimizationSettings.generateThumbnails,
+                });
+              } else if (file.type.startsWith("video/")) {
+                optimizedFile = await FileOptimizer.optimizeVideo(file, {
+                  maxWidth: optimizationSettings.maxWidth,
+                  maxHeight: optimizationSettings.maxHeight,
+                  generateThumbnail: optimizationSettings.generateThumbnails,
+                  compressionLevel: "medium",
+                });
+              } else {
+                optimizedFile = await FileOptimizer.optimizeDocument(file);
+              }
             } else {
-              optimizedFile = await FileOptimizer.optimizeDocument(file);
+              // No optimization, just pass through
+              optimizedFile = {
+                original: file,
+                optimized: new Blob([file], { type: file.type }),
+                compressionRatio: 1,
+                originalSize: file.size,
+                optimizedSize: file.size,
+                format: file.type,
+                metadata: {},
+              };
             }
-          } else {
-            // No optimization, just pass through
-            optimizedFile = {
-              original: file,
-              optimized: new Blob([file], { type: file.type }),
-              compressionRatio: 1,
-              originalSize: file.size,
-              optimizedSize: file.size,
-              format: file.type,
-              metadata: {},
+
+            // Create data URL for display
+            const optimizedUrl = URL.createObjectURL(optimizedFile.optimized);
+            const thumbnailUrl = optimizedFile.thumbnail
+              ? URL.createObjectURL(optimizedFile.thumbnail)
+              : undefined;
+
+            return {
+              url: optimizedUrl,
+              metadata: enhancedFile.metadata,
+              enhancedFileName: enhancedFile.enhancedFileName,
+              optimized: optimizedFile,
+              thumbnail: thumbnailUrl,
             };
           }
 
-          // Create data URL for display
-          const optimizedUrl = URL.createObjectURL(optimizedFile.optimized);
-          const thumbnailUrl = optimizedFile.thumbnail
-            ? URL.createObjectURL(optimizedFile.thumbnail)
-            : undefined;
+          throw new Error(`${file.name}: Unsupported file type`);
+        }),
+      );
 
-          newPhotos.push({
-            url: optimizedUrl,
-            metadata: enhancedFile.metadata,
-            enhancedFileName: enhancedFile.enhancedFileName,
-            optimized: optimizedFile,
-            thumbnail: thumbnailUrl,
-          });
+      // Process results
+      results.forEach((result, index) => {
+        if (result.status === "fulfilled") {
+          processedFiles.push(result.value);
+        } else {
+          failedFiles.push(fileArray[index].name);
+          console.error(
+            `Failed to process ${fileArray[index].name}:`,
+            result.reason,
+          );
         }
+      });
 
-        // Update progress
-        setProcessingProgress(((i + 1) / totalFiles) * 100);
-      }
-
-      if (newPhotos.length > 0) {
-        onPhotosChange([...photos, ...newPhotos]);
+      if (processedFiles.length > 0) {
+        onPhotosChange([...photos, ...processedFiles]);
 
         // Calculate and show savings
         const totalSavings = FileOptimizer.getStorageSavings(
-          newPhotos.map((p) => p.optimized),
+          processedFiles.map((p) => p.optimized),
         );
 
-        toast.success(
-          `${newPhotos.length} file(s) processed. Saved ${formatFileSize(totalSavings.savings)} (${totalSavings.savingsPercentage.toFixed(1)}%)`,
-        );
+        const successMessage = `${processedFiles.length} file(s) processed. Saved ${formatFileSize(totalSavings.savings)} (${totalSavings.savingsPercentage.toFixed(1)}%)`;
+
+        if (failedFiles.length > 0) {
+          toast.warning(
+            `${successMessage}. ${failedFiles.length} file(s) failed to process.`,
+          );
+        } else {
+          toast.success(successMessage);
+        }
+
         setAdditionalTags("");
+      } else if (failedFiles.length > 0) {
+        toast.error(
+          `Failed to process ${failedFiles.length} file(s). Check file sizes and formats.`,
+        );
       }
     } catch (error) {
       toast.error("Failed to process files");
