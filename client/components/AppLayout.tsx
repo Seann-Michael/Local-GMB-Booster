@@ -284,7 +284,8 @@ export function AppLayout({ children }: AppLayoutProps) {
                     item.comingSoon
                       ? (e) => {
                           e.preventDefault();
-                          toast.success(`${item.label} feature coming soon!`);
+                          setMobileSidebarOpen(false);
+                          navigate("/coming-soon");
                         }
                       : undefined
                   }
