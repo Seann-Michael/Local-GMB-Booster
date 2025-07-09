@@ -55,6 +55,7 @@ export function SuperAdminLayout({
   const navigate = useNavigate();
   const currentUser = getCurrentUser();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   // Mock notification count
   const notificationCount = 2;
