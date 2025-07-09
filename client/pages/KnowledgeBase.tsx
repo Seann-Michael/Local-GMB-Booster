@@ -1560,11 +1560,12 @@ Contact our billing support team:
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Title</TableHead>
+                          <TableHead>Subject</TableHead>
                           <TableHead>Category</TableHead>
                           <TableHead>Priority</TableHead>
                           <TableHead>Status</TableHead>
                           <TableHead>Created</TableHead>
+                          <TableHead>Actions</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -1599,7 +1600,28 @@ Contact our billing support team:
                               </Badge>
                             </TableCell>
                             <TableCell className="text-sm text-muted-foreground">
-                              {new Date(ticket.createdAt).toLocaleDateString()}
+                              {new Date(ticket.createdAt).toLocaleDateString(
+                                "en-US",
+                                {
+                                  month: "2-digit",
+                                  day: "2-digit",
+                                  year: "numeric",
+                                },
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() =>
+                                  window.open(
+                                    `/admin/support/ticket/${ticket.id}`,
+                                    "_blank",
+                                  )
+                                }
+                              >
+                                View
+                              </Button>
                             </TableCell>
                           </TableRow>
                         ))}
@@ -1610,30 +1632,25 @@ Contact our billing support team:
               </Card>
             )}
 
-            {/* Create Ticket Modal */}
+            {/* Create Ticket Form */}
             {showCreateTicket && (
               <Card className="mb-6">
                 <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle>Create Support Ticket</CardTitle>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setShowCreateTicket(false)}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div>
+                  <CardTitle className="flex items-center gap-2">
+                    <MessageSquare className="h-5 w-5" />
+                    Create Support Ticket
+                  </CardTitle>
                   <CardDescription>
-                    Describe your issue and we'll help you resolve it quickly
+                    Describe your issue and we'll get back to you as soon as
+                    possible.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="ticket-title">Title *</Label>
+                      <Label htmlFor="title">Subject *</Label>
                       <Input
-                        id="ticket-title"
+                        id="title"
                         placeholder="Brief description of your issue"
                         value={newTicket.title}
                         onChange={(e) =>
@@ -1642,7 +1659,7 @@ Contact our billing support team:
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="ticket-category">Category</Label>
+                      <Label htmlFor="category">Category *</Label>
                       <Select
                         value={newTicket.category}
                         onValueChange={(value) =>
@@ -1650,28 +1667,28 @@ Contact our billing support team:
                         }
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Select category" />
+                          <SelectValue placeholder="Select a category" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="technical">
-                            Technical Support
+                            Technical Issue
                           </SelectItem>
-                          <SelectItem value="billing">
-                            Billing & Account
-                          </SelectItem>
+                          <SelectItem value="billing">Billing</SelectItem>
                           <SelectItem value="feature">
                             Feature Request
                           </SelectItem>
                           <SelectItem value="bug">Bug Report</SelectItem>
+                          <SelectItem value="account">Account Issue</SelectItem>
                           <SelectItem value="general">
-                            General Question
+                            General Inquiry
                           </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="ticket-priority">Priority</Label>
+                    <Label htmlFor="priority">Priority</Label>
                     <Select
                       value={newTicket.priority}
                       onValueChange={(value: any) =>
@@ -1682,27 +1699,19 @@ Contact our billing support team:
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="low">
-                          Low - General question
-                        </SelectItem>
-                        <SelectItem value="medium">
-                          Medium - Normal issue
-                        </SelectItem>
-                        <SelectItem value="high">
-                          High - Important issue
-                        </SelectItem>
-                        <SelectItem value="urgent">
-                          Urgent - Business critical
-                        </SelectItem>
+                        <SelectItem value="low">Low</SelectItem>
+                        <SelectItem value="medium">Medium</SelectItem>
+                        <SelectItem value="high">High</SelectItem>
+                        <SelectItem value="urgent">Urgent</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="ticket-description">Description *</Label>
+                    <Label htmlFor="description">Description *</Label>
                     <Textarea
-                      id="ticket-description"
+                      id="description"
                       placeholder="Please provide detailed information about your issue..."
-                      className="min-h-32"
+                      className="min-h-[120px]"
                       value={newTicket.description}
                       onChange={(e) =>
                         setNewTicket({
@@ -1712,9 +1721,16 @@ Contact our billing support team:
                       }
                     />
                   </div>
-                  <div className="flex gap-2 pt-4">
+
+                  <div className="flex justify-end gap-2 pt-4">
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowCreateTicket(false)}
+                    >
+                      Cancel
+                    </Button>
                     <Button onClick={handleCreateTicket} className="gap-2">
-                      <MessageSquare className="h-4 w-4" />
+                      <Plus className="h-4 w-4" />
                       Create Ticket
                     </Button>
                     <Button
