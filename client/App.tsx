@@ -390,6 +390,14 @@ const App = () => (
             }
           />
           <Route
+            path="/super-admin/templates"
+            element={
+              <ProtectedRoute>
+                <SuperAdminMessageTemplates />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/super-admin/help"
             element={
               <ProtectedRoute>
