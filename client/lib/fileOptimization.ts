@@ -211,11 +211,23 @@ export class FileOptimizer {
     file: File,
     options: OptimizationOptions = {},
   ): Promise<OptimizedFile> {
+    // Validate file first
+    const validation = this.validateFile(file);
+    if (!validation.valid) {
+      throw new Error(validation.error);
+    }
+
+    // Check storage quota
+    const storageCheck = this.checkStorageQuota();
+    if (!storageCheck.available) {
+      console.warn(storageCheck.error);
+    }
+
     const {
       maxWidth = 1920,
       maxHeight = 1080,
       quality = 0.85,
-      format = this.detectOptimalImageFormat(),
+      format = await this.detectOptimalImageFormat(),
       progressive = true,
       generateThumbnail = true,
       thumbnailSize = 300,
@@ -225,8 +237,21 @@ export class FileOptimizer {
 
     return new Promise((resolve, reject) => {
       const img = new Image();
+      const objectUrl = URL.createObjectURL(file);
+
+      const cleanup = () => {
+        URL.revokeObjectURL(objectUrl);
+      };
+
+      const timeoutId = setTimeout(() => {
+        cleanup();
+        reject(new Error("Image processing timeout"));
+      }, 30000);
+
       img.onload = async () => {
         try {
+          clearTimeout(timeoutId);
+
           // Calculate optimal dimensions
           const { width, height } = this.calculateOptimalDimensions(
             img.width,
@@ -246,42 +271,56 @@ export class FileOptimizer {
           // Generate optimized image
           this.canvas!.toBlob(
             async (optimizedBlob) => {
-              if (!optimizedBlob) {
-                reject(new Error("Failed to optimize image"));
-                return;
+              try {
+                if (!optimizedBlob) {
+                  cleanup();
+                  reject(new Error("Failed to optimize image"));
+                  return;
+                }
+
+                let thumbnail: Blob | undefined;
+
+                // Generate thumbnail if requested
+                if (generateThumbnail) {
+                  thumbnail = await this.generateThumbnail(img, thumbnailSize);
+                }
+
+                const result: OptimizedFile = {
+                  original: file,
+                  optimized: optimizedBlob,
+                  thumbnail,
+                  compressionRatio: file.size / optimizedBlob.size,
+                  originalSize: file.size,
+                  optimizedSize: optimizedBlob.size,
+                  format: format,
+                  dimensions: { width, height },
+                  metadata: await this.extractImageMetadata(file),
+                };
+
+                cleanup();
+                resolve(result);
+              } catch (thumbnailError) {
+                cleanup();
+                reject(thumbnailError);
               }
-
-              let thumbnail: Blob | undefined;
-
-              // Generate thumbnail if requested
-              if (generateThumbnail) {
-                thumbnail = await this.generateThumbnail(img, thumbnailSize);
-              }
-
-              const result: OptimizedFile = {
-                original: file,
-                optimized: optimizedBlob,
-                thumbnail,
-                compressionRatio: file.size / optimizedBlob.size,
-                originalSize: file.size,
-                optimizedSize: optimizedBlob.size,
-                format,
-                dimensions: { width, height },
-                metadata: await this.extractImageMetadata(file),
-              };
-
-              resolve(result);
             },
             `image/${format}`,
             quality,
           );
         } catch (error) {
+          clearTimeout(timeoutId);
+          cleanup();
           reject(error);
         }
       };
 
-      img.onerror = () => reject(new Error("Failed to load image"));
-      img.src = URL.createObjectURL(file);
+      img.onerror = () => {
+        clearTimeout(timeoutId);
+        cleanup();
+        reject(new Error("Failed to load image"));
+      };
+
+      img.src = objectUrl;
     });
   }
 
