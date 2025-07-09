@@ -870,7 +870,7 @@ export default function Settings() {
                               <div className="flex gap-1">
                                 {[1, 2, 3, 4].map((star) => (
                                   <Star
-                                    key={star}
+                                    key={`4star-${star}`}
                                     className="h-4 w-4 fill-yellow-400 text-yellow-400"
                                   />
                                 ))}
