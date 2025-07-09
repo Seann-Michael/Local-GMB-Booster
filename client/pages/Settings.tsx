@@ -325,6 +325,7 @@ export default function Settings() {
   const tabs = [
     { id: "general", label: "General", icon: Building2 },
     { id: "projects", label: "Projects", icon: FolderOpen },
+    { id: "reviews", label: "Reviews", icon: MessageSquare },
     { id: "ai", label: "AI Assistance", icon: Bot },
     { id: "integrations", label: "Integrations", icon: Globe },
     { id: "tags", label: "Tags", icon: MapPin },
