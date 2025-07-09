@@ -88,6 +88,21 @@ export function PhotoCapture({
     onPhotosChange(newPhotos);
   };
 
+  const downloadMetadata = (photo: EnhancedPhoto) => {
+    const metadataBlob = MediaMetadataEnhancer.generateMetadataFile(
+      photo.metadata,
+    );
+    const url = URL.createObjectURL(metadataBlob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${photo.enhancedFileName}_metadata.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast.success("Metadata file downloaded");
+  };
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
