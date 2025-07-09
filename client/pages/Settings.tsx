@@ -925,6 +925,69 @@ export default function Settings() {
                         </div>
                       </div>
                     </div>
+
+                    {/* Webhooks */}
+                    <div className="pt-6 border-t">
+                      <div className="flex items-center justify-between mb-4">
+                        <div>
+                          <h3 className="font-medium">Webhooks</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Configure webhook notifications
+                          </p>
+                        </div>
+                        <Button
+                          onClick={() => setShowWebhookForm(true)}
+                          size="sm"
+                          className="gap-2"
+                        >
+                          <Plus className="h-4 w-4" />
+                          Add Webhook
+                        </Button>
+                      </div>
+
+                      <div className="space-y-3">
+                        {(settings?.webhooks || []).map((webhook) => (
+                          <div
+                            key={webhook.id}
+                            className="flex items-center justify-between p-3 border rounded-lg"
+                          >
+                            <div>
+                              <h4 className="font-medium">{webhook.name}</h4>
+                              <p className="text-sm text-muted-foreground">
+                                {webhook.url}
+                              </p>
+                              <div className="flex gap-1 mt-1">
+                                {(webhook?.events || []).map((event) => (
+                                  <Badge
+                                    key={event}
+                                    variant="secondary"
+                                    className="text-xs"
+                                  >
+                                    {event}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                            <div className="flex gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setEditingWebhook(webhook)}
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => removeWebhook(webhook.id)}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               )}
