@@ -1018,7 +1018,7 @@ export default function Settings() {
                                 {webhook.url}
                               </p>
                               <div className="flex gap-1 mt-1">
-                                {webhook.events.map((event) => (
+                                {(webhook?.events || []).map((event) => (
                                   <Badge
                                     key={event}
                                     variant="secondary"
