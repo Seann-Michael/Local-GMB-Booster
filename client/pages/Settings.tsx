@@ -114,6 +114,31 @@ interface TagItem {
   color: string;
 }
 
+interface UserItem {
+  id: string;
+  name: string;
+  email: string;
+  role: "owner" | "admin" | "editor" | "viewer";
+  status: "active" | "pending" | "suspended";
+  lastLogin: string;
+  permissions: string[];
+}
+
+interface CreditCardInfo {
+  last4: string;
+  brand: string;
+  expMonth: number;
+  expYear: number;
+}
+
+interface InvoiceItem {
+  id: string;
+  date: string;
+  amount: number;
+  status: "paid" | "pending" | "failed";
+  downloadUrl: string;
+}
+
 // Navigation tabs
 const navigationTabs = [
   { id: "general", label: "General", icon: Building2 },
