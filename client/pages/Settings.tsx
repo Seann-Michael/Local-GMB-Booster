@@ -886,7 +886,7 @@ export default function Settings() {
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          {settings.facebookConnected && (
+                          {settings?.facebookConnected && (
                             <Badge variant="default" className="gap-1">
                               <CheckCircle className="h-3 w-3" />
                               Connected
@@ -894,10 +894,12 @@ export default function Settings() {
                           )}
                           <Button
                             variant={
-                              settings.facebookConnected ? "outline" : "default"
+                              settings?.facebookConnected
+                                ? "outline"
+                                : "default"
                             }
                             onClick={() => {
-                              if (settings.facebookConnected) {
+                              if (settings?.facebookConnected) {
                                 updateSetting("facebookConnected", false);
                                 toast.success("Facebook disconnected");
                               } else {
@@ -907,7 +909,7 @@ export default function Settings() {
                             }}
                             className="gap-2"
                           >
-                            {settings.facebookConnected ? (
+                            {settings?.facebookConnected ? (
                               <>
                                 <X className="h-4 w-4" />
                                 Disconnect
