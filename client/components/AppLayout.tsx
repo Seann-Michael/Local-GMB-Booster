@@ -82,7 +82,6 @@ export function AppLayout({ children }: AppLayoutProps) {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [profileSearchQuery, setProfileSearchQuery] = useState("");
   const [businessName, setBusinessName] = useState("");
-  const navigate = useNavigate();
 
   // Load business name on mount and listen for changes
   useEffect(() => {
