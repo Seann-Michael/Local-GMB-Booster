@@ -42,6 +42,11 @@ import {
   ExternalLink,
   CheckCircle,
   AlertCircle,
+  Users,
+  Download,
+  Calendar,
+  Mail,
+  Shield as ShieldIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 
