@@ -350,42 +350,6 @@ export default function ReviewGate() {
                 </CardContent>
               </Card>
             )}
-
-            {/* Submit Button */}
-            {rating > 0 && reviewText.trim() && (
-              <Button
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-                className="w-full"
-                size="lg"
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Submitting...
-                  </>
-                ) : redirectToGoogle ? (
-                  <>
-                    Submit & Continue to Google
-                    <ExternalLink className="h-4 w-4 ml-2" />
-                  </>
-                ) : (
-                  "Submit Review"
-                )}
-              </Button>
-            )}
-
-            {redirectToGoogle && rating >= (reviewRequest.threshold || 4) && (
-              <div className="text-center p-4 bg-blue-50 rounded-lg">
-                <p className="text-sm text-blue-700 mb-2">
-                  🎉 Thank you for the {rating}-star review!
-                </p>
-                <p className="text-xs text-blue-600">
-                  We'd love if you could share this experience on Google to help
-                  other customers discover {reviewRequest.businessName}
-                </p>
-              </div>
-            )}
           </CardContent>
         </Card>
       </div>
