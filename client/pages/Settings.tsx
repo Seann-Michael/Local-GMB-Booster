@@ -244,6 +244,7 @@ export default function Settings() {
 
   const [activeTab, setActiveTab] = useState("general");
   const [isLoading, setIsLoading] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   const [editingWebhook, setEditingWebhook] = useState<any>(null);
   const [editingTag, setEditingTag] = useState<any>(null);
   const [showWebhookForm, setShowWebhookForm] = useState(false);
@@ -251,11 +252,37 @@ export default function Settings() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Load settings from localStorage
-    const savedSettings = localStorage.getItem("business_settings");
-    if (savedSettings) {
-      const parsedSettings = JSON.parse(savedSettings);
-      setSettings(parsedSettings);
+    // Load settings from localStorage with proper error handling
+    try {
+      const savedSettings = localStorage.getItem("business_settings");
+      if (savedSettings) {
+        const parsedSettings = JSON.parse(savedSettings);
+        // Ensure all required arrays exist
+        setSettings((prev) => ({
+          ...prev,
+          ...parsedSettings,
+          webhooks: Array.isArray(parsedSettings.webhooks)
+            ? parsedSettings.webhooks
+            : prev.webhooks,
+          aiVariables: Array.isArray(parsedSettings.aiVariables)
+            ? parsedSettings.aiVariables
+            : prev.aiVariables,
+          businessTags: Array.isArray(parsedSettings.businessTags)
+            ? parsedSettings.businessTags
+            : prev.businessTags,
+          allowedImageTypes: Array.isArray(parsedSettings.allowedImageTypes)
+            ? parsedSettings.allowedImageTypes
+            : prev.allowedImageTypes,
+          allowedVideoTypes: Array.isArray(parsedSettings.allowedVideoTypes)
+            ? parsedSettings.allowedVideoTypes
+            : prev.allowedVideoTypes,
+        }));
+      }
+    } catch (error) {
+      console.error("Failed to load settings:", error);
+      // Keep default settings if loading fails
+    } finally {
+      setIsInitialized(true);
     }
   }, []);
 
@@ -312,6 +339,24 @@ export default function Settings() {
       businessTags: (prev.businessTags || []).filter((tag) => tag.id !== tagId),
     }));
   };
+
+  // Don't render until settings are properly initialized
+  if (!isInitialized || !settings) {
+    return (
+      <AppLayout>
+        <div className="container mx-auto px-4 py-6">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-center justify-center min-h-[400px]">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                <p className="text-muted-foreground">Loading settings...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
