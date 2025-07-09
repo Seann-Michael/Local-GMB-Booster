@@ -104,6 +104,7 @@ export default function Ideas() {
     loadCategoryBoards();
     loadIdeas();
     loadRoadmap();
+    loadChangelog();
   }, []);
 
   const loadCategoryBoards = () => {
