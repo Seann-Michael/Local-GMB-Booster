@@ -68,6 +68,7 @@ import SuperAdminProjectMessaging from "./pages/SuperAdminProjectMessaging";
 import SuperAdminAdvancedFeatures from "./pages/SuperAdminAdvancedFeatures";
 import SuperAdminPerformance from "./pages/SuperAdminPerformance";
 import SuperAdminQuality from "./pages/SuperAdminQuality";
+import ComingSoon from "./pages/ComingSoon";
 
 const queryClient = new QueryClient();
 
