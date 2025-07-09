@@ -1545,7 +1545,7 @@ export default function Settings() {
                             checked={settings?.messageTypes?.warning || false}
                             onCheckedChange={(checked) => {
                               const newMessageTypes = {
-                                ...settings.messageTypes,
+                                ...(settings?.messageTypes || {}),
                                 warning: checked,
                               };
                               updateSetting("messageTypes", newMessageTypes);
@@ -1568,7 +1568,7 @@ export default function Settings() {
                             checked={settings?.messageTypes?.success || false}
                             onCheckedChange={(checked) => {
                               const newMessageTypes = {
-                                ...settings.messageTypes,
+                                ...(settings?.messageTypes || {}),
                                 success: checked,
                               };
                               updateSetting("messageTypes", newMessageTypes);
@@ -1591,7 +1591,7 @@ export default function Settings() {
                             checked={settings?.messageTypes?.error || false}
                             onCheckedChange={(checked) => {
                               const newMessageTypes = {
-                                ...settings.messageTypes,
+                                ...(settings?.messageTypes || {}),
                                 error: checked,
                               };
                               updateSetting("messageTypes", newMessageTypes);
