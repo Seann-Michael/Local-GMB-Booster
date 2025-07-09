@@ -22,7 +22,7 @@ interface ReviewRequest {
   businessCity: string;
   businessState: string;
   serviceCategory: string;
-  businessOwnerVideo?: string; // Optional video URL
+  businessOwnerVideo?: string;
 }
 
 export default function ReviewGate() {
@@ -39,13 +39,11 @@ export default function ReviewGate() {
   const [redirectToGoogle, setRedirectToGoogle] = useState(false);
 
   useEffect(() => {
-    // Load review request data (normally from API)
     const loadReviewRequest = () => {
-      // Simulate loading from API based on ID
       const mockRequest: ReviewRequest = {
         id: id || "demo",
         businessName: "Smith Construction LLC",
-        businessLogo: undefined, // Only show if uploaded in admin settings
+        businessLogo: undefined,
         businessAddress: "123 Main St, Springfield, IL 62701",
         customerName: "John",
         projectName: "Kitchen Renovation",
@@ -63,37 +61,25 @@ export default function ReviewGate() {
         businessState: "Illinois",
         serviceCategory: "Home Renovation",
         businessOwnerVideo:
-          "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4", // Demo video
+          "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
       };
       setReviewRequest(mockRequest);
     };
 
-    // Always load the review request (demo data if no ID)
     loadReviewRequest();
   }, [id]);
 
   const generateSeoReview = (originalText: string, request: ReviewRequest) => {
-    // Generate template for immediate display or enhance user's text
     if (!originalText) {
-      // For immediate display when rating is high
       const templates = [
         `Exceptional ${request.serviceCategory.toLowerCase()} service in ${request.businessCity}, ${request.businessState}! ${request.businessName} delivered outstanding ${request.seoKeywords[0]} work that exceeded our expectations. Their attention to detail and professional approach made this project seamless. Highly recommend their ${request.seoKeywords.slice(0, 2).join(" and ")} services to anyone in the ${request.businessCity} area!`,
-
-        `Outstanding experience with ${request.businessName} in ${request.businessCity}! Their ${request.serviceCategory.toLowerCase()} expertise is unmatched. The team's professionalism and ${request.seoKeywords[0]} skills made this project a complete success. Perfect choice for ${request.seoKeywords.slice(0, 2).join(" or ")} in ${request.businessState}!`,
-
-        `Five stars for ${request.businessName}! Their ${request.serviceCategory.toLowerCase()} work in ${request.businessCity}, ${request.businessState} is top-notch. Excellent ${request.seoKeywords[0]} and professional ${request.seoKeywords[1] || "service"}. The quality of work and customer service was exceptional. Would definitely recommend to neighbors in the ${request.businessCity} area!`,
       ];
-      return templates[Math.floor(Math.random() * templates.length)];
+      return templates[0];
     } else {
-      // Enhance user's existing text
       const templates = [
         `Exceptional ${request.serviceCategory.toLowerCase()} service in ${request.businessCity}, ${request.businessState}! ${request.businessName} delivered outstanding ${request.seoKeywords[0]} work. ${originalText.replace(/[.!]$/, "")} and exceeded our expectations. Highly recommend their ${request.seoKeywords.slice(0, 2).join(" and ")} services to anyone in the ${request.businessCity} area!`,
-
-        `Outstanding experience with ${request.businessName} in ${request.businessCity}! Their ${request.serviceCategory.toLowerCase()} expertise is unmatched. ${originalText} The team's attention to detail and ${request.seoKeywords[0]} skills made this project seamless. Perfect choice for ${request.seoKeywords.slice(0, 2).join(" or ")} in ${request.businessState}!`,
-
-        `Five stars for ${request.businessName}! ${originalText.replace(/[.!]$/, "")} - their ${request.serviceCategory.toLowerCase()} work in ${request.businessCity}, ${request.businessState} is top-notch. Excellent ${request.seoKeywords[0]} and professional ${request.seoKeywords[1] || "service"}. Would definitely recommend to neighbors in the ${request.businessCity} area!`,
       ];
-      return templates[Math.floor(Math.random() * templates.length)];
+      return templates[0];
     }
   };
 
@@ -119,51 +105,6 @@ export default function ReviewGate() {
     }
   };
 
-  const handleSubmit = async () => {
-    if (!reviewRequest || rating === 0) return;
-
-    setIsSubmitting(true);
-
-    // Track the review submission
-    const reviewData = {
-      requestId: reviewRequest.id,
-      businessName: reviewRequest.businessName,
-      customerName: reviewRequest.customerName,
-      rating,
-      reviewText: redirectToGoogle ? seoReviewText || reviewText : reviewText,
-      redirectedToGoogle: redirectToGoogle,
-      submittedAt: new Date().toISOString(),
-    };
-
-    // Save to localStorage (in real app, send to API)
-    const existingReviews = JSON.parse(
-      localStorage.getItem("reviewSubmissions") || "[]",
-    );
-    existingReviews.push(reviewData);
-    localStorage.setItem("reviewSubmissions", JSON.stringify(existingReviews));
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    setIsSubmitting(false);
-    setSubmitted(true);
-
-    if (redirectToGoogle) {
-      // Copy SEO review to clipboard if user wants to use it
-      if (seoReviewText) {
-        navigator.clipboard.writeText(seoReviewText);
-        toast.success("Optimized review copied to clipboard!");
-      }
-
-      // Wait a moment then redirect to Google
-      setTimeout(() => {
-        window.open(reviewRequest.googleReviewUrl, "_blank");
-      }, 2000);
-    } else {
-      toast.success("Thank you for your feedback!");
-    }
-  };
-
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast.success("Review copied to clipboard!");
@@ -171,41 +112,37 @@ export default function ReviewGate() {
 
   if (!reviewRequest) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
-          <CardContent className="p-6 text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-            <p>Loading review form...</p>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 w-full max-w-md text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading review form...</p>
+        </div>
       </div>
     );
   }
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
-          <CardContent className="p-6 text-center">
-            <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
-            <h2 className="text-xl font-bold mb-2">Thank You!</h2>
-            {redirectToGoogle ? (
-              <div className="space-y-3">
-                <p className="text-muted-foreground">
-                  You'll be redirected to Google to complete your review.
-                </p>
-                <Badge variant="secondary" className="gap-1">
-                  <ExternalLink className="h-3 w-3" />
-                  Redirecting to Google...
-                </Badge>
-              </div>
-            ) : (
-              <p className="text-muted-foreground">
-                Your feedback has been recorded. We appreciate your input!
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 w-full max-w-md text-center">
+          <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
+          <h2 className="text-xl font-semibold mb-2">Thank You!</h2>
+          {redirectToGoogle ? (
+            <div className="space-y-3">
+              <p className="text-gray-600">
+                You'll be redirected to Google to complete your review.
               </p>
-            )}
-          </CardContent>
-        </Card>
+              <Badge variant="secondary" className="gap-1">
+                <ExternalLink className="h-3 w-3" />
+                Redirecting to Google...
+              </Badge>
+            </div>
+          ) : (
+            <p className="text-gray-600">
+              Your feedback has been recorded. We appreciate your input!
+            </p>
+          )}
+        </div>
       </div>
     );
   }
@@ -238,9 +175,7 @@ export default function ReviewGate() {
 
         {/* Main Question Heading */}
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900">
-            How did we do?
-          </h2>
+          <h2 className="text-3xl font-bold text-gray-900">How did we do?</h2>
         </div>
 
         {/* Business Owner Video */}
@@ -299,77 +234,67 @@ export default function ReviewGate() {
             {/* Review Text Input */}
             {rating > 0 && (
               <div>
-                <label className="block text-sm font-medium mb-2">
+                <label className="block text-sm font-medium text-gray-900 mb-2">
                   Tell us about your experience:
                 </label>
                 <Textarea
                   value={reviewText}
                   onChange={(e) => handleReviewTextChange(e.target.value)}
                   placeholder="Share details about your experience..."
-                  className="min-h-[100px]"
+                  className="min-h-[100px] border-gray-300 focus:border-gray-500 focus:ring-gray-500"
                 />
               </div>
             )}
 
-            {/* Enhanced Review - Show after user types their review */}
+            {/* Enhanced Review */}
             {showSeoVersion && seoReviewText && (
-              <Card className="bg-blue-50 border-blue-200">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-sm flex items-center gap-2">
-                    <Star className="h-4 w-4 text-blue-600" />
-                    🎉 Enhanced Version of Your Review
-                  </CardTitle>
-                  <p className="text-sm text-blue-700 leading-relaxed">
+              <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                <div className="mb-3">
+                  <h4 className="font-medium text-gray-900 mb-1">
+                    Enhanced Version of Your Review
+                  </h4>
+                  <p className="text-sm text-gray-600">
                     We've enhanced your review with location details and service
                     keywords that help other customers in{" "}
                     {reviewRequest.businessCity} find{" "}
-                    {reviewRequest.businessName} when they need similar work.
-                    This version is more likely to be discovered by people
-                    searching for {reviewRequest.serviceCategory.toLowerCase()}{" "}
-                    services in your area.
+                    {reviewRequest.businessName}.
                   </p>
-                </CardHeader>
-                <CardContent className="pt-0 space-y-3">
-                  <div className="bg-white p-4 rounded border text-sm leading-relaxed">
-                    {seoReviewText}
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <Button
-                      onClick={() => {
-                        copyToClipboard(seoReviewText);
-                        setTimeout(() => {
-                          window.open(reviewRequest.googleReviewUrl, "_blank");
-                        }, 500);
-                      }}
-                      className="gap-2 w-full"
-                    >
-                      <Copy className="h-3 w-3" />
-                      Copy Enhanced & Continue to Google
-                      <ExternalLink className="h-3 w-3" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        copyToClipboard(reviewText);
-                        setTimeout(() => {
-                          window.open(reviewRequest.googleReviewUrl, "_blank");
-                        }, 500);
-                      }}
-                      className="gap-2 w-full"
-                    >
-                      Use Original & Continue to Google
-                      <ExternalLink className="h-3 w-3" />
-                    </Button>
-                  </div>
-                  <p className="text-xs text-blue-600 text-center">
-                    💡 Enhanced reviews help local customers discover quality
-                    businesses like this one
-                  </p>
-                </CardContent>
-              </Card>
+                </div>
+                <div className="bg-white p-3 rounded border text-sm mb-3">
+                  {seoReviewText}
+                </div>
+                <div className="space-y-2">
+                  <Button
+                    onClick={() => {
+                      copyToClipboard(seoReviewText);
+                      setTimeout(() => {
+                        window.open(reviewRequest.googleReviewUrl, "_blank");
+                      }, 500);
+                    }}
+                    className="w-full bg-gray-900 hover:bg-gray-800"
+                  >
+                    <Copy className="h-4 w-4 mr-2" />
+                    Copy Enhanced & Continue to Google
+                    <ExternalLink className="h-4 w-4 ml-2" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      copyToClipboard(reviewText);
+                      setTimeout(() => {
+                        window.open(reviewRequest.googleReviewUrl, "_blank");
+                      }, 500);
+                    }}
+                    className="w-full border-gray-300 text-gray-700 hover:bg-gray-50"
+                  >
+                    Use Original & Continue to Google
+                    <ExternalLink className="h-4 w-4 ml-2" />
+                  </Button>
+                </div>
+              </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   );
