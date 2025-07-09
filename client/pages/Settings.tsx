@@ -914,6 +914,21 @@ export default function Settings() {
 
                     <div className="flex items-center justify-between">
                       <div>
+                        <Label>Auto-post via RSS Feed</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Automatically publish completed projects to RSS feed
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.autoPostRssFeed || false}
+                        onCheckedChange={(checked) =>
+                          updateSetting("autoPostRssFeed", checked)
+                        }
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div>
                         <Label>AI-generated descriptions</Label>
                         <p className="text-sm text-muted-foreground">
                           Use AI to generate project descriptions
@@ -971,6 +986,8 @@ export default function Settings() {
                             <SelectItem value="30">30 days</SelectItem>
                             <SelectItem value="60">60 days</SelectItem>
                             <SelectItem value="90">90 days</SelectItem>
+                            <SelectItem value="180">180 days</SelectItem>
+                            <SelectItem value="365">365 days</SelectItem>
                             <SelectItem value="0">Never</SelectItem>
                           </SelectContent>
                         </Select>
