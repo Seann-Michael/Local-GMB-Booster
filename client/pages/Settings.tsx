@@ -1653,7 +1653,7 @@ export default function Settings() {
                       <div className="flex items-center justify-between">
                         <div className="space-y-0.5">
                           <Label className="text-base flex items-center gap-2">
-                            {settings.enableSounds ? (
+                            {settings?.enableSounds ? (
                               <Volume2 className="h-4 w-4" />
                             ) : (
                               <VolumeX className="h-4 w-4" />
@@ -1665,7 +1665,7 @@ export default function Settings() {
                           </p>
                         </div>
                         <Switch
-                          checked={settings.enableSounds}
+                          checked={settings?.enableSounds || false}
                           onCheckedChange={(checked) =>
                             updateSetting("enableSounds", checked)
                           }
