@@ -530,15 +530,17 @@ export default function AdminReviews() {
         {/* Review Requests Table */}
         <Card>
           <CardHeader>
-            <CardTitle>Review Requests</CardTitle>
+            <CardTitle className="text-lg sm:text-xl">
+              Review Requests
+            </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="overflow-x-auto">
+            <div className="responsive-table">
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead
-                      className="cursor-pointer hover:bg-gray-50 min-w-[140px]"
+                      className="cursor-pointer hover:bg-gray-50"
                       onClick={() =>
                         setSortBy(
                           sortBy === "customerName"
@@ -554,9 +556,11 @@ export default function AdminReviews() {
                         </span>
                       )}
                     </TableHead>
-                    <TableHead className="min-w-[120px]">Project</TableHead>
+                    <TableHead className="hidden sm:table-cell">
+                      Project
+                    </TableHead>
                     <TableHead
-                      className="cursor-pointer hover:bg-gray-50 min-w-[100px]"
+                      className="cursor-pointer hover:bg-gray-50"
                       onClick={() =>
                         setSortBy(
                           sortBy === "status" ? "status-desc" : "status",
@@ -571,7 +575,7 @@ export default function AdminReviews() {
                       )}
                     </TableHead>
                     <TableHead
-                      className="cursor-pointer hover:bg-gray-50 min-w-[80px]"
+                      className="hidden md:table-cell cursor-pointer hover:bg-gray-50"
                       onClick={() =>
                         setSortBy(
                           sortBy === "rating" ? "rating-desc" : "rating",
@@ -586,7 +590,7 @@ export default function AdminReviews() {
                       )}
                     </TableHead>
                     <TableHead
-                      className="cursor-pointer hover:bg-gray-50 min-w-[100px]"
+                      className="hidden lg:table-cell cursor-pointer hover:bg-gray-50"
                       onClick={() =>
                         setSortBy(
                           sortBy === "sentAt" ? "sentAt-desc" : "sentAt",
@@ -600,8 +604,10 @@ export default function AdminReviews() {
                         </span>
                       )}
                     </TableHead>
-                    <TableHead className="min-w-[200px]">Review Text</TableHead>
-                    <TableHead className="min-w-[80px]">Actions</TableHead>
+                    <TableHead className="hidden xl:table-cell">
+                      Review Text
+                    </TableHead>
+                    <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -609,21 +615,50 @@ export default function AdminReviews() {
                     <TableRow key={request.id}>
                       <TableCell>
                         <div className="min-w-0">
-                          <p className="font-medium truncate">
+                          <p className="font-medium truncate text-sm sm:text-base">
                             {request.customerName}
                           </p>
                           <p className="text-xs text-muted-foreground truncate">
                             {request.customerPhone}
                           </p>
+                          <div className="sm:hidden mt-1 space-y-1">
+                            <div className="text-xs text-muted-foreground">
+                              {request.projectName}
+                            </div>
+                            <div className="md:hidden flex items-center gap-1">
+                              {request.rating ? (
+                                <>
+                                  <StarRating
+                                    rating={request.rating}
+                                    onRatingChange={() => {}}
+                                    readonly
+                                    size="sm"
+                                  />
+                                  <span className="text-xs">
+                                    {request.rating}
+                                  </span>
+                                </>
+                              ) : (
+                                <span className="text-xs text-muted-foreground">
+                                  No rating
+                                </span>
+                              )}
+                            </div>
+                            <div className="lg:hidden text-xs text-muted-foreground">
+                              {formatTableDate(request.sentAt)}
+                            </div>
+                          </div>
                         </div>
                       </TableCell>
-                      <TableCell>
-                        <p className="truncate">{request.projectName}</p>
+                      <TableCell className="hidden sm:table-cell">
+                        <p className="truncate text-sm">
+                          {request.projectName}
+                        </p>
                       </TableCell>
                       <TableCell>
                         {getStatusBadge(request.status, request.linkClicked)}
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden md:table-cell">
                         {request.rating ? (
                           <div className="flex items-center gap-2">
                             <StarRating
@@ -638,7 +673,7 @@ export default function AdminReviews() {
                           <span className="text-muted-foreground">-</span>
                         )}
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden lg:table-cell">
                         <div className="text-sm">
                           {formatTableDate(request.sentAt)}
                           <p className="text-xs text-muted-foreground">
@@ -646,7 +681,7 @@ export default function AdminReviews() {
                           </p>
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden xl:table-cell">
                         {request.reviewText ? (
                           <div className="space-y-2 max-w-[200px]">
                             <p className="text-sm line-clamp-2 break-words">
@@ -678,7 +713,11 @@ export default function AdminReviews() {
                       <TableCell>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                            >
                               <MoreVertical className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
@@ -724,6 +763,20 @@ export default function AdminReviews() {
                                 Copy Review Text
                               </DropdownMenuItem>
                             )}
+                            <div className="xl:hidden">
+                              {request.reviewText && (
+                                <DropdownMenuItem
+                                  onClick={() =>
+                                    toast.info(request.reviewText, {
+                                      duration: 10000,
+                                    })
+                                  }
+                                >
+                                  <MessageSquare className="h-4 w-4 mr-2" />
+                                  View Review
+                                </DropdownMenuItem>
+                              )}
+                            </div>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>
