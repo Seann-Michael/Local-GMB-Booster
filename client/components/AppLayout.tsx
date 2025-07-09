@@ -42,6 +42,7 @@ import {
   BookOpen,
   Menu,
   X,
+  DollarSign,
 } from "lucide-react";
 import { useState, ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
