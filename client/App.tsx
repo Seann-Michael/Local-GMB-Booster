@@ -444,6 +444,14 @@ const App = () => (
             }
           />
           <Route
+            path="/super-admin/api"
+            element={
+              <ProtectedRoute>
+                <SuperAdminAPI />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/super-admin/help"
             element={
               <ProtectedRoute>
