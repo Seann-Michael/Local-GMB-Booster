@@ -48,6 +48,7 @@ import KnowledgeBase from "./pages/KnowledgeBase";
 import ReviewGate from "./pages/ReviewGate";
 import AdminReviews from "./pages/AdminReviews";
 import StatusPage from "./pages/StatusPage";
+import Ideas from "./pages/Ideas";
 
 const queryClient = new QueryClient();
 
