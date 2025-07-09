@@ -379,8 +379,35 @@ class AnalyticsService {
   }
 }
 
-// Create singleton instance
-export const analytics = new AnalyticsService();
+// Create singleton instance with error handling
+let analytics: AnalyticsService;
+try {
+  analytics = new AnalyticsService();
+} catch (error) {
+  console.error("Analytics service initialization failed:", error);
+  // Create a dummy analytics service that does nothing
+  analytics = {
+    track: () => {},
+    trackPageView: () => {},
+    trackFileUpload: () => {},
+    trackProjectAction: () => {},
+    trackFeatureUsage: () => {},
+    trackError: () => {},
+    trackPerformance: () => {},
+    enableAnalytics: () => {},
+    disableAnalytics: () => {},
+    getDebugInfo: () => ({
+      sessionId: "error",
+      userId: undefined,
+      isEnabled: false,
+      queuedEvents: 0,
+      queuedPerformance: 0,
+      queuedErrors: 0,
+    }),
+  } as any;
+}
+
+export { analytics };
 
 // React hook for easy usage
 export function useAnalytics() {
