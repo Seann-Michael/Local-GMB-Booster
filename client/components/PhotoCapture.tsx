@@ -35,6 +35,7 @@ export function PhotoCapture({
   const [isProcessing, setIsProcessing] = useState(false);
   const [additionalTags, setAdditionalTags] = useState("");
   const [showMetadataPreview, setShowMetadataPreview] = useState(false);
+  const objectUrls = useRef<Set<string>>(new Set());
 
   const handleFileSelect = async (files: FileList | null) => {
     if (!files) return;
