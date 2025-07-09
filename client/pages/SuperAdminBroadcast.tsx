@@ -587,6 +587,91 @@ export default function SuperAdminBroadcast() {
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
+                {/* Template Selection */}
+                <div className="grid gap-2">
+                  <Label>Use Template (Optional)</Label>
+                  <div className="flex gap-2">
+                    <Select
+                      value={selectedTemplate}
+                      onValueChange={setSelectedTemplate}
+                    >
+                      <SelectTrigger className="flex-1">
+                        <SelectValue placeholder="Choose a template..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">
+                          None - Create from scratch
+                        </SelectItem>
+                        {templates.map((template) => (
+                          <SelectItem key={template.id} value={template.id}>
+                            <div className="flex items-center gap-2">
+                              <Template className="h-4 w-4" />
+                              <span>{template.name}</span>
+                              <Badge variant="outline" className="text-xs">
+                                {template.category}
+                              </Badge>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() =>
+                        selectedTemplate &&
+                        handleTemplateSelect(selectedTemplate)
+                      }
+                      disabled={!selectedTemplate}
+                    >
+                      Apply
+                    </Button>
+                  </div>
+                  {selectedTemplate && (
+                    <div className="text-sm text-muted-foreground">
+                      {
+                        templates.find((t) => t.id === selectedTemplate)
+                          ?.description
+                      }
+                    </div>
+                  )}
+                </div>
+
+                {showTemplateVars &&
+                  Object.keys(templateVariables).length > 0 && (
+                    <div className="grid gap-2 p-4 border rounded-lg bg-muted/30">
+                      <div className="flex items-center justify-between">
+                        <Label>Fill Template Variables</Label>
+                        <Button
+                          type="button"
+                          size="sm"
+                          onClick={fillTemplateVariables}
+                        >
+                          Apply Variables
+                        </Button>
+                      </div>
+                      <div className="grid gap-3">
+                        {Object.keys(templateVariables).map((variable) => (
+                          <div key={variable} className="grid gap-1">
+                            <Label className="text-xs font-mono">
+                              {`{{${variable}}}`}
+                            </Label>
+                            <Input
+                              placeholder={`Enter value for ${variable}...`}
+                              value={templateVariables[variable]}
+                              onChange={(e) =>
+                                setTemplateVariables((prev) => ({
+                                  ...prev,
+                                  [variable]: e.target.value,
+                                }))
+                              }
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                 <div className="grid gap-2">
                   <Label htmlFor="title">Title</Label>
                   <Input
