@@ -1380,71 +1380,277 @@ export default function Settings() {
                 </Card>
               )}
 
-              {/* Security */}
+              {/* System Security */}
               {activeTab === "security" && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Security Settings</CardTitle>
-                    <CardDescription>
-                      Manage your account security
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
+                <div className="space-y-6">
+                  {/* Security Overview */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>System Security Dashboard</CardTitle>
+                      <CardDescription>
+                        Monitor and manage system-wide security settings
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="text-center p-4 border rounded-lg">
+                          <Shield className="h-8 w-8 mx-auto mb-2 text-green-500" />
+                          <div className="text-2xl font-bold text-green-600">
+                            Secure
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            System Status
+                          </p>
+                        </div>
+
+                        <div className="text-center p-4 border rounded-lg">
+                          <AlertTriangle className="h-8 w-8 mx-auto mb-2 text-yellow-500" />
+                          <div className="text-2xl font-bold text-yellow-600">
+                            3
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            Active Alerts
+                          </p>
+                        </div>
+
+                        <div className="text-center p-4 border rounded-lg">
+                          <Activity className="h-8 w-8 mx-auto mb-2 text-blue-500" />
+                          <div className="text-2xl font-bold text-blue-600">
+                            147
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            Active Sessions
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Error Logs for Super Admin */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>System Error Logs</CardTitle>
+                      <CardDescription>
+                        Monitor application errors and system issues
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between p-3 border rounded-lg border-red-200 bg-red-50">
+                          <div className="flex items-center gap-3">
+                            <XCircle className="h-4 w-4 text-red-500" />
+                            <div>
+                              <p className="font-medium text-red-900">
+                                Database Connection Timeout
+                              </p>
+                              <p className="text-sm text-red-700">
+                                Connection to primary database failed - User ID:
+                                user_123
+                              </p>
+                              <p className="text-xs text-red-600">
+                                {new Date().toLocaleString()} • Error ID:
+                                ERR_001
+                              </p>
+                            </div>
+                          </div>
+                          <Badge variant="destructive">Critical</Badge>
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 border rounded-lg border-yellow-200 bg-yellow-50">
+                          <div className="flex items-center gap-3">
+                            <AlertTriangle className="h-4 w-4 text-yellow-500" />
+                            <div>
+                              <p className="font-medium text-yellow-900">
+                                File Upload Failed
+                              </p>
+                              <p className="text-sm text-yellow-700">
+                                Large file upload exceeded size limit - Project
+                                ID: proj_456
+                              </p>
+                              <p className="text-xs text-yellow-600">
+                                {new Date(Date.now() - 300000).toLocaleString()}{" "}
+                                • Error ID: ERR_002
+                              </p>
+                            </div>
+                          </div>
+                          <Badge variant="secondary">Warning</Badge>
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 border rounded-lg border-blue-200 bg-blue-50">
+                          <div className="flex items-center gap-3">
+                            <Info className="h-4 w-4 text-blue-500" />
+                            <div>
+                              <p className="font-medium text-blue-900">
+                                API Rate Limit Reached
+                              </p>
+                              <p className="text-sm text-blue-700">
+                                User exceeded API rate limit - IP: 192.168.1.1
+                              </p>
+                              <p className="text-xs text-blue-600">
+                                {new Date(Date.now() - 600000).toLocaleString()}{" "}
+                                • Error ID: ERR_003
+                              </p>
+                            </div>
+                          </div>
+                          <Badge variant="outline">Info</Badge>
+                        </div>
+                      </div>
+
+                      <div className="pt-4 border-t">
+                        <div className="flex gap-2">
+                          <Button variant="outline" size="sm" className="gap-2">
+                            <Download className="h-4 w-4" />
+                            Export Logs
+                          </Button>
+                          <Button variant="outline" size="sm" className="gap-2">
+                            <RefreshCw className="h-4 w-4" />
+                            Refresh
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* System Security Settings */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>System Security Configuration</CardTitle>
+                      <CardDescription>
+                        Configure system-wide security policies
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <Label>Enforce Two-Factor Authentication</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Require 2FA for all users
+                          </p>
+                        </div>
+                        <Switch
+                          checked={settings.twoFactorAuth}
+                          onCheckedChange={(checked) =>
+                            updateSetting("twoFactorAuth", checked)
+                          }
+                        />
+                      </div>
+
                       <div>
-                        <Label>Two-Factor Authentication</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Add an extra layer of security
+                        <Label htmlFor="passwordRequirements">
+                          System Password Requirements
+                        </Label>
+                        <Select
+                          value={settings.passwordRequirements}
+                          onValueChange={(value) =>
+                            updateSetting("passwordRequirements", value)
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="basic">
+                              Basic (8+ characters)
+                            </SelectItem>
+                            <SelectItem value="strong">
+                              Strong (12+ chars, mixed case, numbers)
+                            </SelectItem>
+                            <SelectItem value="very-strong">
+                              Very Strong (16+ chars, special characters)
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="sessionTimeout">
+                          Global Session Timeout (minutes)
+                        </Label>
+                        <Input
+                          id="sessionTimeout"
+                          type="number"
+                          value={settings.sessionTimeout}
+                          onChange={(e) =>
+                            updateSetting(
+                              "sessionTimeout",
+                              parseInt(e.target.value),
+                            )
+                          }
+                          className="w-32"
+                        />
+                        <p className="text-sm text-muted-foreground mt-1">
+                          Applies to all users system-wide
                         </p>
                       </div>
-                      <Switch
-                        checked={settings.twoFactorAuth}
-                        onCheckedChange={(checked) =>
-                          updateSetting("twoFactorAuth", checked)
-                        }
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="passwordRequirements">
-                        Password Requirements
-                      </Label>
-                      <Select
-                        value={settings.passwordRequirements}
-                        onValueChange={(value) =>
-                          updateSetting("passwordRequirements", value)
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="basic">Basic</SelectItem>
-                          <SelectItem value="strong">Strong</SelectItem>
-                          <SelectItem value="very-strong">
-                            Very Strong
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label htmlFor="sessionTimeout">
-                        Session Timeout (minutes)
-                      </Label>
-                      <Input
-                        id="sessionTimeout"
-                        type="number"
-                        value={settings.sessionTimeout}
-                        onChange={(e) =>
-                          updateSetting(
-                            "sessionTimeout",
-                            parseInt(e.target.value),
-                          )
-                        }
-                        className="w-32"
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+
+                  {/* Active Sessions */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Active User Sessions</CardTitle>
+                      <CardDescription>
+                        Monitor and manage active user sessions
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        {[
+                          {
+                            user: "Joe Smith",
+                            ip: "192.168.1.100",
+                            location: "New York, NY",
+                            device: "Chrome - Windows",
+                            lastActivity: "2 minutes ago",
+                          },
+                          {
+                            user: "Maria Garcia",
+                            ip: "192.168.1.101",
+                            location: "Los Angeles, CA",
+                            device: "Safari - macOS",
+                            lastActivity: "5 minutes ago",
+                          },
+                          {
+                            user: "Mike Johnson",
+                            ip: "192.168.1.102",
+                            location: "Chicago, IL",
+                            device: "Firefox - Linux",
+                            lastActivity: "12 minutes ago",
+                          },
+                        ].map((session, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center justify-between p-3 border rounded-lg"
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="h-8 w-8 bg-primary/10 rounded-full flex items-center justify-center">
+                                <Users className="h-4 w-4 text-primary" />
+                              </div>
+                              <div>
+                                <p className="font-medium">{session.user}</p>
+                                <p className="text-sm text-muted-foreground">
+                                  {session.ip} • {session.location}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                  {session.device} • Active{" "}
+                                  {session.lastActivity}
+                                </p>
+                              </div>
+                            </div>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-red-600 hover:text-red-700"
+                            >
+                              <Ban className="h-4 w-4 mr-1" />
+                              Terminate
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               )}
 
               {/* Billing */}
