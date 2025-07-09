@@ -148,7 +148,7 @@ export default function ReviewGate() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4">
       <div className="max-w-xl mx-auto py-8">
         {/* Business Header */}
         <div className="text-center mb-8">
@@ -156,18 +156,18 @@ export default function ReviewGate() {
             <img
               src={reviewRequest.businessLogo}
               alt={`${reviewRequest.businessName} logo`}
-              className="h-16 w-16 rounded-lg object-cover mx-auto mb-4"
+              className="h-16 w-16 rounded-lg object-cover mx-auto mb-4 ring-2 ring-blue-100"
             />
           )}
           <h1 className="text-2xl font-semibold text-gray-900 mb-6">
             {reviewRequest.businessName}
           </h1>
 
-          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200 mb-8">
-            <h3 className="font-medium text-gray-900 mb-1">
+          <div className="bg-white rounded-xl p-5 shadow-md border border-blue-100 mb-8">
+            <h3 className="font-semibold text-blue-900 mb-2">
               {reviewRequest.projectName}
             </h3>
-            <p className="text-sm text-gray-600">
+            <p className="text-gray-600 leading-relaxed">
               {reviewRequest.projectDescription}
             </p>
           </div>
@@ -175,7 +175,7 @@ export default function ReviewGate() {
 
         {/* Main Question Heading */}
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900">How did we do?</h2>
+          <h2 className="text-3xl font-bold text-blue-900">How did we do?</h2>
         </div>
 
         {/* Business Owner Video */}
