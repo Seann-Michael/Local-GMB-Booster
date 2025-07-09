@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   ThumbsUp,
+  ThumbsDown,
   MessageSquare,
   ArrowLeft,
   Calendar,
@@ -16,8 +17,10 @@ import {
   Clock,
   Code,
   XCircle,
+  Shield,
 } from "lucide-react";
 import { toast } from "sonner";
+import { getCurrentUser } from "@/lib/auth";
 
 interface Comment {
   id: string;
@@ -39,8 +42,9 @@ interface Idea {
     | "in-progress"
     | "completed"
     | "declined";
-  votes: number;
-  userVoted: boolean;
+  upvotes: number;
+  downvotes: number;
+  userVote: "up" | "down" | null;
   author: string;
   createdAt: string;
   comments: Comment[];
@@ -54,6 +58,9 @@ export default function IdeaDetail() {
   const [newComment, setNewComment] = useState("");
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [captchaVerified, setCaptchaVerified] = useState(false);
+  const [showCaptcha, setShowCaptcha] = useState(false);
+  const currentUser = getCurrentUser();
 
   useEffect(() => {
     loadIdea();
@@ -77,8 +84,9 @@ The implementation should ensure all components, modals, and pages properly supp
 This feature has been highly requested by our user base, especially those who work in low-light environments or prefer dark interfaces for reduced eye strain during extended usage sessions.`,
       category: "ui-ux",
       status: "planned",
-      votes: 142,
-      userVoted: false,
+      upvotes: 156,
+      downvotes: 14,
+      userVote: null,
       author: "John Smith",
       createdAt: "2024-01-15T10:30:00Z",
       comments: [
@@ -111,19 +119,54 @@ This feature has been highly requested by our user base, especially those who wo
     setLoading(false);
   };
 
-  const handleVote = () => {
+  const handleVote = (voteType: "up" | "down") => {
     if (!idea) return;
+
+    let newUpvotes = idea.upvotes;
+    let newDownvotes = idea.downvotes;
+    let newUserVote: "up" | "down" | null = voteType;
+
+    // Remove existing vote if any
+    if (idea.userVote === "up") {
+      newUpvotes--;
+    } else if (idea.userVote === "down") {
+      newDownvotes--;
+    }
+
+    // If clicking the same vote type, remove the vote
+    if (idea.userVote === voteType) {
+      newUserVote = null;
+    } else {
+      // Add new vote
+      if (voteType === "up") {
+        newUpvotes++;
+      } else {
+        newDownvotes++;
+      }
+    }
 
     setIdea({
       ...idea,
-      votes: idea.userVoted ? idea.votes - 1 : idea.votes + 1,
-      userVoted: !idea.userVoted,
+      upvotes: newUpvotes,
+      downvotes: newDownvotes,
+      userVote: newUserVote,
     });
     toast.success("Vote recorded!");
   };
 
   const handleSubmitComment = async () => {
     if (!newComment.trim() || !idea) return;
+
+    if (!currentUser) {
+      toast.error("You must be logged in to comment");
+      return;
+    }
+
+    if (!captchaVerified) {
+      setShowCaptcha(true);
+      toast.error("Please complete the captcha verification");
+      return;
+    }
 
     setIsSubmittingComment(true);
 
@@ -132,7 +175,7 @@ This feature has been highly requested by our user base, especially those who wo
 
     const comment: Comment = {
       id: `c${Date.now()}`,
-      author: "You",
+      author: currentUser.name || "You",
       content: newComment,
       createdAt: new Date().toISOString(),
     };
@@ -143,8 +186,17 @@ This feature has been highly requested by our user base, especially those who wo
     });
 
     setNewComment("");
+    setCaptchaVerified(false);
+    setShowCaptcha(false);
     setIsSubmittingComment(false);
     toast.success("Comment added!");
+  };
+
+  const handleCaptchaVerify = () => {
+    // Mock captcha verification
+    setCaptchaVerified(true);
+    setShowCaptcha(false);
+    toast.success("Captcha verified!");
   };
 
   const getStatusBadge = (status: string) => {
