@@ -100,11 +100,24 @@ export function AppLayout({ children }: AppLayoutProps) {
       }
     };
 
-    window.addEventListener("storage", handleStorageChange);
+    // Listen for custom business name change events (same tab updates)
+    const handleBusinessNameChange = (e: CustomEvent) => {
+      setBusinessName(e.detail || "My Business");
+    };
 
-    // Clean up listener
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener(
+      "businessNameChanged",
+      handleBusinessNameChange as EventListener,
+    );
+
+    // Clean up listeners
     return () => {
       window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener(
+        "businessNameChanged",
+        handleBusinessNameChange as EventListener,
+      );
     };
   }, []);
 
