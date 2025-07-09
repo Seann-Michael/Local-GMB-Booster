@@ -953,6 +953,25 @@ export default function Settings() {
 
                   <Separator />
 
+                  {/* AI Enhancement Prompt */}
+                  <div className="space-y-4">
+                    <h4 className="font-medium">AI Review Enhancement</h4>
+                    <div className="space-y-2">
+                      <Label>AI Enhancement Prompt</Label>
+                      <Textarea
+                        placeholder="Enhance this customer review to be more SEO-friendly and detailed while maintaining authenticity. Include location-specific keywords and service categories. Make it sound natural and helpful for potential customers..."
+                        defaultValue="You are helping enhance customer reviews to be more discoverable and helpful. Take the customer's original review and enhance it by: 1) Adding location-specific keywords (city, state), 2) Including relevant service categories, 3) Making it more descriptive while keeping the customer's authentic voice, 4) Adding helpful details that would assist other potential customers. Keep the enhancement natural and genuine."
+                        className="min-h-[120px]"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        This prompt guides the AI on how to enhance customer
+                        reviews while maintaining authenticity
+                      </p>
+                    </div>
+                  </div>
+
+                  <Separator />
+
                   {/* SEO Keywords */}
                   <div className="space-y-4">
                     <h4 className="font-medium">SEO Enhancement Keywords</h4>
@@ -976,6 +995,123 @@ export default function Settings() {
                       <p className="text-xs text-muted-foreground">
                         Main service categories for SEO optimization
                       </p>
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  {/* Review Request Scheduling */}
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Review Request Automation</h4>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label>Send Review Request</Label>
+                        <Select defaultValue="project-complete">
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="manual">Manual Only</SelectItem>
+                            <SelectItem value="project-complete">
+                              When Project is Marked Complete
+                            </SelectItem>
+                            <SelectItem value="24h-after">
+                              24 Hours After Project Complete
+                            </SelectItem>
+                            <SelectItem value="3d-after">
+                              3 Days After Project Complete
+                            </SelectItem>
+                            <SelectItem value="1w-after">
+                              1 Week After Project Complete
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <p className="text-xs text-muted-foreground">
+                          When to automatically send review requests
+                        </p>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Follow-up Attempts</Label>
+                        <Select defaultValue="2">
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="0">No Follow-ups</SelectItem>
+                            <SelectItem value="1">1 Follow-up</SelectItem>
+                            <SelectItem value="2">2 Follow-ups</SelectItem>
+                            <SelectItem value="3">3 Follow-ups</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <p className="text-xs text-muted-foreground">
+                          How many follow-up reminders to send
+                        </p>
+                      </div>
+                    </div>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label>Follow-up Interval</Label>
+                        <Select defaultValue="3d">
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="1d">1 Day</SelectItem>
+                            <SelectItem value="3d">3 Days</SelectItem>
+                            <SelectItem value="1w">1 Week</SelectItem>
+                            <SelectItem value="2w">2 Weeks</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <p className="text-xs text-muted-foreground">
+                          Time between follow-up reminders
+                        </p>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Stop Reminders After</Label>
+                        <Select defaultValue="2w">
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="1w">1 Week</SelectItem>
+                            <SelectItem value="2w">2 Weeks</SelectItem>
+                            <SelectItem value="1m">1 Month</SelectItem>
+                            <SelectItem value="never">Never Stop</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <p className="text-xs text-muted-foreground">
+                          When to stop sending reminders
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                      <div className="flex gap-3">
+                        <Calendar className="h-5 w-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <p className="text-sm font-medium text-yellow-900 mb-1">
+                            Automation Best Practices
+                          </p>
+                          <ul className="text-xs text-yellow-700 space-y-1">
+                            <li>
+                              • Send initial request 24-48 hours after project
+                              completion
+                            </li>
+                            <li>
+                              • Limit follow-ups to 2-3 attempts to avoid being
+                              pushy
+                            </li>
+                            <li>
+                              • Space reminders 3-7 days apart for best response
+                              rates
+                            </li>
+                            <li>
+                              • Stop reminders after 2 weeks to respect customer
+                              time
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </CardContent>
