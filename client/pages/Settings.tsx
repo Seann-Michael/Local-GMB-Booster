@@ -829,14 +829,14 @@ export default function Settings() {
                       </div>
                     </div>
 
-                    {settings.aiPromptForDescriptions && (
+                    {settings?.aiPromptForDescriptions && (
                       <div className="pt-4 border-t">
                         <Label htmlFor="aiProjectRewritePrompt">
                           AI Project Rewrite Prompt
                         </Label>
                         <Textarea
                           id="aiProjectRewritePrompt"
-                          value={settings.aiProjectRewritePrompt}
+                          value={settings?.aiProjectRewritePrompt || ""}
                           onChange={(e) =>
                             updateSetting(
                               "aiProjectRewritePrompt",
