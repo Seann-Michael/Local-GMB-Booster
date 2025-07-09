@@ -3046,7 +3046,17 @@ export default function Settings() {
               <div className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Current Plan</CardTitle>
+                    <CardTitle className="flex items-center justify-between">
+                      <span>Current Plan</span>
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm">
+                          Upgrade Plan
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          Downgrade Plan
+                        </Button>
+                      </div>
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center justify-between mb-4">
@@ -3058,7 +3068,12 @@ export default function Settings() {
                           $49/month • Renews monthly
                         </p>
                       </div>
-                      <Badge variant="default">Active</Badge>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="default">Active</Badge>
+                        <Button variant="destructive" size="sm">
+                          Cancel Service
+                        </Button>
+                      </div>
                     </div>
                     <ul className="text-sm text-muted-foreground space-y-1">
                       {(settings.planFeatures || []).map((feature, index) => (
@@ -3068,6 +3083,42 @@ export default function Settings() {
                         </li>
                       ))}
                     </ul>
+
+                    {/* Plan Comparison */}
+                    <div className="mt-6 p-4 bg-blue-50 rounded-lg border">
+                      <h4 className="font-medium text-blue-900 mb-2">
+                        Available Plans
+                      </h4>
+                      <div className="grid gap-3 md:grid-cols-3">
+                        <div className="p-3 bg-white rounded border">
+                          <div className="font-medium">Basic</div>
+                          <div className="text-sm text-muted-foreground">
+                            $19/month
+                          </div>
+                          <div className="text-xs mt-1">
+                            5 projects, 2 users
+                          </div>
+                        </div>
+                        <div className="p-3 bg-blue-100 rounded border border-blue-300">
+                          <div className="font-medium text-blue-900">
+                            Pro (Current)
+                          </div>
+                          <div className="text-sm text-blue-700">$49/month</div>
+                          <div className="text-xs mt-1">
+                            50 projects, 10 users
+                          </div>
+                        </div>
+                        <div className="p-3 bg-white rounded border">
+                          <div className="font-medium">Enterprise</div>
+                          <div className="text-sm text-muted-foreground">
+                            $99/month
+                          </div>
+                          <div className="text-xs mt-1">
+                            Unlimited everything
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
 
@@ -3090,48 +3141,237 @@ export default function Settings() {
                           </p>
                         </div>
                       </div>
-                      <Button variant="outline">Update</Button>
+                      <div className="flex gap-2">
+                        <Button variant="outline">Add Card</Button>
+                        <Button variant="outline">Update</Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
 
+                {/* Separate Invoices Table */}
                 <Card>
                   <CardHeader>
-                    <CardTitle>Billing History</CardTitle>
+                    <CardTitle className="flex items-center justify-between">
+                      <span>Invoices</span>
+                      <Button variant="outline" size="sm">
+                        <Download className="h-4 w-4 mr-2" />
+                        Export All
+                      </Button>
+                    </CardTitle>
+                    <CardDescription>
+                      Download and manage your billing invoices
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-3">
-                      {(settings.invoices || []).map((invoice) => (
-                        <div
-                          key={invoice.id}
-                          className="flex items-center justify-between p-3 border rounded-lg"
-                        >
-                          <div>
-                            <p className="font-medium">
-                              ${invoice.amount.toFixed(2)}
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                              {invoice.date}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Badge
-                              variant={
-                                invoice.status === "paid"
-                                  ? "default"
-                                  : invoice.status === "pending"
-                                    ? "secondary"
-                                    : "destructive"
-                              }
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="border-b">
+                            <th className="text-left p-3 font-medium">
+                              Invoice #
+                            </th>
+                            <th className="text-left p-3 font-medium">Date</th>
+                            <th className="text-left p-3 font-medium">
+                              Amount
+                            </th>
+                            <th className="text-left p-3 font-medium">
+                              Status
+                            </th>
+                            <th className="text-left p-3 font-medium">
+                              Actions
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {(settings.invoices || []).map((invoice) => (
+                            <tr
+                              key={invoice.id}
+                              className="border-b hover:bg-gray-50"
                             >
-                              {invoice.status}
-                            </Badge>
-                            <Button variant="outline" size="sm">
-                              <Download className="h-4 w-4" />
-                            </Button>
-                          </div>
+                              <td className="p-3 font-mono text-sm">
+                                {invoice.id}
+                              </td>
+                              <td className="p-3">{invoice.date}</td>
+                              <td className="p-3 font-medium">
+                                ${invoice.amount.toFixed(2)}
+                              </td>
+                              <td className="p-3">
+                                <Badge
+                                  variant={
+                                    invoice.status === "paid"
+                                      ? "default"
+                                      : invoice.status === "pending"
+                                        ? "secondary"
+                                        : "destructive"
+                                  }
+                                >
+                                  {invoice.status}
+                                </Badge>
+                              </td>
+                              <td className="p-3">
+                                <div className="flex gap-2">
+                                  <Button variant="outline" size="sm">
+                                    <Download className="h-4 w-4" />
+                                  </Button>
+                                  <Button variant="outline" size="sm">
+                                    <ExternalLink className="h-4 w-4" />
+                                  </Button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Separate Payments Table */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center justify-between">
+                      <span>Payment History</span>
+                      <Button variant="outline" size="sm">
+                        <Download className="h-4 w-4 mr-2" />
+                        Export Payments
+                      </Button>
+                    </CardTitle>
+                    <CardDescription>
+                      Track all payments and transactions
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="border-b">
+                            <th className="text-left p-3 font-medium">
+                              Transaction ID
+                            </th>
+                            <th className="text-left p-3 font-medium">Date</th>
+                            <th className="text-left p-3 font-medium">
+                              Amount
+                            </th>
+                            <th className="text-left p-3 font-medium">
+                              Method
+                            </th>
+                            <th className="text-left p-3 font-medium">
+                              Status
+                            </th>
+                            <th className="text-left p-3 font-medium">
+                              Receipt
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="border-b hover:bg-gray-50">
+                            <td className="p-3 font-mono text-sm">
+                              txn_1234567890
+                            </td>
+                            <td className="p-3">2024-01-15</td>
+                            <td className="p-3 font-medium">$49.00</td>
+                            <td className="p-3">Visa •••• 4242</td>
+                            <td className="p-3">
+                              <Badge variant="default">Completed</Badge>
+                            </td>
+                            <td className="p-3">
+                              <Button variant="outline" size="sm">
+                                <Download className="h-4 w-4" />
+                              </Button>
+                            </td>
+                          </tr>
+                          <tr className="border-b hover:bg-gray-50">
+                            <td className="p-3 font-mono text-sm">
+                              txn_0987654321
+                            </td>
+                            <td className="p-3">2024-01-01</td>
+                            <td className="p-3 font-medium">$49.00</td>
+                            <td className="p-3">Visa •••• 4242</td>
+                            <td className="p-3">
+                              <Badge variant="default">Completed</Badge>
+                            </td>
+                            <td className="p-3">
+                              <Button variant="outline" size="sm">
+                                <Download className="h-4 w-4" />
+                              </Button>
+                            </td>
+                          </tr>
+                          <tr className="border-b hover:bg-gray-50">
+                            <td className="p-3 font-mono text-sm">
+                              txn_1122334455
+                            </td>
+                            <td className="p-3">2023-12-15</td>
+                            <td className="p-3 font-medium">$49.00</td>
+                            <td className="p-3">Visa •••• 4242</td>
+                            <td className="p-3">
+                              <Badge variant="secondary">Refunded</Badge>
+                            </td>
+                            <td className="p-3">
+                              <Button variant="outline" size="sm">
+                                <Download className="h-4 w-4" />
+                              </Button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Service Management */}
+                <Card className="border-red-200">
+                  <CardHeader>
+                    <CardTitle className="text-red-900">
+                      Service Management
+                    </CardTitle>
+                    <CardDescription>
+                      Manage your subscription and service settings
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="p-4 bg-red-50 rounded-lg border border-red-200">
+                      <h4 className="font-medium text-red-900 mb-2">
+                        Cancel Service
+                      </h4>
+                      <p className="text-sm text-red-700 mb-3">
+                        Canceling will disable your account at the end of the
+                        current billing period. Your data will be retained for
+                        30 days.
+                      </p>
+                      <div className="flex gap-2">
+                        <Button variant="destructive" size="sm">
+                          <AlertTriangle className="h-4 w-4 mr-2" />
+                          Cancel Subscription
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          Pause Instead
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="p-3 border rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <RefreshCw className="h-4 w-4 text-blue-600" />
+                          <span className="font-medium">Auto-Renewal</span>
                         </div>
-                      ))}
+                        <p className="text-sm text-muted-foreground mb-2">
+                          Automatically renew subscription
+                        </p>
+                        <Switch defaultChecked />
+                      </div>
+
+                      <div className="p-3 border rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Mail className="h-4 w-4 text-green-600" />
+                          <span className="font-medium">Billing Alerts</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          Email notifications for payments
+                        </p>
+                        <Switch defaultChecked />
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
