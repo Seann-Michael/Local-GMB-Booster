@@ -1656,31 +1656,83 @@ export default function Settings() {
               <div className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Image Settings</CardTitle>
+                    <CardTitle className="flex items-center gap-2">
+                      <FileImage className="h-5 w-5" />
+                      Image Settings
+                    </CardTitle>
+                    <CardDescription>
+                      Configure supported image formats and settings
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <Label>Allowed Image Types</Label>
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {(settings.allowedImageTypes || []).map((type) => (
-                          <Badge
-                            key={type}
-                            variant="secondary"
-                            className="gap-1 pr-1"
+                      <Label className="text-base font-medium">
+                        Supported File Types
+                      </Label>
+                      <div className="mt-3 grid gap-3 md:grid-cols-2">
+                        {[
+                          { ext: ".jpg", desc: "JPEG Image", platform: "all" },
+                          { ext: ".jpeg", desc: "JPEG Image", platform: "all" },
+                          { ext: ".png", desc: "PNG Image", platform: "all" },
+                          { ext: ".gif", desc: "GIF Image", platform: "all" },
+                          { ext: ".webp", desc: "WebP Image", platform: "all" },
+                          {
+                            ext: ".heic",
+                            desc: "HEIC Image (iPhone)",
+                            platform: "apple",
+                          },
+                          {
+                            ext: ".heif",
+                            desc: "HEIF Image (iPhone)",
+                            platform: "apple",
+                          },
+                          { ext: ".tiff", desc: "TIFF Image", platform: "all" },
+                          {
+                            ext: ".bmp",
+                            desc: "Bitmap Image",
+                            platform: "all",
+                          },
+                          { ext: ".svg", desc: "SVG Vector", platform: "all" },
+                        ].map((format) => (
+                          <div
+                            key={format.ext}
+                            className="flex items-center justify-between p-3 border rounded-lg"
                           >
-                            {type}
-                            <button
-                              onClick={() => {
-                                const updated = (
-                                  settings.allowedImageTypes || []
-                                ).filter((t) => t !== type);
+                            <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-2">
+                                <FileImage className="h-4 w-4 text-blue-600" />
+                                <code className="bg-muted px-2 py-1 rounded text-sm">
+                                  {format.ext}
+                                </code>
+                              </div>
+                              <div>
+                                <span className="font-medium">
+                                  {format.desc}
+                                </span>
+                                {format.platform === "apple" && (
+                                  <Badge
+                                    variant="outline"
+                                    className="ml-2 text-xs"
+                                  >
+                                    🍎 Apple
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+                            <Switch
+                              checked={(
+                                settings.allowedImageTypes || []
+                              ).includes(format.ext)}
+                              onCheckedChange={(checked) => {
+                                const current =
+                                  settings.allowedImageTypes || [];
+                                const updated = checked
+                                  ? [...current, format.ext]
+                                  : current.filter((t) => t !== format.ext);
                                 updateSetting("allowedImageTypes", updated);
                               }}
-                              className="hover:bg-red-100 rounded p-0.5"
-                            >
-                              <X className="h-3 w-3" />
-                            </button>
-                          </Badge>
+                            />
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -1689,50 +1741,249 @@ export default function Settings() {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>Video Settings</CardTitle>
+                    <CardTitle className="flex items-center gap-2">
+                      <Video className="h-5 w-5" />
+                      Video Settings
+                    </CardTitle>
+                    <CardDescription>
+                      Configure supported video formats and settings
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <Label>Allowed Video Types</Label>
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {(settings.allowedVideoTypes || []).map((type) => (
-                          <Badge
-                            key={type}
-                            variant="secondary"
-                            className="gap-1 pr-1"
+                      <Label className="text-base font-medium">
+                        Supported File Types
+                      </Label>
+                      <div className="mt-3 grid gap-3 md:grid-cols-2">
+                        {[
+                          { ext: ".mp4", desc: "MP4 Video", platform: "all" },
+                          {
+                            ext: ".mov",
+                            desc: "QuickTime Video",
+                            platform: "apple",
+                          },
+                          {
+                            ext: ".avi",
+                            desc: "AVI Video",
+                            platform: "windows",
+                          },
+                          {
+                            ext: ".wmv",
+                            desc: "Windows Media Video",
+                            platform: "windows",
+                          },
+                          { ext: ".webm", desc: "WebM Video", platform: "all" },
+                          {
+                            ext: ".m4v",
+                            desc: "iTunes Video",
+                            platform: "apple",
+                          },
+                          { ext: ".3gp", desc: "3GPP Video", platform: "all" },
+                          {
+                            ext: ".mkv",
+                            desc: "Matroska Video",
+                            platform: "all",
+                          },
+                        ].map((format) => (
+                          <div
+                            key={format.ext}
+                            className="flex items-center justify-between p-3 border rounded-lg"
                           >
-                            {type}
-                            <button
-                              onClick={() => {
-                                const updated = (
-                                  settings.allowedVideoTypes || []
-                                ).filter((t) => t !== type);
+                            <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-2">
+                                <Video className="h-4 w-4 text-purple-600" />
+                                <code className="bg-muted px-2 py-1 rounded text-sm">
+                                  {format.ext}
+                                </code>
+                              </div>
+                              <div>
+                                <span className="font-medium">
+                                  {format.desc}
+                                </span>
+                                {format.platform === "apple" && (
+                                  <Badge
+                                    variant="outline"
+                                    className="ml-2 text-xs"
+                                  >
+                                    🍎 Apple
+                                  </Badge>
+                                )}
+                                {format.platform === "windows" && (
+                                  <Badge
+                                    variant="outline"
+                                    className="ml-2 text-xs"
+                                  >
+                                    🪟 Windows
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+                            <Switch
+                              checked={(
+                                settings.allowedVideoTypes || []
+                              ).includes(format.ext)}
+                              onCheckedChange={(checked) => {
+                                const current =
+                                  settings.allowedVideoTypes || [];
+                                const updated = checked
+                                  ? [...current, format.ext]
+                                  : current.filter((t) => t !== format.ext);
                                 updateSetting("allowedVideoTypes", updated);
                               }}
-                              className="hover:bg-red-100 rounded p-0.5"
-                            >
-                              <X className="h-3 w-3" />
-                            </button>
-                          </Badge>
+                            />
+                          </div>
                         ))}
                       </div>
                     </div>
 
-                    <div>
-                      <Label htmlFor="maxFileSize">
-                        Maximum File Size (MB)
+                    <div className="pt-4 border-t">
+                      <Label
+                        htmlFor="maxFileSize"
+                        className="text-base font-medium"
+                      >
+                        Maximum File Size
                       </Label>
-                      <Input
-                        id="maxFileSize"
-                        type="number"
-                        value={settings.maxFileSize || 10}
-                        onChange={(e) =>
-                          updateSetting("maxFileSize", parseInt(e.target.value))
+                      <div className="flex items-center gap-4 mt-2">
+                        <div className="flex items-center gap-2">
+                          <Input
+                            id="maxFileSize"
+                            type="number"
+                            value={settings.maxFileSize || 10}
+                            onChange={(e) =>
+                              updateSetting(
+                                "maxFileSize",
+                                parseInt(e.target.value),
+                              )
+                            }
+                            min="1"
+                            max="500"
+                            className="w-20"
+                          />
+                          <span className="text-sm text-muted-foreground">
+                            MB
+                          </span>
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          Recommended: 50MB for videos, 10MB for images
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* File Optimization (moved from separate tab) */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Zap className="h-5 w-5" />
+                      File Optimization
+                    </CardTitle>
+                    <CardDescription>
+                      Automatically optimize and compress uploaded files to save
+                      storage space
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between p-3 border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <Zap className="h-4 w-4 text-primary" />
+                        <div>
+                          <Label className="text-base">Auto Optimization</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Automatically optimize uploaded files for better
+                            performance
+                          </p>
+                        </div>
+                      </div>
+                      <Switch
+                        checked={settings.autoOptimization !== false}
+                        onCheckedChange={(checked) =>
+                          updateSetting("autoOptimization", checked)
                         }
-                        min="1"
-                        max="100"
-                        className="w-32 mt-1"
                       />
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div>
+                        <Label
+                          htmlFor="compressionLevel"
+                          className="text-base font-medium"
+                        >
+                          Compression Level
+                        </Label>
+                        <div className="flex items-center gap-4 mt-2">
+                          <Input
+                            id="compressionLevel"
+                            type="range"
+                            min="10"
+                            max="100"
+                            value={settings.compressionLevel || 80}
+                            onChange={(e) =>
+                              updateSetting(
+                                "compressionLevel",
+                                parseInt(e.target.value),
+                              )
+                            }
+                            className="flex-1"
+                          />
+                          <span className="text-sm font-medium w-12">
+                            {settings.compressionLevel || 80}%
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Higher values = better quality, larger files
+                        </p>
+                      </div>
+
+                      <div className="p-4 border rounded-lg bg-green-50">
+                        <div className="flex items-center gap-2 mb-2">
+                          <HardDrive className="h-5 w-5 text-green-600" />
+                          <span className="font-semibold text-green-900">
+                            Storage Saved
+                          </span>
+                        </div>
+                        <div className="text-2xl font-bold text-green-700">
+                          {settings.totalSpaceSaved || 0} GB
+                        </div>
+                        <p className="text-sm text-green-600 mt-1">
+                          Through file optimization
+                        </p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label className="text-base font-medium">
+                        Optimization Settings by File Type
+                      </Label>
+                      <div className="mt-3 space-y-3">
+                        <div className="p-3 border rounded-lg">
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-2">
+                              <FileImage className="h-4 w-4 text-blue-600" />
+                              <span className="font-medium">Images</span>
+                            </div>
+                            <Switch defaultChecked />
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            Convert to WebP format, resize large images, remove
+                            metadata
+                          </div>
+                        </div>
+
+                        <div className="p-3 border rounded-lg">
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-2">
+                              <Video className="h-4 w-4 text-purple-600" />
+                              <span className="font-medium">Videos</span>
+                            </div>
+                            <Switch defaultChecked />
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            Compress videos, optimize bitrate, generate
+                            thumbnails
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
