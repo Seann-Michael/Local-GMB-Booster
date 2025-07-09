@@ -838,7 +838,7 @@ export default function Settings() {
                               <div className="flex gap-1">
                                 {[1, 2].map((star) => (
                                   <Star
-                                    key={star}
+                                    key={`2star-${star}`}
                                     className="h-4 w-4 fill-yellow-400 text-yellow-400"
                                   />
                                 ))}
@@ -953,7 +953,7 @@ export default function Settings() {
                                 Choose Video File
                               </Button>
                               <p className="text-xs text-gray-500">
-                                MP4, MOV, or WebM • Max 50MB • 30-60 seconds
+                                MP4, MOV, or WebM ��� Max 50MB • 30-60 seconds
                                 recommended
                               </p>
                             </div>
