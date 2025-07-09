@@ -340,7 +340,7 @@ export default function ReviewGate() {
             )}
 
             {/* Submit Button */}
-            {rating > 0 && (showSeoVersion || reviewText.trim()) && (
+            {rating > 0 && reviewText.trim() && (
               <Button
                 onClick={handleSubmit}
                 disabled={isSubmitting}
