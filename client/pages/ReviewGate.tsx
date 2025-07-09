@@ -213,6 +213,15 @@ export default function ReviewGate() {
           <div className="space-y-6">
             {/* Star Rating */}
             <div className="text-center">
+              <div className="mb-6">
+                <p className="text-lg font-medium text-blue-900 mb-2">
+                  Please rate your experience
+                </p>
+                <p className="text-sm text-blue-700">
+                  Click the stars below to rate your experience from 1 to 5
+                  stars
+                </p>
+              </div>
               <StarRating
                 rating={rating}
                 onRatingChange={handleRatingChange}
