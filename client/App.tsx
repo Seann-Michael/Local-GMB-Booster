@@ -50,6 +50,7 @@ import StatusPage from "./pages/StatusPage";
 import Ideas from "./pages/Ideas";
 import IdeaDetail from "./pages/IdeaDetail";
 import SuperAdminIdeas from "./pages/SuperAdminIdeas";
+import SuperAdminBroadcast from "./pages/SuperAdminBroadcast";
 
 const queryClient = new QueryClient();
 
