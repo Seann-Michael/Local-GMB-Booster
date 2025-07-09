@@ -55,6 +55,8 @@ import {
   TrendingUp,
   Monitor,
   X,
+  Template,
+  FileText,
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatSystemDate, formatDateTime } from "@/lib/dateUtils";
