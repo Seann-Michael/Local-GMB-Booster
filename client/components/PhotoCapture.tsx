@@ -1,11 +1,28 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Camera, X, Upload } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { Camera, X, Upload, Tag, Info, Download } from "lucide-react";
 import { useRef, useState } from "react";
+import { toast } from "sonner";
+import {
+  MediaMetadataEnhancer,
+  type EnhancedMediaFile,
+  type ProjectInfo,
+  type MediaMetadata,
+} from "@/lib/mediaMetadata";
+
+interface EnhancedPhoto {
+  url: string;
+  metadata: MediaMetadata;
+  enhancedFileName: string;
+}
 
 interface PhotoCaptureProps {
-  photos: string[];
-  onPhotosChange: (photos: string[]) => void;
+  photos: EnhancedPhoto[];
+  onPhotosChange: (photos: EnhancedPhoto[]) => void;
+  projectInfo?: ProjectInfo;
 }
 
 export function PhotoCapture({ photos, onPhotosChange }: PhotoCaptureProps) {
