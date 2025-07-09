@@ -124,7 +124,7 @@ const App = () => (
             path="/ideas"
             element={
               <ProtectedRoute>
-                <Ideas />
+                <IdeasSimple />
               </ProtectedRoute>
             }
           />
