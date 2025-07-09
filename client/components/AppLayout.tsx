@@ -144,6 +144,13 @@ export function AppLayout({ children }: AppLayoutProps) {
       active: location.pathname === "/admin/help",
     },
     {
+      id: "preferences",
+      label: "Notifications",
+      href: "/notification-preferences",
+      icon: Bell,
+      active: location.pathname === "/notification-preferences",
+    },
+    {
       id: "settings",
       label: "Settings",
       href: "/admin/settings",
