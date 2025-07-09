@@ -677,7 +677,10 @@ export default function AdminReviews() {
                           {request.status === "sent" && (
                             <DropdownMenuItem
                               onClick={() =>
-                                cancelReviewRequest(request.id, request.customerName)
+                                cancelReviewRequest(
+                                  request.id,
+                                  request.customerName,
+                                )
                               }
                               className="text-red-600 focus:text-red-600"
                             >
@@ -687,13 +690,8 @@ export default function AdminReviews() {
                           )}
                           {request.reviewText && (
                             <DropdownMenuItem
-                              onClick={() => copyReviewText(request.reviewText!)}
-                            >
-                              <Copy className="h-4 w-4 mr-2" />
-                              Copy Review Text
-                            </DropdownMenuItem>
-                          )}
-                                  )
+                              onClick={() =>
+                                copyReviewText(request.reviewText!)
                               }
                             >
                               <Copy className="h-4 w-4 mr-2" />
