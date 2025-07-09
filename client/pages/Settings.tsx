@@ -1550,10 +1550,12 @@ export default function Settings() {
                                 );
                                 if (
                                   newType &&
-                                  !settings.allowedImageTypes.includes(newType)
+                                  !(settings?.allowedImageTypes || []).includes(
+                                    newType,
+                                  )
                                 ) {
                                   updateSetting("allowedImageTypes", [
-                                    ...settings.allowedImageTypes,
+                                    ...(settings?.allowedImageTypes || []),
                                     newType,
                                   ]);
                                 }
