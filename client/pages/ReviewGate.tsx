@@ -215,8 +215,8 @@ export default function ReviewGate() {
       <div className="max-w-2xl mx-auto py-4">
         {/* Business Header */}
         <Card className="mb-4">
-          <CardContent className="p-6">
-            <div className="text-center mb-4">
+          <CardContent className="p-4">
+            <div className="text-center mb-3">
               {reviewRequest.businessLogo && (
                 <img
                   src={reviewRequest.businessLogo}
