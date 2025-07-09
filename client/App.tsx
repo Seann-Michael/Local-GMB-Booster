@@ -83,11 +83,19 @@ if ("serviceWorker" in navigator) {
     .register("/sw.js")
     .then((registration) => {
       console.log("Service Worker registered:", registration);
-      analytics.track("service_worker_registered");
+      try {
+        analytics.track("service_worker_registered");
+      } catch (error) {
+        console.error("Analytics tracking failed:", error);
+      }
     })
     .catch((error) => {
       console.error("Service Worker registration failed:", error);
-      analytics.trackError(error);
+      try {
+        analytics.trackError(error);
+      } catch (analyticsError) {
+        console.error("Analytics error tracking failed:", analyticsError);
+      }
     });
 }
 
