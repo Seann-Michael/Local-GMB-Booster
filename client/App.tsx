@@ -435,6 +435,14 @@ const App = () => (
             }
           />
           <Route
+            path="/super-admin/email"
+            element={
+              <ProtectedRoute>
+                <SuperAdminEmailIntegration />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/super-admin/help"
             element={
               <ProtectedRoute>
