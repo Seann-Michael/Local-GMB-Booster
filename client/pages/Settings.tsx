@@ -718,6 +718,16 @@ export default function Settings() {
                           }
                         />
                       </div>
+                      <div>
+                        <Label htmlFor="zipCode">Zip Code</Label>
+                        <Input
+                          id="zipCode"
+                          value={settings.zipCode}
+                          onChange={(e) =>
+                            updateSetting("zipCode", e.target.value)
+                          }
+                        />
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
