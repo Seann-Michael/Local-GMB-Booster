@@ -38,6 +38,7 @@ export default function FileOptimizationSettings() {
     spaceSaved: 0,
     compressionRatio: 0,
   });
+  const [isOptimizing, setIsOptimizing] = useState(false);
 
   useEffect(() => {
     calculateStats();
