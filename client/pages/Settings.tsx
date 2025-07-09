@@ -1995,9 +1995,12 @@ export default function Settings() {
               <div className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Review Settings</CardTitle>
+                    <CardTitle>Review Communication Settings</CardTitle>
+                    <CardDescription>
+                      Configure how review requests are sent to customers
+                    </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-4">
+                  <CardContent className="space-y-6">
                     <div className="flex items-center justify-between">
                       <div>
                         <Label>Enable Review Reminders</Label>
@@ -2014,64 +2017,122 @@ export default function Settings() {
                     </div>
 
                     {settings.reviewReminderEnabled && (
-                      <div>
-                        <Label htmlFor="reviewReminderDays">
-                          Reminder Frequency (days)
-                        </Label>
-                        <Input
-                          id="reviewReminderDays"
-                          type="number"
-                          value={settings.reviewReminderDays || 7}
-                          onChange={(e) =>
-                            updateSetting(
-                              "reviewReminderDays",
-                              parseInt(e.target.value),
-                            )
-                          }
-                          min="1"
-                          max="30"
-                          className="w-32 mt-1"
-                        />
-                        <p className="text-sm text-muted-foreground mt-1">
-                          Send reminders every{" "}
-                          {settings.reviewReminderDays || 7} days after project
-                          completion
-                        </p>
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <div>
+                          <Label htmlFor="reviewReminderDays">
+                            Reminder Frequency (days)
+                          </Label>
+                          <Input
+                            id="reviewReminderDays"
+                            type="number"
+                            value={settings.reviewReminderDays || 7}
+                            onChange={(e) =>
+                              updateSetting(
+                                "reviewReminderDays",
+                                parseInt(e.target.value),
+                              )
+                            }
+                            min="1"
+                            max="30"
+                            className="mt-1"
+                          />
+                          <p className="text-sm text-muted-foreground mt-1">
+                            Send reminders every{" "}
+                            {settings.reviewReminderDays || 7} days after
+                            project completion
+                          </p>
+                        </div>
+
+                        <div>
+                          <Label>Communication Methods</Label>
+                          <div className="flex flex-col gap-3 mt-1">
+                            <div className="flex items-center justify-between p-3 border rounded-lg">
+                              <div className="flex items-center gap-2">
+                                <Mail className="h-4 w-4 text-blue-600" />
+                                <span className="font-medium">Email</span>
+                              </div>
+                              <Switch defaultChecked />
+                            </div>
+                            <div className="flex items-center justify-between p-3 border rounded-lg">
+                              <div className="flex items-center gap-2">
+                                <Smartphone className="h-4 w-4 text-green-600" />
+                                <span className="font-medium">SMS</span>
+                              </div>
+                              <Switch />
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     )}
 
-                    <div>
-                      <Label htmlFor="reviewEmailTemplate">
-                        Review Email Template
-                      </Label>
-                      <Textarea
-                        id="reviewEmailTemplate"
-                        value={settings.reviewEmailTemplate || ""}
-                        onChange={(e) =>
-                          updateSetting("reviewEmailTemplate", e.target.value)
-                        }
-                        placeholder="Hi {CUSTOMER_NAME}, we'd love to hear about your experience..."
-                        className="mt-1"
-                      />
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="reviewEmailTemplate">
+                          Email Template
+                        </Label>
+                        <Textarea
+                          id="reviewEmailTemplate"
+                          value={settings.reviewEmailTemplate || ""}
+                          onChange={(e) =>
+                            updateSetting("reviewEmailTemplate", e.target.value)
+                          }
+                          placeholder="Hi {CUSTOMER_NAME}, we'd love to hear about your experience with {PROJECT_NAME}..."
+                          className="mt-1"
+                        />
+                      </div>
+
+                      <div>
+                        <Label htmlFor="reviewSmsTemplate">SMS Template</Label>
+                        <Textarea
+                          id="reviewSmsTemplate"
+                          value={settings.reviewSmsTemplate || ""}
+                          onChange={(e) =>
+                            updateSetting("reviewSmsTemplate", e.target.value)
+                          }
+                          placeholder="Hi {CUSTOMER_NAME}! How was your experience with {BUSINESS_NAME}? Leave a review: {REVIEW_LINK}"
+                          className="mt-1"
+                          maxLength={160}
+                        />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          SMS messages are limited to 160 characters
+                        </p>
+                      </div>
                     </div>
 
                     <div>
-                      <Label htmlFor="minimumProjectValue">
-                        Minimum Project Value for Reviews ($)
-                      </Label>
-                      <Input
-                        id="minimumProjectValue"
-                        type="number"
-                        value={settings.minimumProjectValue || 0}
-                        onChange={(e) =>
-                          updateSetting(
-                            "minimumProjectValue",
-                            parseInt(e.target.value),
-                          )
-                        }
-                        min="0"
-                        className="w-32 mt-1"
-                      />
+                      <Label>Follow-up System Configuration</Label>
+                      <div className="grid gap-3 mt-2">
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div>
+                            <span className="font-medium">Auto Follow-up</span>
+                            <p className="text-sm text-muted-foreground">
+                              Send follow-up if no response within 7 days
+                            </p>
+                          </div>
+                          <Switch defaultChecked />
+                        </div>
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div>
+                            <span className="font-medium">
+                              Escalation System
+                            </span>
+                            <p className="text-sm text-muted-foreground">
+                              Switch to SMS after 2 email attempts
+                            </p>
+                          </div>
+                          <Switch />
+                        </div>
+                        <div className="flex items-center justify-between p-3 border rounded-lg">
+                          <div>
+                            <span className="font-medium">Smart Timing</span>
+                            <p className="text-sm text-muted-foreground">
+                              Send during optimal hours based on customer
+                              timezone
+                            </p>
+                          </div>
+                          <Switch defaultChecked />
+                        </div>
+                      </div>
                     </div>
 
                     <div>
@@ -2126,29 +2187,46 @@ export default function Settings() {
                     </div>
 
                     <div>
-                      <Label htmlFor="reviewGateVideoUrl">
-                        Video URL (optional)
-                      </Label>
-                      <div className="flex gap-2 mt-1">
-                        <Input
-                          id="reviewGateVideoUrl"
-                          value={settings.reviewGateVideoUrl || ""}
-                          onChange={(e) =>
-                            updateSetting("reviewGateVideoUrl", e.target.value)
-                          }
-                          placeholder="https://youtube.com/watch?v=..."
-                        />
-                        {settings.reviewGateVideoUrl && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() =>
-                              updateSetting("reviewGateVideoUrl", "")
+                      <Label>Review Gate Video</Label>
+                      <div className="space-y-3 mt-2">
+                        <div className="flex gap-2">
+                          <Input
+                            id="reviewGateVideoUrl"
+                            value={settings.reviewGateVideoUrl || ""}
+                            onChange={(e) =>
+                              updateSetting(
+                                "reviewGateVideoUrl",
+                                e.target.value,
+                              )
                             }
-                          >
-                            Remove
+                            placeholder="Enter video URL (YouTube, Vimeo, etc.)"
+                          />
+                          {settings.reviewGateVideoUrl && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() =>
+                                updateSetting("reviewGateVideoUrl", "")
+                              }
+                            >
+                              Remove
+                            </Button>
+                          )}
+                        </div>
+
+                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                          <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                          <p className="text-sm text-gray-600 mb-2">
+                            Or upload your own video file
+                          </p>
+                          <Button variant="outline" size="sm">
+                            <Upload className="h-4 w-4 mr-2" />
+                            Choose Video File
                           </Button>
-                        )}
+                          <p className="text-xs text-gray-500 mt-2">
+                            Supports MP4, MOV, AVI up to 50MB
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </CardContent>
