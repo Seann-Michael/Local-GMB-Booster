@@ -2115,18 +2115,7 @@ export default function Settings() {
                   </Card>
                 </div>
               )}
-                          </p>
-                        </div>
-                        <Switch
-                          checked={settings?.enableSounds || false}
-                          onCheckedChange={(checked) =>
-                            updateSetting("enableSounds", checked)
-                          }
-                          disabled={!settings.enableNotifications}
-                        />
-                      </div>
-                    </CardContent>
-                  </Card>
+
 
                   {/* Message Types */}
                   <Card>
