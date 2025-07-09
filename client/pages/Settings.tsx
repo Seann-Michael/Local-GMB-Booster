@@ -347,10 +347,17 @@ export default function Settings() {
                   {tabs.map((tab) => {
                     const Icon = tab.icon;
                     return (
-                      <button
+                      <div
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            setActiveTab(tab.id);
+                          }
+                        }}
+                        className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors cursor-pointer ${
                           activeTab === tab.id
                             ? "bg-primary text-primary-foreground"
                             : "hover:bg-muted"
@@ -358,7 +365,7 @@ export default function Settings() {
                       >
                         <Icon className="h-4 w-4" />
                         {tab.label}
-                      </button>
+                      </div>
                     );
                   })}
                 </nav>
