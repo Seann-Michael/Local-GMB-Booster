@@ -214,13 +214,21 @@ export class SecureSession {
   }
 
   static updateActivity(): void {
-    safeStorage.set(this.ACTIVITY_KEY, Date.now());
+    try {
+      safeStorage.set(this.ACTIVITY_KEY, Date.now());
+    } catch (error) {
+      console.error("Failed to update session activity:", error);
+    }
   }
 
   static destroySession(): void {
-    safeStorage.remove(this.SESSION_KEY);
-    safeStorage.remove(this.TIMEOUT_KEY);
-    safeStorage.remove(this.ACTIVITY_KEY);
+    try {
+      safeStorage.remove(this.SESSION_KEY);
+      safeStorage.remove(this.TIMEOUT_KEY);
+      safeStorage.remove(this.ACTIVITY_KEY);
+    } catch (error) {
+      console.error("Failed to destroy session:", error);
+    }
   }
 
   private static generateSessionId(): string {
