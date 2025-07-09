@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { QuickActionBar } from "@/components/QuickActionBar";
 import { ContextualHeader } from "@/components/ContextualHeader";
 import { HeaderSearch } from "@/components/SmartSearch";
+import { ThemeToggle } from "@/components/ThemeProvider";
+import { AppNotifications } from "@/components/UpdateNotification";
 import {
   DropdownMenu,
   DropdownMenuContent,
