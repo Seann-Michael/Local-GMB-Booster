@@ -37,6 +37,22 @@ export function PhotoCapture({
   const [showMetadataPreview, setShowMetadataPreview] = useState(false);
   const objectUrls = useRef<Set<string>>(new Set());
 
+  // Cleanup object URLs on unmount
+  useEffect(() => {
+    return () => {
+      objectUrls.current.forEach((url) => {
+        URL.revokeObjectURL(url);
+      });
+      objectUrls.current.clear();
+    };
+  }, []);
+
+  const createObjectUrl = (blob: Blob): string => {
+    const url = URL.createObjectURL(blob);
+    objectUrls.current.add(url);
+    return url;
+  };
+
   const handleFileSelect = async (files: FileList | null) => {
     if (!files) return;
     if (!projectInfo) {
