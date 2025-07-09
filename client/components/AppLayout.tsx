@@ -610,7 +610,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                     item.comingSoon
                       ? (e) => {
                           e.preventDefault();
-                          toast.success(`${item.label} feature coming soon!`);
+                          navigate("/coming-soon");
                         }
                       : undefined
                   }
