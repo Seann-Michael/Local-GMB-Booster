@@ -13,6 +13,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AppLayout } from "@/components/AppLayout";
+import { MediaViewer } from "@/components/MediaViewer";
 import {
   ArrowLeft,
   Images,
@@ -24,6 +25,7 @@ import {
   ChevronDown,
   Filter,
   SlidersHorizontal,
+  Info,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
