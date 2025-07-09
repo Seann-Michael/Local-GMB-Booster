@@ -153,7 +153,7 @@ export function AppLayout({ children }: AppLayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-background flex max-w-full overflow-x-hidden">
       {/* Mobile Sidebar Overlay */}
       {mobileSidebarOpen && (
         <div
