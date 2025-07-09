@@ -25,28 +25,62 @@ interface PhotoCaptureProps {
   projectInfo?: ProjectInfo;
 }
 
-export function PhotoCapture({ photos, onPhotosChange }: PhotoCaptureProps) {
+export function PhotoCapture({
+  photos,
+  onPhotosChange,
+  projectInfo,
+}: PhotoCaptureProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [additionalTags, setAdditionalTags] = useState("");
+  const [showMetadataPreview, setShowMetadataPreview] = useState(false);
 
-  const handleFileSelect = (files: FileList | null) => {
+  const handleFileSelect = async (files: FileList | null) => {
     if (!files) return;
+    if (!projectInfo) {
+      toast.error("Project information is required for metadata enhancement");
+      return;
+    }
 
-    const newPhotos: string[] = [];
-    Array.from(files).forEach((file) => {
-      if (file.type.startsWith("image/")) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          if (e.target?.result) {
-            newPhotos.push(e.target.result as string);
-            if (newPhotos.length === files.length) {
-              onPhotosChange([...photos, ...newPhotos]);
-            }
-          }
-        };
-        reader.readAsDataURL(file);
+    setIsProcessing(true);
+
+    try {
+      const newPhotos: EnhancedPhoto[] = [];
+      const tagArray = additionalTags
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter(Boolean);
+
+      for (const file of Array.from(files)) {
+        if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
+          const enhancedFile = await MediaMetadataEnhancer.enhanceMediaFile(
+            file,
+            projectInfo,
+            tagArray,
+          );
+
+          newPhotos.push({
+            url: enhancedFile.dataUrl,
+            metadata: enhancedFile.metadata,
+            enhancedFileName: enhancedFile.enhancedFileName,
+          });
+        }
       }
-    });
+
+      if (newPhotos.length > 0) {
+        onPhotosChange([...photos, ...newPhotos]);
+        toast.success(
+          `${newPhotos.length} file(s) processed with enhanced metadata`,
+        );
+        setAdditionalTags("");
+      }
+    } catch (error) {
+      toast.error("Failed to process files with metadata");
+      console.error("Metadata enhancement error:", error);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const removePhoto = (index: number) => {
