@@ -22,6 +22,7 @@ interface ReviewRequest {
   businessCity: string;
   businessState: string;
   serviceCategory: string;
+  businessOwnerVideo?: string; // Optional video URL
 }
 
 export default function ReviewGate() {
