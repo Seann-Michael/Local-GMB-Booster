@@ -6,8 +6,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { Suspense, lazy } from "react";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { Suspense, lazy, useEffect } from "react";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { analytics } from "@/lib/analytics";
 
 // Lazy load pages for better performance
 const Index = lazy(() => import("./pages/Index"));
