@@ -275,7 +275,6 @@ export default function ReviewGate() {
 
         {/* Review Form */}
         <Card>
-          <CardHeader></CardHeader>
           <CardContent className="space-y-6">
             {/* Star Rating */}
             <div className="text-center">
