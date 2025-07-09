@@ -1457,12 +1457,12 @@ export default function Settings() {
                     </CardContent>
                   </Card>
 
-                  {/* Error Logs for Super Admin */}
+                  {/* Password Security */}
                   <Card>
                     <CardHeader>
-                      <CardTitle>System Error Logs</CardTitle>
+                      <CardTitle>Password Security</CardTitle>
                       <CardDescription>
-                        Monitor application errors and system issues
+                        Manage your password and security requirements
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
