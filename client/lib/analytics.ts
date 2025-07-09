@@ -41,28 +41,33 @@ class AnalyticsService {
   }
 
   private init() {
-    // Check if analytics is enabled (GDPR compliance)
-    this.isEnabled = localStorage.getItem("analytics-enabled") !== "false";
+    try {
+      // Check if analytics is enabled (GDPR compliance)
+      this.isEnabled = localStorage.getItem("analytics-enabled") !== "false";
 
-    if (!this.isEnabled) return;
+      if (!this.isEnabled) return;
 
-    // Set up automatic flushing
-    setInterval(() => this.flush(), this.flushInterval);
+      // Set up automatic flushing
+      setInterval(() => this.flush(), this.flushInterval);
 
-    // Track page views automatically
-    this.trackPageView();
+      // Track page views automatically
+      this.trackPageView();
 
-    // Set up performance monitoring
-    this.setupPerformanceMonitoring();
+      // Set up performance monitoring
+      this.setupPerformanceMonitoring();
 
-    // Set up error tracking
-    this.setupErrorTracking();
+      // Set up error tracking
+      this.setupErrorTracking();
 
-    // Track core web vitals
-    this.trackCoreWebVitals();
+      // Track core web vitals
+      this.trackCoreWebVitals();
 
-    // Flush on page unload
-    window.addEventListener("beforeunload", () => this.flush());
+      // Flush on page unload
+      window.addEventListener("beforeunload", () => this.flush());
+    } catch (error) {
+      console.error("Analytics initialization failed:", error);
+      this.isEnabled = false;
+    }
   }
 
   private generateSessionId(): string {
@@ -76,19 +81,23 @@ class AnalyticsService {
 
   // Public API
   track(event: string, properties: Record<string, any> = {}) {
-    if (!this.isEnabled) return;
+    try {
+      if (!this.isEnabled) return;
 
-    const userEvent: UserEvent = {
-      event,
-      properties,
-      timestamp: Date.now(),
-      userId: this.userId,
-      sessionId: this.sessionId,
-      url: window.location.href,
-    };
+      const userEvent: UserEvent = {
+        event,
+        properties,
+        timestamp: Date.now(),
+        userId: this.userId,
+        sessionId: this.sessionId,
+        url: window.location.href,
+      };
 
-    this.eventQueue.push(userEvent);
-    console.log("Analytics event:", userEvent);
+      this.eventQueue.push(userEvent);
+      console.log("Analytics event:", userEvent);
+    } catch (error) {
+      console.error("Analytics tracking error:", error);
+    }
   }
 
   trackPageView(url?: string) {
@@ -137,62 +146,80 @@ class AnalyticsService {
   }
 
   trackError(error: Error | string, context?: Record<string, any>) {
-    if (!this.isEnabled) return;
+    try {
+      if (!this.isEnabled) return;
 
-    const errorEvent: ErrorEvent = {
-      message: typeof error === "string" ? error : error.message,
-      stack: typeof error === "string" ? undefined : error.stack,
-      url: window.location.href,
-      timestamp: Date.now(),
-      userAgent: navigator.userAgent,
-      userId: this.userId,
-      sessionId: this.sessionId,
-    };
+      const errorEvent: ErrorEvent = {
+        message: typeof error === "string" ? error : error.message,
+        stack: typeof error === "string" ? undefined : error.stack,
+        url: window.location.href,
+        timestamp: Date.now(),
+        userAgent: navigator.userAgent,
+        userId: this.userId,
+        sessionId: this.sessionId,
+      };
 
-    this.errorQueue.push(errorEvent);
-    console.error("Analytics error:", errorEvent);
+      this.errorQueue.push(errorEvent);
+      console.error("Analytics error:", errorEvent);
+    } catch (analyticsError) {
+      console.error("Failed to track error in analytics:", analyticsError);
+    }
   }
 
   // Performance monitoring
   private setupPerformanceMonitoring() {
-    // Track navigation timing
-    window.addEventListener("load", () => {
-      setTimeout(() => {
-        const navigation = performance.getEntriesByType(
-          "navigation",
-        )[0] as PerformanceNavigationTiming;
+    try {
+      // Track navigation timing
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          try {
+            const navigation = performance.getEntriesByType(
+              "navigation",
+            )[0] as PerformanceNavigationTiming;
 
-        if (navigation) {
-          this.trackPerformance(
-            "page_load_time",
-            navigation.loadEventEnd - navigation.fetchStart,
-          );
-          this.trackPerformance(
-            "dom_content_loaded",
-            navigation.domContentLoadedEventEnd - navigation.fetchStart,
-          );
-          this.trackPerformance(
-            "first_byte",
-            navigation.responseStart - navigation.fetchStart,
-          );
-        }
-      }, 0);
-    });
+            if (navigation) {
+              this.trackPerformance(
+                "page_load_time",
+                navigation.loadEventEnd - navigation.fetchStart,
+              );
+              this.trackPerformance(
+                "dom_content_loaded",
+                navigation.domContentLoadedEventEnd - navigation.fetchStart,
+              );
+              this.trackPerformance(
+                "first_byte",
+                navigation.responseStart - navigation.fetchStart,
+              );
+            }
+          } catch (error) {
+            console.error("Performance tracking error:", error);
+          }
+        }, 0);
+      });
 
-    // Track resource loading
-    const observer = new PerformanceObserver((list) => {
-      for (const entry of list.getEntries()) {
-        if (entry.entryType === "resource") {
-          const resource = entry as PerformanceResourceTiming;
-          this.trackPerformance(
-            `resource_${resource.initiatorType}`,
-            resource.duration,
-          );
-        }
+      // Track resource loading
+      if (typeof PerformanceObserver !== "undefined") {
+        const observer = new PerformanceObserver((list) => {
+          try {
+            for (const entry of list.getEntries()) {
+              if (entry.entryType === "resource") {
+                const resource = entry as PerformanceResourceTiming;
+                this.trackPerformance(
+                  `resource_${resource.initiatorType}`,
+                  resource.duration,
+                );
+              }
+            }
+          } catch (error) {
+            console.error("Resource tracking error:", error);
+          }
+        });
+
+        observer.observe({ entryTypes: ["resource"] });
       }
-    });
-
-    observer.observe({ entryTypes: ["resource"] });
+    } catch (error) {
+      console.error("Performance monitoring setup failed:", error);
+    }
   }
 
   private setupErrorTracking() {
