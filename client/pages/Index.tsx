@@ -90,7 +90,14 @@ export default function Index() {
       navigate("/super-admin", { replace: true });
       return;
     }
-  }, [currentUser, navigate]);
+
+    // Track page view
+    trackPageView();
+    track("dashboard_loaded", {
+      userRole: currentUser?.role,
+      projectCount: projects.length,
+    });
+  }, [currentUser, navigate, trackPageView, track, projects.length]);
 
   useEffect(() => {
     // Load projects from localStorage
