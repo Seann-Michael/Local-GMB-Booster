@@ -916,6 +916,9 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
         </nav>
       </div>
+
+      {/* App Notifications (PWA updates, install prompts) */}
+      <AppNotifications />
     </div>
   );
 }
