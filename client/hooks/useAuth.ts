@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
-import { 
-  SecureSession, 
-  SecureInput, 
-  AuditLogger, 
-  SecurityMonitor 
+import {
+  SecureSession,
+  SecureInput,
+  AuditLogger,
+  SecurityMonitor,
 } from "@/lib/security";
 import { safeStorage } from "@/lib/reliability";
 import { toast } from "sonner";
@@ -52,18 +52,18 @@ export function useAuth() {
   useEffect(() => {
     checkSession();
     const interval = setInterval(checkSession, 60000); // Check every minute
-    
+
     // Track user activity
-    const activityEvents = ['mousedown', 'keydown', 'scroll', 'touchstart'];
+    const activityEvents = ["mousedown", "keydown", "scroll", "touchstart"];
     const handleActivity = () => SecureSession.updateActivity();
-    
-    activityEvents.forEach(event => {
+
+    activityEvents.forEach((event) => {
       document.addEventListener(event, handleActivity);
     });
 
     return () => {
       clearInterval(interval);
-      activityEvents.forEach(event => {
+      activityEvents.forEach((event) => {
         document.removeEventListener(event, handleActivity);
       });
     };
@@ -71,8 +71,8 @@ export function useAuth() {
 
   const checkSession = useCallback(() => {
     const sessionResult = SecureSession.validateSession();
-    
-    setAuthState(prev => ({
+
+    setAuthState((prev) => ({
       ...prev,
       user: sessionResult.user || null,
       isAuthenticated: sessionResult.valid,
@@ -81,200 +81,222 @@ export function useAuth() {
       timeUntilExpiry: sessionResult.warningTime || 0,
     }));
 
-    if (!sessionResult.valid && prev => prev.isAuthenticated) {
+    if (!sessionResult.valid && authState.isAuthenticated) {
       toast.error("Your session has expired. Please sign in again.");
-      AuditLogger.log("SESSION_EXPIRED", "auth", {}, prev?.user?.id);
+      AuditLogger.log("SESSION_EXPIRED", "auth", {}, authState.user?.id);
     }
   }, []);
 
-  const login = useCallback(async (credentials: LoginCredentials) => {
-    // Check if account is locked
-    const lockoutData = safeStorage.get("account_lockout");
-    if (lockoutData && Date.now() < lockoutData.unlockTime) {
-      const remainingTime = Math.ceil((lockoutData.unlockTime - Date.now()) / 60000);
-      throw new Error(`Account locked. Try again in ${remainingTime} minutes.`);
-    }
-
-    // Validate input
-    const emailValidation = SecureInput.validateEmail(credentials.email);
-    if (!emailValidation.valid) {
-      SecurityMonitor.logSecurityEvent("INVALID_EMAIL_LOGIN", { 
-        email: credentials.email,
-        error: emailValidation.error 
-      });
-      throw new Error(emailValidation.error);
-    }
-
-    const passwordValidation = SecureInput.validatePassword(credentials.password);
-    if (!passwordValidation.valid) {
-      SecurityMonitor.logSecurityEvent("WEAK_PASSWORD_LOGIN", { 
-        email: credentials.email 
-      });
-      // Don't expose password validation errors during login
-    }
-
-    try {
-      setAuthState(prev => ({ ...prev, isLoading: true }));
-
-      // Simulate API call - replace with actual authentication
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: credentials.email,
-          password: credentials.password,
-          mfaCode: credentials.mfaCode,
-        }),
-      });
-
-      if (!response.ok) {
-        const currentAttempts = loginAttempts + 1;
-        setLoginAttempts(currentAttempts);
-
-        SecurityMonitor.logSecurityEvent("FAILED_LOGIN_ATTEMPT", {
-          email: credentials.email,
-          attempt: currentAttempts,
-          timestamp: Date.now(),
-        });
-
-        if (currentAttempts >= MAX_LOGIN_ATTEMPTS) {
-          const unlockTime = Date.now() + LOCKOUT_DURATION;
-          safeStorage.set("account_lockout", { unlockTime });
-          setIsLocked(true);
-          
-          SecurityMonitor.logSecurityEvent("ACCOUNT_LOCKED", {
-            email: credentials.email,
-            unlockTime,
-          });
-
-          throw new Error("Too many failed attempts. Account locked for 15 minutes.");
-        }
-
-        throw new Error("Invalid credentials");
+  const login = useCallback(
+    async (credentials: LoginCredentials) => {
+      // Check if account is locked
+      const lockoutData = safeStorage.get("account_lockout");
+      if (lockoutData && Date.now() < lockoutData.unlockTime) {
+        const remainingTime = Math.ceil(
+          (lockoutData.unlockTime - Date.now()) / 60000,
+        );
+        throw new Error(
+          `Account locked. Try again in ${remainingTime} minutes.`,
+        );
       }
 
-      const userData = await response.json();
-      
-      // Create secure session
-      const sessionId = SecureSession.createSession(userData, credentials.rememberMe);
-      
-      // Reset login attempts on successful login
-      setLoginAttempts(0);
-      setIsLocked(false);
-      safeStorage.remove("account_lockout");
+      // Validate input
+      const emailValidation = SecureInput.validateEmail(credentials.email);
+      if (!emailValidation.valid) {
+        SecurityMonitor.logSecurityEvent("INVALID_EMAIL_LOGIN", {
+          email: credentials.email,
+          error: emailValidation.error,
+        });
+        throw new Error(emailValidation.error);
+      }
 
-      // Log successful authentication
-      AuditLogger.log("LOGIN_SUCCESS", "auth", {
-        sessionId,
-        rememberMe: credentials.rememberMe,
-        mfaUsed: !!credentials.mfaCode,
-      }, userData.id);
+      const passwordValidation = SecureInput.validatePassword(
+        credentials.password,
+      );
+      if (!passwordValidation.valid) {
+        SecurityMonitor.logSecurityEvent("WEAK_PASSWORD_LOGIN", {
+          email: credentials.email,
+        });
+        // Don't expose password validation errors during login
+      }
 
-      setAuthState({
-        user: userData,
-        isAuthenticated: true,
-        isLoading: false,
-        sessionWarning: false,
-        timeUntilExpiry: 0,
-      });
+      try {
+        setAuthState((prev) => ({ ...prev, isLoading: true }));
 
-      toast.success("Login successful!");
+        // Simulate API call - replace with actual authentication
+        const response = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: credentials.email,
+            password: credentials.password,
+            mfaCode: credentials.mfaCode,
+          }),
+        });
 
-    } catch (error) {
-      setAuthState(prev => ({ ...prev, isLoading: false }));
-      throw error;
-    }
-  }, [loginAttempts]);
+        if (!response.ok) {
+          const currentAttempts = loginAttempts + 1;
+          setLoginAttempts(currentAttempts);
 
-  const logout = useCallback(async (reason?: string) => {
-    try {
-      const currentUser = authState.user;
-      
-      // Notify server of logout
-      await fetch("/api/auth/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+          SecurityMonitor.logSecurityEvent("FAILED_LOGIN_ATTEMPT", {
+            email: credentials.email,
+            attempt: currentAttempts,
+            timestamp: Date.now(),
+          });
 
-      // Destroy local session
-      SecureSession.destroySession();
-      
-      // Log logout
-      AuditLogger.log("LOGOUT", "auth", { reason }, currentUser?.id);
+          if (currentAttempts >= MAX_LOGIN_ATTEMPTS) {
+            const unlockTime = Date.now() + LOCKOUT_DURATION;
+            safeStorage.set("account_lockout", { unlockTime });
+            setIsLocked(true);
 
-      setAuthState({
-        user: null,
-        isAuthenticated: false,
-        isLoading: false,
-        sessionWarning: false,
-        timeUntilExpiry: 0,
-      });
+            SecurityMonitor.logSecurityEvent("ACCOUNT_LOCKED", {
+              email: credentials.email,
+              unlockTime,
+            });
 
-      toast.info(reason || "Logged out successfully");
+            throw new Error(
+              "Too many failed attempts. Account locked for 15 minutes.",
+            );
+          }
 
-    } catch (error) {
-      console.error("Logout error:", error);
-      // Force logout even if server call fails
-      SecureSession.destroySession();
-      setAuthState({
-        user: null,
-        isAuthenticated: false,
-        isLoading: false,
-        sessionWarning: false,
-        timeUntilExpiry: 0,
-      });
-    }
-  }, [authState.user]);
+          throw new Error("Invalid credentials");
+        }
+
+        const userData = await response.json();
+
+        // Create secure session
+        const sessionId = SecureSession.createSession(
+          userData,
+          credentials.rememberMe,
+        );
+
+        // Reset login attempts on successful login
+        setLoginAttempts(0);
+        setIsLocked(false);
+        safeStorage.remove("account_lockout");
+
+        // Log successful authentication
+        AuditLogger.log(
+          "LOGIN_SUCCESS",
+          "auth",
+          {
+            sessionId,
+            rememberMe: credentials.rememberMe,
+            mfaUsed: !!credentials.mfaCode,
+          },
+          userData.id,
+        );
+
+        setAuthState({
+          user: userData,
+          isAuthenticated: true,
+          isLoading: false,
+          sessionWarning: false,
+          timeUntilExpiry: 0,
+        });
+
+        toast.success("Login successful!");
+      } catch (error) {
+        setAuthState((prev) => ({ ...prev, isLoading: false }));
+        throw error;
+      }
+    },
+    [loginAttempts],
+  );
+
+  const logout = useCallback(
+    async (reason?: string) => {
+      try {
+        const currentUser = authState.user;
+
+        // Notify server of logout
+        await fetch("/api/auth/logout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        // Destroy local session
+        SecureSession.destroySession();
+
+        // Log logout
+        AuditLogger.log("LOGOUT", "auth", { reason }, currentUser?.id);
+
+        setAuthState({
+          user: null,
+          isAuthenticated: false,
+          isLoading: false,
+          sessionWarning: false,
+          timeUntilExpiry: 0,
+        });
+
+        toast.info(reason || "Logged out successfully");
+      } catch (error) {
+        console.error("Logout error:", error);
+        // Force logout even if server call fails
+        SecureSession.destroySession();
+        setAuthState({
+          user: null,
+          isAuthenticated: false,
+          isLoading: false,
+          sessionWarning: false,
+          timeUntilExpiry: 0,
+        });
+      }
+    },
+    [authState.user],
+  );
 
   const extendSession = useCallback(() => {
     SecureSession.extendSession();
-    setAuthState(prev => ({
+    setAuthState((prev) => ({
       ...prev,
       sessionWarning: false,
       timeUntilExpiry: 0,
     }));
-    
+
     AuditLogger.log("SESSION_EXTENDED", "auth", {}, authState.user?.id);
     toast.success("Session extended");
   }, [authState.user]);
 
-  const changePassword = useCallback(async (currentPassword: string, newPassword: string) => {
-    const validation = SecureInput.validatePassword(newPassword);
-    if (!validation.valid) {
-      throw new Error(validation.errors.join(", "));
-    }
-
-    try {
-      const response = await fetch("/api/auth/change-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          currentPassword,
-          newPassword,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to change password");
+  const changePassword = useCallback(
+    async (currentPassword: string, newPassword: string) => {
+      const validation = SecureInput.validatePassword(newPassword);
+      if (!validation.valid) {
+        throw new Error(validation.errors.join(", "));
       }
 
-      AuditLogger.log("PASSWORD_CHANGED", "auth", {}, authState.user?.id);
-      toast.success("Password changed successfully");
+      try {
+        const response = await fetch("/api/auth/change-password", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            currentPassword,
+            newPassword,
+          }),
+        });
 
-    } catch (error) {
-      SecurityMonitor.logSecurityEvent("PASSWORD_CHANGE_FAILED", {
-        userId: authState.user?.id,
-        error: error.message,
-      });
-      throw error;
-    }
-  }, [authState.user]);
+        if (!response.ok) {
+          throw new Error("Failed to change password");
+        }
+
+        AuditLogger.log("PASSWORD_CHANGED", "auth", {}, authState.user?.id);
+        toast.success("Password changed successfully");
+      } catch (error) {
+        SecurityMonitor.logSecurityEvent("PASSWORD_CHANGE_FAILED", {
+          userId: authState.user?.id,
+          error: error.message,
+        });
+        throw error;
+      }
+    },
+    [authState.user],
+  );
 
   const enableMFA = useCallback(async () => {
     try {
@@ -290,11 +312,10 @@ export function useAuth() {
       }
 
       const result = await response.json();
-      
-      AuditLogger.log("MFA_ENABLED", "auth", {}, authState.user?.id);
-      
-      return result; // Contains QR code and backup codes
 
+      AuditLogger.log("MFA_ENABLED", "auth", {}, authState.user?.id);
+
+      return result; // Contains QR code and backup codes
     } catch (error) {
       SecurityMonitor.logSecurityEvent("MFA_ENABLE_FAILED", {
         userId: authState.user?.id,
@@ -304,38 +325,46 @@ export function useAuth() {
     }
   }, [authState.user]);
 
-  const verifyMFA = useCallback(async (code: string) => {
-    try {
-      const response = await fetch("/api/auth/verify-mfa", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ code }),
-      });
-
-      if (!response.ok) {
-        SecurityMonitor.logSecurityEvent("MFA_VERIFICATION_FAILED", {
-          userId: authState.user?.id,
+  const verifyMFA = useCallback(
+    async (code: string) => {
+      try {
+        const response = await fetch("/api/auth/verify-mfa", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ code }),
         });
-        throw new Error("Invalid MFA code");
+
+        if (!response.ok) {
+          SecurityMonitor.logSecurityEvent("MFA_VERIFICATION_FAILED", {
+            userId: authState.user?.id,
+          });
+          throw new Error("Invalid MFA code");
+        }
+
+        AuditLogger.log("MFA_VERIFIED", "auth", {}, authState.user?.id);
+        return true;
+      } catch (error) {
+        throw error;
       }
+    },
+    [authState.user],
+  );
 
-      AuditLogger.log("MFA_VERIFIED", "auth", {}, authState.user?.id);
-      return true;
+  const hasPermission = useCallback(
+    (permission: string) => {
+      return authState.user?.permissions?.includes(permission) || false;
+    },
+    [authState.user],
+  );
 
-    } catch (error) {
-      throw error;
-    }
-  }, [authState.user]);
-
-  const hasPermission = useCallback((permission: string) => {
-    return authState.user?.permissions?.includes(permission) || false;
-  }, [authState.user]);
-
-  const hasRole = useCallback((role: string) => {
-    return authState.user?.role === role;
-  }, [authState.user]);
+  const hasRole = useCallback(
+    (role: string) => {
+      return authState.user?.role === role;
+    },
+    [authState.user],
+  );
 
   const getSecurityInfo = useCallback(() => {
     return {
@@ -352,7 +381,7 @@ export function useAuth() {
   return {
     // Auth state
     ...authState,
-    
+
     // Auth actions
     login,
     logout,
@@ -360,11 +389,11 @@ export function useAuth() {
     changePassword,
     enableMFA,
     verifyMFA,
-    
+
     // Permission checks
     hasPermission,
     hasRole,
-    
+
     // Security info
     getSecurityInfo,
     loginAttempts,
@@ -373,9 +402,12 @@ export function useAuth() {
 }
 
 // Hook for protecting routes
-export function useProtectedRoute(requiredPermission?: string, requiredRole?: string) {
+export function useProtectedRoute(
+  requiredPermission?: string,
+  requiredRole?: string,
+) {
   const auth = useAuth();
-  
+
   useEffect(() => {
     if (!auth.isAuthenticated && !auth.isLoading) {
       AuditLogger.log("UNAUTHORIZED_ACCESS_ATTEMPT", "route", {
@@ -383,7 +415,7 @@ export function useProtectedRoute(requiredPermission?: string, requiredRole?: st
         requiredRole,
         path: window.location.pathname,
       });
-      
+
       window.location.href = "/signin";
       return;
     }
@@ -395,7 +427,7 @@ export function useProtectedRoute(requiredPermission?: string, requiredRole?: st
         userPermissions: auth.user?.permissions,
         path: window.location.pathname,
       });
-      
+
       toast.error("You don't have permission to access this page");
       window.location.href = "/admin/projects";
       return;
@@ -408,7 +440,7 @@ export function useProtectedRoute(requiredPermission?: string, requiredRole?: st
         userRole: auth.user?.role,
         path: window.location.pathname,
       });
-      
+
       toast.error("You don't have the required role to access this page");
       window.location.href = "/admin/projects";
       return;
