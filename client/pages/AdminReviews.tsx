@@ -305,9 +305,9 @@ export default function AdminReviews() {
     <AppLayout>
       <div className="max-w-full px-4 py-6 overflow-x-hidden">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-          <div>
-            <h1 className="text-2xl font-bold">Review Management</h1>
-            <p className="text-muted-foreground">
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl font-bold">Review Management</h1>
+            <p className="text-muted-foreground text-sm sm:text-base">
               Track and manage customer review requests
             </p>
           </div>
@@ -315,7 +315,7 @@ export default function AdminReviews() {
             <Button
               variant="outline"
               onClick={() => navigate("/review-demo")}
-              className="gap-2 whitespace-nowrap"
+              className="gap-2 whitespace-nowrap w-full sm:w-auto"
             >
               <ExternalLink className="h-4 w-4" />
               <span className="hidden sm:inline">Preview Review Gate</span>
@@ -325,7 +325,7 @@ export default function AdminReviews() {
               onClick={() =>
                 sendReviewRequest("New Customer", "Recent Project")
               }
-              className="gap-2 whitespace-nowrap"
+              className="gap-2 whitespace-nowrap w-full sm:w-auto"
             >
               <Send className="h-4 w-4" />
               <span className="hidden sm:inline">Send Review Request</span>
