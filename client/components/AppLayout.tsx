@@ -548,6 +548,25 @@ export function AppLayout({ children }: AppLayoutProps) {
               </DropdownMenuContent>
             </DropdownMenu>
           )}
+
+          {/* Collapsed state - show just avatar */}
+          {sidebarCollapsed && (
+            <div className="flex justify-center">
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={currentUser?.avatar} />
+                <AvatarFallback className="text-xs">
+                  {currentUser?.name ? (
+                    currentUser.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")
+                  ) : (
+                    <User className="h-4 w-4" />
+                  )}
+                </AvatarFallback>
+              </Avatar>
+            </div>
+          )}
         </div>
 
         {/* Quick Action Button */}
