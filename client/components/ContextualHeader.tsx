@@ -1,0 +1,369 @@
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import {
+  Plus,
+  Filter,
+  Download,
+  RefreshCw,
+  MoreHorizontal,
+  Search,
+  Bell,
+  Users,
+  DollarSign,
+  BarChart3,
+  Target,
+  Calendar,
+  FileText,
+  Settings,
+  HelpCircle,
+} from "lucide-react";
+import { useLocation, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+
+interface PageConfig {
+  title: string;
+  subtitle: string;
+  icon: any;
+  primaryAction?: {
+    label: string;
+    icon: any;
+    href?: string;
+    onClick?: () => void;
+  };
+  secondaryActions?: Array<{
+    label: string;
+    icon: any;
+    href?: string;
+    onClick?: () => void;
+  }>;
+  quickStats?: Array<{
+    label: string;
+    value: string;
+    trend?: "up" | "down" | "neutral";
+    color?: "default" | "success" | "warning" | "danger";
+  }>;
+  breadcrumbs: Array<{
+    label: string;
+    href?: string;
+  }>;
+}
+
+export function ContextualHeader() {
+  const location = useLocation();
+  const [pageConfig, setPageConfig] = useState<PageConfig | null>(null);
+
+  useEffect(() => {
+    const config = getPageConfig(location.pathname);
+    setPageConfig(config);
+  }, [location.pathname]);
+
+  if (!pageConfig) return null;
+
+  const {
+    title,
+    subtitle,
+    icon: PageIcon,
+    primaryAction,
+    secondaryActions,
+    quickStats,
+    breadcrumbs,
+  } = pageConfig;
+
+  return (
+    <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="flex h-16 items-center px-4 gap-4">
+        {/* Page Icon & Title */}
+        <div className="flex items-center gap-3 min-w-0 flex-1">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+            <PageIcon className="h-5 w-5 text-primary" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <h1 className="font-semibold text-lg truncate">{title}</h1>
+            <p className="text-sm text-muted-foreground truncate">{subtitle}</p>
+          </div>
+        </div>
+
+        {/* Quick Stats */}
+        {quickStats && (
+          <div className="hidden lg:flex items-center gap-4">
+            {quickStats.map((stat, index) => (
+              <div key={index} className="text-center">
+                <div
+                  className={`text-lg font-semibold ${
+                    stat.color === "success"
+                      ? "text-green-600"
+                      : stat.color === "warning"
+                        ? "text-yellow-600"
+                        : stat.color === "danger"
+                          ? "text-red-600"
+                          : ""
+                  }`}
+                >
+                  {stat.value}
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Actions */}
+        <div className="flex items-center gap-2">
+          {/* Primary Action */}
+          {primaryAction &&
+            (primaryAction.href ? (
+              <Button asChild>
+                <Link to={primaryAction.href}>
+                  <primaryAction.icon className="h-4 w-4 mr-2" />
+                  {primaryAction.label}
+                </Link>
+              </Button>
+            ) : (
+              <Button onClick={primaryAction.onClick}>
+                <primaryAction.icon className="h-4 w-4 mr-2" />
+                {primaryAction.label}
+              </Button>
+            ))}
+
+          {/* Secondary Actions */}
+          {secondaryActions && secondaryActions.length > 0 && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon">
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {secondaryActions.map((action, index) => (
+                  <DropdownMenuItem key={index} asChild>
+                    {action.href ? (
+                      <Link to={action.href}>
+                        <action.icon className="h-4 w-4 mr-2" />
+                        {action.label}
+                      </Link>
+                    ) : (
+                      <div onClick={action.onClick}>
+                        <action.icon className="h-4 w-4 mr-2" />
+                        {action.label}
+                      </div>
+                    )}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
+      </div>
+
+      {/* Breadcrumbs */}
+      {breadcrumbs.length > 1 && (
+        <div className="px-4 py-2 border-t">
+          <Breadcrumb>
+            <BreadcrumbList>
+              {breadcrumbs.map((crumb, index) => (
+                <>
+                  <BreadcrumbItem key={index}>
+                    {crumb.href && index < breadcrumbs.length - 1 ? (
+                      <BreadcrumbLink asChild>
+                        <Link to={crumb.href}>{crumb.label}</Link>
+                      </BreadcrumbLink>
+                    ) : (
+                      <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
+                    )}
+                  </BreadcrumbItem>
+                  {index < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
+                </>
+              ))}
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function getPageConfig(pathname: string): PageConfig | null {
+  // Mock data - in real app, this could come from an API or context
+  const mockStats = {
+    projects: { total: "23", active: "8", revenue: "$147K" },
+    leads: { total: "15", qualified: "6", pipeline: "$89K" },
+  };
+
+  switch (true) {
+    case pathname === "/admin/projects":
+      return {
+        title: "Projects",
+        subtitle: "Manage your construction projects",
+        icon: Target,
+        primaryAction: {
+          label: "New Project",
+          icon: Plus,
+          href: "/admin/add-project",
+        },
+        secondaryActions: [
+          { label: "Export Data", icon: Download, onClick: () => {} },
+          { label: "Filter Projects", icon: Filter, onClick: () => {} },
+          { label: "Refresh", icon: RefreshCw, onClick: () => {} },
+        ],
+        quickStats: [
+          { label: "Total", value: mockStats.projects.total },
+          {
+            label: "Active",
+            value: mockStats.projects.active,
+            color: "success",
+          },
+          {
+            label: "Revenue",
+            value: mockStats.projects.revenue,
+            color: "success",
+          },
+        ],
+        breadcrumbs: [
+          { label: "Dashboard", href: "/admin/projects" },
+          { label: "Projects" },
+        ],
+      };
+
+    case pathname === "/admin/leads":
+      return {
+        title: "Lead Management",
+        subtitle: "Track leads through your sales pipeline",
+        icon: Users,
+        primaryAction: {
+          label: "Add Lead",
+          icon: Plus,
+          href: "/admin/leads?action=add",
+        },
+        secondaryActions: [
+          { label: "Import Leads", icon: Download, onClick: () => {} },
+          { label: "Export Pipeline", icon: Download, onClick: () => {} },
+          {
+            label: "Lead Analytics",
+            icon: BarChart3,
+            href: "/admin/leads?tab=analytics",
+          },
+        ],
+        quickStats: [
+          { label: "Total Leads", value: mockStats.leads.total },
+          {
+            label: "Qualified",
+            value: mockStats.leads.qualified,
+            color: "success",
+          },
+          {
+            label: "Pipeline Value",
+            value: mockStats.leads.pipeline,
+            color: "success",
+          },
+        ],
+        breadcrumbs: [
+          { label: "Dashboard", href: "/admin/projects" },
+          { label: "Lead Management" },
+        ],
+      };
+
+    case pathname === "/admin/project-value":
+      return {
+        title: "Project Value & Revenue",
+        subtitle: "Track project profitability and revenue",
+        icon: DollarSign,
+        primaryAction: {
+          label: "Add Project Value",
+          icon: Plus,
+          onClick: () => {},
+        },
+        secondaryActions: [
+          { label: "Financial Report", icon: FileText, onClick: () => {} },
+          { label: "Profit Analysis", icon: BarChart3, onClick: () => {} },
+          { label: "Export Data", icon: Download, onClick: () => {} },
+        ],
+        quickStats: [
+          { label: "Total Revenue", value: "$247K", color: "success" },
+          { label: "Profit Margin", value: "28.5%", color: "success" },
+          { label: "Outstanding", value: "$45K", color: "warning" },
+        ],
+        breadcrumbs: [
+          { label: "Dashboard", href: "/admin/projects" },
+          { label: "Project Value" },
+        ],
+      };
+
+    case pathname === "/admin/settings":
+      return {
+        title: "Settings",
+        subtitle: "Configure your account and preferences",
+        icon: Settings,
+        secondaryActions: [
+          { label: "Help & Support", icon: HelpCircle, href: "/admin/help" },
+          {
+            label: "Notification Preferences",
+            icon: Bell,
+            href: "/notification-preferences",
+          },
+        ],
+        breadcrumbs: [
+          { label: "Dashboard", href: "/admin/projects" },
+          { label: "Settings" },
+        ],
+      };
+
+    case pathname === "/admin/gallery":
+      return {
+        title: "Gallery",
+        subtitle: "Manage your project photos and media",
+        icon: FileText,
+        primaryAction: {
+          label: "Upload Photos",
+          icon: Plus,
+          onClick: () => {},
+        },
+        secondaryActions: [
+          { label: "Organize Albums", icon: Filter, onClick: () => {} },
+          { label: "Download All", icon: Download, onClick: () => {} },
+        ],
+        breadcrumbs: [
+          { label: "Dashboard", href: "/admin/projects" },
+          { label: "Gallery" },
+        ],
+      };
+
+    case pathname === "/admin/reviews":
+      return {
+        title: "Reviews",
+        subtitle: "Manage customer reviews and feedback",
+        icon: BarChart3,
+        primaryAction: {
+          label: "Request Review",
+          icon: Plus,
+          onClick: () => {},
+        },
+        secondaryActions: [
+          { label: "Review Analytics", icon: BarChart3, onClick: () => {} },
+          { label: "Export Reviews", icon: Download, onClick: () => {} },
+        ],
+        breadcrumbs: [
+          { label: "Dashboard", href: "/admin/projects" },
+          { label: "Reviews" },
+        ],
+      };
+
+    default:
+      return null;
+  }
+}

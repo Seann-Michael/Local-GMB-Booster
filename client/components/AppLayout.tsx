@@ -2,6 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
+import { QuickActionBar } from "@/components/QuickActionBar";
+import { ContextualHeader } from "@/components/ContextualHeader";
+import { HeaderSearch } from "@/components/SmartSearch";
 import {
   DropdownMenu,
   DropdownMenuContent,
