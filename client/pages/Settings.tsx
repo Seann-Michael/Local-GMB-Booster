@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,66 +19,29 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { AppLayout } from "@/components/AppLayout";
 import { MetadataSettings } from "@/components/MetadataSettings";
 import {
   Save,
-  Settings,
-  User,
+  Building2,
+  Settings as SettingsIcon,
+  Globe,
+  Bot,
+  Webhook,
+  Tag,
+  Image,
   Bell,
   Shield,
   DollarSign,
-  Database,
-  Mail,
-  Server,
-  Globe,
-  Download,
-  BarChart3,
-  Building2,
-  Camera,
-  FileText,
   Plus,
   Edit,
   Trash2,
-  Eye,
-  Play,
-  Pause,
-  Users,
-  Key,
-  Webhook,
-  Monitor,
-  Code,
-  Palette,
-  Activity,
-  Calendar,
-  MessageSquare,
-  Phone,
-  Lock,
-  Upload,
-  Copy,
-  ExternalLink,
-  Bot,
-  Tag,
-  Image,
-  Video,
   X,
-  Star,
 } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 
-interface BusinessSettings {
-  // Business Information
+// Types
+interface SettingsData {
   businessName: string;
   contactName: string;
   email: string;
@@ -88,68 +52,54 @@ interface BusinessSettings {
   state: string;
   zipCode: string;
   country: string;
-  logo: string;
-
-  // Business Settings
   timezone: string;
   currency: string;
   dateFormat: string;
-
-  // Project Settings
   autoPostFacebook: boolean;
   autoPostGoogleMyBusiness: boolean;
   autoPostRssFeed: boolean;
   aiPromptForDescriptions: boolean;
-
-  // Integration Settings
   facebookConnected: boolean;
   googleMyBusinessConnected: boolean;
   goHighLevelApiKey: string;
-  webhooks: Array<{
-    id: string;
-    name: string;
-    url: string;
-    events: string[];
-    active: boolean;
-  }>;
-
-  // AI Assistance Settings
+  webhooks: WebhookItem[];
   aiPromptTemplate: string;
   aiInstructions: string;
   aiVariables: string[];
-
-  // Tags
-  businessTags: Array<{
-    id: string;
-    name: string;
-    color: string;
-  }>;
-
-  // Media Settings
+  businessTags: TagItem[];
   allowedImageTypes: string[];
   allowedVideoTypes: string[];
   maxFileSize: number;
-
-  // Notification Settings
   emailNotifications: boolean;
   smsNotifications: boolean;
   marketingEmails: boolean;
   systemAlerts: boolean;
-
-  // Security Settings
   twoFactorAuth: boolean;
   passwordRequirements: string;
   sessionTimeout: number;
-
-  // Billing Settings
   billingContact: string;
   billingEmail: string;
   autoRenewal: boolean;
 }
 
-const tabs = [
+interface WebhookItem {
+  id: string;
+  name: string;
+  url: string;
+  events: string[];
+  active: boolean;
+}
+
+interface TagItem {
+  id: string;
+  name: string;
+  color: string;
+}
+
+// Navigation tabs
+const navigationTabs = [
   { id: "general", label: "General", icon: Building2 },
-  { id: "project", label: "Project Settings", icon: Settings },
+  { id: "project", label: "Project Settings", icon: SettingsIcon },
   { id: "integrations", label: "Integrations", icon: Globe },
   { id: "ai", label: "AI Assistant", icon: Bot },
   { id: "webhooks", label: "Webhooks", icon: Webhook },
@@ -160,114 +110,106 @@ const tabs = [
   { id: "billing", label: "Billing", icon: DollarSign },
 ];
 
+// Default settings
+const defaultSettings: SettingsData = {
+  businessName: "Joe's Pizza",
+  contactName: "Joe Smith",
+  email: "joe@joespizza.com",
+  phone: "(555) 123-4567",
+  website: "https://joespizza.com",
+  address: "123 Main Street",
+  city: "New York",
+  state: "NY",
+  zipCode: "10001",
+  country: "United States",
+  timezone: "America/New_York",
+  currency: "USD",
+  dateFormat: "MM/DD/YYYY",
+  autoPostFacebook: false,
+  autoPostGoogleMyBusiness: true,
+  autoPostRssFeed: false,
+  aiPromptForDescriptions: true,
+  facebookConnected: false,
+  googleMyBusinessConnected: true,
+  goHighLevelApiKey: "",
+  webhooks: [
+    {
+      id: "1",
+      name: "Project Completion",
+      url: "https://example.com/webhook",
+      events: ["project.completed", "project.created"],
+      active: true,
+    },
+  ],
+  aiPromptTemplate:
+    "Create a professional description for a {PROJECT_TYPE} project at {ADDRESS}. Include details about {SERVICES} and highlight the quality of work.",
+  aiInstructions:
+    "Write engaging, professional descriptions that highlight the benefits and quality of the work. Use a friendly but professional tone.",
+  aiVariables: [
+    "PROJECT_TYPE",
+    "ADDRESS",
+    "SERVICES",
+    "CUSTOMER_NAME",
+    "COMPLETION_DATE",
+  ],
+  businessTags: [
+    { id: "1", name: "Pizza", color: "#ef4444" },
+    { id: "2", name: "Italian", color: "#3b82f6" },
+    { id: "3", name: "Delivery", color: "#10b981" },
+  ],
+  allowedImageTypes: [".jpg", ".jpeg", ".png", ".gif", ".webp"],
+  allowedVideoTypes: [".mp4", ".mov", ".avi", ".wmv"],
+  maxFileSize: 10,
+  emailNotifications: true,
+  smsNotifications: false,
+  marketingEmails: true,
+  systemAlerts: true,
+  twoFactorAuth: false,
+  passwordRequirements: "strong",
+  sessionTimeout: 30,
+  billingContact: "Joe Smith",
+  billingEmail: "billing@joespizza.com",
+  autoRenewal: true,
+};
+
 export default function Settings() {
-  const [settings, setSettings] = useState<BusinessSettings>({
-    // Business Information
-    businessName: "Joe's Pizza",
-    contactName: "Joe Smith",
-    email: "joe@joespizza.com",
-    phone: "(555) 123-4567",
-    website: "https://joespizza.com",
-    address: "123 Main Street",
-    city: "New York",
-    state: "NY",
-    zipCode: "10001",
-    country: "United States",
-    logo: "",
-
-    // Business Settings
-    timezone: "America/New_York",
-    currency: "USD",
-    dateFormat: "MM/DD/YYYY",
-
-    // Project Settings
-    autoPostFacebook: false,
-    autoPostGoogleMyBusiness: true,
-    autoPostRssFeed: false,
-    aiPromptForDescriptions: true,
-
-    // Integration Settings
-    facebookConnected: false,
-    googleMyBusinessConnected: true,
-    goHighLevelApiKey: "",
-    webhooks: [
-      {
-        id: "1",
-        name: "Project Completion",
-        url: "https://example.com/webhook",
-        events: ["project.completed", "project.created"],
-        active: true,
-      },
-    ],
-
-    // AI Assistance Settings
-    aiPromptTemplate:
-      "Create a professional description for a {PROJECT_TYPE} project at {ADDRESS}. Include details about {SERVICES} and highlight the quality of work.",
-    aiInstructions:
-      "Write engaging, professional descriptions that highlight the benefits and quality of the work. Use a friendly but professional tone.",
-    aiVariables: [
-      "PROJECT_TYPE",
-      "ADDRESS",
-      "SERVICES",
-      "CUSTOMER_NAME",
-      "COMPLETION_DATE",
-    ],
-
-    // Tags
-    businessTags: [
-      { id: "1", name: "Pizza", color: "#ef4444" },
-      { id: "2", name: "Italian", color: "#3b82f6" },
-      { id: "3", name: "Delivery", color: "#10b981" },
-    ],
-
-    // Media Settings
-    allowedImageTypes: [".jpg", ".jpeg", ".png", ".gif", ".webp"],
-    allowedVideoTypes: [".mp4", ".mov", ".avi", ".wmv"],
-    maxFileSize: 10,
-
-    // Notification Settings
-    emailNotifications: true,
-    smsNotifications: false,
-    marketingEmails: true,
-    systemAlerts: true,
-
-    // Security Settings
-    twoFactorAuth: false,
-    passwordRequirements: "strong",
-    sessionTimeout: 30,
-
-    // Billing Settings
-    billingContact: "Joe Smith",
-    billingEmail: "billing@joespizza.com",
-    autoRenewal: true,
-  });
-
+  // State
   const [activeTab, setActiveTab] = useState("general");
+  const [settings, setSettings] = useState<SettingsData>(defaultSettings);
   const [isLoading, setIsLoading] = useState(false);
-  const [editingWebhook, setEditingWebhook] = useState<any>(null);
-  const [editingTag, setEditingTag] = useState<any>(null);
   const [showWebhookForm, setShowWebhookForm] = useState(false);
   const [showTagForm, setShowTagForm] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [editingWebhook, setEditingWebhook] = useState<WebhookItem | null>(
+    null,
+  );
+  const [editingTag, setEditingTag] = useState<TagItem | null>(null);
 
+  // Load settings on mount
   useEffect(() => {
-    try {
-      const savedSettings = localStorage.getItem("business_settings");
-      if (savedSettings) {
-        setSettings(JSON.parse(savedSettings));
+    const loadSettings = () => {
+      try {
+        const saved = localStorage.getItem("business_settings");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          setSettings({ ...defaultSettings, ...parsed });
+        }
+      } catch (error) {
+        console.error("Failed to load settings:", error);
       }
-    } catch (error) {
-      console.error("Failed to load settings:", error);
-    }
+    };
+    loadSettings();
   }, []);
 
+  // Update setting helper
+  const updateSetting = (key: keyof SettingsData, value: any) => {
+    setSettings((prev) => ({ ...prev, [key]: value }));
+  };
+
+  // Save settings
   const handleSave = async () => {
     setIsLoading(true);
     try {
-      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Save to localStorage
       localStorage.setItem("business_settings", JSON.stringify(settings));
       toast.success("Settings saved successfully!");
     } catch (error) {
@@ -277,74 +219,75 @@ export default function Settings() {
     }
   };
 
-  const updateSetting = (key: keyof BusinessSettings, value: any) => {
-    setSettings((prev) => ({ ...prev, [key]: value }));
+  // Webhook operations
+  const addWebhook = (webhook: Omit<WebhookItem, "id">) => {
+    const newWebhook: WebhookItem = {
+      ...webhook,
+      id: Date.now().toString(),
+    };
+    setSettings((prev) => ({
+      ...prev,
+      webhooks: [...prev.webhooks, newWebhook],
+    }));
   };
 
-  const updateWebhook = (webhookId: string, updatedWebhook: any) => {
-    try {
-      setSettings((prev) => {
-        if (!prev) return prev;
-        return {
-          ...prev,
-          webhooks: (prev.webhooks || []).map((webhook) =>
-            webhook.id === webhookId
-              ? { ...webhook, ...updatedWebhook }
-              : webhook,
-          ),
-        };
-      });
-    } catch (error) {
-      console.error("Error updating webhook:", error);
-    }
+  const updateWebhook = (id: string, updates: Partial<WebhookItem>) => {
+    setSettings((prev) => ({
+      ...prev,
+      webhooks: prev.webhooks.map((w) =>
+        w.id === id ? { ...w, ...updates } : w,
+      ),
+    }));
   };
 
-  const deleteWebhook = (webhookId: string) => {
-    try {
-      setSettings((prev) => {
-        if (!prev) return prev;
-        return {
-          ...prev,
-          webhooks: (prev.webhooks || []).filter(
-            (webhook) => webhook.id !== webhookId,
-          ),
-        };
-      });
-    } catch (error) {
-      console.error("Error deleting webhook:", error);
-    }
+  const deleteWebhook = (id: string) => {
+    setSettings((prev) => ({
+      ...prev,
+      webhooks: prev.webhooks.filter((w) => w.id !== id),
+    }));
   };
 
-  const updateTag = (tagId: string, updatedTag: any) => {
-    try {
-      setSettings((prev) => {
-        if (!prev) return prev;
-        return {
-          ...prev,
-          businessTags: (prev.businessTags || []).map((tag) =>
-            tag.id === tagId ? { ...tag, ...updatedTag } : tag,
-          ),
-        };
-      });
-    } catch (error) {
-      console.error("Error updating tag:", error);
-    }
+  // Tag operations
+  const addTag = (tag: Omit<TagItem, "id">) => {
+    const newTag: TagItem = {
+      ...tag,
+      id: Date.now().toString(),
+    };
+    setSettings((prev) => ({
+      ...prev,
+      businessTags: [...prev.businessTags, newTag],
+    }));
   };
 
-  const deleteTag = (tagId: string) => {
-    try {
-      setSettings((prev) => {
-        if (!prev) return prev;
-        return {
-          ...prev,
-          businessTags: (prev.businessTags || []).filter(
-            (tag) => tag.id !== tagId,
-          ),
-        };
-      });
-    } catch (error) {
-      console.error("Error deleting tag:", error);
-    }
+  const deleteTag = (id: string) => {
+    setSettings((prev) => ({
+      ...prev,
+      businessTags: prev.businessTags.filter((t) => t.id !== id),
+    }));
+  };
+
+  // File type operations
+  const addFileType = (type: "image" | "video", extension: string) => {
+    const key = type === "image" ? "allowedImageTypes" : "allowedVideoTypes";
+    setSettings((prev) => ({
+      ...prev,
+      [key]: [...prev[key], extension],
+    }));
+  };
+
+  const removeFileType = (type: "image" | "video", extension: string) => {
+    const key = type === "image" ? "allowedImageTypes" : "allowedVideoTypes";
+    setSettings((prev) => ({
+      ...prev,
+      [key]: prev[key].filter((t) => t !== extension),
+    }));
+  };
+
+  const removeAIVariable = (index: number) => {
+    setSettings((prev) => ({
+      ...prev,
+      aiVariables: prev.aiVariables.filter((_, i) => i !== index),
+    }));
   };
 
   return (
@@ -376,11 +319,11 @@ export default function Settings() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            {/* Sidebar */}
+            {/* Sidebar Navigation */}
             <Card className="lg:col-span-1">
               <CardContent className="p-4">
                 <nav className="space-y-1">
-                  {tabs.map((tab) => {
+                  {navigationTabs.map((tab) => {
                     const Icon = tab.icon;
                     return (
                       <div
@@ -409,7 +352,7 @@ export default function Settings() {
             </Card>
 
             {/* Settings Content */}
-            <div className="lg:col-span-3 space-y-6 min-w-0 overflow-x-hidden">
+            <div className="lg:col-span-3 space-y-6">
               {/* General Settings */}
               {activeTab === "general" && (
                 <Card>
@@ -507,21 +450,50 @@ export default function Settings() {
                 </Card>
               )}
 
-              {/* AI Assistant */}
-              {activeTab === "ai" && (
+              {/* Project Settings */}
+              {activeTab === "project" && (
                 <Card>
                   <CardHeader>
-                    <CardTitle>AI Assistant</CardTitle>
+                    <CardTitle>Project Settings</CardTitle>
                     <CardDescription>
-                      Configure AI-powered project descriptions and prompts
+                      Configure how projects are handled
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-6">
+                  <CardContent className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label>Enable AI for Descriptions</Label>
+                        <Label>Auto-post to Facebook</Label>
                         <p className="text-sm text-muted-foreground">
-                          Use AI to generate professional project descriptions
+                          Automatically post completed projects to Facebook
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.autoPostFacebook}
+                        onCheckedChange={(checked) =>
+                          updateSetting("autoPostFacebook", checked)
+                        }
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label>Auto-post to Google My Business</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Automatically post completed projects to Google My
+                          Business
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.autoPostGoogleMyBusiness}
+                        onCheckedChange={(checked) =>
+                          updateSetting("autoPostGoogleMyBusiness", checked)
+                        }
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label>AI-generated descriptions</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Use AI to generate project descriptions
                         </p>
                       </div>
                       <Switch
@@ -531,9 +503,76 @@ export default function Settings() {
                         }
                       />
                     </div>
+                  </CardContent>
+                </Card>
+              )}
 
-                    <Separator />
+              {/* Integrations */}
+              {activeTab === "integrations" && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Integration Settings</CardTitle>
+                    <CardDescription>
+                      Connect with external services
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label>Facebook Connected</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Connect your Facebook account
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.facebookConnected}
+                        onCheckedChange={(checked) =>
+                          updateSetting("facebookConnected", checked)
+                        }
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label>Google My Business Connected</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Connect your Google My Business account
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.googleMyBusinessConnected}
+                        onCheckedChange={(checked) =>
+                          updateSetting("googleMyBusinessConnected", checked)
+                        }
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="goHighLevelApiKey">
+                        GoHighLevel API Key
+                      </Label>
+                      <Input
+                        id="goHighLevelApiKey"
+                        type="password"
+                        value={settings.goHighLevelApiKey}
+                        onChange={(e) =>
+                          updateSetting("goHighLevelApiKey", e.target.value)
+                        }
+                        placeholder="Enter your GoHighLevel API key"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
+              {/* AI Assistant */}
+              {activeTab === "ai" && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>AI Assistant</CardTitle>
+                    <CardDescription>
+                      Configure AI-powered features
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
                     <div>
                       <Label htmlFor="aiPromptTemplate">Prompt Template</Label>
                       <Textarea
@@ -545,12 +584,7 @@ export default function Settings() {
                         rows={4}
                         className="mt-2"
                       />
-                      <p className="text-sm text-muted-foreground mt-2">
-                        Use variables like {"{PROJECT_TYPE}"}, {"{ADDRESS}"},{" "}
-                        {"{SERVICES}"} in your template
-                      </p>
                     </div>
-
                     <div>
                       <Label htmlFor="aiInstructions">AI Instructions</Label>
                       <Textarea
@@ -563,11 +597,10 @@ export default function Settings() {
                         className="mt-2"
                       />
                     </div>
-
                     <div>
                       <Label>Available Variables</Label>
-                      <div className="flex flex-wrap gap-2">
-                        {settings?.aiVariables?.map((variable, index) => (
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {settings.aiVariables.map((variable, index) => (
                           <Badge
                             key={index}
                             variant="outline"
@@ -576,19 +609,7 @@ export default function Settings() {
                             {variable}
                             <span
                               className="cursor-pointer hover:bg-muted rounded-sm p-0.5 ml-1"
-                              onClick={() => {
-                                try {
-                                  const newVariables = (
-                                    settings?.aiVariables || []
-                                  ).filter((_, i) => i !== index);
-                                  updateSetting("aiVariables", newVariables);
-                                } catch (error) {
-                                  console.error(
-                                    "Error removing AI variable:",
-                                    error,
-                                  );
-                                }
-                              }}
+                              onClick={() => removeAIVariable(index)}
                             >
                               <X className="h-3 w-3" />
                             </span>
@@ -606,8 +627,7 @@ export default function Settings() {
                   <CardHeader>
                     <CardTitle>Webhooks</CardTitle>
                     <CardDescription>
-                      Configure webhooks to receive notifications about project
-                      events
+                      Configure webhook notifications
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -620,7 +640,7 @@ export default function Settings() {
                     </Button>
 
                     <div className="space-y-3">
-                      {settings?.webhooks?.map((webhook) => (
+                      {settings.webhooks.map((webhook) => (
                         <div key={webhook.id} className="p-3 border rounded-lg">
                           <div className="flex items-center justify-between">
                             <div>
@@ -677,7 +697,7 @@ export default function Settings() {
                   <CardHeader>
                     <CardTitle>Business Tags</CardTitle>
                     <CardDescription>
-                      Organize and categorize your projects with custom tags
+                      Organize projects with custom tags
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -690,7 +710,7 @@ export default function Settings() {
                     </Button>
 
                     <div className="grid gap-3">
-                      {settings?.businessTags?.map((tag) => (
+                      {settings.businessTags.map((tag) => (
                         <div
                           key={tag.id}
                           className="flex items-center justify-between p-3 border rounded-lg"
@@ -702,22 +722,13 @@ export default function Settings() {
                             />
                             <span className="font-medium">{tag.name}</span>
                           </div>
-                          <div className="flex gap-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => setEditingTag(tag)}
-                            >
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => deleteTag(tag.id)}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => deleteTag(tag.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         </div>
                       ))}
                     </div>
@@ -732,38 +743,23 @@ export default function Settings() {
                     <CardHeader>
                       <CardTitle>File Type Management</CardTitle>
                       <CardDescription>
-                        Configure allowed file types and upload limits
+                        Configure allowed file types and sizes
                       </CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-6">
+                    <CardContent className="space-y-4">
                       <div>
                         <Label>Allowed Image Types</Label>
-                        <div className="flex flex-wrap gap-2 mb-2">
-                          {settings?.allowedImageTypes?.map((type, index) => (
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {settings.allowedImageTypes.map((type) => (
                             <Badge
-                              key={index}
+                              key={type}
                               variant="outline"
                               className="gap-1"
                             >
                               {type}
                               <span
                                 className="cursor-pointer hover:bg-muted rounded-sm p-0.5 ml-1"
-                                onClick={() => {
-                                  try {
-                                    const newTypes = (
-                                      settings?.allowedImageTypes || []
-                                    ).filter((_, i) => i !== index);
-                                    updateSetting(
-                                      "allowedImageTypes",
-                                      newTypes,
-                                    );
-                                  } catch (error) {
-                                    console.error(
-                                      "Error removing image type:",
-                                      error,
-                                    );
-                                  }
-                                }}
+                                onClick={() => removeFileType("image", type)}
                               >
                                 <X className="h-3 w-3" />
                               </span>
@@ -778,14 +774,9 @@ export default function Settings() {
                               );
                               if (
                                 newType &&
-                                !(settings.allowedImageTypes || []).includes(
-                                  newType,
-                                )
+                                !settings.allowedImageTypes.includes(newType)
                               ) {
-                                updateSetting("allowedImageTypes", [
-                                  ...(settings.allowedImageTypes || []),
-                                  newType,
-                                ]);
+                                addFileType("image", newType);
                               }
                             }}
                             className="gap-1"
@@ -798,32 +789,17 @@ export default function Settings() {
 
                       <div>
                         <Label>Allowed Video Types</Label>
-                        <div className="flex flex-wrap gap-2 mb-2">
-                          {settings?.allowedVideoTypes?.map((type, index) => (
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {settings.allowedVideoTypes.map((type) => (
                             <Badge
-                              key={index}
+                              key={type}
                               variant="outline"
                               className="gap-1"
                             >
                               {type}
                               <span
                                 className="cursor-pointer hover:bg-muted rounded-sm p-0.5 ml-1"
-                                onClick={() => {
-                                  try {
-                                    const newTypes = (
-                                      settings?.allowedVideoTypes || []
-                                    ).filter((_, i) => i !== index);
-                                    updateSetting(
-                                      "allowedVideoTypes",
-                                      newTypes,
-                                    );
-                                  } catch (error) {
-                                    console.error(
-                                      "Error removing video type:",
-                                      error,
-                                    );
-                                  }
-                                }}
+                                onClick={() => removeFileType("video", type)}
                               >
                                 <X className="h-3 w-3" />
                               </span>
@@ -838,14 +814,9 @@ export default function Settings() {
                               );
                               if (
                                 newType &&
-                                !(settings.allowedVideoTypes || []).includes(
-                                  newType,
-                                )
+                                !settings.allowedVideoTypes.includes(newType)
                               ) {
-                                updateSetting("allowedVideoTypes", [
-                                  ...(settings.allowedVideoTypes || []),
-                                  newType,
-                                ]);
+                                addFileType("video", newType);
                               }
                             }}
                             className="gap-1"
@@ -896,7 +867,7 @@ export default function Settings() {
                   <CardHeader>
                     <CardTitle>Notification Preferences</CardTitle>
                     <CardDescription>
-                      Choose how you want to be notified about important events
+                      Choose how you want to be notified
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -928,6 +899,34 @@ export default function Settings() {
                         }
                       />
                     </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label>Marketing Emails</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Receive marketing and promotional emails
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.marketingEmails}
+                        onCheckedChange={(checked) =>
+                          updateSetting("marketingEmails", checked)
+                        }
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label>System Alerts</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Receive important system notifications
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.systemAlerts}
+                        onCheckedChange={(checked) =>
+                          updateSetting("systemAlerts", checked)
+                        }
+                      />
+                    </div>
                   </CardContent>
                 </Card>
               )}
@@ -938,7 +937,7 @@ export default function Settings() {
                   <CardHeader>
                     <CardTitle>Security Settings</CardTitle>
                     <CardDescription>
-                      Manage your account security and privacy
+                      Manage your account security
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -946,7 +945,7 @@ export default function Settings() {
                       <div>
                         <Label>Two-Factor Authentication</Label>
                         <p className="text-sm text-muted-foreground">
-                          Add an extra layer of security to your account
+                          Add an extra layer of security
                         </p>
                       </div>
                       <Switch
@@ -954,6 +953,45 @@ export default function Settings() {
                         onCheckedChange={(checked) =>
                           updateSetting("twoFactorAuth", checked)
                         }
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="passwordRequirements">
+                        Password Requirements
+                      </Label>
+                      <Select
+                        value={settings.passwordRequirements}
+                        onValueChange={(value) =>
+                          updateSetting("passwordRequirements", value)
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="basic">Basic</SelectItem>
+                          <SelectItem value="strong">Strong</SelectItem>
+                          <SelectItem value="very-strong">
+                            Very Strong
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="sessionTimeout">
+                        Session Timeout (minutes)
+                      </Label>
+                      <Input
+                        id="sessionTimeout"
+                        type="number"
+                        value={settings.sessionTimeout}
+                        onChange={(e) =>
+                          updateSetting(
+                            "sessionTimeout",
+                            parseInt(e.target.value),
+                          )
+                        }
+                        className="w-32"
                       />
                     </div>
                   </CardContent>
@@ -966,10 +1004,33 @@ export default function Settings() {
                   <CardHeader>
                     <CardTitle>Billing Settings</CardTitle>
                     <CardDescription>
-                      Manage your billing information and preferences
+                      Manage your billing information
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="billingContact">Billing Contact</Label>
+                        <Input
+                          id="billingContact"
+                          value={settings.billingContact}
+                          onChange={(e) =>
+                            updateSetting("billingContact", e.target.value)
+                          }
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="billingEmail">Billing Email</Label>
+                        <Input
+                          id="billingEmail"
+                          type="email"
+                          value={settings.billingEmail}
+                          onChange={(e) =>
+                            updateSetting("billingEmail", e.target.value)
+                          }
+                        />
+                      </div>
+                    </div>
                     <div className="flex items-center justify-between">
                       <div>
                         <Label>Auto Renewal</Label>
@@ -1002,7 +1063,6 @@ export default function Settings() {
                     e.preventDefault();
                     const formData = new FormData(e.currentTarget);
                     const webhook = {
-                      id: editingWebhook?.id || Date.now().toString(),
                       name: formData.get("name") as string,
                       url: formData.get("url") as string,
                       events: (formData.get("events") as string)
@@ -1014,10 +1074,7 @@ export default function Settings() {
                     if (editingWebhook) {
                       updateWebhook(editingWebhook.id, webhook);
                     } else {
-                      setSettings((prev) => ({
-                        ...prev,
-                        webhooks: [...prev.webhooks, webhook],
-                      }));
+                      addWebhook(webhook);
                     }
 
                     setShowWebhookForm(false);
@@ -1089,33 +1146,20 @@ export default function Settings() {
           )}
 
           {/* Tag Form Modal */}
-          {(showTagForm || editingTag) && (
+          {showTagForm && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
               <div className="bg-background rounded-lg shadow-lg max-w-md w-full p-6">
-                <h3 className="text-lg font-semibold mb-4">
-                  {editingTag ? "Edit Tag" : "Add Tag"}
-                </h3>
+                <h3 className="text-lg font-semibold mb-4">Add Tag</h3>
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
                     const formData = new FormData(e.currentTarget);
                     const tag = {
-                      id: editingTag?.id || Date.now().toString(),
                       name: formData.get("name") as string,
                       color: formData.get("color") as string,
                     };
-
-                    if (editingTag) {
-                      updateTag(editingTag.id, tag);
-                    } else {
-                      setSettings((prev) => ({
-                        ...prev,
-                        businessTags: [...prev.businessTags, tag],
-                      }));
-                    }
-
+                    addTag(tag);
                     setShowTagForm(false);
-                    setEditingTag(null);
                   }}
                 >
                   <div className="space-y-4">
@@ -1124,7 +1168,6 @@ export default function Settings() {
                       <Input
                         id="tagName"
                         name="name"
-                        defaultValue={editingTag?.name}
                         placeholder="Tag Name"
                         required
                       />
@@ -1135,7 +1178,7 @@ export default function Settings() {
                         id="tagColor"
                         name="color"
                         type="color"
-                        defaultValue={editingTag?.color || "#3b82f6"}
+                        defaultValue="#3b82f6"
                         required
                       />
                     </div>
@@ -1144,16 +1187,11 @@ export default function Settings() {
                     <Button
                       type="button"
                       variant="outline"
-                      onClick={() => {
-                        setShowTagForm(false);
-                        setEditingTag(null);
-                      }}
+                      onClick={() => setShowTagForm(false)}
                     >
                       Cancel
                     </Button>
-                    <Button type="submit">
-                      {editingTag ? "Update" : "Add"} Tag
-                    </Button>
+                    <Button type="submit">Add Tag</Button>
                   </div>
                 </form>
               </div>
