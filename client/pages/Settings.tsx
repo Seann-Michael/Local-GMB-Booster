@@ -240,6 +240,22 @@ export default function Settings() {
     }
   }, []);
 
+  // Safety check to prevent rendering with incomplete settings
+  if (!settings || typeof settings !== "object") {
+    return (
+      <AppLayout>
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-muted-foreground">Loading settings...</p>
+            </div>
+          </div>
+        </div>
+      </AppLayout>
+    );
+  }
+
   const handleSave = async () => {
     setIsLoading(true);
     try {
