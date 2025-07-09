@@ -2259,12 +2259,98 @@ export default function Settings() {
               {/* Security */}
               {activeTab === "security" && (
                 <div className="space-y-6">
+                  {/* Security Score Overview */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Shield className="h-5 w-5" />
+                        Security Score
+                      </CardTitle>
+                      <CardDescription>
+                        Overall security assessment for your account
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-sm font-medium">
+                              Overall Security
+                            </span>
+                            <span className="text-sm font-medium text-green-600">
+                              85/100
+                            </span>
+                          </div>
+                          <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div
+                              className="bg-green-600 h-2 rounded-full"
+                              style={{ width: "85%" }}
+                            ></div>
+                          </div>
+                        </div>
+                        <div className="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-600">
+                          GOOD
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Security Alerts */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <AlertTriangle className="h-5 w-5" />
+                        Security Recommendations
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {!settings.twoFactorAuth && (
+                        <div className="flex items-center justify-between p-4 border border-yellow-200 bg-yellow-50 rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <AlertTriangle className="h-5 w-5 text-yellow-600" />
+                            <div>
+                              <div className="font-medium">
+                                Enable Two-Factor Authentication
+                              </div>
+                              <div className="text-sm text-muted-foreground">
+                                Add an extra layer of security to your account
+                              </div>
+                            </div>
+                          </div>
+                          <Button
+                            size="sm"
+                            onClick={() => updateSetting("twoFactorAuth", true)}
+                          >
+                            Enable MFA
+                          </Button>
+                        </div>
+                      )}
+
+                      <div className="flex items-center justify-between p-4 border border-green-200 bg-green-50 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <CheckCircle className="h-5 w-5 text-green-600" />
+                          <div>
+                            <div className="font-medium">
+                              Strong Password Policy
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              Regular password changes recommended
+                            </div>
+                          </div>
+                        </div>
+                        <Button variant="outline" size="sm">
+                          Change Password
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+
                   {/* Account Security */}
                   <Card>
                     <CardHeader>
-                      <CardTitle>Account Security</CardTitle>
+                      <CardTitle>Authentication Settings</CardTitle>
                       <CardDescription>
-                        Protect your admin account with security features
+                        Manage login security and access controls
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -2272,7 +2358,7 @@ export default function Settings() {
                         <div>
                           <Label>Two-Factor Authentication</Label>
                           <p className="text-sm text-muted-foreground">
-                            Add an extra layer of security to your account
+                            Add extra security with MFA
                           </p>
                         </div>
                         <Switch
@@ -2283,74 +2369,19 @@ export default function Settings() {
                         />
                       </div>
 
-                      {settings.twoFactorAuth && (
-                        <div className="p-4 border rounded-lg bg-green-50 border-green-200">
-                          <div className="flex items-center gap-2 mb-2">
-                            <CheckCircle className="h-4 w-4 text-green-600" />
-                            <span className="text-sm font-medium text-green-800">
-                              Two-Factor Authentication Enabled
-                            </span>
-                          </div>
-                          <p className="text-sm text-green-700 mb-3">
-                            Your account is protected with 2FA using your mobile
-                            device.
-                          </p>
-                          <div className="flex gap-2">
-                            <Button variant="outline" size="sm">
-                              View Recovery Codes
-                            </Button>
-                            <Button variant="outline" size="sm">
-                              Change Device
-                            </Button>
-                          </div>
-                        </div>
-                      )}
-
-                      {!settings.twoFactorAuth && (
-                        <div className="p-4 border rounded-lg bg-yellow-50 border-yellow-200">
-                          <div className="flex items-center gap-2 mb-2">
-                            <AlertTriangle className="h-4 w-4 text-yellow-600" />
-                            <span className="text-sm font-medium text-yellow-800">
-                              Two-Factor Authentication Disabled
-                            </span>
-                          </div>
-                          <p className="text-sm text-yellow-700 mb-3">
-                            Your account is vulnerable. Enable 2FA for better
-                            security.
-                          </p>
-                          <Button
-                            size="sm"
-                            className="bg-yellow-600 hover:bg-yellow-700"
-                          >
-                            Enable 2FA
-                          </Button>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-
-                  {/* Password Security */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Password Security</CardTitle>
-                      <CardDescription>
-                        Manage your password and security requirements
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div>
-                        <Label>Current Password Strength</Label>
-                        <div className="mt-2 space-y-2">
-                          <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div
-                              className="bg-green-600 h-2 rounded-full"
-                              style={{ width: "85%" }}
-                            ></div>
-                          </div>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <Label>Remember Login</Label>
                           <p className="text-sm text-muted-foreground">
-                            Strong password • Last changed 45 days ago
+                            Stay logged in for 7 days
                           </p>
                         </div>
+                        <Switch
+                          checked={settings.rememberLogin || false}
+                          onCheckedChange={(checked) =>
+                            updateSetting("rememberLogin", checked)
+                          }
+                        />
                       </div>
 
                       <div className="pt-4 border-t">
@@ -2358,36 +2389,6 @@ export default function Settings() {
                           <Shield className="h-4 w-4" />
                           Change Password
                         </Button>
-                      </div>
-
-                      <div>
-                        <Label htmlFor="passwordRequirements">
-                          Password Requirements for Team
-                        </Label>
-                        <Select
-                          value={settings.passwordRequirements}
-                          onValueChange={(value) =>
-                            updateSetting("passwordRequirements", value)
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="basic">
-                              Basic (8+ characters)
-                            </SelectItem>
-                            <SelectItem value="strong">
-                              Strong (12+ chars, mixed case, numbers)
-                            </SelectItem>
-                            <SelectItem value="very-strong">
-                              Very Strong (16+ chars, special characters)
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          Applies to all team members you invite
-                        </p>
                       </div>
                     </CardContent>
                   </Card>
@@ -2397,7 +2398,7 @@ export default function Settings() {
                     <CardHeader>
                       <CardTitle>Session Management</CardTitle>
                       <CardDescription>
-                        Control how long you stay logged in
+                        Monitor active sessions and control access
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -2420,25 +2421,20 @@ export default function Settings() {
                           max="480"
                         />
                         <p className="text-sm text-muted-foreground mt-1">
-                          You'll be automatically logged out after this time
+                          Auto logout after inactivity
                         </p>
                       </div>
 
-                      <div className="pt-4 border-t">
-                        <h4 className="font-medium mb-3">Active Sessions</h4>
-                        <div className="space-y-3">
+                      <div className="space-y-4">
+                        <h4 className="font-medium">Current Sessions</h4>
+                        <div className="space-y-2">
                           <div className="flex items-center justify-between p-3 border rounded-lg">
                             <div className="flex items-center gap-3">
-                              <div className="h-8 w-8 bg-green-100 rounded-full flex items-center justify-center">
-                                <Monitor className="h-4 w-4 text-green-600" />
-                              </div>
+                              <Monitor className="h-4 w-4 text-green-600" />
                               <div>
                                 <p className="font-medium">Current Session</p>
                                 <p className="text-sm text-muted-foreground">
-                                  Chrome on Windows • New York, NY
-                                </p>
-                                <p className="text-xs text-muted-foreground">
-                                  Started 2 hours ago
+                                  Chrome • Active
                                 </p>
                               </div>
                             </div>
@@ -2447,23 +2443,18 @@ export default function Settings() {
 
                           <div className="flex items-center justify-between p-3 border rounded-lg">
                             <div className="flex items-center gap-3">
-                              <div className="h-8 w-8 bg-gray-100 rounded-full flex items-center justify-center">
-                                <Smartphone className="h-4 w-4 text-gray-600" />
-                              </div>
+                              <Smartphone className="h-4 w-4 text-gray-600" />
                               <div>
                                 <p className="font-medium">Mobile Session</p>
                                 <p className="text-sm text-muted-foreground">
-                                  Safari on iPhone • Last active 1 hour ago
-                                </p>
-                                <p className="text-xs text-muted-foreground">
-                                  Started yesterday
+                                  Safari • 1 hour ago
                                 </p>
                               </div>
                             </div>
                             <Button
                               variant="outline"
                               size="sm"
-                              className="text-red-600 hover:text-red-700"
+                              className="text-red-600"
                             >
                               Revoke
                             </Button>
@@ -2473,55 +2464,12 @@ export default function Settings() {
                     </CardContent>
                   </Card>
 
-                  {/* API Security */}
+                  {/* Security Events */}
                   <Card>
                     <CardHeader>
-                      <CardTitle>API Security</CardTitle>
+                      <CardTitle>Security Events</CardTitle>
                       <CardDescription>
-                        Manage API keys and access tokens
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="p-4 border rounded-lg">
-                        <div className="flex items-center justify-between mb-2">
-                          <div>
-                            <h4 className="font-medium">
-                              Personal Access Token
-                            </h4>
-                            <p className="text-sm text-muted-foreground">
-                              For API access and integrations
-                            </p>
-                          </div>
-                          <Badge variant="outline">Active</Badge>
-                        </div>
-                        <div className="font-mono text-sm bg-gray-100 p-2 rounded border">
-                          sk_live_51J...abc123 • Created Jan 15, 2024
-                        </div>
-                        <div className="flex gap-2 mt-3">
-                          <Button variant="outline" size="sm">
-                            Regenerate Token
-                          </Button>
-                          <Button variant="outline" size="sm">
-                            Revoke Access
-                          </Button>
-                        </div>
-                      </div>
-
-                      <div className="pt-4 border-t">
-                        <Button className="gap-2">
-                          <Plus className="h-4 w-4" />
-                          Create New API Key
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Security Audit Log */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Security Activity</CardTitle>
-                      <CardDescription>
-                        Recent security events for your account
+                        Recent security activity and threats detected
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -2530,22 +2478,10 @@ export default function Settings() {
                           <CheckCircle className="h-4 w-4 text-green-500" />
                           <div className="flex-1">
                             <p className="text-sm font-medium">
-                              Successful login
+                              Successful Login
                             </p>
                             <p className="text-xs text-muted-foreground">
-                              Chrome on Windows from New York, NY • 2 hours ago
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-3 p-3 border rounded-lg">
-                          <Shield className="h-4 w-4 text-blue-500" />
-                          <div className="flex-1">
-                            <p className="text-sm font-medium">
-                              Password changed
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              Password updated successfully • 45 days ago
+                              Chrome on Windows • 2 hours ago
                             </p>
                           </div>
                         </div>
@@ -2554,10 +2490,22 @@ export default function Settings() {
                           <AlertTriangle className="h-4 w-4 text-yellow-500" />
                           <div className="flex-1">
                             <p className="text-sm font-medium">
-                              Failed login attempt
+                              Failed Login Attempt
                             </p>
                             <p className="text-xs text-muted-foreground">
-                              Incorrect password from unknown IP • 3 days ago
+                              Unknown device • 3 days ago
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-3 p-3 border rounded-lg">
+                          <Shield className="h-4 w-4 text-blue-500" />
+                          <div className="flex-1">
+                            <p className="text-sm font-medium">
+                              Password Changed
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              Successfully updated • 45 days ago
                             </p>
                           </div>
                         </div>
@@ -2566,8 +2514,64 @@ export default function Settings() {
                       <div className="pt-4 border-t">
                         <Button variant="outline" size="sm" className="gap-2">
                           <Download className="h-4 w-4" />
-                          Download Security Log
+                          Export Security Log
                         </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Privacy Settings */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Privacy & Data Protection</CardTitle>
+                      <CardDescription>
+                        Control how your data is handled and monitored
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <Label>Activity Logging</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Track user actions for security
+                          </p>
+                        </div>
+                        <Switch
+                          checked={settings.activityLogging !== false}
+                          onCheckedChange={(checked) =>
+                            updateSetting("activityLogging", checked)
+                          }
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <Label>Session Monitoring</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Monitor for suspicious activity
+                          </p>
+                        </div>
+                        <Switch
+                          checked={settings.sessionMonitoring !== false}
+                          onCheckedChange={(checked) =>
+                            updateSetting("sessionMonitoring", checked)
+                          }
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <Label>Data Encryption</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Encrypt sensitive data locally
+                          </p>
+                        </div>
+                        <Switch
+                          checked={settings.dataEncryption !== false}
+                          onCheckedChange={(checked) =>
+                            updateSetting("dataEncryption", checked)
+                          }
+                        />
                       </div>
                     </CardContent>
                   </Card>
