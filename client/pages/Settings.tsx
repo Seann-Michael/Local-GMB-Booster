@@ -2421,7 +2421,7 @@ export default function Settings() {
                         <Input
                           id="sessionTimeout"
                           type="number"
-                          value={settings.sessionTimeout}
+                          value={settings?.sessionTimeout || 60}
                           onChange={(e) =>
                             updateSetting(
                               "sessionTimeout",
