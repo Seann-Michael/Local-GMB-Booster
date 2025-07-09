@@ -1522,7 +1522,7 @@ export default function Settings() {
                             checked={settings?.messageTypes?.info || false}
                             onCheckedChange={(checked) => {
                               const newMessageTypes = {
-                                ...settings.messageTypes,
+                                ...(settings?.messageTypes || {}),
                                 info: checked,
                               };
                               updateSetting("messageTypes", newMessageTypes);
