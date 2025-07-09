@@ -77,12 +77,26 @@ import NotificationPreferences from "./pages/NotificationPreferences";
 
 const queryClient = new QueryClient();
 
+// PWA Service Worker Registration
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+    .then((registration) => {
+      console.log('Service Worker registered:', registration);
+      analytics.track('service_worker_registered');
+    })
+    .catch((error) => {
+      console.error('Service Worker registration failed:', error);
+      analytics.trackError(error);
+    });
+}
+
 const App = () => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <TooltipProvider>
-          <Sonner />
+        <ThemeProvider defaultTheme="system" storageKey="gmb-booster-theme">
+          <TooltipProvider>
+            <Sonner />
           <Suspense
             fallback={
               <div className="min-h-screen bg-background">
