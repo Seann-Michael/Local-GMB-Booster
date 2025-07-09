@@ -98,12 +98,6 @@ export default function ReviewGate() {
     setRating(newRating);
     if (newRating >= (reviewRequest?.threshold || 4)) {
       setRedirectToGoogle(true);
-      // Generate enhanced review immediately when high rating is given
-      if (reviewRequest) {
-        const enhancedText = generateSeoReview("", reviewRequest);
-        setSeoReviewText(enhancedText);
-        setShowSeoVersion(true);
-      }
     } else {
       setRedirectToGoogle(false);
       setShowSeoVersion(false);
