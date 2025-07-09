@@ -67,6 +67,109 @@ export class FileOptimizer {
   }
 
   /**
+   * Validate file before processing
+   */
+  static validateFile(file: File): { valid: boolean; error?: string } {
+    // Check file size limits
+    if (file.type.startsWith("image/") && file.size > this.MAX_IMAGE_SIZE) {
+      return {
+        valid: false,
+        error: `Image file too large. Maximum size is ${formatFileSize(this.MAX_IMAGE_SIZE)}`,
+      };
+    }
+
+    if (file.type.startsWith("video/") && file.size > this.MAX_VIDEO_SIZE) {
+      return {
+        valid: false,
+        error: `Video file too large. Maximum size is ${formatFileSize(this.MAX_VIDEO_SIZE)}`,
+      };
+    }
+
+    if (
+      !file.type.startsWith("image/") &&
+      !file.type.startsWith("video/") &&
+      file.size > this.MAX_DOCUMENT_SIZE
+    ) {
+      return {
+        valid: false,
+        error: `Document file too large. Maximum size is ${formatFileSize(this.MAX_DOCUMENT_SIZE)}`,
+      };
+    }
+
+    // Check file type
+    const allowedTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/webp",
+      "image/avif",
+      "image/gif",
+      "video/mp4",
+      "video/webm",
+      "video/mov",
+      "video/avi",
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ];
+
+    if (
+      !allowedTypes.some((type) =>
+        file.type.toLowerCase().includes(type.split("/")[1]),
+      )
+    ) {
+      return { valid: false, error: `File type ${file.type} is not supported` };
+    }
+
+    return { valid: true };
+  }
+
+  /**
+   * Check localStorage quota and available space
+   */
+  static checkStorageQuota(): {
+    available: boolean;
+    usedSpace: number;
+    error?: string;
+  } {
+    try {
+      const testKey = "__storage_test__";
+      const testData = "x".repeat(1024); // 1KB test
+
+      localStorage.setItem(testKey, testData);
+      localStorage.removeItem(testKey);
+
+      // Estimate used space
+      let usedSpace = 0;
+      for (let key in localStorage) {
+        if (localStorage.hasOwnProperty(key)) {
+          usedSpace += localStorage[key].length + key.length;
+        }
+      }
+
+      // Conservative estimate: assume 5MB limit, warn at 80%
+      const estimatedLimit = 5 * 1024 * 1024;
+      const warningThreshold = estimatedLimit * 0.8;
+
+      if (usedSpace > warningThreshold) {
+        return {
+          available: false,
+          usedSpace,
+          error: `Storage quota approaching limit. Used: ${formatFileSize(usedSpace)}`,
+        };
+      }
+
+      return { available: true, usedSpace };
+    } catch (error) {
+      return {
+        available: false,
+        usedSpace: 0,
+        error: "Storage quota exceeded or unavailable",
+      };
+    }
+  }
+
+  /**
    * Detect optimal format based on browser support using proper feature detection
    */
   static async detectOptimalImageFormat(): Promise<"avif" | "webp" | "jpeg"> {
