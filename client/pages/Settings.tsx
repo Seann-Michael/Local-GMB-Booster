@@ -233,6 +233,66 @@ const defaultSettings: SettingsData = {
   reviewEmailTemplate:
     "Hi {CUSTOMER_NAME}, we'd love to hear about your experience with our {PROJECT_TYPE} project!",
   minimumProjectValue: 500,
+  // Users
+  users: [
+    {
+      id: "1",
+      name: "Joe Smith",
+      email: "joe@joespizza.com",
+      role: "owner",
+      status: "active",
+      lastLogin: "2024-01-15",
+      permissions: ["all"],
+    },
+    {
+      id: "2",
+      name: "Maria Garcia",
+      email: "maria@joespizza.com",
+      role: "admin",
+      status: "active",
+      lastLogin: "2024-01-14",
+      permissions: ["manage_projects", "manage_billing", "manage_users"],
+    },
+    {
+      id: "3",
+      name: "Mike Johnson",
+      email: "mike@joespizza.com",
+      role: "editor",
+      status: "active",
+      lastLogin: "2024-01-13",
+      permissions: ["manage_projects", "view_reports"],
+    },
+  ],
+  // Enhanced Billing
+  creditCard: {
+    last4: "4242",
+    brand: "Visa",
+    expMonth: 12,
+    expYear: 2025,
+  },
+  invoices: [
+    {
+      id: "inv_001",
+      date: "2024-01-01",
+      amount: 49.0,
+      status: "paid",
+      downloadUrl: "/api/invoices/inv_001/download",
+    },
+    {
+      id: "inv_002",
+      date: "2023-12-01",
+      amount: 49.0,
+      status: "paid",
+      downloadUrl: "/api/invoices/inv_002/download",
+    },
+    {
+      id: "inv_003",
+      date: "2023-11-01",
+      amount: 49.0,
+      status: "paid",
+      downloadUrl: "/api/invoices/inv_003/download",
+    },
+  ],
 };
 
 export default function Settings() {
