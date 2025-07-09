@@ -18,13 +18,12 @@ const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
 const EditProject = lazy(() => import("./pages/EditProject"));
 const Gallery = lazy(() => import("./pages/Gallery"));
 const Settings = lazy(() => import("./pages/Settings"));
-const SecurityDashboard = lazy(() => import("./pages/SecurityDashboard"));
 
 import SuperAdmin from "./pages/SuperAdmin";
 import BusinessDetail from "./pages/BusinessDetail";
 import BusinessManagement from "./pages/BusinessManagement";
 import UserManagement from "./pages/UserManagement";
-import Notifications from "./pages/Notifications";
+
 import Profile from "./pages/Profile";
 import PublicProject from "./pages/PublicProject";
 import SignIn from "./pages/SignIn";
