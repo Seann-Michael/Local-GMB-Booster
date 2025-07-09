@@ -633,6 +633,61 @@ export default function Settings() {
                             updateSetting("businessName", e.target.value)
                           }
                         />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          This name will appear in the business selector
+                        </p>
+                      </div>
+                      <div>
+                        <Label htmlFor="businessType">Business Type</Label>
+                        <Select
+                          value={settings.businessType || ""}
+                          onValueChange={(value) =>
+                            updateSetting("businessType", value)
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select business type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="restaurant">
+                              Restaurant
+                            </SelectItem>
+                            <SelectItem value="retail">Retail Store</SelectItem>
+                            <SelectItem value="automotive">
+                              Automotive
+                            </SelectItem>
+                            <SelectItem value="healthcare">
+                              Healthcare
+                            </SelectItem>
+                            <SelectItem value="beauty">Beauty & Spa</SelectItem>
+                            <SelectItem value="fitness">
+                              Fitness & Gym
+                            </SelectItem>
+                            <SelectItem value="real-estate">
+                              Real Estate
+                            </SelectItem>
+                            <SelectItem value="legal">
+                              Legal Services
+                            </SelectItem>
+                            <SelectItem value="financial">
+                              Financial Services
+                            </SelectItem>
+                            <SelectItem value="home-services">
+                              Home Services
+                            </SelectItem>
+                            <SelectItem value="professional">
+                              Professional Services
+                            </SelectItem>
+                            <SelectItem value="education">Education</SelectItem>
+                            <SelectItem value="entertainment">
+                              Entertainment
+                            </SelectItem>
+                            <SelectItem value="nonprofit">
+                              Non-Profit
+                            </SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
                       <div>
                         <Label htmlFor="contactName">Contact Name</Label>
@@ -677,14 +732,25 @@ export default function Settings() {
                       </div>
                       <div>
                         <Label htmlFor="address">Business Address</Label>
-                        <Input
-                          id="address"
-                          value={settings.address || ""}
-                          onChange={(e) =>
-                            updateSetting("address", e.target.value)
-                          }
-                          placeholder="Use Google autocomplete"
-                        />
+                        <div className="relative">
+                          <Input
+                            id="address"
+                            value={settings.address || ""}
+                            onChange={(e) =>
+                              updateSetting("address", e.target.value)
+                            }
+                            placeholder="Start typing address for Google autocomplete..."
+                            className="pr-10"
+                          />
+                          <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                            <Badge variant="outline" className="text-xs">
+                              Google
+                            </Badge>
+                          </div>
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Address with Google autocomplete integration
+                        </p>
                       </div>
                       <div>
                         <Label htmlFor="city">City</Label>
