@@ -101,6 +101,7 @@ export default function SuperAdminBroadcast() {
   const [editingMessage, setEditingMessage] = useState<BroadcastMessage | null>(
     null,
   );
+  const [showPreview, setShowPreview] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState("all");
