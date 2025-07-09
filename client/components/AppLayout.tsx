@@ -63,7 +63,6 @@ import {
 } from "@/lib/auth";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 interface AppLayoutProps {
   children: ReactNode;
