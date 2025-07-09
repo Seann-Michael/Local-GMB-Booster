@@ -798,6 +798,16 @@ export function AppLayout({ children }: AppLayoutProps) {
           <Breadcrumbs />
         </div>
 
+        {/* Contextual Header */}
+        <div
+          className={cn(
+            "transition-all duration-300",
+            sidebarCollapsed ? "md:ml-16" : "md:ml-72",
+          )}
+        >
+          <ContextualHeader />
+        </div>
+
         {/* Page Content */}
         <main
           className={cn(
@@ -807,6 +817,8 @@ export function AppLayout({ children }: AppLayoutProps) {
           style={{ paddingBottom: "calc(80px + env(safe-area-inset-bottom))" }}
         >
           {children}
+          {/* Quick Action Bar */}
+          <QuickActionBar />
         </main>
 
         {/* Mobile Bottom Navigation - Fixed with safe area support */}
