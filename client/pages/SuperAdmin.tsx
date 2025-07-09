@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SuperAdminLayout } from "@/components/SuperAdminLayout";
-import { BroadcastAlert } from "@/components/BroadcastAlert";
+import { EnhancedBroadcastAlert } from "@/components/EnhancedBroadcastAlert";
 import {
   Users,
   Activity,
