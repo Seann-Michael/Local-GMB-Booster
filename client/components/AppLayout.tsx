@@ -740,6 +740,12 @@ export function AppLayout({ children }: AppLayoutProps) {
                       <span>Profile</span>
                     </Link>
                   </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/ideas" className="flex items-center">
+                      <Lightbulb className="mr-2 h-4 w-4" />
+                      <span>Ideas & Roadmap</span>
+                    </Link>
+                  </DropdownMenuItem>
                   {showSuperAdmin && (
                     <DropdownMenuItem asChild>
                       <Link to="/super-admin" className="flex items-center">
