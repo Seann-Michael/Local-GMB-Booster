@@ -43,7 +43,9 @@ class AnalyticsService {
   private init() {
     try {
       // Check if analytics is enabled (GDPR compliance)
-      this.isEnabled = localStorage.getItem("analytics-enabled") !== "false";
+      this.isEnabled =
+        typeof window !== "undefined" &&
+        localStorage.getItem("analytics-enabled") !== "false";
 
       if (!this.isEnabled) return;
 
@@ -75,8 +77,13 @@ class AnalyticsService {
   }
 
   private getUserId(): string | undefined {
-    const profile = JSON.parse(localStorage.getItem("userProfile") || "{}");
-    return profile.id || profile.email;
+    try {
+      if (typeof window === "undefined") return undefined;
+      const profile = JSON.parse(localStorage.getItem("userProfile") || "{}");
+      return profile.id || profile.email;
+    } catch {
+      return undefined;
+    }
   }
 
   // Public API
@@ -325,6 +332,8 @@ class AnalyticsService {
 
   private storeLocally(data: any) {
     try {
+      if (typeof window === "undefined") return;
+
       const existing = JSON.parse(
         localStorage.getItem("analytics-backup") || "[]",
       );
@@ -341,13 +350,17 @@ class AnalyticsService {
   // Privacy controls
   enableAnalytics() {
     this.isEnabled = true;
-    localStorage.setItem("analytics-enabled", "true");
+    if (typeof window !== "undefined") {
+      localStorage.setItem("analytics-enabled", "true");
+    }
     this.init();
   }
 
   disableAnalytics() {
     this.isEnabled = false;
-    localStorage.setItem("analytics-enabled", "false");
+    if (typeof window !== "undefined") {
+      localStorage.setItem("analytics-enabled", "false");
+    }
     this.eventQueue = [];
     this.performanceQueue = [];
     this.errorQueue = [];
