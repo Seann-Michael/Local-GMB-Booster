@@ -241,6 +241,7 @@ const defaultSettings: SettingsData = {
   aiPromptForDescriptions: true,
   aiProjectRewritePrompt:
     "Rewrite this project description to be more engaging and professional. Highlight the key benefits and quality of work while maintaining the original facts and details.",
+  autoArchiveDays: 30,
   facebookConnected: false,
   googleMyBusinessConnected: true,
   goHighLevelApiKey: "",
