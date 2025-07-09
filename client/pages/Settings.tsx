@@ -944,7 +944,7 @@ export default function Settings() {
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          {settings.googleMyBusinessConnected && (
+                          {settings?.googleMyBusinessConnected && (
                             <Badge variant="default" className="gap-1">
                               <CheckCircle className="h-3 w-3" />
                               Connected
@@ -952,12 +952,12 @@ export default function Settings() {
                           )}
                           <Button
                             variant={
-                              settings.googleMyBusinessConnected
+                              settings?.googleMyBusinessConnected
                                 ? "outline"
                                 : "default"
                             }
                             onClick={() => {
-                              if (settings.googleMyBusinessConnected) {
+                              if (settings?.googleMyBusinessConnected) {
                                 updateSetting(
                                   "googleMyBusinessConnected",
                                   false,
@@ -975,7 +975,7 @@ export default function Settings() {
                             }}
                             className="gap-2"
                           >
-                            {settings.googleMyBusinessConnected ? (
+                            {settings?.googleMyBusinessConnected ? (
                               <>
                                 <X className="h-4 w-4" />
                                 Disconnect
