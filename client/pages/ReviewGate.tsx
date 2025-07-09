@@ -248,22 +248,22 @@ export default function ReviewGate() {
 
             {/* Enhanced Review */}
             {showSeoVersion && seoReviewText && (
-              <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                <div className="mb-3">
-                  <h4 className="font-medium text-gray-900 mb-1">
-                    Enhanced Version of Your Review
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-200">
+                <div className="mb-4">
+                  <h4 className="font-semibold text-blue-900 mb-2">
+                    ✨ Enhanced Version of Your Review
                   </h4>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-blue-700">
                     We've enhanced your review with location details and service
                     keywords that help other customers in{" "}
                     {reviewRequest.businessCity} find{" "}
                     {reviewRequest.businessName}.
                   </p>
                 </div>
-                <div className="bg-white p-3 rounded border text-sm mb-3">
+                <div className="bg-white p-4 rounded-lg border border-blue-200 text-sm mb-4 shadow-sm">
                   {seoReviewText}
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Button
                     onClick={() => {
                       copyToClipboard(seoReviewText);
@@ -271,7 +271,7 @@ export default function ReviewGate() {
                         window.open(reviewRequest.googleReviewUrl, "_blank");
                       }, 500);
                     }}
-                    className="w-full bg-gray-900 hover:bg-gray-800"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-md"
                   >
                     <Copy className="h-4 w-4 mr-2" />
                     Copy Enhanced & Continue to Google
@@ -285,7 +285,7 @@ export default function ReviewGate() {
                         window.open(reviewRequest.googleReviewUrl, "_blank");
                       }, 500);
                     }}
-                    className="w-full border-gray-300 text-gray-700 hover:bg-gray-50"
+                    className="w-full border-blue-300 text-blue-700 hover:bg-blue-50"
                   >
                     Use Original & Continue to Google
                     <ExternalLink className="h-4 w-4 ml-2" />
