@@ -93,6 +93,27 @@ interface BroadcastStats {
   averageEngagement: number;
 }
 
+interface MessageTemplate {
+  id: string;
+  name: string;
+  title: string;
+  content: string;
+  type: "info" | "warning" | "success" | "error";
+  category: "system" | "marketing" | "support" | "emergency";
+  variables: string[];
+  version: number;
+  isActive: boolean;
+  isDefault: boolean;
+  createdAt: string;
+  updatedAt: string;
+  createdBy: string;
+  approvalStatus: "draft" | "pending" | "approved" | "rejected";
+  approvedBy?: string;
+  approvedAt?: string;
+  usageCount: number;
+  description?: string;
+}
+
 export default function SuperAdminBroadcast() {
   const [messages, setMessages] = useState<BroadcastMessage[]>([]);
   const [stats, setStats] = useState<BroadcastStats>({
