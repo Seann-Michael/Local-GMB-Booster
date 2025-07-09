@@ -445,6 +445,315 @@ export default function Settings() {
                 </Card>
               )}
 
+              {activeTab === "integrations" && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Integration Settings</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label>Facebook Auto-Post</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Automatically post completed projects to Facebook
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.autoPostFacebook}
+                        onCheckedChange={(checked) =>
+                          updateSetting("autoPostFacebook", checked)
+                        }
+                      />
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label>Google My Business Auto-Post</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Automatically post completed projects to Google My
+                          Business
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.autoPostGoogleMyBusiness}
+                        onCheckedChange={(checked) =>
+                          updateSetting("autoPostGoogleMyBusiness", checked)
+                        }
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="goHighLevelApiKey">
+                        GoHighLevel API Key
+                      </Label>
+                      <Input
+                        id="goHighLevelApiKey"
+                        type="password"
+                        value={settings.goHighLevelApiKey}
+                        onChange={(e) =>
+                          updateSetting("goHighLevelApiKey", e.target.value)
+                        }
+                        placeholder="Enter your GoHighLevel API key"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {activeTab === "ai" && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>AI Assistant Settings</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label htmlFor="aiPromptTemplate">
+                        AI Prompt Template
+                      </Label>
+                      <Textarea
+                        id="aiPromptTemplate"
+                        value={settings.aiPromptTemplate}
+                        onChange={(e) =>
+                          updateSetting("aiPromptTemplate", e.target.value)
+                        }
+                        rows={3}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="aiInstructions">AI Instructions</Label>
+                      <Textarea
+                        id="aiInstructions"
+                        value={settings.aiInstructions}
+                        onChange={(e) =>
+                          updateSetting("aiInstructions", e.target.value)
+                        }
+                        rows={3}
+                      />
+                    </div>
+                    <div>
+                      <Label>Available Variables</Label>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {(settings.aiVariables || []).map((variable, index) => (
+                          <Badge key={index} variant="outline">
+                            {variable}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {activeTab === "webhooks" && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Webhooks</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <Button
+                      onClick={() => setShowWebhookForm(true)}
+                      className="gap-2"
+                    >
+                      <Plus className="h-4 w-4" />
+                      Add Webhook
+                    </Button>
+
+                    <div className="space-y-3">
+                      {(settings.webhooks || []).map((webhook) => (
+                        <div key={webhook.id} className="p-3 border rounded-lg">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <h4 className="font-medium">{webhook.name}</h4>
+                              <p className="text-sm text-muted-foreground">
+                                {webhook.url}
+                              </p>
+                              <div className="flex gap-1 mt-1">
+                                {(webhook.events || []).map((event) => (
+                                  <Badge
+                                    key={event}
+                                    variant="secondary"
+                                    className="text-xs"
+                                  >
+                                    {event}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                            <div className="flex gap-2">
+                              <Badge
+                                variant={
+                                  webhook.active ? "default" : "secondary"
+                                }
+                              >
+                                {webhook.active ? "Active" : "Inactive"}
+                              </Badge>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => removeWebhook(webhook.id)}
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {activeTab === "tags" && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Business Tags</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <Button
+                      onClick={() => setShowTagForm(true)}
+                      className="gap-2"
+                    >
+                      <Plus className="h-4 w-4" />
+                      Add Tag
+                    </Button>
+
+                    <div className="grid gap-3">
+                      {(settings.businessTags || []).map((tag) => (
+                        <div
+                          key={tag.id}
+                          className="flex items-center justify-between p-3 border rounded-lg"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div
+                              className="w-4 h-4 rounded-full"
+                              style={{ backgroundColor: tag.color }}
+                            />
+                            <span className="font-medium">{tag.name}</span>
+                          </div>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => removeTag(tag.id)}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {activeTab === "media" && (
+                <div className="space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>File Type Management</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div>
+                        <Label>Allowed Image Types</Label>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {(settings.allowedImageTypes || []).map((type) => (
+                            <Badge
+                              key={type}
+                              variant="outline"
+                              className="gap-1"
+                            >
+                              {type}
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-4 w-4 p-0"
+                                onClick={() => removeFileType("image", type)}
+                              >
+                                <X className="h-3 w-3" />
+                              </Button>
+                            </Badge>
+                          ))}
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              const newType = prompt(
+                                "Enter image file extension (e.g., .webp):",
+                              );
+                              if (newType) addFileType("image", newType);
+                            }}
+                            className="gap-1"
+                          >
+                            <Plus className="h-3 w-3" />
+                            Add Type
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label>Allowed Video Types</Label>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {(settings.allowedVideoTypes || []).map((type) => (
+                            <Badge
+                              key={type}
+                              variant="outline"
+                              className="gap-1"
+                            >
+                              {type}
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-4 w-4 p-0"
+                                onClick={() => removeFileType("video", type)}
+                              >
+                                <X className="h-3 w-3" />
+                              </Button>
+                            </Badge>
+                          ))}
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              const newType = prompt(
+                                "Enter video file extension (e.g., .mp4):",
+                              );
+                              if (newType) addFileType("video", newType);
+                            }}
+                            className="gap-1"
+                          >
+                            <Plus className="h-3 w-3" />
+                            Add Type
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="maxFileSize">
+                          Maximum File Size (MB)
+                        </Label>
+                        <Input
+                          id="maxFileSize"
+                          type="number"
+                          value={settings.maxFileSize}
+                          onChange={(e) =>
+                            updateSetting(
+                              "maxFileSize",
+                              parseInt(e.target.value),
+                            )
+                          }
+                          className="w-32"
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Metadata Settings</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <MetadataSettings />
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
               {activeTab === "notifications" && (
                 <Card>
                   <CardHeader>
