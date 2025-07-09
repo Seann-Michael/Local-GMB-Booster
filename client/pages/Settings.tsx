@@ -1387,46 +1387,73 @@ export default function Settings() {
               {/* Security */}
               {activeTab === "security" && (
                 <div className="space-y-6">
-                  {/* Security Overview */}
+                  {/* Account Security */}
                   <Card>
                     <CardHeader>
-                      <CardTitle>System Security Dashboard</CardTitle>
+                      <CardTitle>Account Security</CardTitle>
                       <CardDescription>
-                        Monitor and manage system-wide security settings
+                        Protect your admin account with security features
                       </CardDescription>
                     </CardHeader>
-                    <CardContent>
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div className="text-center p-4 border rounded-lg">
-                          <Shield className="h-8 w-8 mx-auto mb-2 text-green-500" />
-                          <div className="text-2xl font-bold text-green-600">
-                            Secure
-                          </div>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <Label>Two-Factor Authentication</Label>
                           <p className="text-sm text-muted-foreground">
-                            System Status
+                            Add an extra layer of security to your account
                           </p>
                         </div>
-
-                        <div className="text-center p-4 border rounded-lg">
-                          <AlertTriangle className="h-8 w-8 mx-auto mb-2 text-yellow-500" />
-                          <div className="text-2xl font-bold text-yellow-600">
-                            3
-                          </div>
-                          <p className="text-sm text-muted-foreground">
-                            Active Alerts
-                          </p>
-                        </div>
-
-                        <div className="text-center p-4 border rounded-lg">
-                          <Activity className="h-8 w-8 mx-auto mb-2 text-blue-500" />
-                          <div className="text-2xl font-bold text-blue-600">
-                            147
-                          </div>
-                          <p className="text-sm text-muted-foreground">
-                            Active Sessions
-                          </p>
-                        </div>
+                        <Switch
+                          checked={settings.twoFactorAuth}
+                          onCheckedChange={(checked) =>
+                            updateSetting("twoFactorAuth", checked)
+                          }
+                        />
                       </div>
+
+                      {settings.twoFactorAuth && (
+                        <div className="p-4 border rounded-lg bg-green-50 border-green-200">
+                          <div className="flex items-center gap-2 mb-2">
+                            <CheckCircle className="h-4 w-4 text-green-600" />
+                            <span className="text-sm font-medium text-green-800">
+                              Two-Factor Authentication Enabled
+                            </span>
+                          </div>
+                          <p className="text-sm text-green-700 mb-3">
+                            Your account is protected with 2FA using your mobile
+                            device.
+                          </p>
+                          <div className="flex gap-2">
+                            <Button variant="outline" size="sm">
+                              View Recovery Codes
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              Change Device
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+
+                      {!settings.twoFactorAuth && (
+                        <div className="p-4 border rounded-lg bg-yellow-50 border-yellow-200">
+                          <div className="flex items-center gap-2 mb-2">
+                            <AlertTriangle className="h-4 w-4 text-yellow-600" />
+                            <span className="text-sm font-medium text-yellow-800">
+                              Two-Factor Authentication Disabled
+                            </span>
+                          </div>
+                          <p className="text-sm text-yellow-700 mb-3">
+                            Your account is vulnerable. Enable 2FA for better
+                            security.
+                          </p>
+                          <Button
+                            size="sm"
+                            className="bg-yellow-600 hover:bg-yellow-700"
+                          >
+                            Enable 2FA
+                          </Button>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
 
