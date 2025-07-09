@@ -107,7 +107,7 @@ export function SuperAdminLayout({
     {
       label: "Message Templates",
       href: "/super-admin/templates",
-      icon: Template,
+      icon: FileText,
       active: location.pathname.startsWith("/super-admin/templates"),
     },
     {
