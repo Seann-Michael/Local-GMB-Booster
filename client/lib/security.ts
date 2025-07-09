@@ -166,36 +166,41 @@ export class SecureSession {
     user?: any;
     warningTime?: number;
   } {
-    const session = safeStorage.get(this.SESSION_KEY);
-    const lastActivity = safeStorage.get(this.ACTIVITY_KEY, 0);
+    try {
+      const session = safeStorage.get(this.SESSION_KEY);
+      const lastActivity = safeStorage.get(this.ACTIVITY_KEY, 0);
 
-    if (!session) {
+      if (!session) {
+        return { valid: false };
+      }
+
+      const now = Date.now();
+      const timeSinceActivity = now - (lastActivity || 0);
+
+      // Check if session expired
+      if (now > session.expiresAt || timeSinceActivity > this.MAX_IDLE_TIME) {
+        this.destroySession();
+        return { valid: false };
+      }
+
+      // Check if warning should be shown
+      const timeUntilExpiry = session.expiresAt - now;
+      const timeUntilIdleExpiry = this.MAX_IDLE_TIME - timeSinceActivity;
+      const soonestExpiry = Math.min(timeUntilExpiry, timeUntilIdleExpiry);
+
+      if (soonestExpiry <= this.WARNING_TIME) {
+        return {
+          valid: true,
+          user: session.user,
+          warningTime: soonestExpiry,
+        };
+      }
+
+      return { valid: true, user: session.user };
+    } catch (error) {
+      console.error("Session validation error:", error);
       return { valid: false };
     }
-
-    const now = Date.now();
-    const timeSinceActivity = now - lastActivity;
-
-    // Check if session expired
-    if (now > session.expiresAt || timeSinceActivity > this.MAX_IDLE_TIME) {
-      this.destroySession();
-      return { valid: false };
-    }
-
-    // Check if warning should be shown
-    const timeUntilExpiry = session.expiresAt - now;
-    const timeUntilIdleExpiry = this.MAX_IDLE_TIME - timeSinceActivity;
-    const soonestExpiry = Math.min(timeUntilExpiry, timeUntilIdleExpiry);
-
-    if (soonestExpiry <= this.WARNING_TIME) {
-      return {
-        valid: true,
-        user: session.user,
-        warningTime: soonestExpiry,
-      };
-    }
-
-    return { valid: true, user: session.user };
   }
 
   static extendSession(): void {
