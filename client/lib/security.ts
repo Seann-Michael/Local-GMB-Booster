@@ -8,14 +8,30 @@ export class CSRFProtection {
   private static HEADER_NAME = "X-CSRF-Token";
 
   static generateToken(): string {
-    const array = new Uint8Array(32);
-    crypto.getRandomValues(array);
-    const token = Array.from(array, (byte) =>
-      byte.toString(16).padStart(2, "0"),
-    ).join("");
+    try {
+      if (typeof crypto === "undefined" || !crypto.getRandomValues) {
+        // Fallback for environments without crypto API
+        const fallbackToken = Math.random().toString(36).repeat(2).slice(0, 64);
+        safeStorage.set(this.TOKEN_KEY, fallbackToken);
+        return fallbackToken;
+      }
 
-    safeStorage.set(this.TOKEN_KEY, token);
-    return token;
+      const array = new Uint8Array(32);
+      crypto.getRandomValues(array);
+      const token = Array.from(array, (byte) =>
+        byte.toString(16).padStart(2, "0"),
+      ).join("");
+
+      safeStorage.set(this.TOKEN_KEY, token);
+      return token;
+    } catch (error) {
+      console.error("CSRF token generation failed:", error);
+      // Return a fallback token
+      const fallbackToken =
+        Date.now().toString(36) + Math.random().toString(36);
+      safeStorage.set(this.TOKEN_KEY, fallbackToken);
+      return fallbackToken;
+    }
   }
 
   static getToken(): string | null {
