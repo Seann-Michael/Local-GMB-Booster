@@ -37,6 +37,11 @@ import {
   Edit,
   Trash2,
   X,
+  Star,
+  CreditCard,
+  ExternalLink,
+  CheckCircle,
+  AlertCircle,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -80,6 +85,14 @@ interface SettingsData {
   billingContact: string;
   billingEmail: string;
   autoRenewal: boolean;
+  currentPlan: string;
+  planFeatures: string[];
+  // Review Settings
+  reviewReminderEnabled: boolean;
+  reviewReminderDays: number;
+  autoRequestReviews: boolean;
+  reviewEmailTemplate: string;
+  minimumProjectValue: number;
 }
 
 interface WebhookItem {
@@ -105,6 +118,7 @@ const navigationTabs = [
   { id: "webhooks", label: "Webhooks", icon: Webhook },
   { id: "tags", label: "Tags", icon: Tag },
   { id: "media", label: "Media Settings", icon: Image },
+  { id: "reviews", label: "Review Settings", icon: Star },
   { id: "notifications", label: "Notifications", icon: Bell },
   { id: "security", label: "Security", icon: Shield },
   { id: "billing", label: "Billing", icon: DollarSign },
@@ -170,6 +184,19 @@ const defaultSettings: SettingsData = {
   billingContact: "Joe Smith",
   billingEmail: "billing@joespizza.com",
   autoRenewal: true,
+  currentPlan: "pro",
+  planFeatures: [
+    "Unlimited Projects",
+    "Advanced Analytics",
+    "Priority Support",
+  ],
+  // Review Settings
+  reviewReminderEnabled: true,
+  reviewReminderDays: 7,
+  autoRequestReviews: true,
+  reviewEmailTemplate:
+    "Hi {CUSTOMER_NAME}, we'd love to hear about your experience with our {PROJECT_TYPE} project!",
+  minimumProjectValue: 500,
 };
 
 export default function Settings() {
@@ -516,48 +543,173 @@ export default function Settings() {
                       Connect with external services
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label>Facebook Connected</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Connect your Facebook account
-                        </p>
+                  <CardContent className="space-y-6">
+                    {/* Facebook Integration */}
+                    <div className="p-4 border rounded-lg">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <span className="text-white font-bold text-sm">
+                              f
+                            </span>
+                          </div>
+                          <div>
+                            <h3 className="font-medium">Facebook</h3>
+                            <p className="text-sm text-muted-foreground">
+                              {settings.facebookConnected
+                                ? "Connected to your Facebook account"
+                                : "Connect to automatically post completed projects"}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {settings.facebookConnected && (
+                            <Badge variant="default" className="gap-1">
+                              <CheckCircle className="h-3 w-3" />
+                              Connected
+                            </Badge>
+                          )}
+                          <Button
+                            variant={
+                              settings.facebookConnected ? "outline" : "default"
+                            }
+                            onClick={() => {
+                              if (settings.facebookConnected) {
+                                updateSetting("facebookConnected", false);
+                                toast.success("Facebook disconnected");
+                              } else {
+                                updateSetting("facebookConnected", true);
+                                toast.success("Facebook connected");
+                              }
+                            }}
+                            className="gap-2"
+                          >
+                            {settings.facebookConnected ? (
+                              <>
+                                <X className="h-4 w-4" />
+                                Disconnect
+                              </>
+                            ) : (
+                              <>
+                                <ExternalLink className="h-4 w-4" />
+                                Connect Facebook
+                              </>
+                            )}
+                          </Button>
+                        </div>
                       </div>
-                      <Switch
-                        checked={settings.facebookConnected}
-                        onCheckedChange={(checked) =>
-                          updateSetting("facebookConnected", checked)
-                        }
-                      />
                     </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label>Google My Business Connected</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Connect your Google My Business account
-                        </p>
+
+                    {/* Google My Business Integration */}
+                    <div className="p-4 border rounded-lg">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center">
+                            <span className="text-white font-bold text-sm">
+                              G
+                            </span>
+                          </div>
+                          <div>
+                            <h3 className="font-medium">Google My Business</h3>
+                            <p className="text-sm text-muted-foreground">
+                              {settings.googleMyBusinessConnected
+                                ? "Connected to your Google My Business account"
+                                : "Connect to automatically post completed projects"}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {settings.googleMyBusinessConnected && (
+                            <Badge variant="default" className="gap-1">
+                              <CheckCircle className="h-3 w-3" />
+                              Connected
+                            </Badge>
+                          )}
+                          <Button
+                            variant={
+                              settings.googleMyBusinessConnected
+                                ? "outline"
+                                : "default"
+                            }
+                            onClick={() => {
+                              if (settings.googleMyBusinessConnected) {
+                                updateSetting(
+                                  "googleMyBusinessConnected",
+                                  false,
+                                );
+                                toast.success(
+                                  "Google My Business disconnected",
+                                );
+                              } else {
+                                updateSetting(
+                                  "googleMyBusinessConnected",
+                                  true,
+                                );
+                                toast.success("Google My Business connected");
+                              }
+                            }}
+                            className="gap-2"
+                          >
+                            {settings.googleMyBusinessConnected ? (
+                              <>
+                                <X className="h-4 w-4" />
+                                Disconnect
+                              </>
+                            ) : (
+                              <>
+                                <ExternalLink className="h-4 w-4" />
+                                Connect Google
+                              </>
+                            )}
+                          </Button>
+                        </div>
                       </div>
-                      <Switch
-                        checked={settings.googleMyBusinessConnected}
-                        onCheckedChange={(checked) =>
-                          updateSetting("googleMyBusinessConnected", checked)
-                        }
-                      />
                     </div>
-                    <div>
-                      <Label htmlFor="goHighLevelApiKey">
-                        GoHighLevel API Key
-                      </Label>
-                      <Input
-                        id="goHighLevelApiKey"
-                        type="password"
-                        value={settings.goHighLevelApiKey}
-                        onChange={(e) =>
-                          updateSetting("goHighLevelApiKey", e.target.value)
-                        }
-                        placeholder="Enter your GoHighLevel API key"
-                      />
+
+                    {/* GoHighLevel Integration */}
+                    <div className="p-4 border rounded-lg">
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+                            <span className="text-white font-bold text-sm">
+                              GH
+                            </span>
+                          </div>
+                          <div>
+                            <h3 className="font-medium">GoHighLevel</h3>
+                            <p className="text-sm text-muted-foreground">
+                              Connect your GoHighLevel CRM for lead management
+                            </p>
+                          </div>
+                        </div>
+                        <div>
+                          <Label htmlFor="goHighLevelApiKey">API Key</Label>
+                          <div className="flex gap-2 mt-1">
+                            <Input
+                              id="goHighLevelApiKey"
+                              type="password"
+                              value={settings.goHighLevelApiKey}
+                              onChange={(e) =>
+                                updateSetting(
+                                  "goHighLevelApiKey",
+                                  e.target.value,
+                                )
+                              }
+                              placeholder="Enter your GoHighLevel API key"
+                              className="flex-1"
+                            />
+                            <Button
+                              variant="outline"
+                              disabled={!settings.goHighLevelApiKey}
+                              onClick={() =>
+                                toast.success("Connection tested successfully")
+                              }
+                            >
+                              Test
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -861,6 +1013,150 @@ export default function Settings() {
                 </div>
               )}
 
+              {/* Review Settings */}
+              {activeTab === "reviews" && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Review Settings</CardTitle>
+                    <CardDescription>
+                      Configure automatic review requests and management
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label>Automatic Review Requests</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Automatically request reviews after project completion
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.autoRequestReviews}
+                        onCheckedChange={(checked) =>
+                          updateSetting("autoRequestReviews", checked)
+                        }
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label>Review Reminders</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Send reminder emails if no review is received
+                        </p>
+                      </div>
+                      <Switch
+                        checked={settings.reviewReminderEnabled}
+                        onCheckedChange={(checked) =>
+                          updateSetting("reviewReminderEnabled", checked)
+                        }
+                      />
+                    </div>
+
+                    {settings.reviewReminderEnabled && (
+                      <div>
+                        <Label htmlFor="reviewReminderDays">
+                          Reminder Frequency (days)
+                        </Label>
+                        <Input
+                          id="reviewReminderDays"
+                          type="number"
+                          value={settings.reviewReminderDays}
+                          onChange={(e) =>
+                            updateSetting(
+                              "reviewReminderDays",
+                              parseInt(e.target.value),
+                            )
+                          }
+                          className="w-32"
+                          min="1"
+                          max="30"
+                        />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Send reminders every {settings.reviewReminderDays}{" "}
+                          days
+                        </p>
+                      </div>
+                    )}
+
+                    <div>
+                      <Label htmlFor="minimumProjectValue">
+                        Minimum Project Value for Reviews ($)
+                      </Label>
+                      <Input
+                        id="minimumProjectValue"
+                        type="number"
+                        value={settings.minimumProjectValue}
+                        onChange={(e) =>
+                          updateSetting(
+                            "minimumProjectValue",
+                            parseInt(e.target.value),
+                          )
+                        }
+                        className="w-40"
+                        min="0"
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Only request reviews for projects above this value
+                      </p>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="reviewEmailTemplate">
+                        Review Request Email Template
+                      </Label>
+                      <Textarea
+                        id="reviewEmailTemplate"
+                        value={settings.reviewEmailTemplate}
+                        onChange={(e) =>
+                          updateSetting("reviewEmailTemplate", e.target.value)
+                        }
+                        rows={4}
+                        className="mt-2"
+                        placeholder="Hi {CUSTOMER_NAME}, we'd love to hear about your experience..."
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Available variables: {"{CUSTOMER_NAME}"},{" "}
+                        {"{PROJECT_TYPE}"}, {"{COMPLETION_DATE}"}
+                      </p>
+                    </div>
+
+                    <div className="p-4 bg-muted/20 rounded-lg">
+                      <h4 className="font-medium mb-2 flex items-center gap-2">
+                        <Star className="h-4 w-4 text-yellow-500" />
+                        Review Statistics
+                      </h4>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        <div>
+                          <div className="font-medium">Total Reviews</div>
+                          <div className="text-2xl font-bold text-primary">
+                            47
+                          </div>
+                        </div>
+                        <div>
+                          <div className="font-medium">Average Rating</div>
+                          <div className="text-2xl font-bold text-primary">
+                            4.8
+                          </div>
+                        </div>
+                        <div>
+                          <div className="font-medium">Response Rate</div>
+                          <div className="text-2xl font-bold text-primary">
+                            73%
+                          </div>
+                        </div>
+                        <div>
+                          <div className="font-medium">This Month</div>
+                          <div className="text-2xl font-bold text-primary">
+                            12
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
               {/* Notifications */}
               {activeTab === "notifications" && (
                 <Card>
@@ -1000,53 +1296,287 @@ export default function Settings() {
 
               {/* Billing */}
               {activeTab === "billing" && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Billing Settings</CardTitle>
-                    <CardDescription>
-                      Manage your billing information
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="billingContact">Billing Contact</Label>
-                        <Input
-                          id="billingContact"
-                          value={settings.billingContact}
-                          onChange={(e) =>
-                            updateSetting("billingContact", e.target.value)
+                <div className="space-y-6">
+                  {/* Current Plan */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Current Plan</CardTitle>
+                      <CardDescription>
+                        Manage your subscription and billing
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="p-4 border rounded-lg bg-primary/5">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h3 className="font-semibold text-lg capitalize">
+                              {settings.currentPlan} Plan
+                            </h3>
+                            <p className="text-sm text-muted-foreground">
+                              $49/month • Billed monthly
+                            </p>
+                          </div>
+                          <Badge variant="default">Active</Badge>
+                        </div>
+                        <div className="mt-4">
+                          <p className="text-sm font-medium mb-2">
+                            Plan Features:
+                          </p>
+                          <ul className="text-sm text-muted-foreground space-y-1">
+                            {settings.planFeatures.map((feature, index) => (
+                              <li
+                                key={index}
+                                className="flex items-center gap-2"
+                              >
+                                <CheckCircle className="h-3 w-3 text-green-500" />
+                                {feature}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Plan Options */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Available Plans</CardTitle>
+                      <CardDescription>
+                        Choose the plan that best fits your needs
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {/* Basic Plan */}
+                        <div
+                          className={`p-4 border rounded-lg ${settings.currentPlan === "basic" ? "border-primary bg-primary/5" : ""}`}
+                        >
+                          <div className="text-center">
+                            <h3 className="font-semibold">Basic</h3>
+                            <div className="text-2xl font-bold mt-2">
+                              $19
+                              <span className="text-sm text-muted-foreground">
+                                /mo
+                              </span>
+                            </div>
+                            <ul className="text-sm text-left mt-4 space-y-2">
+                              <li className="flex items-center gap-2">
+                                <CheckCircle className="h-3 w-3 text-green-500" />
+                                Up to 10 projects
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <CheckCircle className="h-3 w-3 text-green-500" />
+                                Basic reporting
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <CheckCircle className="h-3 w-3 text-green-500" />
+                                Email support
+                              </li>
+                            </ul>
+                            <Button
+                              variant={
+                                settings.currentPlan === "basic"
+                                  ? "outline"
+                                  : "default"
+                              }
+                              className="w-full mt-4"
+                              disabled={settings.currentPlan === "basic"}
+                              onClick={() =>
+                                updateSetting("currentPlan", "basic")
+                              }
+                            >
+                              {settings.currentPlan === "basic"
+                                ? "Current Plan"
+                                : "Select Basic"}
+                            </Button>
+                          </div>
+                        </div>
+
+                        {/* Pro Plan */}
+                        <div
+                          className={`p-4 border rounded-lg ${settings.currentPlan === "pro" ? "border-primary bg-primary/5" : ""}`}
+                        >
+                          <div className="text-center">
+                            <h3 className="font-semibold">Pro</h3>
+                            <div className="text-2xl font-bold mt-2">
+                              $49
+                              <span className="text-sm text-muted-foreground">
+                                /mo
+                              </span>
+                            </div>
+                            <ul className="text-sm text-left mt-4 space-y-2">
+                              <li className="flex items-center gap-2">
+                                <CheckCircle className="h-3 w-3 text-green-500" />
+                                Unlimited projects
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <CheckCircle className="h-3 w-3 text-green-500" />
+                                Advanced analytics
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <CheckCircle className="h-3 w-3 text-green-500" />
+                                Priority support
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <CheckCircle className="h-3 w-3 text-green-500" />
+                                AI features
+                              </li>
+                            </ul>
+                            <Button
+                              variant={
+                                settings.currentPlan === "pro"
+                                  ? "outline"
+                                  : "default"
+                              }
+                              className="w-full mt-4"
+                              disabled={settings.currentPlan === "pro"}
+                              onClick={() =>
+                                updateSetting("currentPlan", "pro")
+                              }
+                            >
+                              {settings.currentPlan === "pro"
+                                ? "Current Plan"
+                                : "Select Pro"}
+                            </Button>
+                          </div>
+                        </div>
+
+                        {/* Enterprise Plan */}
+                        <div
+                          className={`p-4 border rounded-lg ${settings.currentPlan === "enterprise" ? "border-primary bg-primary/5" : ""}`}
+                        >
+                          <div className="text-center">
+                            <h3 className="font-semibold">Enterprise</h3>
+                            <div className="text-2xl font-bold mt-2">
+                              $99
+                              <span className="text-sm text-muted-foreground">
+                                /mo
+                              </span>
+                            </div>
+                            <ul className="text-sm text-left mt-4 space-y-2">
+                              <li className="flex items-center gap-2">
+                                <CheckCircle className="h-3 w-3 text-green-500" />
+                                Everything in Pro
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <CheckCircle className="h-3 w-3 text-green-500" />
+                                Custom integrations
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <CheckCircle className="h-3 w-3 text-green-500" />
+                                Dedicated support
+                              </li>
+                              <li className="flex items-center gap-2">
+                                <CheckCircle className="h-3 w-3 text-green-500" />
+                                White-label options
+                              </li>
+                            </ul>
+                            <Button
+                              variant={
+                                settings.currentPlan === "enterprise"
+                                  ? "outline"
+                                  : "default"
+                              }
+                              className="w-full mt-4"
+                              disabled={settings.currentPlan === "enterprise"}
+                              onClick={() =>
+                                updateSetting("currentPlan", "enterprise")
+                              }
+                            >
+                              {settings.currentPlan === "enterprise"
+                                ? "Current Plan"
+                                : "Select Enterprise"}
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Billing Information */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Billing Information</CardTitle>
+                      <CardDescription>
+                        Manage your payment details and billing preferences
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="billingContact">
+                            Billing Contact
+                          </Label>
+                          <Input
+                            id="billingContact"
+                            value={settings.billingContact}
+                            onChange={(e) =>
+                              updateSetting("billingContact", e.target.value)
+                            }
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="billingEmail">Billing Email</Label>
+                          <Input
+                            id="billingEmail"
+                            type="email"
+                            value={settings.billingEmail}
+                            onChange={(e) =>
+                              updateSetting("billingEmail", e.target.value)
+                            }
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <Label>Auto Renewal</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Automatically renew your subscription
+                          </p>
+                        </div>
+                        <Switch
+                          checked={settings.autoRenewal}
+                          onCheckedChange={(checked) =>
+                            updateSetting("autoRenewal", checked)
                           }
                         />
                       </div>
-                      <div>
-                        <Label htmlFor="billingEmail">Billing Email</Label>
-                        <Input
-                          id="billingEmail"
-                          type="email"
-                          value={settings.billingEmail}
-                          onChange={(e) =>
-                            updateSetting("billingEmail", e.target.value)
-                          }
-                        />
+
+                      <div className="pt-4 border-t">
+                        <div className="flex flex-col sm:flex-row gap-3">
+                          <Button variant="outline" className="gap-2">
+                            <CreditCard className="h-4 w-4" />
+                            Update Payment Method
+                          </Button>
+                          <Button variant="outline" className="gap-2">
+                            <AlertCircle className="h-4 w-4" />
+                            Download Invoice
+                          </Button>
+                          <Button
+                            variant="destructive"
+                            className="gap-2"
+                            onClick={() => {
+                              if (
+                                confirm(
+                                  "Are you sure you want to cancel your subscription?",
+                                )
+                              ) {
+                                toast.success(
+                                  "Subscription canceled. Access continues until end of billing period.",
+                                );
+                              }
+                            }}
+                          >
+                            <X className="h-4 w-4" />
+                            Cancel Subscription
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label>Auto Renewal</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Automatically renew your subscription
-                        </p>
-                      </div>
-                      <Switch
-                        checked={settings.autoRenewal}
-                        onCheckedChange={(checked) =>
-                          updateSetting("autoRenewal", checked)
-                        }
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </div>
               )}
             </div>
           </div>
