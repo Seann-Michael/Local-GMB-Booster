@@ -537,37 +537,79 @@ export default function Ideas() {
             {/* Ideas List */}
             <div className="space-y-4">
               {filteredIdeas.map((idea) => (
-                <Card key={idea.id}>
+                <Card
+                  key={idea.id}
+                  className="hover:shadow-md transition-shadow"
+                >
                   <CardContent className="p-6">
                     <div className="flex gap-4">
                       {/* Vote Section */}
-                      <div className="flex flex-col items-center min-w-[60px]">
+                      <div className="flex flex-col items-center min-w-[80px]">
                         <Button
-                          variant={idea.userVoted ? "default" : "outline"}
+                          variant={
+                            idea.userVote === "up" ? "default" : "outline"
+                          }
                           size="sm"
-                          onClick={() => handleVote(idea.id)}
+                          onClick={() => handleVote(idea.id, "up")}
                           className="mb-2"
                         >
-                          <ChevronUp className="h-4 w-4" />
+                          <ThumbsUp className="h-4 w-4" />
                         </Button>
-                        <span className="font-bold text-lg">{idea.votes}</span>
-                        <span className="text-xs text-muted-foreground">
-                          votes
+                        <span className="font-bold text-lg text-green-600">
+                          {idea.upvotes}
                         </span>
+                        <span className="font-bold text-lg text-red-600">
+                          {idea.downvotes}
+                        </span>
+                        <Button
+                          variant={
+                            idea.userVote === "down" ? "default" : "outline"
+                          }
+                          size="sm"
+                          onClick={() => handleVote(idea.id, "down")}
+                          className="mt-2"
+                        >
+                          <ThumbsDown className="h-4 w-4" />
+                        </Button>
                       </div>
 
                       {/* Content */}
                       <div className="flex-1">
                         <div className="flex items-start justify-between mb-3">
-                          <div>
-                            <h3 className="font-semibold text-lg mb-1">
-                              {idea.title}
-                            </h3>
-                            <p className="text-muted-foreground">
-                              {idea.description}
-                            </p>
+                          <div className="flex-1">
+                            <div
+                              className="cursor-pointer"
+                              onClick={() => navigate(`/ideas/${idea.id}`)}
+                            >
+                              <h3 className="font-semibold text-lg mb-1 hover:text-blue-600 transition-colors">
+                                {idea.title}
+                              </h3>
+                              <p className="text-muted-foreground line-clamp-2">
+                                {idea.description}
+                              </p>
+                            </div>
+                            {idea.images && idea.images.length > 0 && (
+                              <div className="flex gap-2 mt-3">
+                                {idea.images.slice(0, 3).map((image, index) => (
+                                  <img
+                                    key={index}
+                                    src={image}
+                                    alt={`Idea image ${index + 1}`}
+                                    className="w-16 h-16 object-cover rounded border cursor-pointer"
+                                    onClick={() =>
+                                      navigate(`/ideas/${idea.id}`)
+                                    }
+                                  />
+                                ))}
+                                {idea.images.length > 3 && (
+                                  <div className="w-16 h-16 bg-gray-100 rounded border flex items-center justify-center text-xs text-gray-500">
+                                    +{idea.images.length - 3}
+                                  </div>
+                                )}
+                              </div>
+                            )}
                           </div>
-                          <div className="flex gap-2">
+                          <div className="flex gap-2 ml-4">
                             {getPriorityBadge(idea.priority)}
                             {getStatusBadge(idea.status)}
                           </div>
@@ -584,9 +626,20 @@ export default function Ideas() {
                               {new Date(idea.createdAt).toLocaleDateString()}
                             </span>
                           </div>
-                          <div className="flex items-center gap-1">
-                            <MessageSquare className="h-3 w-3" />
-                            <span>{idea.comments.length} comments</span>
+                          <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-1">
+                              <MessageSquare className="h-3 w-3" />
+                              <span>{idea.comments.length} comments</span>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => navigate(`/ideas/${idea.id}`)}
+                              className="gap-1 h-7 px-2"
+                            >
+                              View Details
+                              <ArrowRight className="h-3 w-3" />
+                            </Button>
                           </div>
                         </div>
                       </div>
