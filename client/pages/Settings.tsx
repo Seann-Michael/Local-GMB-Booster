@@ -220,6 +220,8 @@ const navigationTabs = [
 // Default settings
 const defaultSettings: SettingsData = {
   businessName: "Joe's Pizza",
+  subAccountId: "SUB_" + Math.random().toString(36).substr(2, 9).toUpperCase(),
+  businessLogo: "",
   contactName: "Joe Smith",
   email: "joe@joespizza.com",
   phone: "(555) 123-4567",
