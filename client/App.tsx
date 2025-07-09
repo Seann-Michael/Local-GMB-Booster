@@ -222,6 +222,14 @@ const App = () => (
                     </ProtectedRoute>
                   }
                 />
+                <Route
+                  path="/coming-soon"
+                  element={
+                    <ProtectedRoute>
+                      <ComingSoon />
+                    </ProtectedRoute>
+                  }
+                />
 
                 <Route
                   path="/super-admin"
