@@ -325,6 +325,9 @@ export default function SuperAdminBroadcast() {
     });
     setEditingMessage(null);
     setShowPreview(false);
+    setSelectedTemplate("");
+    setShowTemplateVars(false);
+    setTemplateVariables({});
   };
 
   const handlePreviewMessage = () => {
