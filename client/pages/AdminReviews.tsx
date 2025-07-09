@@ -515,12 +515,13 @@ export default function AdminReviews() {
                 <Select value={sortBy} onValueChange={setSortBy}>
                   <SelectTrigger className="w-full sm:w-48">
                     <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="sentAt">Date Sent</SelectItem>
-                  <SelectItem value="rating">Rating</SelectItem>
-                </SelectContent>
-              </Select>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sentAt">Date Sent</SelectItem>
+                    <SelectItem value="rating">Rating</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </CardContent>
         </Card>
