@@ -285,7 +285,7 @@ export default function Settings() {
     };
     setSettings((prev) => ({
       ...prev,
-      webhooks: [...prev.webhooks, newWebhook],
+      webhooks: [...(prev.webhooks || []), newWebhook],
     }));
     setShowWebhookForm(false);
     toast.success("Webhook added successfully!");
@@ -318,7 +318,7 @@ export default function Settings() {
     };
     setSettings((prev) => ({
       ...prev,
-      businessTags: [...prev.businessTags, newTag],
+      businessTags: [...(prev.businessTags || []), newTag],
     }));
     setShowTagForm(false);
     toast.success("Tag added successfully!");
