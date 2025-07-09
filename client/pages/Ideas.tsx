@@ -584,8 +584,10 @@ export default function Ideas() {
                               <h3 className="font-semibold text-lg mb-1 hover:text-blue-600 transition-colors">
                                 {idea.title}
                               </h3>
-                              <p className="text-muted-foreground line-clamp-2">
-                                {idea.description}
+                              <p className="text-muted-foreground">
+                                {idea.description.length > 150
+                                  ? `${idea.description.substring(0, 150)}...`
+                                  : idea.description}
                               </p>
                             </div>
                             {idea.images && idea.images.length > 0 && (
