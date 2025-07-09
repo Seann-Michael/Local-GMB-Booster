@@ -426,7 +426,10 @@ export default function Settings() {
           setSettings({ ...defaultSettings, ...parsed });
         }
       } catch (error) {
-        console.error("Failed to load settings:", error);
+        console.error(
+          "Failed to load settings:",
+          error instanceof Error ? error.message : String(error),
+        );
       }
     };
     loadSettings();
