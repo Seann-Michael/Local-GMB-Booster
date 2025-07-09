@@ -59,6 +59,7 @@ import {
 import { useState, useEffect } from "react";
 import { getCurrentUser, isSuperAdmin } from "@/lib/auth";
 import { useLocation, useNavigate } from "react-router-dom";
+import { formatTableDate } from "@/lib/dateUtils";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";

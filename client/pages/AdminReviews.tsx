@@ -43,6 +43,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { formatTableDate } from "@/lib/dateUtils";
 
 interface ReviewRequest {
   id: string;
@@ -639,7 +640,7 @@ export default function AdminReviews() {
                       </TableCell>
                       <TableCell>
                         <div className="text-sm">
-                          {new Date(request.sentAt).toLocaleDateString()}
+                          {formatTableDate(request.sentAt)}
                           <p className="text-xs text-muted-foreground">
                             {new Date(request.sentAt).toLocaleTimeString()}
                           </p>
