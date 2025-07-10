@@ -221,275 +221,266 @@ export default function BusinessManagement() {
   };
 
   return (
-    <SuperAdminLayout
-      title="Business Management"
-      breadcrumbs={[{ label: "Business Management" }]}
-    >
-      <div className="max-w-full overflow-x-hidden">
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>
-                All Businesses ({filteredBusinesses.length})
-              </CardTitle>
-              <div className="flex gap-2">
-                <div className="relative">
-                  <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search businesses..."
-                    className="pl-8 w-64"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-32">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Status</SelectItem>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="trial">Trial</SelectItem>
-                    <SelectItem value="suspended">Suspended</SelectItem>
-                    <SelectItem value="canceled">Canceled</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Button variant="outline" size="sm" className="gap-2">
-                  <RefreshCw className="h-4 w-4" />
-                  Refresh
-                </Button>
+    <div className="max-w-full overflow-x-hidden">
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle>All Businesses ({filteredBusinesses.length})</CardTitle>
+            <div className="flex gap-2">
+              <div className="relative">
+                <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search businesses..."
+                  className="pl-8 w-64"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
               </div>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-32">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="trial">Trial</SelectItem>
+                  <SelectItem value="suspended">Suspended</SelectItem>
+                  <SelectItem value="canceled">Canceled</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button variant="outline" size="sm" className="gap-2">
+                <RefreshCw className="h-4 w-4" />
+                Refresh
+              </Button>
             </div>
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>
-                      <Button
-                        variant="ghost"
-                        onClick={() => handleSort("name")}
-                        className="h-auto p-0 font-semibold gap-1"
-                      >
-                        Business
-                        {getSortIcon("name")}
-                      </Button>
-                    </TableHead>
-                    <TableHead>
-                      <Button
-                        variant="ghost"
-                        onClick={() => handleSort("status")}
-                        className="h-auto p-0 font-semibold gap-1"
-                      >
-                        Status
-                        {getSortIcon("status")}
-                      </Button>
-                    </TableHead>
-                    <TableHead>
-                      <Button
-                        variant="ghost"
-                        onClick={() => handleSort("plan")}
-                        className="h-auto p-0 font-semibold gap-1"
-                      >
-                        Plan
-                        {getSortIcon("plan")}
-                      </Button>
-                    </TableHead>
-                    <TableHead>
-                      <Button
-                        variant="ghost"
-                        onClick={() => handleSort("users")}
-                        className="h-auto p-0 font-semibold gap-1"
-                      >
-                        Users
-                        {getSortIcon("users")}
-                      </Button>
-                    </TableHead>
-                    <TableHead>Content</TableHead>
-                    <TableHead>
-                      <Button
-                        variant="ghost"
-                        onClick={() => handleSort("storage")}
-                        className="h-auto p-0 font-semibold gap-1"
-                      >
-                        Storage
-                        {getSortIcon("storage")}
-                      </Button>
-                    </TableHead>
-                    <TableHead>
-                      <Button
-                        variant="ghost"
-                        onClick={() => handleSort("revenue")}
-                        className="h-auto p-0 font-semibold gap-1"
-                      >
-                        Revenue
-                        {getSortIcon("revenue")}
-                      </Button>
-                    </TableHead>
-                    <TableHead>
-                      <Button
-                        variant="ghost"
-                        onClick={() => handleSort("signupDate")}
-                        className="h-auto p-0 font-semibold gap-1"
-                      >
-                        Signup Date
-                        {getSortIcon("signupDate")}
-                      </Button>
-                    </TableHead>
-                    <TableHead>
-                      <Button
-                        variant="ghost"
-                        onClick={() => handleSort("canceledDate")}
-                        className="h-auto p-0 font-semibold gap-1"
-                      >
-                        Cancel Date
-                        {getSortIcon("canceledDate")}
-                      </Button>
-                    </TableHead>
-                    <TableHead>
-                      <Button
-                        variant="ghost"
-                        onClick={() => handleSort("lastActivity")}
-                        className="h-auto p-0 font-semibold gap-1"
-                      >
-                        Last Activity
-                        {getSortIcon("lastActivity")}
-                      </Button>
-                    </TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredBusinesses.map((business) => (
-                    <TableRow
-                      key={business.id}
-                      className="cursor-pointer hover:bg-muted/50"
-                      onClick={() =>
-                        navigate(`/super-admin/business/${business.id}`)
-                      }
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort("name")}
+                      className="h-auto p-0 font-semibold gap-1"
                     >
-                      <TableCell>
-                        <div>
-                          <div className="font-medium">{business.name}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {business.admin}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {business.email}
-                          </div>
+                      Business
+                      {getSortIcon("name")}
+                    </Button>
+                  </TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort("status")}
+                      className="h-auto p-0 font-semibold gap-1"
+                    >
+                      Status
+                      {getSortIcon("status")}
+                    </Button>
+                  </TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort("plan")}
+                      className="h-auto p-0 font-semibold gap-1"
+                    >
+                      Plan
+                      {getSortIcon("plan")}
+                    </Button>
+                  </TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort("users")}
+                      className="h-auto p-0 font-semibold gap-1"
+                    >
+                      Users
+                      {getSortIcon("users")}
+                    </Button>
+                  </TableHead>
+                  <TableHead>Content</TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort("storage")}
+                      className="h-auto p-0 font-semibold gap-1"
+                    >
+                      Storage
+                      {getSortIcon("storage")}
+                    </Button>
+                  </TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort("revenue")}
+                      className="h-auto p-0 font-semibold gap-1"
+                    >
+                      Revenue
+                      {getSortIcon("revenue")}
+                    </Button>
+                  </TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort("signupDate")}
+                      className="h-auto p-0 font-semibold gap-1"
+                    >
+                      Signup Date
+                      {getSortIcon("signupDate")}
+                    </Button>
+                  </TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort("canceledDate")}
+                      className="h-auto p-0 font-semibold gap-1"
+                    >
+                      Cancel Date
+                      {getSortIcon("canceledDate")}
+                    </Button>
+                  </TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort("lastActivity")}
+                      className="h-auto p-0 font-semibold gap-1"
+                    >
+                      Last Activity
+                      {getSortIcon("lastActivity")}
+                    </Button>
+                  </TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredBusinesses.map((business) => (
+                  <TableRow
+                    key={business.id}
+                    className="cursor-pointer hover:bg-muted/50"
+                    onClick={() =>
+                      navigate(`/super-admin/business/${business.id}`)
+                    }
+                  >
+                    <TableCell>
+                      <div>
+                        <div className="font-medium">{business.name}</div>
+                        <div className="text-sm text-muted-foreground">
+                          {business.admin}
                         </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={
-                            business.status === "Active"
-                              ? "default"
-                              : business.status === "Trial"
-                                ? "secondary"
-                                : business.status === "Suspended"
-                                  ? "destructive"
-                                  : "outline"
-                          }
-                        >
-                          {business.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={
-                            business.plan === "Enterprise"
-                              ? "default"
-                              : business.plan === "Pro"
-                                ? "secondary"
+                        <div className="text-xs text-muted-foreground">
+                          {business.email}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={
+                          business.status === "Active"
+                            ? "default"
+                            : business.status === "Trial"
+                              ? "secondary"
+                              : business.status === "Suspended"
+                                ? "destructive"
                                 : "outline"
+                        }
+                      >
+                        {business.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={
+                          business.plan === "Enterprise"
+                            ? "default"
+                            : business.plan === "Pro"
+                              ? "secondary"
+                              : "outline"
+                        }
+                      >
+                        {business.plan}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-center">
+                        <div className="font-medium">{business.users}</div>
+                        <div className="text-xs text-muted-foreground">
+                          users
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-1 text-xs">
+                          <Camera className="h-3 w-3" />
+                          {business.photos}
+                        </div>
+                        <div className="flex items-center gap-1 text-xs">
+                          <Video className="h-3 w-3" />
+                          {business.videos}
+                        </div>
+                        <div className="flex items-center gap-1 text-xs">
+                          <FolderOpen className="h-3 w-3" />
+                          {business.projects}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="font-medium">{business.storage}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="font-medium">${business.revenue}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-sm">
+                        {new Date(business.signupDate).toLocaleDateString()}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      {business.canceledDate ? (
+                        <div className="text-sm text-red-600">
+                          {new Date(business.canceledDate).toLocaleDateString()}
+                        </div>
+                      ) : (
+                        <div className="text-sm text-muted-foreground">-</div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-sm">{business.lastActivity}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div
+                        className="flex items-center gap-1"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => impersonateUser(business.id)}
+                          className="gap-1"
+                        >
+                          <LogIn className="h-3 w-3" />
+                          Sign In As
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() =>
+                            navigate(`/super-admin/business/${business.id}`)
                           }
                         >
-                          {business.plan}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-center">
-                          <div className="font-medium">{business.users}</div>
-                          <div className="text-xs text-muted-foreground">
-                            users
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-1 text-xs">
-                            <Camera className="h-3 w-3" />
-                            {business.photos}
-                          </div>
-                          <div className="flex items-center gap-1 text-xs">
-                            <Video className="h-3 w-3" />
-                            {business.videos}
-                          </div>
-                          <div className="flex items-center gap-1 text-xs">
-                            <FolderOpen className="h-3 w-3" />
-                            {business.projects}
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="font-medium">{business.storage}</div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="font-medium">${business.revenue}</div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-sm">
-                          {new Date(business.signupDate).toLocaleDateString()}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        {business.canceledDate ? (
-                          <div className="text-sm text-red-600">
-                            {new Date(
-                              business.canceledDate,
-                            ).toLocaleDateString()}
-                          </div>
-                        ) : (
-                          <div className="text-sm text-muted-foreground">-</div>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-sm">{business.lastActivity}</div>
-                      </TableCell>
-                      <TableCell>
-                        <div
-                          className="flex items-center gap-1"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => impersonateUser(business.id)}
-                            className="gap-1"
-                          >
-                            <LogIn className="h-3 w-3" />
-                            Sign In As
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() =>
-                              navigate(`/super-admin/business/${business.id}`)
-                            }
-                          >
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </SuperAdminLayout>
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
