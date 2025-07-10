@@ -806,7 +806,7 @@ export default function SuperAdminQuality() {
                 <div className="overflow-x-auto">
                   <Table>
                     <TableHeader>
-                    <TableRow>
+                      <TableRow>
                       <TableHead>Suite Name</TableHead>
                       <TableHead>Type</TableHead>
                       <TableHead>Status</TableHead>
