@@ -648,7 +648,7 @@ export default function SuperAdminPerformance() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {(performanceMetrics || []).map((metric) => {
+                    {safePerformanceMetrics.map((metric) => {
                       const Icon = getMetricIcon(metric.category);
                       const colorClass = getMetricColor(
                         metric.value,
@@ -708,7 +708,7 @@ export default function SuperAdminPerformance() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {(optimizationJobs || [])
+                    {safeOptimizationJobs
                       .filter((job) => job.status !== "completed")
                       .map((job) => (
                         <div key={job.id} className="p-3 border rounded-lg">
@@ -789,7 +789,7 @@ export default function SuperAdminPerformance() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {(cacheMetrics || []).map((cache) => (
+                    {safeCacheMetrics.map((cache) => (
                       <TableRow key={cache.id}>
                         <TableCell className="font-medium">
                           {cache.name}
@@ -862,7 +862,7 @@ export default function SuperAdminPerformance() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {(dbConnections || []).map((db) => (
+                    {safeDbConnections.map((db) => (
                       <TableRow key={db.id}>
                         <TableCell className="font-medium">{db.name}</TableCell>
                         <TableCell>
@@ -945,7 +945,7 @@ export default function SuperAdminPerformance() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {(scalingRules || []).map((rule) => (
+                    {safeScalingRules.map((rule) => (
                       <TableRow key={rule.id}>
                         <TableCell className="font-medium">
                           {rule.name}
@@ -1019,7 +1019,7 @@ export default function SuperAdminPerformance() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {(optimizationJobs || []).map((job) => (
+                    {safeOptimizationJobs.map((job) => (
                       <TableRow key={job.id}>
                         <TableCell className="font-medium">
                           {job.name}
