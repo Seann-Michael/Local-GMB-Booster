@@ -2065,7 +2065,7 @@ export default function ProjectDetail() {
                               .filter((phone) => phone.trim())
                               .map((phone, index) => (
                                 <a
-                                  key={`additional-phone-${index}-${phone.replace(/\D/g, "")}-${Date.now()}`}
+                                  key={`additional-phone-${index}-${phone.replace(/\D/g, "")}`}
                                   href={`tel:${phone}`}
                                   className="text-sm text-primary hover:underline block"
                                 >
