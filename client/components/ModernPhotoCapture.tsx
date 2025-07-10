@@ -1,0 +1,138 @@
+import React, { useState } from "react";
+import { EnhancedFileUploader } from "@/components/EnhancedFileUploader";
+import { MediaMetadataEnhancer, type ProjectInfo } from "@/lib/mediaMetadata";
+import { toast } from "sonner";
+
+interface EnhancedPhoto {
+  url: string;
+  metadata: any;
+  enhancedFileName: string;
+}
+
+interface FileWithMetadata {
+  id: string;
+  file: File;
+  preview?: string;
+  title: string;
+  tags: string;
+  description: string;
+  status: "pending" | "processing" | "ready" | "error";
+  error?: string;
+  processed?: boolean;
+}
+
+interface ModernPhotoCaptureProps {
+  photos: EnhancedPhoto[];
+  onPhotosChange: (photos: EnhancedPhoto[]) => void;
+  projectInfo?: ProjectInfo;
+  className?: string;
+}
+
+export function ModernPhotoCapture({
+  photos,
+  onPhotosChange,
+  projectInfo,
+  className,
+}: ModernPhotoCaptureProps) {
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleFilesReady = async (files: FileWithMetadata[]) => {
+    setIsProcessing(true);
+    const enhancedPhotos: EnhancedPhoto[] = [];
+
+    try {
+      for (const fileData of files) {
+        // Create enhanced metadata
+        const enhancedFile = await MediaMetadataEnhancer.enhanceMediaFile(
+          fileData.file,
+          projectInfo || {
+            id: "temp",
+            name: "Project",
+            address: "",
+            customerName: "",
+            keywords: [],
+          },
+        );
+
+        // Create enhanced photo object
+        const enhancedPhoto: EnhancedPhoto = {
+          url: URL.createObjectURL(fileData.file),
+          enhancedFileName: enhancedFile.enhancedFileName,
+          metadata: {
+            ...enhancedFile.metadata,
+            title: fileData.title,
+            description: fileData.description,
+            tags: fileData.tags
+              .split(",")
+              .map((tag) => tag.trim())
+              .filter(Boolean),
+            customTags: fileData.tags
+              .split(",")
+              .map((tag) => tag.trim())
+              .filter(Boolean),
+            originalFileName: fileData.file.name,
+            fileSize: fileData.file.size,
+            fileType: fileData.file.type,
+            uploadedAt: new Date().toISOString(),
+            uploadedBy: "Current User", // This should come from auth context
+          },
+        };
+
+        enhancedPhotos.push(enhancedPhoto);
+      }
+
+      // Combine with existing photos
+      const allPhotos = [...photos, ...enhancedPhotos];
+      onPhotosChange(allPhotos);
+
+      toast.success(
+        `Successfully processed ${enhancedPhotos.length} file${
+          enhancedPhotos.length !== 1 ? "s" : ""
+        }`,
+      );
+    } catch (error) {
+      console.error("Error processing files:", error);
+      toast.error("Failed to process some files");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  return (
+    <div className={className}>
+      <EnhancedFileUploader
+        onFilesReady={handleFilesReady}
+        acceptedTypes={["image/*", "video/*"]}
+        maxFiles={20}
+        maxFileSize={100}
+        projectInfo={{
+          name: projectInfo?.name || "Project",
+          keywords: projectInfo?.keywords || [],
+        }}
+      />
+
+      {isProcessing && (
+        <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="flex items-center gap-2 text-blue-700">
+            <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-600 border-t-transparent" />
+            <span className="font-medium">Processing files...</span>
+          </div>
+          <p className="text-sm text-blue-600 mt-1">
+            Adding metadata and optimizing files for your project
+          </p>
+        </div>
+      )}
+
+      {/* Display existing photos count */}
+      {photos.length > 0 && (
+        <div className="mt-4 text-sm text-muted-foreground">
+          Current project has {photos.length} media file
+          {photos.length !== 1 ? "s" : ""}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Backward compatibility export
+export { ModernPhotoCapture as PhotoCapture };
