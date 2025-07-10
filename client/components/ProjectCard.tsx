@@ -206,54 +206,56 @@ export function ProjectCard({
           </div>
         </div>
 
-        <CardContent className="p-4 flex-1 flex flex-col">
+        <CardContent className="p-3 flex-1 flex flex-col">
           <div className="flex-1 flex flex-col">
-            <h3 className="font-semibold text-lg mb-2 line-clamp-1">
+            <h3 className="font-medium text-base mb-2 line-clamp-2 leading-tight">
               {project.name}
             </h3>
-            <p className="text-sm text-muted-foreground mb-3 line-clamp-2 min-h-[2.5rem]">
+            <p className="text-xs text-muted-foreground mb-2 line-clamp-2 min-h-[2rem] leading-tight">
               {project.description || "No description available"}
             </p>
 
-            <div className="flex items-center gap-1 text-sm text-muted-foreground mb-3">
-              <MapPin className="h-4 w-4 flex-shrink-0" />
-              <span className="line-clamp-1">
+            <div className="flex items-center gap-1 text-xs text-muted-foreground mb-2">
+              <MapPin className="h-3 w-3 flex-shrink-0" />
+              <span className="line-clamp-1 leading-tight">
                 {project.address || "No address provided"}
               </span>
             </div>
 
-            <div className="flex items-center gap-1 text-sm text-muted-foreground mb-3">
-              <CalendarDays className="h-4 w-4 flex-shrink-0" />
-              <span>{new Date(project.createdAt).toLocaleDateString()}</span>
+            <div className="flex items-center gap-1 text-xs text-muted-foreground mb-2">
+              <CalendarDays className="h-3 w-3 flex-shrink-0" />
+              <span className="leading-tight">
+                {new Date(project.createdAt).toLocaleDateString()}
+              </span>
             </div>
           </div>
 
-          <div className="mt-auto min-h-[3rem] flex items-start pt-2">
-            <div className="flex flex-wrap gap-1 w-full min-h-[2rem]">
+          <div className="mt-auto pt-2">
+            <div className="flex flex-wrap gap-1 w-full">
               {project.keywords && project.keywords.length > 0 ? (
                 <>
-                  {project.keywords.slice(0, 3).map((keyword, index) => (
+                  {project.keywords.slice(0, 2).map((keyword, index) => (
                     <Badge
                       key={`${keyword}-${index}`}
                       variant="secondary"
-                      className="text-xs h-6 px-2 flex items-center"
+                      className="text-xs h-5 px-1.5 flex items-center leading-none"
                     >
                       {keyword}
                     </Badge>
                   ))}
-                  {project.keywords.length > 3 && (
+                  {project.keywords.length > 2 && (
                     <Badge
                       variant="outline"
-                      className="text-xs h-6 px-2 flex items-center"
+                      className="text-xs h-5 px-1.5 flex items-center leading-none"
                     >
-                      +{project.keywords.length - 3}
+                      +{project.keywords.length - 2}
                     </Badge>
                   )}
                 </>
               ) : (
                 <Badge
                   variant="outline"
-                  className="text-xs h-6 px-2 flex items-center opacity-50"
+                  className="text-xs h-5 px-1.5 flex items-center opacity-50 leading-none"
                 >
                   No keywords
                 </Badge>
