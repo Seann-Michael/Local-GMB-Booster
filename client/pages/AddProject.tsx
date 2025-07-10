@@ -481,13 +481,13 @@ export default function AddProject() {
                     Suggest Keywords
                   </Button>
                 </div>
-                <Input
-                  id="keywords"
-                  placeholder="renovation, bathroom, kitchen (comma separated)"
+                <SmartDropdownInput
+                  fieldName={DROPDOWN_FIELDS.PROJECT_KEYWORDS}
                   value={formData.keywords}
-                  onChange={(e) =>
-                    handleInputChange("keywords", e.target.value)
-                  }
+                  onChange={(value) => handleInputChange("keywords", value)}
+                  placeholder="renovation, bathroom, kitchen (comma separated)"
+                  allowMultiple={true}
+                  separator=","
                 />
                 {suggestedKeywords.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-2">
