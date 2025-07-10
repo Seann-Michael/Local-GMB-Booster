@@ -51,6 +51,9 @@ import {
   Instagram,
   Facebook,
   Twitter,
+  Tag,
+  TagX,
+  Workflow,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -150,6 +153,27 @@ const stepTemplates = {
       name: "Webhook",
       description: "Make HTTP request",
       icon: Webhook,
+      category: "action",
+    },
+    {
+      id: "add-tag",
+      name: "Add Tag",
+      description: "Add a tag to contact or project",
+      icon: Tag,
+      category: "action",
+    },
+    {
+      id: "remove-tag",
+      name: "Remove Tag",
+      description: "Remove a tag from contact or project",
+      icon: TagX,
+      category: "action",
+    },
+    {
+      id: "add-to-workflow",
+      name: "Add to Workflow",
+      description: "Add contact to another automation workflow",
+      icon: Workflow,
       category: "action",
     },
     {
@@ -1668,6 +1692,557 @@ function StepConfigDialog({
                   />
                   <Label htmlFor="include-location">
                     Include business location in post
+                  </Label>
+                </div>
+              </div>
+            );
+
+          case "Add Tag":
+            return (
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-sm font-medium">Tag Target</Label>
+                  <Select
+                    value={config.target || "contact"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, target: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="contact">Customer Contact</SelectItem>
+                      <SelectItem value="project">Current Project</SelectItem>
+                      <SelectItem value="both">
+                        Both Contact & Project
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Tag Selection</Label>
+                  <Select
+                    value={config.tagSelection || "existing"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, tagSelection: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="existing">
+                        Select Existing Tag
+                      </SelectItem>
+                      <SelectItem value="new">Create New Tag</SelectItem>
+                      <SelectItem value="dynamic">
+                        Dynamic Tag (from data)
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {config.tagSelection === "existing" && (
+                  <div>
+                    <Label className="text-sm font-medium">Existing Tags</Label>
+                    <Select
+                      value={config.existingTag || ""}
+                      onValueChange={(value) =>
+                        setConfig({ ...config, existingTag: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a tag" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="completed-customer">
+                          Completed Customer
+                        </SelectItem>
+                        <SelectItem value="review-requested">
+                          Review Requested
+                        </SelectItem>
+                        <SelectItem value="high-value">High Value</SelectItem>
+                        <SelectItem value="repeat-customer">
+                          Repeat Customer
+                        </SelectItem>
+                        <SelectItem value="referral-source">
+                          Referral Source
+                        </SelectItem>
+                        <SelectItem value="vip">VIP Customer</SelectItem>
+                        <SelectItem value="follow-up-needed">
+                          Follow-up Needed
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
+                {config.tagSelection === "new" && (
+                  <div>
+                    <Label className="text-sm font-medium">New Tag Name</Label>
+                    <Input
+                      value={config.newTagName || ""}
+                      onChange={(e) =>
+                        setConfig({ ...config, newTagName: e.target.value })
+                      }
+                      placeholder="Enter new tag name"
+                    />
+                  </div>
+                )}
+
+                {config.tagSelection === "dynamic" && (
+                  <div>
+                    <Label className="text-sm font-medium">
+                      Dynamic Tag Template
+                    </Label>
+                    <Input
+                      value={config.dynamicTag || ""}
+                      onChange={(e) =>
+                        setConfig({ ...config, dynamicTag: e.target.value })
+                      }
+                      placeholder="{{project.type}}-completed"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Use variables:{" "}
+                      {`{{project.name}}, {{project.type}}, {{customer.name}}, {{date.month}}`}
+                    </p>
+                  </div>
+                )}
+
+                <div>
+                  <Label className="text-sm font-medium">Tag Color</Label>
+                  <Select
+                    value={config.tagColor || "blue"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, tagColor: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="blue">Blue</SelectItem>
+                      <SelectItem value="green">Green</SelectItem>
+                      <SelectItem value="yellow">Yellow</SelectItem>
+                      <SelectItem value="red">Red</SelectItem>
+                      <SelectItem value="purple">Purple</SelectItem>
+                      <SelectItem value="gray">Gray</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="create-if-not-exists"
+                    checked={config.createIfNotExists || true}
+                    onCheckedChange={(checked) =>
+                      setConfig({ ...config, createIfNotExists: checked })
+                    }
+                  />
+                  <Label htmlFor="create-if-not-exists">
+                    Create tag if it doesn't exist
+                  </Label>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="log-tag-addition"
+                    checked={config.logActivity || true}
+                    onCheckedChange={(checked) =>
+                      setConfig({ ...config, logActivity: checked })
+                    }
+                  />
+                  <Label htmlFor="log-tag-addition">
+                    Log tag addition in activity feed
+                  </Label>
+                </div>
+              </div>
+            );
+
+          case "Remove Tag":
+            return (
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-sm font-medium">Remove From</Label>
+                  <Select
+                    value={config.target || "contact"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, target: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="contact">Customer Contact</SelectItem>
+                      <SelectItem value="project">Current Project</SelectItem>
+                      <SelectItem value="both">
+                        Both Contact & Project
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">
+                    Tag Removal Method
+                  </Label>
+                  <Select
+                    value={config.removalMethod || "specific"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, removalMethod: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="specific">
+                        Remove Specific Tag
+                      </SelectItem>
+                      <SelectItem value="pattern">Remove by Pattern</SelectItem>
+                      <SelectItem value="category">
+                        Remove by Category
+                      </SelectItem>
+                      <SelectItem value="all">Remove All Tags</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {config.removalMethod === "specific" && (
+                  <div>
+                    <Label className="text-sm font-medium">Tag to Remove</Label>
+                    <Select
+                      value={config.tagToRemove || ""}
+                      onValueChange={(value) =>
+                        setConfig({ ...config, tagToRemove: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select tag to remove" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="follow-up-needed">
+                          Follow-up Needed
+                        </SelectItem>
+                        <SelectItem value="pending-review">
+                          Pending Review
+                        </SelectItem>
+                        <SelectItem value="in-progress">In Progress</SelectItem>
+                        <SelectItem value="new-customer">
+                          New Customer
+                        </SelectItem>
+                        <SelectItem value="requires-attention">
+                          Requires Attention
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
+                {config.removalMethod === "pattern" && (
+                  <div>
+                    <Label className="text-sm font-medium">Tag Pattern</Label>
+                    <Input
+                      value={config.tagPattern || ""}
+                      onChange={(e) =>
+                        setConfig({ ...config, tagPattern: e.target.value })
+                      }
+                      placeholder="temp-*, pending-*, in-progress"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Use * for wildcards, comma-separated for multiple patterns
+                    </p>
+                  </div>
+                )}
+
+                {config.removalMethod === "category" && (
+                  <div>
+                    <Label className="text-sm font-medium">Tag Category</Label>
+                    <Select
+                      value={config.tagCategory || ""}
+                      onValueChange={(value) =>
+                        setConfig({ ...config, tagCategory: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="status">Status Tags</SelectItem>
+                        <SelectItem value="priority">Priority Tags</SelectItem>
+                        <SelectItem value="source">Source Tags</SelectItem>
+                        <SelectItem value="temporary">
+                          Temporary Tags
+                        </SelectItem>
+                        <SelectItem value="workflow">Workflow Tags</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="ignore-if-not-exists"
+                    checked={config.ignoreIfNotExists || true}
+                    onCheckedChange={(checked) =>
+                      setConfig({ ...config, ignoreIfNotExists: checked })
+                    }
+                  />
+                  <Label htmlFor="ignore-if-not-exists">
+                    Don't error if tag doesn't exist
+                  </Label>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="log-tag-removal"
+                    checked={config.logActivity || true}
+                    onCheckedChange={(checked) =>
+                      setConfig({ ...config, logActivity: checked })
+                    }
+                  />
+                  <Label htmlFor="log-tag-removal">
+                    Log tag removal in activity feed
+                  </Label>
+                </div>
+              </div>
+            );
+
+          case "Add to Workflow":
+            return (
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-sm font-medium">Target Workflow</Label>
+                  <Select
+                    value={config.targetWorkflow || ""}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, targetWorkflow: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select workflow" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="follow-up-sequence">
+                        Follow-up Sequence
+                      </SelectItem>
+                      <SelectItem value="review-request-flow">
+                        Review Request Flow
+                      </SelectItem>
+                      <SelectItem value="upsell-campaign">
+                        Upsell Campaign
+                      </SelectItem>
+                      <SelectItem value="customer-onboarding">
+                        Customer Onboarding
+                      </SelectItem>
+                      <SelectItem value="referral-program">
+                        Referral Program
+                      </SelectItem>
+                      <SelectItem value="maintenance-reminders">
+                        Maintenance Reminders
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Entry Point</Label>
+                  <Select
+                    value={config.entryPoint || "beginning"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, entryPoint: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="beginning">
+                        Start at Beginning
+                      </SelectItem>
+                      <SelectItem value="specific-step">
+                        Specific Step
+                      </SelectItem>
+                      <SelectItem value="after-delay">After Delay</SelectItem>
+                      <SelectItem value="conditional">
+                        Conditional Entry
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {config.entryPoint === "specific-step" && (
+                  <div>
+                    <Label className="text-sm font-medium">Step Number</Label>
+                    <Input
+                      type="number"
+                      value={config.stepNumber || ""}
+                      onChange={(e) =>
+                        setConfig({
+                          ...config,
+                          stepNumber: parseInt(e.target.value),
+                        })
+                      }
+                      placeholder="2"
+                      min="1"
+                    />
+                  </div>
+                )}
+
+                {config.entryPoint === "after-delay" && (
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <Label className="text-sm font-medium">Delay</Label>
+                      <Input
+                        type="number"
+                        value={config.delayDuration || ""}
+                        onChange={(e) =>
+                          setConfig({
+                            ...config,
+                            delayDuration: parseInt(e.target.value),
+                          })
+                        }
+                        placeholder="30"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-sm font-medium">Unit</Label>
+                      <Select
+                        value={config.delayUnit || "minutes"}
+                        onValueChange={(value) =>
+                          setConfig({ ...config, delayUnit: value })
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="minutes">Minutes</SelectItem>
+                          <SelectItem value="hours">Hours</SelectItem>
+                          <SelectItem value="days">Days</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                )}
+
+                {config.entryPoint === "conditional" && (
+                  <div>
+                    <Label className="text-sm font-medium">
+                      Entry Condition
+                    </Label>
+                    <Select
+                      value={config.entryCondition || ""}
+                      onValueChange={(value) =>
+                        setConfig({ ...config, entryCondition: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select condition" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="has-email">
+                          Contact has email
+                        </SelectItem>
+                        <SelectItem value="has-phone">
+                          Contact has phone
+                        </SelectItem>
+                        <SelectItem value="high-value">
+                          High value customer
+                        </SelectItem>
+                        <SelectItem value="repeat-customer">
+                          Repeat customer
+                        </SelectItem>
+                        <SelectItem value="project-type">
+                          Specific project type
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
+                <div>
+                  <Label className="text-sm font-medium">Data to Pass</Label>
+                  <Select
+                    value={config.dataToPass || "all"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, dataToPass: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Current Data</SelectItem>
+                      <SelectItem value="contact-only">
+                        Contact Info Only
+                      </SelectItem>
+                      <SelectItem value="project-only">
+                        Project Info Only
+                      </SelectItem>
+                      <SelectItem value="custom">Custom Data Set</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {config.dataToPass === "custom" && (
+                  <div>
+                    <Label className="text-sm font-medium">
+                      Custom Data (JSON)
+                    </Label>
+                    <Textarea
+                      value={
+                        config.customData ||
+                        '{\n  "source": "automation",\n  "trigger": "{{current.workflow.name}}"\n}'
+                      }
+                      onChange={(e) =>
+                        setConfig({ ...config, customData: e.target.value })
+                      }
+                      placeholder='{"key": "value"}'
+                      rows={4}
+                    />
+                  </div>
+                )}
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="skip-if-already-in"
+                    checked={config.skipIfAlreadyIn || true}
+                    onCheckedChange={(checked) =>
+                      setConfig({ ...config, skipIfAlreadyIn: checked })
+                    }
+                  />
+                  <Label htmlFor="skip-if-already-in">
+                    Skip if already in workflow
+                  </Label>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="remove-from-current"
+                    checked={config.removeFromCurrent || false}
+                    onCheckedChange={(checked) =>
+                      setConfig({ ...config, removeFromCurrent: checked })
+                    }
+                  />
+                  <Label htmlFor="remove-from-current">
+                    Remove from current workflow
+                  </Label>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="log-workflow-addition"
+                    checked={config.logActivity || true}
+                    onCheckedChange={(checked) =>
+                      setConfig({ ...config, logActivity: checked })
+                    }
+                  />
+                  <Label htmlFor="log-workflow-addition">
+                    Log workflow addition in activity
                   </Label>
                 </div>
               </div>
