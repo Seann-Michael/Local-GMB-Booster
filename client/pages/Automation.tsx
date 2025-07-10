@@ -173,7 +173,10 @@ export default function Automation() {
     return (
       <AppLayout>
         <div className="fixed inset-0 overflow-hidden" style={{ top: "73px" }}>
-          <div className="h-full transition-all duration-300 md:ml-72">
+          <div
+            className="h-full transition-all duration-300 md:ml-72"
+            id="automation-content"
+          >
             <WorkflowBuilder
               workflowId={selectedWorkflow.id}
               onSave={(workflow) => {
