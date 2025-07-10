@@ -901,9 +901,9 @@ export default function ProjectDetail() {
           <div className="lg:col-span-2 space-y-6">
             {/* Overview Tab */}
             {activeTab === "overview" && (
-              <div key="overview-content">
+              <div>
                 {/* Project Description */}
-                <Card key="project-description">
+                <Card>
                   <CardHeader>
                     <CardTitle>Project Description</CardTitle>
                   </CardHeader>
@@ -915,7 +915,7 @@ export default function ProjectDetail() {
                 </Card>
 
                 {/* Project Keywords/Tags */}
-                <Card key="project-keywords">
+                <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Tag className="h-5 w-5" />
@@ -959,7 +959,7 @@ export default function ProjectDetail() {
                   </CardContent>
                 </Card>
 
-                <Card key="photos-video">
+                <Card>
                   <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle className="flex items-center gap-2">
                       <Images className="h-5 w-5" />
