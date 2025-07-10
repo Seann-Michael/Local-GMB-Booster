@@ -2261,6 +2261,35 @@ export default function ProjectDetail() {
         projectName={project?.name || ""}
         onSend={handleSendReviewRequest}
       />
+
+      {/* Smart Media Uploader */}
+      {showMediaUploader && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">Add Photos & Videos</h3>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowMediaUploader(false)}
+              >
+                ×
+              </Button>
+            </div>
+            <SmartMediaUploader
+              onFilesReady={handleMediaFilesReady}
+              projectInfo={{
+                name: project?.name || "",
+                keywords: project?.keywords || [],
+                address: project?.address,
+                customerName: project?.customerName,
+              }}
+              maxFiles={20}
+              maxFileSize={100}
+            />
+          </div>
+        </div>
+      )}
     </AppLayout>
   );
 }
