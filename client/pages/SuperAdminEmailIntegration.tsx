@@ -500,7 +500,7 @@ export default function SuperAdminEmailIntegration() {
       },
     };
 
-    setProviders([...providers, newProvider]);
+    setProviders([...(providers || []), newProvider]);
     toast.success("Email provider configured successfully!");
     setShowProviderDialog(false);
     resetProviderForm();
