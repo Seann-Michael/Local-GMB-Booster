@@ -666,13 +666,16 @@ export default function SuperAdminSupport() {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="">Unassigned</SelectItem>
-                          {(staffMembers || [])
-                            .filter((staff) => staff && staff.id && staff.name)
-                            .map((staff) => (
-                              <SelectItem key={staff.id} value={staff.name}>
-                                {staff.name} ({staff.role})
-                              </SelectItem>
-                            ))}
+                          {!isLoading &&
+                            (staffMembers || [])
+                              .filter(
+                                (staff) => staff && staff.id && staff.name,
+                              )
+                              .map((staff) => (
+                                <SelectItem key={staff.id} value={staff.name}>
+                                  {staff.name} ({staff.role})
+                                </SelectItem>
+                              ))}
                         </SelectContent>
                       </Select>
                     </div>
@@ -892,13 +895,14 @@ export default function SuperAdminSupport() {
                     <SelectContent>
                       <SelectItem value="all">All Assignees</SelectItem>
                       <SelectItem value="">Unassigned</SelectItem>
-                      {(staffMembers || [])
-                        .filter((staff) => staff && staff.id && staff.name)
-                        .map((staff) => (
-                          <SelectItem key={staff.id} value={staff.name}>
-                            {staff.name}
-                          </SelectItem>
-                        ))}
+                      {!isLoading &&
+                        (staffMembers || [])
+                          .filter((staff) => staff && staff.id && staff.name)
+                          .map((staff) => (
+                            <SelectItem key={staff.id} value={staff.name}>
+                              {staff.name}
+                            </SelectItem>
+                          ))}
                     </SelectContent>
                   </Select>
                 </div>
