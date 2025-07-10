@@ -391,21 +391,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         style={{ top: "73px", height: "calc(100vh - 73px)" }}
       >
         {/* Business Selector - Now at top */}
-        <div className="p-3 border-b bg-background relative">
-          {/* Collapse button - absolute positioned */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="absolute top-2 right-2 h-8 w-8 hover:bg-primary/10 z-10"
-          >
-            {sidebarCollapsed ? (
-              <ChevronRight className="h-4 w-4" />
-            ) : (
-              <ChevronLeft className="h-4 w-4" />
-            )}
-          </Button>
-
+        <div className="p-3 border-b bg-background">
           {!sidebarCollapsed && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
