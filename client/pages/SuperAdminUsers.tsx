@@ -237,8 +237,8 @@ export default function SuperAdminUsers() {
 
   return (
     <SuperAdminLayout>
-      <div className="max-w-full overflow-x-hidden">
-        <div className="space-y-6">
+      <div className="w-full max-w-none overflow-x-auto">
+        <div className="space-y-6 min-w-0">
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
