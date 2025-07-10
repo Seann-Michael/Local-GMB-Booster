@@ -116,6 +116,51 @@ export class ErrorBoundary extends Component<Props, State> {
     window.location.href = "/admin/projects";
   };
 
+  private generateErrorReport = () => {
+    const { error, errorInfo } = this.state;
+    const timestamp = new Date().toISOString();
+    const userAgent = navigator.userAgent;
+    const url = window.location.href;
+
+    return `Error Report - ${timestamp}
+
+URL: ${url}
+User Agent: ${userAgent}
+
+Error Message: ${error?.message || "Unknown error"}
+
+Stack Trace:
+${error?.stack || "No stack trace available"}
+
+Component Stack:
+${errorInfo?.componentStack || "No component stack available"}
+
+Additional Info:
+- Retry Count: ${this.state.retryCount}
+- Timestamp: ${timestamp}
+- Page: ${window.location.pathname}
+- Referrer: ${document.referrer || "Direct"}`;
+  };
+
+  private handleCopyError = async () => {
+    try {
+      const errorReport = this.generateErrorReport();
+      await navigator.clipboard.writeText(errorReport);
+      toast.success("Error details copied to clipboard");
+    } catch (err) {
+      toast.error("Failed to copy error details");
+    }
+  };
+
+  private handleCreateSupportTicket = () => {
+    const errorReport = this.generateErrorReport();
+    const encodedReport = encodeURIComponent(errorReport);
+
+    // Navigate to support page with pre-filled error details
+    const supportUrl = `/admin/help?action=create-ticket&subject=${encodeURIComponent("Error Report - " + new Date().toLocaleDateString())}&description=${encodedReport}`;
+    window.location.href = supportUrl;
+  };
+
   componentWillUnmount() {
     if (this.retryTimeoutId) {
       clearTimeout(this.retryTimeoutId);
