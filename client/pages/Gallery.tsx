@@ -39,6 +39,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface PhotoWithMetadata {
   url: string;
