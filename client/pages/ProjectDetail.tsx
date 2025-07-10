@@ -2003,21 +2003,6 @@ export default function ProjectDetail() {
 
                 <Separator />
 
-                <div>
-                  <h4 className="font-medium mb-2 flex items-center gap-2">
-                    <MapPin className="h-4 w-4" />
-                    Location
-                  </h4>
-                  <a
-                    href={`https://maps.google.com/?q=${encodeURIComponent(project.address)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-primary hover:underline"
-                  >
-                    {project.address}
-                  </a>
-                </div>
-
                 {(project.customerName ||
                   project.mobilePhone ||
                   project.customerPhone ||
