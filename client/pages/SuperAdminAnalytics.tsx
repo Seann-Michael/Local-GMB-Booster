@@ -492,418 +492,398 @@ export default function SuperAdminAnalytics() {
 
   if (!analyticsData) {
     return (
-      <SuperAdminLayout>
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-center">
-            <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-muted-foreground" />
-            <p className="text-muted-foreground">Loading analytics data...</p>
-          </div>
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-muted-foreground" />
+          <p className="text-muted-foreground">Loading analytics data...</p>
         </div>
-      </SuperAdminLayout>
+      </div>
     );
   }
 
   return (
-      <div className="max-w-full overflow-x-hidden">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-          <div className="min-w-0">
-            <h1 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
-              <BarChart3 className="h-6 w-6" />
-              Broadcast Analytics
-            </h1>
-            <p className="text-muted-foreground text-sm sm:text-base">
-              Comprehensive insights into message performance and user
-              engagement
-            </p>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-            <Select value={timeRange} onValueChange={setTimeRange}>
-              <SelectTrigger className="w-full sm:w-48">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="24h">Last 24 Hours</SelectItem>
-                <SelectItem value="7d">Last 7 Days</SelectItem>
-                <SelectItem value="30d">Last 30 Days</SelectItem>
-                <SelectItem value="90d">Last 90 Days</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button
-              variant="outline"
-              onClick={loadAnalyticsData}
-              disabled={isLoading}
-              className="gap-2"
-            >
-              <RefreshCw
-                className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
-              />
-              Refresh
-            </Button>
-            <Button onClick={exportReport} className="gap-2">
-              <Download className="h-4 w-4" />
-              Export
-            </Button>
-          </div>
+    <div className="max-w-full overflow-x-hidden">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+        <div className="min-w-0">
+          <h1 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
+            <BarChart3 className="h-6 w-6" />
+            Broadcast Analytics
+          </h1>
+          <p className="text-muted-foreground text-sm sm:text-base">
+            Comprehensive insights into message performance and user engagement
+          </p>
         </div>
-
-        {/* Last Updated */}
-        <div className="flex items-center gap-2 mb-6 text-sm text-muted-foreground">
-          <Clock className="h-4 w-4" />
-          <span>Last updated: {lastUpdated.toLocaleString()}</span>
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+          <Select value={timeRange} onValueChange={setTimeRange}>
+            <SelectTrigger className="w-full sm:w-48">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="24h">Last 24 Hours</SelectItem>
+              <SelectItem value="7d">Last 7 Days</SelectItem>
+              <SelectItem value="30d">Last 30 Days</SelectItem>
+              <SelectItem value="90d">Last 90 Days</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button
+            variant="outline"
+            onClick={loadAnalyticsData}
+            disabled={isLoading}
+            className="gap-2"
+          >
+            <RefreshCw
+              className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`}
+            />
+            Refresh
+          </Button>
+          <Button onClick={exportReport} className="gap-2">
+            <Download className="h-4 w-4" />
+            Export
+          </Button>
         </div>
+      </div>
 
-        {/* Overview Metrics */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      {/* Last Updated */}
+      <div className="flex items-center gap-2 mb-6 text-sm text-muted-foreground">
+        <Clock className="h-4 w-4" />
+        <span>Last updated: {lastUpdated.toLocaleString()}</span>
+      </div>
+
+      {/* Overview Metrics */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Total Messages</p>
+                <p className="text-2xl font-bold">
+                  {analyticsData.overview.totalMessages}
+                </p>
+              </div>
+              <MessageSquare className="h-8 w-8 text-primary" />
+            </div>
+            <div className="flex items-center mt-2 text-xs">
+              <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
+              <span className="text-green-500">+12%</span>
+              <span className="text-muted-foreground ml-1">vs last period</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Total Views</p>
+                <p className="text-2xl font-bold">
+                  {analyticsData.overview.totalViews.toLocaleString()}
+                </p>
+              </div>
+              <Eye className="h-8 w-8 text-blue-500" />
+            </div>
+            <div className="flex items-center mt-2 text-xs">
+              <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
+              <span className="text-green-500">+8%</span>
+              <span className="text-muted-foreground ml-1">vs last period</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Engagement Rate</p>
+                <p className="text-2xl font-bold">
+                  {Math.round(analyticsData.overview.engagementRate)}%
+                </p>
+              </div>
+              <Target className="h-8 w-8 text-green-500" />
+            </div>
+            <div className="flex items-center mt-2 text-xs">
+              <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
+              <span className="text-green-500">+5%</span>
+              <span className="text-muted-foreground ml-1">vs last period</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Active Users</p>
+                <p className="text-2xl font-bold">
+                  {analyticsData.overview.activeUsers}
+                </p>
+              </div>
+              <Users className="h-8 w-8 text-purple-500" />
+            </div>
+            <div className="flex items-center mt-2 text-xs">
+              <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
+              <span className="text-green-500">+3%</span>
+              <span className="text-muted-foreground ml-1">vs last period</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Tabs defaultValue="performance" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="performance">Performance</TabsTrigger>
+          <TabsTrigger value="audience">Audience</TabsTrigger>
+          <TabsTrigger value="content">Content</TabsTrigger>
+          <TabsTrigger value="activity">Activity</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="performance" className="space-y-6">
+          {/* Message Types Performance */}
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">
-                    Total Messages
-                  </p>
-                  <p className="text-2xl font-bold">
-                    {analyticsData.overview.totalMessages}
-                  </p>
-                </div>
-                <MessageSquare className="h-8 w-8 text-primary" />
-              </div>
-              <div className="flex items-center mt-2 text-xs">
-                <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
-                <span className="text-green-500">+12%</span>
-                <span className="text-muted-foreground ml-1">
-                  vs last period
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Views</p>
-                  <p className="text-2xl font-bold">
-                    {analyticsData.overview.totalViews.toLocaleString()}
-                  </p>
-                </div>
-                <Eye className="h-8 w-8 text-blue-500" />
-              </div>
-              <div className="flex items-center mt-2 text-xs">
-                <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
-                <span className="text-green-500">+8%</span>
-                <span className="text-muted-foreground ml-1">
-                  vs last period
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">
-                    Engagement Rate
-                  </p>
-                  <p className="text-2xl font-bold">
-                    {Math.round(analyticsData.overview.engagementRate)}%
-                  </p>
-                </div>
-                <Target className="h-8 w-8 text-green-500" />
-              </div>
-              <div className="flex items-center mt-2 text-xs">
-                <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
-                <span className="text-green-500">+5%</span>
-                <span className="text-muted-foreground ml-1">
-                  vs last period
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Active Users</p>
-                  <p className="text-2xl font-bold">
-                    {analyticsData.overview.activeUsers}
-                  </p>
-                </div>
-                <Users className="h-8 w-8 text-purple-500" />
-              </div>
-              <div className="flex items-center mt-2 text-xs">
-                <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
-                <span className="text-green-500">+3%</span>
-                <span className="text-muted-foreground ml-1">
-                  vs last period
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Tabs defaultValue="performance" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="performance">Performance</TabsTrigger>
-            <TabsTrigger value="audience">Audience</TabsTrigger>
-            <TabsTrigger value="content">Content</TabsTrigger>
-            <TabsTrigger value="activity">Activity</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="performance" className="space-y-6">
-            {/* Message Types Performance */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Message Types Performance</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {analyticsData.messageTypes.map((type) => (
-                    <div key={type.type} className="p-4 border rounded-lg">
-                      <div className="flex items-center gap-2 mb-2">
-                        {getTypeIcon(type.type)}
-                        <span className="font-medium capitalize">
-                          {type.type}
+            <CardHeader>
+              <CardTitle>Message Types Performance</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {analyticsData.messageTypes.map((type) => (
+                  <div key={type.type} className="p-4 border rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      {getTypeIcon(type.type)}
+                      <span className="font-medium capitalize">
+                        {type.type}
+                      </span>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-sm">
+                        <span>Messages:</span>
+                        <span className="font-medium">{type.count}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span>Views:</span>
+                        <span className="font-medium">{type.views}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span>Engagement:</span>
+                        <span className="font-medium">
+                          {Math.round(type.engagement)}%
                         </span>
                       </div>
-                      <div className="space-y-1">
-                        <div className="flex justify-between text-sm">
-                          <span>Messages:</span>
-                          <span className="font-medium">{type.count}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span>Views:</span>
-                          <span className="font-medium">{type.views}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span>Engagement:</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Categories Performance */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Categories Performance</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {analyticsData.categories.map((category) => (
+                  <div
+                    key={category.category}
+                    className="flex items-center justify-between p-4 border rounded-lg"
+                  >
+                    <div>
+                      <h4 className="font-medium capitalize">
+                        {category.category}
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        {category.count} messages •{" "}
+                        {Math.round(category.engagement)}% engagement
+                      </p>
+                    </div>
+                    {getPerformanceBadge(category.performance)}
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="audience" className="space-y-6">
+          {/* Audience Analytics */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Audience Engagement</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {analyticsData.audiences.map((audience) => (
+                  <div
+                    key={audience.audience}
+                    className="p-4 border rounded-lg"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-medium capitalize">
+                        {audience.audience === "all"
+                          ? "All Users"
+                          : audience.audience.replace("-", " ")}
+                      </h4>
+                      <Badge variant="secondary">
+                        {audience.count} messages
+                      </Badge>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <span className="text-muted-foreground">
+                          Engagement Rate:
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 bg-muted rounded-full h-2">
+                            <div
+                              className="bg-primary rounded-full h-2"
+                              style={{ width: `${audience.engagement}%` }}
+                            />
+                          </div>
                           <span className="font-medium">
-                            {Math.round(type.engagement)}%
+                            {Math.round(audience.engagement)}%
+                          </span>
+                        </div>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">
+                          Preference Score:
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 bg-muted rounded-full h-2">
+                            <div
+                              className="bg-green-500 rounded-full h-2"
+                              style={{ width: `${audience.preference}%` }}
+                            />
+                          </div>
+                          <span className="font-medium">
+                            {Math.round(audience.preference)}%
                           </span>
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-            {/* Categories Performance */}
+        <TabsContent value="content" className="space-y-6">
+          {/* Top Performing Messages */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Categories Performance</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5 text-green-500" />
+                  Top Performing Messages
+                </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {analyticsData.categories.map((category) => (
-                    <div
-                      key={category.category}
-                      className="flex items-center justify-between p-4 border rounded-lg"
-                    >
-                      <div>
-                        <h4 className="font-medium capitalize">
-                          {category.category}
-                        </h4>
-                        <p className="text-sm text-muted-foreground">
-                          {category.count} messages •{" "}
-                          {Math.round(category.engagement)}% engagement
-                        </p>
+              <CardContent className="space-y-3">
+                {analyticsData.topPerforming.map((message, index) => (
+                  <div
+                    key={message.id}
+                    className="flex items-start gap-3 p-3 border rounded-lg"
+                  >
+                    <Badge variant="secondary" className="text-xs">
+                      #{index + 1}
+                    </Badge>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-medium truncate">{message.title}</h4>
+                      <p className="text-xs text-muted-foreground">
+                        {message.viewCount} views • {message.dismissCount}{" "}
+                        dismissed
+                      </p>
+                      <div className="flex items-center gap-2 mt-1">
+                        {getTypeIcon(message.type)}
+                        <span className="text-xs capitalize">
+                          {message.type}
+                        </span>
                       </div>
-                      {getPerformanceBadge(category.performance)}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </CardContent>
             </Card>
-          </TabsContent>
 
-          <TabsContent value="audience" className="space-y-6">
-            {/* Audience Analytics */}
             <Card>
               <CardHeader>
-                <CardTitle>Audience Engagement</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingDown className="h-5 w-5 text-red-500" />
+                  Needs Improvement
+                </CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {analyticsData.audiences.map((audience) => (
+              <CardContent className="space-y-3">
+                {analyticsData.lowPerforming.map((message, index) => (
+                  <div
+                    key={message.id}
+                    className="flex items-start gap-3 p-3 border rounded-lg"
+                  >
+                    <Badge variant="outline" className="text-xs">
+                      #{index + 1}
+                    </Badge>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-medium truncate">{message.title}</h4>
+                      <p className="text-xs text-muted-foreground">
+                        {message.viewCount} views • {message.dismissCount}{" "}
+                        dismissed
+                      </p>
+                      <div className="flex items-center gap-2 mt-1">
+                        {getTypeIcon(message.type)}
+                        <span className="text-xs capitalize">
+                          {message.type}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="activity" className="space-y-6">
+          {/* Recent Activity */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent Activity</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {analyticsData.recentActivity.map((activity, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-4 p-3 border rounded-lg"
+                  >
                     <div
-                      key={audience.audience}
-                      className="p-4 border rounded-lg"
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-medium capitalize">
-                          {audience.audience === "all"
-                            ? "All Users"
-                            : audience.audience.replace("-", " ")}
-                        </h4>
-                        <Badge variant="secondary">
-                          {audience.count} messages
+                      className={`h-3 w-3 rounded-full ${
+                        activity.impact === "high"
+                          ? "bg-red-500"
+                          : activity.impact === "medium"
+                            ? "bg-yellow-500"
+                            : "bg-green-500"
+                      }`}
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">{activity.action}</span>
+                        <Badge variant="outline" className="text-xs">
+                          {activity.impact} impact
                         </Badge>
                       </div>
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                          <span className="text-muted-foreground">
-                            Engagement Rate:
-                          </span>
-                          <div className="flex items-center gap-2">
-                            <div className="flex-1 bg-muted rounded-full h-2">
-                              <div
-                                className="bg-primary rounded-full h-2"
-                                style={{ width: `${audience.engagement}%` }}
-                              />
-                            </div>
-                            <span className="font-medium">
-                              {Math.round(audience.engagement)}%
-                            </span>
-                          </div>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground">
-                            Preference Score:
-                          </span>
-                          <div className="flex items-center gap-2">
-                            <div className="flex-1 bg-muted rounded-full h-2">
-                              <div
-                                className="bg-green-500 rounded-full h-2"
-                                style={{ width: `${audience.preference}%` }}
-                              />
-                            </div>
-                            <span className="font-medium">
-                              {Math.round(audience.preference)}%
-                            </span>
-                          </div>
-                        </div>
-                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        {activity.message}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {formatSystemDate(activity.timestamp)}
+                        {activity.user && ` • User: ${activity.user}`}
+                      </p>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="content" className="space-y-6">
-            {/* Top Performing Messages */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5 text-green-500" />
-                    Top Performing Messages
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {analyticsData.topPerforming.map((message, index) => (
-                    <div
-                      key={message.id}
-                      className="flex items-start gap-3 p-3 border rounded-lg"
-                    >
-                      <Badge variant="secondary" className="text-xs">
-                        #{index + 1}
-                      </Badge>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-medium truncate">
-                          {message.title}
-                        </h4>
-                        <p className="text-xs text-muted-foreground">
-                          {message.viewCount} views • {message.dismissCount}{" "}
-                          dismissed
-                        </p>
-                        <div className="flex items-center gap-2 mt-1">
-                          {getTypeIcon(message.type)}
-                          <span className="text-xs capitalize">
-                            {message.type}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingDown className="h-5 w-5 text-red-500" />
-                    Needs Improvement
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {analyticsData.lowPerforming.map((message, index) => (
-                    <div
-                      key={message.id}
-                      className="flex items-start gap-3 p-3 border rounded-lg"
-                    >
-                      <Badge variant="outline" className="text-xs">
-                        #{index + 1}
-                      </Badge>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-medium truncate">
-                          {message.title}
-                        </h4>
-                        <p className="text-xs text-muted-foreground">
-                          {message.viewCount} views • {message.dismissCount}{" "}
-                          dismissed
-                        </p>
-                        <div className="flex items-center gap-2 mt-1">
-                          {getTypeIcon(message.type)}
-                          <span className="text-xs capitalize">
-                            {message.type}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="activity" className="space-y-6">
-            {/* Recent Activity */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {analyticsData.recentActivity.map((activity, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-4 p-3 border rounded-lg"
-                    >
-                      <div
-                        className={`h-3 w-3 rounded-full ${
-                          activity.impact === "high"
-                            ? "bg-red-500"
-                            : activity.impact === "medium"
-                              ? "bg-yellow-500"
-                              : "bg-green-500"
-                        }`}
-                      />
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">{activity.action}</span>
-                          <Badge variant="outline" className="text-xs">
-                            {activity.impact} impact
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground">
-                          {activity.message}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {formatSystemDate(activity.timestamp)}
-                          {activity.user && ` • User: ${activity.user}`}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
-    </SuperAdminLayout>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 }
