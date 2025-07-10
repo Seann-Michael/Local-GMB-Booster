@@ -37,6 +37,13 @@ export function generateProjectId(): string {
   return `proj-${timestamp}-${random}`;
 }
 
+// Generic ID generator with prefix support
+export function generateId(prefix?: string): string {
+  const timestamp = Date.now().toString(36);
+  const random = generateRandomString(4);
+  return prefix ? `${prefix}-${timestamp}-${random}` : `${timestamp}-${random}`;
+}
+
 // Generate IDs for other entities
 export function generateTaskId(): string {
   return `task-${Date.now().toString(36)}-${generateRandomString(3)}`;
