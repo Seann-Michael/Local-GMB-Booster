@@ -21,6 +21,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { AppLayout } from "@/components/AppLayout";
+import { UserManagement } from "@/components/UserManagement";
 import {
   Save,
   Building2,
