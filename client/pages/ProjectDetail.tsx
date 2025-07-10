@@ -945,7 +945,9 @@ export default function ProjectDetail() {
                           </button>
                         </Badge>
                       ))}
+                      {/* Add keyword button */}
                       <Badge
+                        key="add-keyword-button"
                         variant="outline"
                         className="cursor-pointer hover:bg-muted"
                         onClick={() =>
