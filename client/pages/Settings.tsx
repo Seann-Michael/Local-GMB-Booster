@@ -2507,6 +2507,197 @@ export default function Settings() {
                       </div>
                     </div>
 
+                    {/* Auto-Population Settings */}
+                    <div>
+                      <Label className="text-base font-medium">
+                        Auto-Population Configuration
+                      </Label>
+                      <p className="text-sm text-muted-foreground mt-1 mb-4">
+                        Configure automatic generation and suggestion features
+                        for metadata fields
+                      </p>
+
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <Card className="p-4">
+                          <h4 className="font-semibold mb-3 flex items-center gap-2">
+                            <Bot className="h-4 w-4 text-blue-600" />
+                            AI-Powered Features
+                          </h4>
+                          <div className="space-y-3">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <Label className="text-sm font-medium">
+                                  AI Alt Text Generation
+                                </Label>
+                                <p className="text-xs text-muted-foreground">
+                                  Use AI vision API to describe images
+                                </p>
+                              </div>
+                              <Switch
+                                checked={settings.enableAIAltText !== false}
+                                onCheckedChange={(checked) =>
+                                  updateSetting("enableAIAltText", checked)
+                                }
+                              />
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <Label className="text-sm font-medium">
+                                  Smart Keyword Extraction
+                                </Label>
+                                <p className="text-xs text-muted-foreground">
+                                  Extract keywords from description + business
+                                  type
+                                </p>
+                              </div>
+                              <Switch
+                                checked={settings.enableSmartKeywords !== false}
+                                onCheckedChange={(checked) =>
+                                  updateSetting("enableSmartKeywords", checked)
+                                }
+                              />
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <Label className="text-sm font-medium">
+                                  Project-Based Tag Suggestions
+                                </Label>
+                                <p className="text-xs text-muted-foreground">
+                                  Auto-suggest tags based on project type
+                                </p>
+                              </div>
+                              <Switch
+                                checked={settings.enableProjectTags !== false}
+                                onCheckedChange={(checked) =>
+                                  updateSetting("enableProjectTags", checked)
+                                }
+                              />
+                            </div>
+                          </div>
+                        </Card>
+
+                        <Card className="p-4">
+                          <h4 className="font-semibold mb-3 flex items-center gap-2">
+                            <Zap className="h-4 w-4 text-yellow-600" />
+                            Auto-Generation Settings
+                          </h4>
+                          <div className="space-y-3">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <Label className="text-sm font-medium">
+                                  Auto-Generate Slugs
+                                </Label>
+                                <p className="text-xs text-muted-foreground">
+                                  Create SEO-friendly URLs from titles
+                                </p>
+                              </div>
+                              <Switch
+                                checked={settings.enableAutoSlug !== false}
+                                onCheckedChange={(checked) =>
+                                  updateSetting("enableAutoSlug", checked)
+                                }
+                              />
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <Label className="text-sm font-medium">
+                                  Auto Schema.org Types
+                                </Label>
+                                <p className="text-xs text-muted-foreground">
+                                  Automatically select Schema.org types
+                                </p>
+                              </div>
+                              <Switch
+                                checked={
+                                  settings.enableAutoSchemaTypes !== false
+                                }
+                                onCheckedChange={(checked) =>
+                                  updateSetting(
+                                    "enableAutoSchemaTypes",
+                                    checked,
+                                  )
+                                }
+                              />
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <Label className="text-sm font-medium">
+                                  Social Media Optimization
+                                </Label>
+                                <p className="text-xs text-muted-foreground">
+                                  Auto-optimize for OpenGraph/Twitter
+                                </p>
+                              </div>
+                              <Switch
+                                checked={
+                                  settings.enableSocialOptimization !== false
+                                }
+                                onCheckedChange={(checked) =>
+                                  updateSetting(
+                                    "enableSocialOptimization",
+                                    checked,
+                                  )
+                                }
+                              />
+                            </div>
+                          </div>
+                        </Card>
+                      </div>
+
+                      {/* AI Configuration */}
+                      {settings.enableAIAltText && (
+                        <Card className="p-4 mt-4">
+                          <h4 className="font-semibold mb-3 flex items-center gap-2">
+                            <Settings as SettingsIcon className="h-4 w-4" />
+                            AI Service Configuration
+                          </h4>
+                          <div className="grid gap-4 md:grid-cols-2">
+                            <div>
+                              <Label htmlFor="aiProvider">
+                                AI Vision Provider
+                              </Label>
+                              <Select
+                                value={settings.aiVisionProvider || "openai"}
+                                onValueChange={(value) =>
+                                  updateSetting("aiVisionProvider", value)
+                                }
+                              >
+                                <SelectTrigger>
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="openai">
+                                    OpenAI GPT-4 Vision
+                                  </SelectItem>
+                                  <SelectItem value="google">
+                                    Google Vision AI
+                                  </SelectItem>
+                                  <SelectItem value="azure">
+                                    Azure Computer Vision
+                                  </SelectItem>
+                                  <SelectItem value="aws">
+                                    AWS Rekognition
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div>
+                              <Label htmlFor="aiApiKey">API Key</Label>
+                              <Input
+                                id="aiApiKey"
+                                type="password"
+                                placeholder="Enter your AI service API key"
+                                value={settings.aiApiKey || ""}
+                                onChange={(e) =>
+                                  updateSetting("aiApiKey", e.target.value)
+                                }
+                              />
+                            </div>
+                          </div>
+                        </Card>
+                      )}
+                    </div>
+
                     {/* Schema Validation & Preview */}
                     <div className="grid gap-4 md:grid-cols-2">
                       <div>
