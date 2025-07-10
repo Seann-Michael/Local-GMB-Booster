@@ -391,7 +391,8 @@ export default function SuperAdminFinancial() {
                       <div className="flex items-center gap-3">
                         <div
                           className={`w-3 h-3 rounded-full ${
-                            planColors[plan as keyof typeof planColors]
+                            planColors[plan as keyof typeof planColors] ||
+                            "bg-gray-500"
                           }`}
                         />
                         <div>
