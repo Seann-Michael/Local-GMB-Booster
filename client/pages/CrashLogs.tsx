@@ -46,7 +46,6 @@ import {
   Info,
 } from "lucide-react";
 import { toast } from "sonner";
-import { useAuth } from "@/hooks/useAuth";
 
 interface ErrorLog {
   id: string;
@@ -133,7 +132,6 @@ const mockErrorLogs: ErrorLog[] = [
 ];
 
 export function CrashLogs() {
-  const { user: currentUser } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [severityFilter, setSeverityFilter] = useState<string>("all");
   const [componentFilter, setComponentFilter] = useState<string>("all");
