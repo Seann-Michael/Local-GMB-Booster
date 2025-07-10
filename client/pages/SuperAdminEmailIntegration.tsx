@@ -429,11 +429,12 @@ export default function SuperAdminEmailIntegration() {
     );
 
     setStats({
-      totalProviders: mockProviders.length,
-      activeProviders: mockProviders.filter((p) => p.isActive).length,
-      totalCampaigns: mockCampaigns.length,
-      activeCampaigns: mockCampaigns.filter((c) => c.status !== "cancelled")
-        .length,
+      totalProviders: (mockProviders || []).length,
+      activeProviders: (mockProviders || []).filter((p) => p.isActive).length,
+      totalCampaigns: (mockCampaigns || []).length,
+      activeCampaigns: (mockCampaigns || []).filter(
+        (c) => c.status !== "cancelled",
+      ).length,
       totalSent,
       deliveryRate: totalSent > 0 ? (totalDelivered / totalSent) * 100 : 0,
       openRate: totalDelivered > 0 ? (totalOpened / totalDelivered) * 100 : 0,
