@@ -306,6 +306,38 @@ export default function ProjectDetail() {
     toast.success(`Review request sent via ${method}!`);
   };
 
+  const handleMediaFilesReady = (files: any[]) => {
+    const newPhotos: TaggedPhoto[] = files.map((file) => ({
+      url: file.preview || file.url,
+      tags: file.tags || [],
+      uploadedAt: new Date().toISOString(),
+      uploadedBy: getCurrentUser()?.name || "Unknown",
+    }));
+
+    const updatedProject = {
+      ...project,
+      photos: [...(project.photos || []), ...newPhotos],
+    };
+
+    const entry = {
+      id: Date.now().toString(),
+      action: "photos_added",
+      description: `Added ${newPhotos.length} photos`,
+      timestamp: new Date().toISOString(),
+      user: getCurrentUser()?.name || "Unknown",
+      platform: "web" as const,
+    };
+
+    const projectWithActivity = {
+      ...updatedProject,
+      activityLog: [entry, ...(updatedProject.activityLog || [])],
+    };
+
+    updateProject(projectWithActivity);
+    setShowMediaUploader(false);
+    toast.success(`Added ${newPhotos.length} photos to the project`);
+  };
+
   const addMorePhotos = (files: FileList | null) => {
     if (!files || !project) return;
 
