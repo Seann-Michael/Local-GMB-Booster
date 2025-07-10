@@ -564,26 +564,10 @@ export default function Settings() {
               Manage your business settings and preferences
             </p>
           </div>
-          <div className="flex items-center gap-4">
-            {/* Breadcrumbs */}
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="/admin/projects">
-                    Dashboard
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Settings</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-            <Button onClick={handleSave} disabled={isLoading} className="gap-2">
-              <Save className="h-4 w-4" />
-              {isLoading ? "Saving..." : "Save Changes"}
-            </Button>
-          </div>
+          <Button onClick={handleSave} disabled={isLoading} className="gap-2">
+            <Save className="h-4 w-4" />
+            {isLoading ? "Saving..." : "Save Changes"}
+          </Button>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6">
