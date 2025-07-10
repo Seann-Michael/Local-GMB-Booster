@@ -286,8 +286,8 @@ export default function SuperAdminUsers() {
                     >
                       <Checkbox checked={visible} onChange={() => {}} />
                       <span className="capitalize">
-                        {key === "lastLogin"
-                          ? "Last Login"
+                        {key === "lastActive"
+                          ? "Last Active"
                           : key === "signupDate"
                             ? "Signup Date"
                             : key}
