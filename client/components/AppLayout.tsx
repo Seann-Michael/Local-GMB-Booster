@@ -718,10 +718,10 @@ export function AppLayout({ children }: AppLayoutProps) {
             </div>
 
             <div className="flex items-center gap-1 md:gap-2">
-              {/* Search - Hide on small mobile */}
-              <Button variant="ghost" size="icon" className="hidden sm:flex">
-                <Search className="h-5 w-5" />
-              </Button>
+              {/* Functional Search */}
+              <div className="hidden sm:block">
+                <HeaderSearch />
+              </div>
 
               {/* Theme Toggle - Now visible on mobile too */}
               <ThemeToggle />
