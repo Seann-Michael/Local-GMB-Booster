@@ -1919,7 +1919,9 @@ Contact our billing support team:
                   </div>
                 </CardTitle>
                 <CardDescription>
-                  Monitor system health, view detailed error reports, and track user-reported issues. Last updated: {new Date().toLocaleTimeString()}
+                  Monitor system health, view detailed error reports, and track
+                  user-reported issues. Last updated:{" "}
+                  {new Date().toLocaleTimeString()}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -1935,22 +1937,36 @@ Contact our billing support team:
                           <div className="flex items-start justify-between mb-2">
                             <div className="flex items-center gap-2">
                               <AlertTriangle className="h-4 w-4 text-red-600" />
-                              <span className="font-medium text-red-800">Settings Module Crash</span>
+                              <span className="font-medium text-red-800">
+                                Settings Module Crash
+                              </span>
                             </div>
-                            <span className="text-xs text-red-600">2 hours ago</span>
+                            <span className="text-xs text-red-600">
+                              2 hours ago
+                            </span>
                           </div>
                           <div className="text-sm text-red-700 mb-2">
-                            <strong>Error:</strong> Cannot read property 'events' of undefined at Settings.tsx:3206:116
+                            <strong>Error:</strong> Cannot read property
+                            'events' of undefined at Settings.tsx:3206:116
                           </div>
                           <div className="text-xs text-red-600 font-mono bg-red-100 p-2 rounded mb-2">
-                            TypeError: Cannot read properties of undefined (reading 'join')
-                            <br />at Settings (Settings.tsx:3206:116)
-                            <br />at renderWithHooks (chunk-WPQCFWW4.js:11596:35)
+                            TypeError: Cannot read properties of undefined
+                            (reading 'join')
+                            <br />
+                            at Settings (Settings.tsx:3206:116)
+                            <br />
+                            at renderWithHooks (chunk-WPQCFWW4.js:11596:35)
                           </div>
                           <div className="flex gap-2">
-                            <Badge variant="destructive" className="text-xs">High Priority</Badge>
-                            <Badge variant="outline" className="text-xs">User: joe@joespizza.com</Badge>
-                            <Badge variant="outline" className="text-xs">Chrome 118</Badge>
+                            <Badge variant="destructive" className="text-xs">
+                              High Priority
+                            </Badge>
+                            <Badge variant="outline" className="text-xs">
+                              User: joe@joespizza.com
+                            </Badge>
+                            <Badge variant="outline" className="text-xs">
+                              Chrome 118
+                            </Badge>
                           </div>
                         </CardContent>
                       </Card>
@@ -1960,22 +1976,36 @@ Contact our billing support team:
                           <div className="flex items-start justify-between mb-2">
                             <div className="flex items-center gap-2">
                               <AlertTriangle className="h-4 w-4 text-red-600" />
-                              <span className="font-medium text-red-800">React Key Warning Fixed</span>
+                              <span className="font-medium text-red-800">
+                                React Key Warning Fixed
+                              </span>
                             </div>
-                            <span className="text-xs text-red-600">3 hours ago</span>
+                            <span className="text-xs text-red-600">
+                              3 hours ago
+                            </span>
                           </div>
                           <div className="text-sm text-red-700 mb-2">
-                            <strong>Issue:</strong> Each child in a list should have a unique "key" prop
+                            <strong>Issue:</strong> Each child in a list should
+                            have a unique "key" prop
                           </div>
                           <div className="text-xs text-red-600 font-mono bg-red-100 p-2 rounded mb-2">
-                            Warning: Each child in a list should have a unique "key" prop
-                            <br />Check the render method of ProjectDetail
-                            <br />Fixed: Updated photo tags rendering with unique keys
+                            Warning: Each child in a list should have a unique
+                            "key" prop
+                            <br />
+                            Check the render method of ProjectDetail
+                            <br />
+                            Fixed: Updated photo tags rendering with unique keys
                           </div>
                           <div className="flex gap-2">
-                            <Badge variant="secondary" className="text-xs">Resolved</Badge>
-                            <Badge variant="outline" className="text-xs">Multiple Users</Badge>
-                            <Badge variant="outline" className="text-xs">React</Badge>
+                            <Badge variant="secondary" className="text-xs">
+                              Resolved
+                            </Badge>
+                            <Badge variant="outline" className="text-xs">
+                              Multiple Users
+                            </Badge>
+                            <Badge variant="outline" className="text-xs">
+                              React
+                            </Badge>
                           </div>
                         </CardContent>
                       </Card>
@@ -1990,19 +2020,31 @@ Contact our billing support team:
                     <div className="grid gap-3 md:grid-cols-2">
                       <Card className="border-yellow-200 bg-yellow-50">
                         <CardContent className="p-3">
-                          <div className="text-sm font-medium text-yellow-800">Slow Component Renders</div>
-                          <div className="text-xs text-yellow-600">Settings.tsx taking >2s to render</div>
+                          <div className="text-sm font-medium text-yellow-800">
+                            Slow Component Renders
+                          </div>
+                          <div className="text-xs text-yellow-600">
+                            Settings.tsx taking {">"}2s to render
+                          </div>
                           <div className="mt-2">
-                            <Badge variant="outline" className="text-xs">12 instances today</Badge>
+                            <Badge variant="outline" className="text-xs">
+                              12 instances today
+                            </Badge>
                           </div>
                         </CardContent>
                       </Card>
                       <Card className="border-yellow-200 bg-yellow-50">
                         <CardContent className="p-3">
-                          <div className="text-sm font-medium text-yellow-800">Memory Usage</div>
-                          <div className="text-xs text-yellow-600">Gallery component optimization needed</div>
+                          <div className="text-sm font-medium text-yellow-800">
+                            Memory Usage
+                          </div>
+                          <div className="text-xs text-yellow-600">
+                            Gallery component optimization needed
+                          </div>
                           <div className="mt-2">
-                            <Badge variant="outline" className="text-xs">5 reports</Badge>
+                            <Badge variant="outline" className="text-xs">
+                              5 reports
+                            </Badge>
                           </div>
                         </CardContent>
                       </Card>
