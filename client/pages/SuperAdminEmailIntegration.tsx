@@ -577,7 +577,7 @@ export default function SuperAdminEmailIntegration() {
   };
 
   const deleteProvider = (providerId: string) => {
-    setProviders(providers.filter((p) => p.id !== providerId));
+    setProviders((providers || []).filter((p) => p.id !== providerId));
     toast.success("Provider deleted!");
   };
 
