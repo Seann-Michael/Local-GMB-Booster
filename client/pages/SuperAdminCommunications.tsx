@@ -21,6 +21,7 @@ import {
   Plus,
   RefreshCw,
   Download,
+  Mail,
 } from "lucide-react";
 
 export default function SuperAdminCommunications() {
