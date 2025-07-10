@@ -344,12 +344,66 @@ export default function SuperAdminUsers() {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>User</TableHead>
-                          <TableHead>Role</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Organization</TableHead>
-                          <TableHead>Last Login</TableHead>
-                          <TableHead>Revenue</TableHead>
+                          <TableHead>
+                            <Button
+                              variant="ghost"
+                              className="h-auto p-0 font-semibold"
+                              onClick={() => handleSort("name")}
+                            >
+                              User
+                              {getSortIcon("name")}
+                            </Button>
+                          </TableHead>
+                          <TableHead>
+                            <Button
+                              variant="ghost"
+                              className="h-auto p-0 font-semibold"
+                              onClick={() => handleSort("role")}
+                            >
+                              Role
+                              {getSortIcon("role")}
+                            </Button>
+                          </TableHead>
+                          <TableHead>
+                            <Button
+                              variant="ghost"
+                              className="h-auto p-0 font-semibold"
+                              onClick={() => handleSort("status")}
+                            >
+                              Status
+                              {getSortIcon("status")}
+                            </Button>
+                          </TableHead>
+                          <TableHead>
+                            <Button
+                              variant="ghost"
+                              className="h-auto p-0 font-semibold"
+                              onClick={() => handleSort("organization")}
+                            >
+                              Organization
+                              {getSortIcon("organization")}
+                            </Button>
+                          </TableHead>
+                          <TableHead>
+                            <Button
+                              variant="ghost"
+                              className="h-auto p-0 font-semibold"
+                              onClick={() => handleSort("lastLogin")}
+                            >
+                              Last Login
+                              {getSortIcon("lastLogin")}
+                            </Button>
+                          </TableHead>
+                          <TableHead>
+                            <Button
+                              variant="ghost"
+                              className="h-auto p-0 font-semibold"
+                              onClick={() => handleSort("revenue")}
+                            >
+                              Revenue
+                              {getSortIcon("revenue")}
+                            </Button>
+                          </TableHead>
                           <TableHead>Actions</TableHead>
                         </TableRow>
                       </TableHeader>
