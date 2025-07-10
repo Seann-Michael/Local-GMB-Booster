@@ -85,31 +85,7 @@ export function ContextualHeader() {
   } = pageConfig;
 
   return (
-    <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      {/* Breadcrumbs */}
-      {breadcrumbs.length > 1 && (
-        <div className="px-4 py-4 border-t">
-          <Breadcrumb>
-            <BreadcrumbList>
-              {breadcrumbs.map((crumb, index) => (
-                <React.Fragment key={`breadcrumb-${index}`}>
-                  <BreadcrumbItem>
-                    {crumb.href && index < breadcrumbs.length - 1 ? (
-                      <BreadcrumbLink asChild>
-                        <Link to={crumb.href}>{crumb.label}</Link>
-                      </BreadcrumbLink>
-                    ) : (
-                      <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
-                    )}
-                  </BreadcrumbItem>
-                  {index < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
-                </React.Fragment>
-              ))}
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
-      )}
-    </div>
+    <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"></div>
   );
 }
 
