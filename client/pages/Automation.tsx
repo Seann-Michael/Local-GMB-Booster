@@ -332,165 +332,211 @@ export default function Automation() {
               </DropdownMenu>
             </div>
 
-            {/* Workflows Horizontal Scroll */}
-            <div className="overflow-x-auto pb-4">
-              <div className="flex gap-4 min-w-max">
-                {filteredWorkflows.map((workflow) => (
-                  <Card
-                    key={workflow.id}
-                    className="hover:shadow-md transition-shadow cursor-pointer flex-shrink-0 w-80"
-                  >
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Badge
-                            variant={
-                              workflow.status === "active"
-                                ? "default"
-                                : workflow.status === "draft"
-                                  ? "secondary"
-                                  : workflow.status === "paused"
-                                    ? "outline"
-                                    : "destructive"
-                            }
-                            className="flex items-center gap-1"
+            {/* Workflows Data Table */}
+            <div className="border rounded-lg overflow-hidden">
+              <table className="w-full">
+                <thead className="bg-muted/50 border-b">
+                  <tr>
+                    <th className="text-left p-4 font-medium">Name</th>
+                    <th className="text-left p-4 font-medium">Status</th>
+                    <th className="text-left p-4 font-medium">Executions</th>
+                    <th className="text-left p-4 font-medium">Last Run</th>
+                    <th className="text-left p-4 font-medium">Created</th>
+                    <th className="text-left p-4 font-medium">Updated</th>
+                    <th className="text-right p-4 font-medium">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredWorkflows.map((workflow, index) => (
+                    <tr
+                      key={workflow.id}
+                      className={cn(
+                        "border-b hover:bg-muted/20 transition-colors",
+                        index % 2 === 0 ? "bg-white" : "bg-muted/10",
+                      )}
+                    >
+                      <td className="p-4">
+                        <div
+                          className="cursor-pointer"
+                          onClick={() => setSelectedWorkflow(workflow)}
+                        >
+                          <div className="font-medium text-foreground hover:text-primary transition-colors">
+                            {workflow.name}
+                          </div>
+                          {workflow.description && (
+                            <div className="text-sm text-muted-foreground mt-1 line-clamp-1">
+                              {workflow.description}
+                            </div>
+                          )}
+                        </div>
+                      </td>
+
+                      <td className="p-4">
+                        <Badge
+                          variant={
+                            workflow.status === "active"
+                              ? "default"
+                              : workflow.status === "draft"
+                                ? "secondary"
+                                : workflow.status === "paused"
+                                  ? "outline"
+                                  : "destructive"
+                          }
+                          className="flex items-center gap-1 w-fit"
+                        >
+                          {workflow.status === "active" && (
+                            <CheckCircle className="h-3 w-3" />
+                          )}
+                          {workflow.status === "draft" && (
+                            <Edit className="h-3 w-3" />
+                          )}
+                          {workflow.status === "paused" && (
+                            <Pause className="h-3 w-3" />
+                          )}
+                          {workflow.status === "error" && (
+                            <Trash2 className="h-3 w-3" />
+                          )}
+                          <span className="capitalize">{workflow.status}</span>
+                        </Badge>
+                      </td>
+
+                      <td className="p-4">
+                        <div className="font-medium">{workflow.runCount}</div>
+                        {workflow.runCount > 0 && (
+                          <div className="text-xs text-muted-foreground">
+                            total runs
+                          </div>
+                        )}
+                      </td>
+
+                      <td className="p-4">
+                        <div className="text-sm">
+                          {workflow.lastRun
+                            ? workflow.lastRun.toLocaleDateString()
+                            : "Never"}
+                        </div>
+                        {workflow.lastRun && (
+                          <div className="text-xs text-muted-foreground">
+                            {workflow.lastRun.toLocaleTimeString()}
+                          </div>
+                        )}
+                      </td>
+
+                      <td className="p-4">
+                        <div className="text-sm">
+                          {workflow.createdAt.toLocaleDateString()}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {workflow.createdAt.toLocaleTimeString()}
+                        </div>
+                      </td>
+
+                      <td className="p-4">
+                        <div className="text-sm">
+                          {workflow.updatedAt.toLocaleDateString()}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {workflow.updatedAt.toLocaleTimeString()}
+                        </div>
+                      </td>
+
+                      <td className="p-4">
+                        <div className="flex items-center justify-end gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setSelectedWorkflow(workflow)}
+                            className="h-8 px-3"
                           >
-                            {workflow.status === "active" && (
-                              <CheckCircle className="h-3 w-3" />
-                            )}
-                            {workflow.status === "draft" && (
-                              <Edit className="h-3 w-3" />
-                            )}
-                            {workflow.status === "paused" && (
-                              <Pause className="h-3 w-3" />
-                            )}
-                            {workflow.status === "error" && (
-                              <XCircle className="h-3 w-3" />
-                            )}
-                            {workflow.status}
-                          </Badge>
-                        </div>
+                            <Edit className="h-4 w-4 mr-1" />
+                            Edit
+                          </Button>
 
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8"
-                            >
-                              <MoreVertical className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem
-                              onClick={() => setSelectedWorkflow(workflow)}
-                            >
-                              <Edit className="mr-2 h-4 w-4" />
-                              Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => {}}>
-                              <Copy className="mr-2 h-4 w-4" />
-                              Duplicate
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            {workflow.status === "active" ? (
-                              <DropdownMenuItem
-                                onClick={() =>
-                                  handleWorkflowAction(workflow.id, "pause")
-                                }
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
                               >
-                                <Pause className="mr-2 h-4 w-4" />
-                                Pause
-                              </DropdownMenuItem>
-                            ) : (
-                              <DropdownMenuItem
-                                onClick={() =>
-                                  handleWorkflowAction(workflow.id, "activate")
-                                }
-                              >
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem onClick={() => {}}>
                                 <Play className="mr-2 h-4 w-4" />
-                                Activate
+                                Test Workflow
                               </DropdownMenuItem>
-                            )}
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              onClick={() =>
-                                handleWorkflowAction(workflow.id, "delete")
-                              }
-                              className="text-destructive focus:text-destructive"
-                            >
-                              <Trash2 className="mr-2 h-4 w-4" />
-                              Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-
-                      <CardTitle
-                        className="text-lg"
-                        onClick={() => setSelectedWorkflow(workflow)}
-                      >
-                        {workflow.name}
-                      </CardTitle>
-                      <CardDescription
-                        onClick={() => setSelectedWorkflow(workflow)}
-                      >
-                        {workflow.description}
-                      </CardDescription>
-                    </CardHeader>
-
-                    <CardContent onClick={() => setSelectedWorkflow(workflow)}>
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-muted-foreground">
-                            Executions
-                          </span>
-                          <span className="font-medium">
-                            {workflow.runCount}
-                          </span>
+                              <DropdownMenuItem onClick={() => {}}>
+                                <Copy className="mr-2 h-4 w-4" />
+                                Duplicate
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => {}}>
+                                <BarChart3 className="mr-2 h-4 w-4" />
+                                View Analytics
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              {workflow.status === "active" ? (
+                                <DropdownMenuItem
+                                  onClick={() =>
+                                    handleWorkflowAction(workflow.id, "pause")
+                                  }
+                                >
+                                  <Pause className="mr-2 h-4 w-4" />
+                                  Pause
+                                </DropdownMenuItem>
+                              ) : (
+                                <DropdownMenuItem
+                                  onClick={() =>
+                                    handleWorkflowAction(
+                                      workflow.id,
+                                      "activate",
+                                    )
+                                  }
+                                >
+                                  <Play className="mr-2 h-4 w-4" />
+                                  Activate
+                                </DropdownMenuItem>
+                              )}
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  handleWorkflowAction(workflow.id, "delete")
+                                }
+                                className="text-destructive focus:text-destructive"
+                              >
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </div>
-
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-muted-foreground">
-                            Last run
-                          </span>
-                          <span className="font-medium">
-                            {workflow.lastRun
-                              ? workflow.lastRun.toLocaleDateString()
-                              : "Never"}
-                          </span>
-                        </div>
-
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-muted-foreground">Updated</span>
-                          <span className="font-medium">
-                            {workflow.updatedAt.toLocaleDateString()}
-                          </span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
 
             {filteredWorkflows.length === 0 && (
-              <div className="text-center py-12">
-                <Zap className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-lg font-semibold mb-2">
-                  No workflows found
-                </h3>
-                <p className="text-muted-foreground mb-4">
-                  {searchQuery
-                    ? "Try adjusting your search terms"
-                    : "Create your first workflow to get started"}
-                </p>
-                {!searchQuery && (
-                  <Button onClick={handleCreateWorkflow}>
-                    <Plus className="mr-2 h-4 w-4" />
-                    Create Workflow
-                  </Button>
-                )}
+              <div className="border rounded-lg">
+                <div className="text-center py-12">
+                  <Zap className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                  <h3 className="text-lg font-semibold mb-2">
+                    No workflows found
+                  </h3>
+                  <p className="text-muted-foreground mb-4">
+                    {searchQuery
+                      ? "Try adjusting your search terms"
+                      : "Create your first workflow to get started"}
+                  </p>
+                  {!searchQuery && (
+                    <Button onClick={handleCreateWorkflow}>
+                      <Plus className="mr-2 h-4 w-4" />
+                      Create Workflow
+                    </Button>
+                  )}
+                </div>
               </div>
             )}
           </TabsContent>
