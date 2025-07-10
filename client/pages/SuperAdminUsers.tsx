@@ -46,6 +46,9 @@ import {
   DollarSign,
   TrendingUp,
   Activity,
+  ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
 } from "lucide-react";
 
 interface User {
