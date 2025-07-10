@@ -188,7 +188,7 @@ export default function SuperAdminPerformance() {
         enabled: true,
       },
     ];
-    setCacheMetrics(mockCache);
+    setCacheMetrics(mockCache || []);
   };
 
   const loadDatabaseConnections = () => {
@@ -234,7 +234,7 @@ export default function SuperAdminPerformance() {
         lastOptimized: "2024-01-20T07:15:00Z",
       },
     ];
-    setDbConnections(mockDbs);
+    setDbConnections(mockDbs || []);
   };
 
   const loadPerformanceMetrics = () => {
@@ -290,7 +290,7 @@ export default function SuperAdminPerformance() {
         lastUpdated: new Date().toISOString(),
       },
     ];
-    setPerformanceMetrics(mockMetrics);
+    setPerformanceMetrics(mockMetrics || []);
   };
 
   const loadScalingRules = () => {
@@ -347,7 +347,7 @@ export default function SuperAdminPerformance() {
         lastTriggered: "2024-01-12T22:15:00Z",
       },
     ];
-    setScalingRules(mockRules);
+    setScalingRules(mockRules || []);
   };
 
   const loadOptimizationJobs = () => {
@@ -391,7 +391,7 @@ export default function SuperAdminPerformance() {
         logs: [],
       },
     ];
-    setOptimizationJobs(mockJobs);
+    setOptimizationJobs(mockJobs || []);
   };
 
   const updateRealTimeMetrics = () => {
