@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Dialog,
@@ -37,6 +40,12 @@ import {
   Bell,
   Edit3,
   ChevronRight,
+  FolderPlus,
+  CheckCircle,
+  MousePointer,
+  Star,
+  UserMinus,
+  Link,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -67,24 +76,31 @@ const stepTemplates = {
       category: "trigger",
     },
     {
-      id: "schedule",
-      name: "Schedule",
-      description: "Run on a schedule",
-      icon: Calendar,
+      id: "project-created",
+      name: "Project Created",
+      description: "When a new project is created",
+      icon: FolderPlus,
       category: "trigger",
     },
     {
-      id: "form-submit",
-      name: "Form Submit",
-      description: "When a form is submitted",
-      icon: Edit3,
+      id: "project-completed",
+      name: "Project Completed",
+      description: "When a project is marked as completed",
+      icon: CheckCircle,
       category: "trigger",
     },
     {
-      id: "email-received",
-      name: "Email Received",
-      description: "When an email is received",
-      icon: Mail,
+      id: "review-link-clicked",
+      name: "Review Link Clicked",
+      description: "When a customer clicks a review link",
+      icon: MousePointer,
+      category: "trigger",
+    },
+    {
+      id: "review-received",
+      name: "Review Received",
+      description: "When a customer submits a review",
+      icon: Star,
       category: "trigger",
     },
   ],
@@ -104,6 +120,13 @@ const stepTemplates = {
       category: "action",
     },
     {
+      id: "send-review-request",
+      name: "Send Review Request",
+      description: "Send Google review request to customer",
+      icon: Star,
+      category: "action",
+    },
+    {
       id: "webhook-call",
       name: "Webhook",
       description: "Make HTTP request",
@@ -111,34 +134,27 @@ const stepTemplates = {
       category: "action",
     },
     {
-      id: "database",
-      name: "Database",
-      description: "Create, update, or delete data",
-      icon: Database,
-      category: "action",
-    },
-    {
-      id: "notification",
-      name: "Notification",
-      description: "Send in-app notification",
-      icon: Bell,
+      id: "remove-from-automation",
+      name: "Remove from Automation",
+      description: "Stop running automation for this contact",
+      icon: UserMinus,
       category: "action",
     },
   ],
   logic: [
-    {
-      id: "condition",
-      name: "Condition",
-      description: "Only continue if condition is met",
-      icon: GitBranch,
-      category: "condition",
-    },
     {
       id: "delay",
       name: "Delay",
       description: "Wait for specified time",
       icon: Clock,
       category: "delay",
+    },
+    {
+      id: "condition",
+      name: "Condition",
+      description: "Only continue if condition is met",
+      icon: GitBranch,
+      category: "condition",
     },
     {
       id: "filter",
@@ -528,68 +544,680 @@ function StepConfigDialog({
   const renderConfigFields = () => {
     switch (step.category) {
       case "trigger":
-        if (step.name === "Webhook") {
-          return (
-            <div className="space-y-4">
+        switch (step.name) {
+          case "Webhook":
+            return (
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-sm font-medium">Webhook URL</Label>
+                  <Input
+                    value={config.url || ""}
+                    onChange={(e) =>
+                      setConfig({ ...config, url: e.target.value })
+                    }
+                    placeholder="https://your-domain.com/webhook"
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    This URL will receive webhook data
+                  </p>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">HTTP Method</Label>
+                  <Select
+                    value={config.method || "POST"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, method: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="GET">GET</SelectItem>
+                      <SelectItem value="POST">POST</SelectItem>
+                      <SelectItem value="PUT">PUT</SelectItem>
+                      <SelectItem value="PATCH">PATCH</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Headers (JSON)</Label>
+                  <Textarea
+                    value={config.headers || '{\n  "Content-Type": "application/json",\n  "Authorization": "Bearer your-token"\n}'}
+                    onChange={(e) =>
+                      setConfig({ ...config, headers: e.target.value })
+                    }
+                    placeholder='{"Authorization": "Bearer token"}'
+                    rows={4}
+                  />
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Request Body (JSON)</Label>
+                  <Textarea
+                    value={config.body || '{\n  "event": "automation_triggered",\n  "data": {}\n}'}
+                    onChange={(e) =>
+                      setConfig({ ...config, body: e.target.value })
+                    }
+                    placeholder='{"key": "value"}'
+                    rows={6}
+                  />
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Secret Key (Optional)</Label>
+                  <Input
+                    type="password"
+                    value={config.secret || ""}
+                    onChange={(e) =>
+                      setConfig({ ...config, secret: e.target.value })
+                    }
+                    placeholder="Webhook secret for verification"
+                  />
+                </div>
+              </div>
+            );
+
+          case "Project Created":
+            return (
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-sm font-medium">Project Filters</Label>
+                  <Select
+                    value={config.projectFilter || "all"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, projectFilter: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Projects</SelectItem>
+                      <SelectItem value="with-customer">Projects with Customer Info</SelectItem>
+                      <SelectItem value="with-phone">Projects with Phone Number</SelectItem>
+                      <SelectItem value="with-email">Projects with Email</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="immediate"
+                    checked={config.immediate || false}
+                    onCheckedChange={(checked) =>
+                      setConfig({ ...config, immediate: checked })
+                    }
+                  />
+                  <Label htmlFor="immediate">Trigger immediately on creation</Label>
+                </div>
+              </div>
+            );
+
+          case "Project Completed":
+            return (
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-sm font-medium">Trigger Condition</Label>
+                  <Select
+                    value={config.condition || "marked-complete"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, condition: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="marked-complete">When marked as complete</SelectItem>
+                      <SelectItem value="all-tasks-done">When all tasks are completed</SelectItem>
+                      <SelectItem value="checklist-done">When checklist is completed</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="require-customer"
+                    checked={config.requireCustomer || true}
+                    onCheckedChange={(checked) =>
+                      setConfig({ ...config, requireCustomer: checked })
+                    }
+                  />
+                  <Label htmlFor="require-customer">Only trigger if customer info exists</Label>
+                </div>
+              </div>
+            );
+
+          case "Review Link Clicked":
+            return (
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-sm font-medium">Review Platform</Label>
+                  <Select
+                    value={config.platform || "google"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, platform: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="google">Google Reviews</SelectItem>
+                      <SelectItem value="facebook">Facebook Reviews</SelectItem>
+                      <SelectItem value="yelp">Yelp Reviews</SelectItem>
+                      <SelectItem value="any">Any Platform</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Tracking Method</Label>
+                  <Select
+                    value={config.tracking || "utm"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, tracking: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="utm">UTM Parameters</SelectItem>
+                      <SelectItem value="pixel">Tracking Pixel</SelectItem>
+                      <SelectItem value="redirect">Redirect Tracking</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            );
+
+          case "Review Received":
+            return (
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-sm font-medium">Minimum Rating</Label>
+                  <Select
+                    value={config.minRating || "1"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, minRating: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">1 Star or Higher</SelectItem>
+                      <SelectItem value="2">2 Stars or Higher</SelectItem>
+                      <SelectItem value="3">3 Stars or Higher</SelectItem>
+                      <SelectItem value="4">4 Stars or Higher</SelectItem>
+                      <SelectItem value="5">5 Stars Only</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Review Platform</Label>
+                  <Select
+                    value={config.platform || "google"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, platform: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="google">Google Reviews</SelectItem>
+                      <SelectItem value="facebook">Facebook Reviews</SelectItem>
+                      <SelectItem value="yelp">Yelp Reviews</SelectItem>
+                      <SelectItem value="any">Any Platform</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="has-text"
+                    checked={config.requireText || false}
+                    onCheckedChange={(checked) =>
+                      setConfig({ ...config, requireText: checked })
+                    }
+                  />
+                  <Label htmlFor="has-text">Only trigger if review has text</Label>
+                </div>
+              </div>
+            );
+
+          default:
+            return (
+              <div className="text-center py-8 text-muted-foreground">
+                <Settings className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                <p>Configuration saved automatically</p>
+              </div>
+            );
+        }
+
+      case "action":
+        switch (step.name) {
+          case "Send Email":
+            return (
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-sm font-medium">To</Label>
+                  <Input
+                    value={config.to || "{{customer.email}}"}
+                    onChange={(e) => setConfig({ ...config, to: e.target.value })}
+                    placeholder="{{customer.email}} or specific email"
+                  />
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">From Name</Label>
+                  <Input
+                    value={config.fromName || ""}
+                    onChange={(e) => setConfig({ ...config, fromName: e.target.value })}
+                    placeholder="Your Business Name"
+                  />
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Subject</Label>
+                  <Input
+                    value={config.subject || ""}
+                    onChange={(e) =>
+                      setConfig({ ...config, subject: e.target.value })
+                    }
+                    placeholder="Thank you for your project!"
+                  />
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Email Body</Label>
+                  <Textarea
+                    value={config.body || "Hi {{customer.name}},\n\nThank you for choosing us for your project: {{project.name}}\n\nBest regards,\nYour Team"}
+                    onChange={(e) =>
+                      setConfig({ ...config, body: e.target.value })
+                    }
+                    placeholder="Email content with variables like {{customer.name}}"
+                    rows={8}
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Use variables: {{customer.name}}, {{customer.email}}, {{project.name}}, {{project.address}}
+                  </p>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="html"
+                    checked={config.isHtml || false}
+                    onCheckedChange={(checked) =>
+                      setConfig({ ...config, isHtml: checked })
+                    }
+                  />
+                  <Label htmlFor="html">Send as HTML email</Label>
+                </div>
+              </div>
+            );
+
+          case "Send SMS":
+            return (
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-sm font-medium">To</Label>
+                  <Input
+                    value={config.to || "{{customer.phone}}"}
+                    onChange={(e) => setConfig({ ...config, to: e.target.value })}
+                    placeholder="{{customer.phone}} or +1234567890"
+                  />
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Message</Label>
+                  <Textarea
+                    value={config.message || "Hi {{customer.name}}, your project {{project.name}} has been completed! Thanks for choosing us."}
+                    onChange={(e) =>
+                      setConfig({ ...config, message: e.target.value })
+                    }
+                    placeholder="SMS message with variables"
+                    rows={4}
+                    maxLength={160}
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {(config.message || "").length}/160 characters. Variables: {{customer.name}}, {{project.name}}
+                  </p>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="include-link"
+                    checked={config.includeLink || false}
+                    onCheckedChange={(checked) =>
+                      setConfig({ ...config, includeLink: checked })
+                    }
+                  />
+                  <Label htmlFor="include-link">Include project link</Label>
+                </div>
+              </div>
+            );
+
+          case "Send Review Request":
+            return (
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-sm font-medium">Review Platform</Label>
+                  <Select
+                    value={config.platform || "google"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, platform: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="google">Google My Business</SelectItem>
+                      <SelectItem value="facebook">Facebook</SelectItem>
+                      <SelectItem value="yelp">Yelp</SelectItem>
+                      <SelectItem value="custom">Custom Review Link</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Request Method</Label>
+                  <Select
+                    value={config.method || "email"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, method: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="email">Email</SelectItem>
+                      <SelectItem value="sms">SMS</SelectItem>
+                      <SelectItem value="both">Both Email & SMS</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Message Template</Label>
+                  <Select
+                    value={config.template || "friendly"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, template: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="friendly">Friendly Request</SelectItem>
+                      <SelectItem value="professional">Professional</SelectItem>
+                      <SelectItem value="gratitude">Thank You Style</SelectItem>
+                      <SelectItem value="custom">Custom Message</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {config.template === "custom" && (
+                  <div>
+                    <Label className="text-sm font-medium">Custom Message</Label>
+                    <Textarea
+                      value={config.customMessage || ""}
+                      onChange={(e) =>
+                        setConfig({ ...config, customMessage: e.target.value })
+                      }
+                      placeholder="Custom review request message"
+                      rows={4}
+                    />
+                  </div>
+                )}
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="include-photos"
+                    checked={config.includePhotos || false}
+                    onCheckedChange={(checked) =>
+                      setConfig({ ...config, includePhotos: checked })
+                    }
+                  />
+                  <Label htmlFor="include-photos">Include project photos in request</Label>
+                </div>
+              </div>
+            );
+
+          case "Webhook":
+            return (
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-sm font-medium">Webhook URL</Label>
+                  <Input
+                    value={config.url || ""}
+                    onChange={(e) =>
+                      setConfig({ ...config, url: e.target.value })
+                    }
+                    placeholder="https://api.example.com/webhook"
+                  />
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">HTTP Method</Label>
+                  <Select
+                    value={config.method || "POST"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, method: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="GET">GET</SelectItem>
+                      <SelectItem value="POST">POST</SelectItem>
+                      <SelectItem value="PUT">PUT</SelectItem>
+                      <SelectItem value="PATCH">PATCH</SelectItem>
+                      <SelectItem value="DELETE">DELETE</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Headers (JSON)</Label>
+                  <Textarea
+                    value={config.headers || '{\n  "Content-Type": "application/json",\n  "Authorization": "Bearer your-token"\n}'}
+                    onChange={(e) =>
+                      setConfig({ ...config, headers: e.target.value })
+                    }
+                    placeholder='{"Authorization": "Bearer token"}'
+                    rows={4}
+                  />
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Request Body (JSON)</Label>
+                  <Textarea
+                    value={config.body || '{\n  "customer": "{{customer.name}}",\n  "project": "{{project.name}}",\n  "status": "{{project.status}}"\n}'}
+                    onChange={(e) =>
+                      setConfig({ ...config, body: e.target.value })
+                    }
+                    placeholder='{"key": "value"}'
+                    rows={6}
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Use variables: {{customer.name}}, {{project.name}}, {{project.status}}
+                  </p>
+                </div>
+              </div>
+            );
+
+          case "Remove from Automation":
+            return (
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-sm font-medium">Remove Scope</Label>
+                  <Select
+                    value={config.scope || "this-automation"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, scope: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="this-automation">Only this automation</SelectItem>
+                      <SelectItem value="all-automations">All automations</SelectItem>
+                      <SelectItem value="by-tag">Automations with specific tag</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {config.scope === "by-tag" && (
+                  <div>
+                    <Label className="text-sm font-medium">Tag</Label>
+                    <Input
+                      value={config.tag || ""}
+                      onChange={(e) =>
+                        setConfig({ ...config, tag: e.target.value })
+                      }
+                      placeholder="automation-tag"
+                    />
+                  </div>
+                )}
+
+                <div>
+                  <Label className="text-sm font-medium">Reason (Optional)</Label>
+                  <Input
+                    value={config.reason || ""}
+                    onChange={(e) =>
+                      setConfig({ ...config, reason: e.target.value })
+                    }
+                    placeholder="Customer completed review process"
+                  />
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="log-removal"
+                    checked={config.logRemoval || true}
+                    onCheckedChange={(checked) =>
+                      setConfig({ ...config, logRemoval: checked })
+                    }
+                  />
+                  <Label htmlFor="log-removal">Log removal in activity</Label>
+                </div>
+              </div>
+            );
+
+          default:
+            return (
+              <div className="text-center py-8 text-muted-foreground">
+                <Settings className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                <p>Configuration saved automatically</p>
+              </div>
+            );
+        }
+
+      case "delay":
+        return (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="text-sm font-medium">Webhook URL</label>
+                <Label className="text-sm font-medium">Duration</Label>
                 <Input
-                  value={config.url || ""}
+                  type="number"
+                  value={config.duration || ""}
                   onChange={(e) =>
-                    setConfig({ ...config, url: e.target.value })
+                    setConfig({ ...config, duration: parseInt(e.target.value) })
                   }
-                  placeholder="https://your-domain.com/webhook"
+                  placeholder="5"
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">HTTP Method</label>
+                <Label className="text-sm font-medium">Unit</Label>
                 <Select
-                  value={config.method || "POST"}
-                  onValueChange={(value) =>
-                    setConfig({ ...config, method: value })
-                  }
+                  value={config.unit || "minutes"}
+                  onValueChange={(value) => setConfig({ ...config, unit: value })}
                 >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="GET">GET</SelectItem>
-                    <SelectItem value="POST">POST</SelectItem>
-                    <SelectItem value="PUT">PUT</SelectItem>
+                    <SelectItem value="minutes">Minutes</SelectItem>
+                    <SelectItem value="hours">Hours</SelectItem>
+                    <SelectItem value="days">Days</SelectItem>
+                    <SelectItem value="weeks">Weeks</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
-          );
-        }
-        break;
 
-      case "action":
-        if (step.name === "Send Email") {
-          return (
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-medium">To</label>
-                <Input
-                  value={config.to || ""}
-                  onChange={(e) => setConfig({ ...config, to: e.target.value })}
-                  placeholder="recipient@example.com"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium">Subject</label>
-                <Input
-                  value={config.subject || ""}
-                  onChange={(e) =>
-                    setConfig({ ...config, subject: e.target.value })
-                  }
-                  placeholder="Email subject"
-                />
-              </div>
+            <div>
+              <Label className="text-sm font-medium">Schedule Type</Label>
+              <Select
+                value={config.scheduleType || "delay"}
+                onValueChange={(value) =>
+                  setConfig({ ...config, scheduleType: value })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="delay">Simple Delay</SelectItem>
+                  <SelectItem value="business-hours">Only During Business Hours</SelectItem>
+                  <SelectItem value="specific-time">Specific Time of Day</SelectItem>
+                  <SelectItem value="weekdays">Weekdays Only</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-          );
-        }
-        break;
+
+            {config.scheduleType === "specific-time" && (
+              <div>
+                <Label className="text-sm font-medium">Time</Label>
+                <Input
+                  type="time"
+                  value={config.time || "09:00"}
+                  onChange={(e) => setConfig({ ...config, time: e.target.value })}
+                />
+              </div>
+            )}
+
+            {config.scheduleType === "business-hours" && (
+              <div className="space-y-2">
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <Label className="text-sm font-medium">Start Time</Label>
+                    <Input
+                      type="time"
+                      value={config.startTime || "09:00"}
+                      onChange={(e) =>
+                        setConfig({ ...config, startTime: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium">End Time</Label>
+                    <Input
+                      type="time"
+                      value={config.endTime || "17:00"}
+                      onChange={(e) =>
+                        setConfig({ ...config, endTime: e.target.value })
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        );
 
       default:
         return (
