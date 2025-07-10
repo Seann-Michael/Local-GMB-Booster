@@ -930,7 +930,7 @@ export default function ProjectDetail() {
                     <div className="flex flex-wrap gap-2">
                       {project.keywords.map((keyword, index) => (
                         <Badge
-                          key={`keyword-${index}`}
+                          key={`keyword-${keyword}-${index}`}
                           variant="secondary"
                           className="cursor-pointer hover:bg-secondary/80"
                         >
