@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { AppLayout } from "@/components/AppLayout";
 import { MediaViewer } from "@/components/MediaViewer";
-import { EnhancedFileUploader } from "@/components/EnhancedFileUploader";
+import { SmartMediaUploader } from "@/components/SmartMediaUploader";
 import {
   ArrowLeft,
   Images,
@@ -946,7 +946,7 @@ export default function Gallery() {
               </div>
             </div>
 
-            <EnhancedFileUploader
+            <SmartMediaUploader
               onFilesReady={handleFilesReady}
               acceptedTypes={["image/*", "video/*"]}
               maxFiles={50}
@@ -955,6 +955,8 @@ export default function Gallery() {
                 name: "Gallery Uploads",
                 keywords: ["gallery", "upload"],
               }}
+              enableAIFeatures={true}
+              autoApplyDefaults={true}
             />
           </div>
         </DialogContent>
