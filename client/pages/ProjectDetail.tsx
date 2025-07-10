@@ -976,9 +976,8 @@ export default function ProjectDetail() {
                     </CardTitle>
                     <div className="flex items-center gap-2">
                       {selectedPhotos.length > 0 && (
-                        <div key="photo-actions" className="flex gap-2">
+                        <div className="flex gap-2">
                           <Button
-                            key="download-btn"
                             variant="outline"
                             size="sm"
                             onClick={downloadSelectedPhotos}
@@ -988,7 +987,6 @@ export default function ProjectDetail() {
                             Download
                           </Button>
                           <Button
-                            key="share-btn"
                             variant="outline"
                             size="sm"
                             onClick={shareProject}
@@ -998,7 +996,6 @@ export default function ProjectDetail() {
                             Share
                           </Button>
                           <Button
-                            key="select-all-btn"
                             variant="outline"
                             size="sm"
                             onClick={selectAllPhotos}
