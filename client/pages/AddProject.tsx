@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import type { ProjectInfo } from "@/lib/mediaMetadata";
 import { SmartDropdownInput } from "@/components/SmartDropdownInput";
 import { DROPDOWN_FIELDS } from "@/hooks/useDropdownState";
+import { generateProjectId } from "@/lib/idGenerator";
 
 interface EnhancedPhoto {
   url: string;
@@ -227,7 +228,7 @@ export default function AddProject() {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const project = {
-        id: Date.now().toString(),
+        id: generateProjectId(),
         ...formData,
         keywords: formData.keywords
           .split(",")
