@@ -564,7 +564,7 @@ export default function Settings() {
 
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Sidebar Navigation */}
-          <div className="lg:w-56 space-y-1">
+          <div className="lg:w-[215px] space-y-1">
             <nav className="space-y-1">
               {navigationTabs.map((tab) => {
                 const Icon = tab.icon;
