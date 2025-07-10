@@ -167,36 +167,18 @@ export function ThemeToggle() {
   };
 
   const getLabel = () => {
-    if (theme === "light") return "Switch to dark mode";
-    if (theme === "dark") return "Switch to system mode";
-    return "Switch to light mode";
+    return actualTheme === "light" ? "Switch to dark mode" : "Switch to light mode";
   };
 
   return (
-    <>
-      {/* Mobile/Single button version */}
-      <div className="md:hidden">
-        <button
-          onClick={cycleTheme}
-          className="p-2 rounded-md bg-muted hover:bg-muted/80 text-foreground min-h-[44px] min-w-[44px] flex items-center justify-center"
-          aria-label={getLabel()}
-          title={getLabel()}
-        >
-          {getIcon()}
-        </button>
-      </div>
-
-      {/* Desktop version - three separate buttons */}
-      <div className="hidden md:flex items-center space-x-2">
-        <button
-          onClick={() => setTheme("light")}
-          className={`p-2 rounded-md ${
-            theme === "light"
-              ? "bg-primary text-primary-foreground"
-              : "bg-muted hover:bg-muted/80"
-          }`}
-          aria-label="Light theme"
-        >
+    <button
+      onClick={toggleTheme}
+      className="p-2 rounded-md hover:bg-muted/80 text-foreground transition-colors"
+      aria-label={getLabel()}
+      title={getLabel()}
+    >
+      {getIcon()}
+    </button>
           <svg
             className="h-4 w-4"
             fill="none"
