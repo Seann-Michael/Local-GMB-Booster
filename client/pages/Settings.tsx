@@ -21,7 +21,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { AppLayout } from "@/components/AppLayout";
-import { UserManagement } from "@/components/UserManagement";
+import { UserManagementSystem } from "@/components/UserManagementSystem";
 import {
   Save,
   Building2,
@@ -3672,7 +3672,7 @@ export default function Settings() {
             )}
 
             {/* Users */}
-            {activeTab === "users" && <UserManagement />}
+            {activeTab === "users" && <UserManagementSystem />}
 
             {/* Billing */}
             {activeTab === "billing" && (
