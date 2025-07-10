@@ -739,8 +739,7 @@ export default function Automation() {
               </p>
             </div>
 
-            {/* Workflow Performance */}
-            <Card>
+
               <CardHeader>
                 <CardTitle>Workflow Performance</CardTitle>
                 <CardDescription>
