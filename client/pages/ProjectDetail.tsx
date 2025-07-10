@@ -928,7 +928,7 @@ export default function ProjectDetail() {
                     <div className="flex flex-wrap gap-2">
                       {project.keywords.map((keyword, index) => (
                         <Badge
-                          key={`keyword-${keyword}-${index}`}
+                          key={`keyword-${index}-${keyword.replace(/\s+/g, "-")}`}
                           variant="secondary"
                           className="cursor-pointer hover:bg-secondary/80"
                         >
