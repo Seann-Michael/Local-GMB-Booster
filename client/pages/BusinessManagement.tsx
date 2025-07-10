@@ -225,7 +225,8 @@ export default function BusinessManagement() {
       title="Business Management"
       breadcrumbs={[{ label: "Business Management" }]}
     >
-      <Card>
+      <div className="max-w-full overflow-x-hidden">
+        <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>All Businesses ({filteredBusinesses.length})</CardTitle>
