@@ -2047,10 +2047,18 @@ export default function ProjectDetail() {
                             Showing 1-10 of {project.activityLog.length} entries
                           </span>
                           <div className="flex gap-2">
-                            <Button variant="outline" size="sm">
+                            <Button
+                              key="pagination-prev"
+                              variant="outline"
+                              size="sm"
+                            >
                               Previous
                             </Button>
-                            <Button variant="outline" size="sm">
+                            <Button
+                              key="pagination-next"
+                              variant="outline"
+                              size="sm"
+                            >
                               Next
                             </Button>
                           </div>
