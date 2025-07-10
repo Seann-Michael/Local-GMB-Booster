@@ -49,6 +49,8 @@ import {
   ArrowUpDown,
   ArrowUp,
   ArrowDown,
+  Settings,
+  Columns,
 } from "lucide-react";
 
 interface User {
