@@ -389,198 +389,200 @@ export default function SuperAdminUsers() {
                 </CardHeader>
                 <CardContent className="p-0">
                   <div className="overflow-x-auto">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          {visibleColumns.user && (
-                            <TableHead>
-                              <Button
-                                variant="ghost"
-                                className="h-auto p-0 font-semibold"
-                                onClick={() => handleSort("name")}
-                              >
-                                User
-                                {getSortIcon("name")}
-                              </Button>
-                            </TableHead>
-                          )}
-                          {visibleColumns.role && (
-                            <TableHead>
-                              <Button
-                                variant="ghost"
-                                className="h-auto p-0 font-semibold"
-                                onClick={() => handleSort("role")}
-                              >
-                                Role
-                                {getSortIcon("role")}
-                              </Button>
-                            </TableHead>
-                          )}
-                          {visibleColumns.status && (
-                            <TableHead>
-                              <Button
-                                variant="ghost"
-                                className="h-auto p-0 font-semibold"
-                                onClick={() => handleSort("status")}
-                              >
-                                Status
-                                {getSortIcon("status")}
-                              </Button>
-                            </TableHead>
-                          )}
-                          {visibleColumns.organization && (
-                            <TableHead>
-                              <Button
-                                variant="ghost"
-                                className="h-auto p-0 font-semibold"
-                                onClick={() => handleSort("organization")}
-                              >
-                                Organization
-                                {getSortIcon("organization")}
-                              </Button>
-                            </TableHead>
-                          )}
-                          {visibleColumns.lastActive && (
-                            <TableHead>
-                              <Button
-                                variant="ghost"
-                                className="h-auto p-0 font-semibold"
-                                onClick={() => handleSort("lastActive")}
-                              >
-                                Last Active
-                                {getSortIcon("lastActive")}
-                              </Button>
-                            </TableHead>
-                          )}
-
-                          {visibleColumns.signupDate && (
-                            <TableHead>
-                              <Button
-                                variant="ghost"
-                                className="h-auto p-0 font-semibold"
-                                onClick={() => handleSort("signupDate")}
-                              >
-                                Signup Date
-                                {getSortIcon("signupDate")}
-                              </Button>
-                            </TableHead>
-                          )}
-                          {visibleColumns.subscription && (
-                            <TableHead>
-                              <Button
-                                variant="ghost"
-                                className="h-auto p-0 font-semibold"
-                                onClick={() => handleSort("subscription")}
-                              >
-                                Subscription
-                                {getSortIcon("subscription")}
-                              </Button>
-                            </TableHead>
-                          )}
-                          <TableHead>Actions</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {filteredUsers.map((user) => (
-                          <TableRow key={user.id}>
+                    <div className="min-w-full w-max">
+                      <Table className="table-fixed w-full min-w-[800px]">
+                        <TableHeader>
+                          <TableRow>
                             {visibleColumns.user && (
-                              <TableCell>
-                                <div className="flex items-center gap-3">
-                                  {getTypeIcon(user.type)}
-                                  <div>
-                                    <div className="font-medium">
-                                      {user.name}
-                                    </div>
-                                    <div className="text-sm text-muted-foreground flex items-center gap-1">
-                                      <Mail className="h-3 w-3" />
-                                      {user.email}
-                                    </div>
-                                  </div>
-                                </div>
-                              </TableCell>
+                              <TableHead>
+                                <Button
+                                  variant="ghost"
+                                  className="h-auto p-0 font-semibold"
+                                  onClick={() => handleSort("name")}
+                                >
+                                  User
+                                  {getSortIcon("name")}
+                                </Button>
+                              </TableHead>
                             )}
                             {visibleColumns.role && (
-                              <TableCell>{getRoleBadge(user.role)}</TableCell>
+                              <TableHead>
+                                <Button
+                                  variant="ghost"
+                                  className="h-auto p-0 font-semibold"
+                                  onClick={() => handleSort("role")}
+                                >
+                                  Role
+                                  {getSortIcon("role")}
+                                </Button>
+                              </TableHead>
                             )}
                             {visibleColumns.status && (
-                              <TableCell>
-                                {getStatusBadge(user.status)}
-                              </TableCell>
+                              <TableHead>
+                                <Button
+                                  variant="ghost"
+                                  className="h-auto p-0 font-semibold"
+                                  onClick={() => handleSort("status")}
+                                >
+                                  Status
+                                  {getSortIcon("status")}
+                                </Button>
+                              </TableHead>
                             )}
                             {visibleColumns.organization && (
-                              <TableCell>
-                                <div className="font-medium">
-                                  {user.organization}
-                                </div>
-                                {user.subscription && (
-                                  <div className="text-sm text-muted-foreground">
-                                    {user.subscription} plan
-                                  </div>
-                                )}
-                              </TableCell>
+                              <TableHead>
+                                <Button
+                                  variant="ghost"
+                                  className="h-auto p-0 font-semibold"
+                                  onClick={() => handleSort("organization")}
+                                >
+                                  Organization
+                                  {getSortIcon("organization")}
+                                </Button>
+                              </TableHead>
                             )}
                             {visibleColumns.lastActive && (
-                              <TableCell>
-                                <div className="text-sm">
-                                  {new Date(
-                                    user.lastActive,
-                                  ).toLocaleDateString()}
-                                </div>
-                              </TableCell>
+                              <TableHead>
+                                <Button
+                                  variant="ghost"
+                                  className="h-auto p-0 font-semibold"
+                                  onClick={() => handleSort("lastActive")}
+                                >
+                                  Last Active
+                                  {getSortIcon("lastActive")}
+                                </Button>
+                              </TableHead>
                             )}
 
                             {visibleColumns.signupDate && (
-                              <TableCell>
-                                <div className="text-sm">
-                                  {new Date(
-                                    user.signupDate,
-                                  ).toLocaleDateString()}
-                                </div>
-                              </TableCell>
+                              <TableHead>
+                                <Button
+                                  variant="ghost"
+                                  className="h-auto p-0 font-semibold"
+                                  onClick={() => handleSort("signupDate")}
+                                >
+                                  Signup Date
+                                  {getSortIcon("signupDate")}
+                                </Button>
+                              </TableHead>
                             )}
                             {visibleColumns.subscription && (
-                              <TableCell>
-                                {user.subscription ? (
-                                  <Badge variant="outline">
-                                    {user.subscription}
-                                  </Badge>
-                                ) : (
-                                  <span className="text-muted-foreground">
-                                    Free
-                                  </span>
-                                )}
-                              </TableCell>
+                              <TableHead>
+                                <Button
+                                  variant="ghost"
+                                  className="h-auto p-0 font-semibold"
+                                  onClick={() => handleSort("subscription")}
+                                >
+                                  Subscription
+                                  {getSortIcon("subscription")}
+                                </Button>
+                              </TableHead>
                             )}
-                            <TableCell>
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button
-                                    variant="ghost"
-                                    className="h-8 w-8 p-0"
-                                  >
-                                    <MoreVertical className="h-4 w-4" />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                  <DropdownMenuItem>
-                                    <Eye className="mr-2 h-4 w-4" />
-                                    View Details
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem>
-                                    <Edit className="mr-2 h-4 w-4" />
-                                    Edit User
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem>
-                                    <Mail className="mr-2 h-4 w-4" />
-                                    Send Message
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </TableCell>
+                            <TableHead>Actions</TableHead>
                           </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
+                        </TableHeader>
+                        <TableBody>
+                          {filteredUsers.map((user) => (
+                            <TableRow key={user.id}>
+                              {visibleColumns.user && (
+                                <TableCell>
+                                  <div className="flex items-center gap-3">
+                                    {getTypeIcon(user.type)}
+                                    <div>
+                                      <div className="font-medium">
+                                        {user.name}
+                                      </div>
+                                      <div className="text-sm text-muted-foreground flex items-center gap-1">
+                                        <Mail className="h-3 w-3" />
+                                        {user.email}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </TableCell>
+                              )}
+                              {visibleColumns.role && (
+                                <TableCell>{getRoleBadge(user.role)}</TableCell>
+                              )}
+                              {visibleColumns.status && (
+                                <TableCell>
+                                  {getStatusBadge(user.status)}
+                                </TableCell>
+                              )}
+                              {visibleColumns.organization && (
+                                <TableCell>
+                                  <div className="font-medium">
+                                    {user.organization}
+                                  </div>
+                                  {user.subscription && (
+                                    <div className="text-sm text-muted-foreground">
+                                      {user.subscription} plan
+                                    </div>
+                                  )}
+                                </TableCell>
+                              )}
+                              {visibleColumns.lastActive && (
+                                <TableCell>
+                                  <div className="text-sm">
+                                    {new Date(
+                                      user.lastActive,
+                                    ).toLocaleDateString()}
+                                  </div>
+                                </TableCell>
+                              )}
+
+                              {visibleColumns.signupDate && (
+                                <TableCell>
+                                  <div className="text-sm">
+                                    {new Date(
+                                      user.signupDate,
+                                    ).toLocaleDateString()}
+                                  </div>
+                                </TableCell>
+                              )}
+                              {visibleColumns.subscription && (
+                                <TableCell>
+                                  {user.subscription ? (
+                                    <Badge variant="outline">
+                                      {user.subscription}
+                                    </Badge>
+                                  ) : (
+                                    <span className="text-muted-foreground">
+                                      Free
+                                    </span>
+                                  )}
+                                </TableCell>
+                              )}
+                              <TableCell>
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button
+                                      variant="ghost"
+                                      className="h-8 w-8 p-0"
+                                    >
+                                      <MoreVertical className="h-4 w-4" />
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent align="end">
+                                    <DropdownMenuItem>
+                                      <Eye className="mr-2 h-4 w-4" />
+                                      View Details
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                      <Edit className="mr-2 h-4 w-4" />
+                                      Edit User
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                      <Mail className="mr-2 h-4 w-4" />
+                                      Send Message
+                                    </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
