@@ -359,8 +359,8 @@ export function SuperAdminLayout({
 
             <div className="flex items-center gap-1 md:gap-2">
               {/* Search */}
-              <div className="hidden sm:flex">
-                <HeaderSearch placeholder="Search super admin..." />
+              <div className="hidden sm:block">
+                <HeaderSearch />
               </div>
 
               {/* Theme Toggle */}
