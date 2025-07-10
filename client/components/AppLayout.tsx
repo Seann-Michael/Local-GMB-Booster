@@ -261,7 +261,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       {/* Mobile Sidebar */}
       <div
         className={cn(
-          "md:hidden fixed inset-y-0 left-0 z-50 w-72 bg-card border-r shadow-lg transform transition-transform duration-300 flex flex-col",
+          "md:hidden fixed inset-y-0 left-0 z-50 w-60 bg-card border-r shadow-lg transform transition-transform duration-300 flex flex-col",
           mobileSidebarOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
@@ -428,7 +428,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       <div
         className={cn(
           "hidden md:flex bg-card border-r transition-all duration-300 flex-col shadow-sm fixed left-0 h-screen",
-          sidebarCollapsed ? "w-16" : "w-72",
+          sidebarCollapsed ? "w-16" : "w-60",
         )}
         style={{ top: "73px", height: "calc(100vh - 73px)" }}
       >
@@ -897,7 +897,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         <div
           className={cn(
             "transition-all duration-300",
-            sidebarCollapsed ? "md:ml-16" : "md:ml-72",
+            sidebarCollapsed ? "md:ml-16" : "md:ml-60",
           )}
         >
           <ContextualHeader />
@@ -907,7 +907,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         <main
           className={cn(
             "flex-1 overflow-auto pb-28 md:pb-0 transition-all duration-300 max-w-full overflow-x-hidden",
-            sidebarCollapsed ? "md:ml-16" : "md:ml-72",
+            sidebarCollapsed ? "md:ml-16" : "md:ml-60",
           )}
           style={{ paddingBottom: "calc(80px + env(safe-area-inset-bottom))" }}
         >
