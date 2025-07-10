@@ -226,6 +226,33 @@ Additional Info:
                 </Button>
               </div>
 
+              {/* Error Reporting Actions */}
+              <div className="border-t pt-4">
+                <div className="text-sm text-gray-600 mb-3 text-center">
+                  Need help? Copy the error details or create a support ticket
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button
+                    onClick={this.handleCopyError}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                  >
+                    <Copy className="h-4 w-4 mr-2" />
+                    Copy Error
+                  </Button>
+                  <Button
+                    onClick={this.handleCreateSupportTicket}
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                  >
+                    <MessageSquare className="h-4 w-4 mr-2" />
+                    Support Ticket
+                  </Button>
+                </div>
+              </div>
+
               {/* Error Details Toggle */}
               {this.props.showDetails !== false && (
                 <div className="border-t pt-4">
