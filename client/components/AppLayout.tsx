@@ -7,6 +7,7 @@ import { ContextualHeader } from "@/components/ContextualHeader";
 import { HeaderSearch } from "@/components/SmartSearch";
 import { ThemeToggle } from "@/components/ThemeProvider";
 import { AppNotifications } from "@/components/UpdateNotification";
+import { NotificationDropdown } from "@/components/NotificationDropdown";
 import {
   DropdownMenu,
   DropdownMenuContent,
