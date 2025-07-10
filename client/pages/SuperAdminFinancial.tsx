@@ -30,7 +30,7 @@ import { useState } from "react";
 
 export default function SuperAdminFinancial() {
   const [timeFrame, setTimeFrame] = useState("30d");
-  const [hideMetrics, setHideMetrics] = useState(true); // Default: metrics hidden
+  const [hideMetrics, setHideMetrics] = useState(true);
 
   // Mock financial data based on time frame
   const financialData = {
@@ -48,81 +48,81 @@ export default function SuperAdminFinancial() {
       },
     },
     "7d": {
-      totalRevenue: 31289,
-      paidUsers: 1289,
-      freeUsers: 445,
-      newThisMonth: 267,
+      totalRevenue: 32890,
+      paidUsers: 1247,
+      freeUsers: 423,
+      newThisMonth: 156,
       churnRate: 1.8,
-      avgRevenuePerUser: 69,
+      avgRevenuePerUser: 89,
       planBreakdown: {
-        basic: { count: 467, revenue: 23350 },
-        professional: { count: 587, revenue: 44025 },
-        premium: { count: 235, revenue: 47000 },
+        basic: { count: 456, revenue: 22800 },
+        professional: { count: 567, revenue: 42525 },
+        premium: { count: 224, revenue: 44800 },
       },
     },
     "30d": {
-      totalRevenue: 134567,
-      paidUsers: 1456,
-      freeUsers: 523,
-      newThisMonth: 289,
+      totalRevenue: 142450,
+      paidUsers: 1247,
+      freeUsers: 423,
+      newThisMonth: 234,
       churnRate: 1.5,
-      avgRevenuePerUser: 72,
+      avgRevenuePerUser: 114,
       planBreakdown: {
-        basic: { count: 523, revenue: 26150 },
-        professional: { count: 678, revenue: 50850 },
-        premium: { count: 255, revenue: 51000 },
+        basic: { count: 456, revenue: 22800 },
+        professional: { count: 567, revenue: 42525 },
+        premium: { count: 224, revenue: 44800 },
       },
     },
     "60d": {
-      totalRevenue: 267890,
-      paidUsers: 1623,
-      freeUsers: 567,
-      newThisMonth: 434,
-      churnRate: 1.3,
-      avgRevenuePerUser: 74,
+      totalRevenue: 298670,
+      paidUsers: 1524,
+      freeUsers: 512,
+      newThisMonth: 387,
+      churnRate: 1.2,
+      avgRevenuePerUser: 196,
       planBreakdown: {
-        basic: { count: 589, revenue: 29450 },
-        professional: { count: 734, revenue: 55050 },
-        premium: { count: 300, revenue: 60000 },
+        basic: { count: 567, revenue: 28350 },
+        professional: { count: 689, revenue: 51675 },
+        premium: { count: 268, revenue: 53600 },
       },
     },
     "90d": {
-      totalRevenue: 398765,
-      paidUsers: 1789,
-      freeUsers: 612,
-      newThisMonth: 567,
-      churnRate: 1.2,
-      avgRevenuePerUser: 76,
+      totalRevenue: 456890,
+      paidUsers: 1847,
+      freeUsers: 634,
+      newThisMonth: 498,
+      churnRate: 0.9,
+      avgRevenuePerUser: 247,
       planBreakdown: {
-        basic: { count: 645, revenue: 32250 },
-        professional: { count: 823, revenue: 61725 },
-        premium: { count: 321, revenue: 64200 },
+        basic: { count: 678, revenue: 33900 },
+        professional: { count: 812, revenue: 60900 },
+        premium: { count: 357, revenue: 71400 },
       },
     },
     "180d": {
-      totalRevenue: 756432,
+      totalRevenue: 892340,
       paidUsers: 2156,
-      freeUsers: 723,
-      newThisMonth: 789,
-      churnRate: 1.0,
-      avgRevenuePerUser: 78,
+      freeUsers: 743,
+      newThisMonth: 612,
+      churnRate: 0.7,
+      avgRevenuePerUser: 414,
       planBreakdown: {
-        basic: { count: 778, revenue: 38900 },
-        professional: { count: 989, revenue: 74175 },
-        premium: { count: 389, revenue: 77800 },
+        basic: { count: 789, revenue: 39450 },
+        professional: { count: 934, revenue: 70050 },
+        premium: { count: 433, revenue: 86600 },
       },
     },
     "365d": {
-      totalRevenue: 1423567,
+      totalRevenue: 1756890,
       paidUsers: 2847,
-      freeUsers: 934,
-      newThisMonth: 1234,
-      churnRate: 0.8,
-      avgRevenuePerUser: 82,
+      freeUsers: 892,
+      newThisMonth: 845,
+      churnRate: 0.5,
+      avgRevenuePerUser: 617,
       planBreakdown: {
-        basic: { count: 1023, revenue: 51150 },
-        professional: { count: 1345, revenue: 100875 },
-        premium: { count: 479, revenue: 95800 },
+        basic: { count: 1024, revenue: 51200 },
+        professional: { count: 1156, revenue: 86700 },
+        premium: { count: 667, revenue: 133400 },
       },
     },
   };
@@ -156,24 +156,12 @@ export default function SuperAdminFinancial() {
           <div>
             <h1 className="text-3xl font-bold">Financial Dashboard</h1>
             <p className="text-muted-foreground">
-              Revenue metrics and financial KPIs
+              Monitor revenue, subscriptions, and financial metrics
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              onClick={() => setHideMetrics(!hideMetrics)}
-              className="gap-2"
-            >
-              {hideMetrics ? (
-                <EyeOff className="h-4 w-4" />
-              ) : (
-                <Eye className="h-4 w-4" />
-              )}
-              {hideMetrics ? "Show Metrics" : "Hide Metrics"}
-            </Button>
             <Select value={timeFrame} onValueChange={setTimeFrame}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-48">
                 <SelectValue placeholder="Select time frame" />
               </SelectTrigger>
               <SelectContent>
@@ -189,91 +177,97 @@ export default function SuperAdminFinancial() {
             <Link to="/super-admin">
               <Button variant="outline" className="gap-2">
                 <BarChart3 className="h-4 w-4" />
-                Analytics Dashboard
+                Dashboard
               </Button>
             </Link>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setHideMetrics(!hideMetrics)}
+              className="ml-2"
+            >
+              {hideMetrics ? (
+                <Eye className="h-4 w-4" />
+              ) : (
+                <EyeOff className="h-4 w-4" />
+              )}
+            </Button>
           </div>
         </div>
 
-        {/* Key Financial Metrics - Conditionally visible */}
-        {!hideMetrics && (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Total Revenue
-                </CardTitle>
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  ${currentData.totalRevenue.toLocaleString()}
-                </div>
-                <p className="text-xs text-muted-foreground flex items-center">
-                  <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
-                  +18% from last period
-                </p>
-              </CardContent>
-            </Card>
+        {/* Key Metrics */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Total Revenue
+              </CardTitle>
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {hideMetrics
+                  ? "***"
+                  : `$${currentData.totalRevenue.toLocaleString()}`}
+              </div>
+              <p className="text-xs text-muted-foreground flex items-center gap-1">
+                <TrendingUp className="h-3 w-3 text-green-500" />
+                +12.5% from last period
+              </p>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Paid Users
-                </CardTitle>
-                <Crown className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {currentData.paidUsers.toLocaleString()}
-                </div>
-                <p className="text-xs text-muted-foreground flex items-center">
-                  <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
-                  +12% from last period
-                </p>
-              </CardContent>
-            </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Paid Users</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {hideMetrics ? "***" : currentData.paidUsers.toLocaleString()}
+              </div>
+              <p className="text-xs text-muted-foreground flex items-center gap-1">
+                <TrendingUp className="h-3 w-3 text-green-500" />
+                +8.1% from last period
+              </p>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Free Users
-                </CardTitle>
-                <Gift className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {currentData.freeUsers.toLocaleString()}
-                </div>
-                <p className="text-xs text-muted-foreground flex items-center">
-                  <ArrowUp className="h-3 w-3 mr-1 text-blue-500" />
-                  +8% from last period
-                </p>
-              </CardContent>
-            </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Free Users</CardTitle>
+              <Gift className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {hideMetrics ? "***" : currentData.freeUsers.toLocaleString()}
+              </div>
+              <p className="text-xs text-muted-foreground flex items-center gap-1">
+                <TrendingUp className="h-3 w-3 text-green-500" />
+                +5.2% from last period
+              </p>
+            </CardContent>
+          </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Avg Revenue Per User
-                </CardTitle>
-                <Target className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  ${currentData.avgRevenuePerUser}
-                </div>
-                <p className="text-xs text-muted-foreground flex items-center">
-                  <ArrowUp className="h-3 w-3 mr-1 text-green-500" />
-                  +5.2% from last period
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        )}
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">ARPU</CardTitle>
+              <Crown className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {hideMetrics ? "***" : `$${currentData.avgRevenuePerUser}`}
+              </div>
+              <p className="text-xs text-muted-foreground flex items-center gap-1">
+                <TrendingUp className="h-3 w-3 text-green-500" />
+                +3.2% from last period
+              </p>
+            </CardContent>
+          </Card>
+        </div>
 
-        {/* Additional Financial Metrics */}
-        <div className="grid gap-4 md:grid-cols-3">
+        {/* Revenue & Growth Metrics */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
@@ -283,10 +277,12 @@ export default function SuperAdminFinancial() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {currentData.newThisMonth.toLocaleString()}
+                {hideMetrics
+                  ? "***"
+                  : currentData.newThisMonth.toLocaleString()}
               </div>
               <p className="text-xs text-muted-foreground">
-                New paid subscriptions
+                New paying customers
               </p>
             </CardContent>
           </Card>
@@ -297,9 +293,11 @@ export default function SuperAdminFinancial() {
               <TrendingDown className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{currentData.churnRate}%</div>
-              <p className="text-xs text-muted-foreground flex items-center">
-                <ArrowDown className="h-3 w-3 mr-1 text-green-500" />
+              <div className="text-2xl font-bold">
+                {hideMetrics ? "***" : `${currentData.churnRate}%`}
+              </div>
+              <p className="text-xs text-muted-foreground flex items-center gap-1">
+                <TrendingDown className="h-3 w-3 text-green-500" />
                 -0.3% from last period
               </p>
             </CardContent>
@@ -310,33 +308,44 @@ export default function SuperAdminFinancial() {
               <CardTitle className="text-sm font-medium">
                 Conversion Rate
               </CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              <Target className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {(
-                  (currentData.paidUsers /
-                    (currentData.paidUsers + currentData.freeUsers)) *
-                  100
-                ).toFixed(1)}
-                %
+                {hideMetrics ? "***" : "3.2%"}
               </div>
-              <p className="text-xs text-muted-foreground">
-                Free to paid conversion
+              <p className="text-xs text-muted-foreground flex items-center gap-1">
+                <TrendingUp className="h-3 w-3 text-green-500" />
+                +0.4% from last period
               </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Monthly Growth
+              </CardTitle>
+              <BarChart3 className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {hideMetrics ? "***" : "+14.2%"}
+              </div>
+              <p className="text-xs text-muted-foreground">Revenue growth</p>
             </CardContent>
           </Card>
         </div>
 
-        {/* Charts Row */}
-        <div className="grid gap-6 lg:grid-cols-2">
-          {/* Revenue Growth Chart */}
+        {/* Charts and Detailed Views */}
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* Revenue Trend Chart */}
           <Card>
             <CardHeader>
-              <CardTitle>Revenue Growth Trends</CardTitle>
-              <CardDescription>
+              <CardTitle>Revenue Trends</CardTitle>
+              <p className="text-sm text-muted-foreground">
                 Monthly recurring revenue over time
-              </CardDescription>
+              </p>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -358,13 +367,13 @@ export default function SuperAdminFinancial() {
                         />
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium w-16 text-right">
-                        ${(data.revenue / 1000).toFixed(0)}k
-                      </span>
-                      <span className="text-xs text-green-600 w-10">
+                    <div className="text-right">
+                      <div className="text-sm font-medium">
+                        ${hideMetrics ? "***" : data.revenue.toLocaleString()}
+                      </div>
+                      <div className="text-xs text-green-600">
                         {data.growth}
-                      </span>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -372,13 +381,13 @@ export default function SuperAdminFinancial() {
             </CardContent>
           </Card>
 
-          {/* Plan Breakdown */}
+          {/* Subscription Plan Breakdown */}
           <Card>
             <CardHeader>
-              <CardTitle>Plan Distribution</CardTitle>
-              <CardDescription>
+              <CardTitle>Subscription Plans</CardTitle>
+              <p className="text-sm text-muted-foreground">
                 Revenue and user breakdown by subscription plan
-              </CardDescription>
+              </p>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -396,107 +405,78 @@ export default function SuperAdminFinancial() {
                           }`}
                         />
                         <div>
-                          <p className="font-medium capitalize">{plan} Plan</p>
-                          <p className="text-sm text-muted-foreground">
+                          <div className="font-medium capitalize">{plan}</div>
+                          <div className="text-sm text-muted-foreground">
                             {data.count} users
-                          </p>
+                          </div>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-medium">
-                          ${data.revenue.toLocaleString()}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          ${(data.revenue / data.count).toFixed(0)}/user
-                        </p>
+                        <div className="font-medium">
+                          ${hideMetrics ? "***" : data.revenue.toLocaleString()}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          ${Math.round(data.revenue / data.count)}/user
+                        </div>
                       </div>
                     </div>
                   ),
                 )}
               </div>
-
-              {/* Plan Summary */}
-              <div className="mt-4 pt-4 border-t">
-                <div className="flex justify-between items-center text-lg font-semibold">
-                  <span>Total Revenue</span>
-                  <span>${currentData.totalRevenue.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between items-center text-sm text-muted-foreground mt-1">
-                  <span>Total Paid Users</span>
-                  <span>{currentData.paidUsers.toLocaleString()}</span>
-                </div>
-              </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Financial Management Actions */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {/* Action Cards */}
+        <div className="grid gap-4 md:grid-cols-3">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CreditCard className="h-5 w-5" />
-                Plan Management
-              </CardTitle>
-              <CardDescription>
-                Manage subscription plans and pricing
-              </CardDescription>
+              <CardTitle className="text-lg">Financial Reports</CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Generate detailed financial reports and analytics
+              </p>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <Link to="/super-admin/plans">
-                  <Button variant="outline" className="w-full gap-2">
-                    <Eye className="h-4 w-4" />
-                    View All Plans
-                  </Button>
-                </Link>
-                <Link to="/super-admin/plans/pricing">
-                  <Button className="w-full gap-2">
-                    <DollarSign className="h-4 w-4" />
-                    Manage Pricing
-                  </Button>
-                </Link>
+                <Button variant="outline" className="w-full gap-2">
+                  <DollarSign className="h-4 w-4" />
+                  Revenue Report
+                </Button>
+                <Button variant="outline" className="w-full gap-2">
+                  <CreditCard className="h-4 w-4" />
+                  Payment Analytics
+                </Button>
               </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Gift className="h-5 w-5" />
-                Promo Codes
-              </CardTitle>
-              <CardDescription>
-                Create and manage promotional offers
-              </CardDescription>
+              <CardTitle className="text-lg">User Analytics</CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Analyze user behavior and subscription patterns
+              </p>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <Link to="/super-admin/promo-codes">
-                  <Button variant="outline" className="w-full gap-2">
-                    <Eye className="h-4 w-4" />
-                    View Promo Codes
-                  </Button>
-                </Link>
-                <Link to="/super-admin/promo-codes/create">
-                  <Button className="w-full gap-2">
-                    <Gift className="h-4 w-4" />
-                    Create Promo Code
-                  </Button>
-                </Link>
+                <Button variant="outline" className="w-full gap-2">
+                  <Users className="h-4 w-4" />
+                  User Cohorts
+                </Button>
+                <Button variant="outline" className="w-full gap-2">
+                  <Crown className="h-4 w-4" />
+                  Subscription Analysis
+                </Button>
               </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="h-5 w-5" />
-                Financial Reports
-              </CardTitle>
-              <CardDescription>
-                Generate detailed financial reports
-              </CardDescription>
+              <CardTitle className="text-lg">Growth Insights</CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Track growth metrics and performance indicators
+              </p>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
