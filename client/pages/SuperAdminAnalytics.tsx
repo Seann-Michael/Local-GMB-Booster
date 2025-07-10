@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { SuperAdminLayout } from "@/components/SuperAdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -505,7 +504,6 @@ export default function SuperAdminAnalytics() {
   }
 
   return (
-    <SuperAdminLayout>
       <div className="max-w-full overflow-x-hidden">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
           <div className="min-w-0">
