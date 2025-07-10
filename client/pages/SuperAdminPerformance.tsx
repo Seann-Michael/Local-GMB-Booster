@@ -487,8 +487,8 @@ export default function SuperAdminPerformance() {
             return updatedJob;
           }
           return job;
-        }),
-      );
+        });
+      });
     }, 2000);
   };
 
