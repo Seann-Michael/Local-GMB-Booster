@@ -87,17 +87,6 @@ export function ContextualHeader() {
   return (
     <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center px-4 gap-4">
-        {/* Page Icon & Title */}
-        <div className="flex items-center gap-3 min-w-0 flex-1">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-            <PageIcon className="h-5 w-5 text-primary" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <h1 className="font-semibold text-lg truncate">{title}</h1>
-            <p className="text-sm text-muted-foreground truncate">{subtitle}</p>
-          </div>
-        </div>
-
         {/* Quick Stats */}
         {quickStats && (
           <div className="hidden lg:flex items-center gap-4">
