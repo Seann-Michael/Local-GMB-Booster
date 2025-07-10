@@ -84,6 +84,7 @@ export default function SuperAdminUsers() {
     lastActive: true,
     signupDate: false,
     subscription: false,
+    cancellationDate: false,
   });
 
   // Mock user data
@@ -455,7 +456,7 @@ export default function SuperAdminUsers() {
                             )}
 
                             {visibleColumns.signupDate && (
-                              <TableHead>
+                              <TableHead className="w-36 min-w-[140px]">
                                 <Button
                                   variant="ghost"
                                   className="h-auto p-0 font-semibold"
@@ -467,7 +468,7 @@ export default function SuperAdminUsers() {
                               </TableHead>
                             )}
                             {visibleColumns.subscription && (
-                              <TableHead>
+                              <TableHead className="w-36 min-w-[140px]">
                                 <Button
                                   variant="ghost"
                                   className="h-auto p-0 font-semibold"
@@ -478,7 +479,21 @@ export default function SuperAdminUsers() {
                                 </Button>
                               </TableHead>
                             )}
-                            <TableHead>Actions</TableHead>
+                            {visibleColumns.cancellationDate && (
+                              <TableHead className="w-36 min-w-[140px]">
+                                <Button
+                                  variant="ghost"
+                                  className="h-auto p-0 font-semibold"
+                                  onClick={() => handleSort("cancellationDate")}
+                                >
+                                  Cancellation Date
+                                  {getSortIcon("cancellationDate")}
+                                </Button>
+                              </TableHead>
+                            )}
+                            <TableHead className="w-24 min-w-[100px]">
+                              Actions
+                            </TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
