@@ -652,6 +652,28 @@ export function AppLayout({ children }: AppLayoutProps) {
               </Link>
             ))}
           </div>
+
+          {/* Sidebar Collapse Toggle */}
+          <div className="mt-4 pt-4 border-t">
+            <Button
+              variant="ghost"
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+              className={cn(
+                "w-full gap-3 h-10 font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                sidebarCollapsed ? "px-3 justify-center" : "px-4 justify-start",
+              )}
+              size="sm"
+            >
+              {sidebarCollapsed ? (
+                <ChevronRight className="h-5 w-5" />
+              ) : (
+                <>
+                  <ChevronLeft className="h-5 w-5" />
+                  <span className="font-medium">Collapse Menu</span>
+                </>
+              )}
+            </Button>
+          </div>
         </div>
       </div>
 
