@@ -258,6 +258,79 @@ export default function Gallery() {
     });
   };
 
+  const handleFilesReady = async (files: any[]) => {
+    try {
+      // Get current projects to find a project to attach files to
+      const projectsData = JSON.parse(localStorage.getItem("projects") || "[]");
+
+      // For now, we'll create a special "Gallery" project or use the first available project
+      let targetProject = projectsData.find(
+        (p: any) => p.name === "Gallery Uploads",
+      );
+
+      if (!targetProject && projectsData.length > 0) {
+        // Use the first project if no gallery project exists
+        targetProject = projectsData[0];
+      } else if (!targetProject) {
+        // Create a special gallery project if none exists
+        targetProject = {
+          id: `gallery-${Date.now()}`,
+          name: "Gallery Uploads",
+          description: "Photos uploaded directly to gallery",
+          address: "",
+          customerPhone: "",
+          keywords: [],
+          photos: [],
+          documents: [],
+          tasks: [],
+          checklist: [],
+          notes: [],
+          activityLog: [],
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          status: "active",
+          assignedUsers: [],
+          starred: false,
+          archived: false,
+          createdBy: "current-user",
+        };
+        projectsData.push(targetProject);
+      }
+
+      // Process uploaded files and add them to the target project
+      const newPhotos = files.map((fileData) => ({
+        url: URL.createObjectURL(fileData.file),
+        tags: fileData.tags
+          .split(",")
+          .map((tag: string) => tag.trim())
+          .filter(Boolean),
+        uploadedAt: new Date().toISOString(),
+        uploadedBy: "Current User",
+        title: fileData.title,
+        description: fileData.description,
+        metadata: {
+          originalFileName: fileData.file.name,
+          fileSize: fileData.file.size,
+          fileType: fileData.file.type,
+        },
+      }));
+
+      // Add photos to the target project
+      targetProject.photos = [...(targetProject.photos || []), ...newPhotos];
+      targetProject.updatedAt = new Date().toISOString();
+
+      // Save updated projects
+      localStorage.setItem("projects", JSON.stringify(projectsData));
+
+      // Refresh the gallery view
+      window.location.reload();
+
+      setShowUploader(false);
+    } catch (error) {
+      console.error("Error processing uploaded files:", error);
+    }
+  };
+
   return (
     <AppLayout>
       <div className="container px-4 py-6">
