@@ -71,6 +71,7 @@ export default function Gallery() {
   const [filteredPhotos, setFilteredPhotos] = useState<PhotoWithMetadata[]>([]);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
+  const [showUploader, setShowUploader] = useState(false);
 
   // Available filter options
   const [projects, setProjects] = useState<Array<{ id: string; name: string }>>(
