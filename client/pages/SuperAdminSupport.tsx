@@ -616,7 +616,7 @@ export default function SuperAdminSupport() {
                             <SelectValue placeholder="Select category" />
                           </SelectTrigger>
                           <SelectContent>
-                            {categories.map((category) => (
+                            {(categories || []).map((category) => (
                               <SelectItem key={category} value={category}>
                                 {category}
                               </SelectItem>
@@ -663,11 +663,13 @@ export default function SuperAdminSupport() {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="">Unassigned</SelectItem>
-                          {staffMembers.map((staff) => (
-                            <SelectItem key={staff.id} value={staff.name}>
-                              {staff.name} ({staff.role})
-                            </SelectItem>
-                          ))}
+                          {(staffMembers || [])
+                            .filter((staff) => staff && staff.id && staff.name)
+                            .map((staff) => (
+                              <SelectItem key={staff.id} value={staff.name}>
+                                {staff.name} ({staff.role})
+                              </SelectItem>
+                            ))}
                         </SelectContent>
                       </Select>
                     </div>
@@ -887,11 +889,13 @@ export default function SuperAdminSupport() {
                     <SelectContent>
                       <SelectItem value="all">All Assignees</SelectItem>
                       <SelectItem value="">Unassigned</SelectItem>
-                      {staffMembers.map((staff) => (
-                        <SelectItem key={staff.id} value={staff.name}>
-                          {staff.name}
-                        </SelectItem>
-                      ))}
+                      {(staffMembers || [])
+                        .filter((staff) => staff && staff.id && staff.name)
+                        .map((staff) => (
+                          <SelectItem key={staff.id} value={staff.name}>
+                            {staff.name}
+                          </SelectItem>
+                        ))}
                     </SelectContent>
                   </Select>
                 </div>
