@@ -756,9 +756,7 @@ export default function SuperAdminEmailIntegration() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Templates</p>
-                  <p className="text-2xl font-bold">
-                    {(templates || []).length}
-                  </p>
+                  <p className="text-2xl font-bold">{safeTemplates.length}</p>
                 </div>
                 <Mail className="h-8 w-8 text-indigo-500" />
               </div>
@@ -990,7 +988,7 @@ export default function SuperAdminEmailIntegration() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {(providers || []).map((provider) => (
+                    {safeProviders.map((provider) => (
                       <TableRow key={provider.id}>
                         <TableCell>
                           <div>
@@ -1217,7 +1215,7 @@ export default function SuperAdminEmailIntegration() {
 
             {/* Templates Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {(templates || []).map((template) => (
+              {safeTemplates.map((template) => (
                 <Card key={template.id}>
                   <CardHeader>
                     <div className="flex items-start justify-between">
@@ -1329,7 +1327,7 @@ export default function SuperAdminEmailIntegration() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {(campaigns || []).map((campaign) => (
+                    {safeCampaigns.map((campaign) => (
                       <TableRow key={campaign.id}>
                         <TableCell>
                           <div>
@@ -1430,7 +1428,7 @@ export default function SuperAdminEmailIntegration() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {(providers || []).map((provider) => (
+                    {safeProviders.map((provider) => (
                       <div key={provider.id} className="p-3 border rounded-lg">
                         <div className="flex items-center justify-between mb-2">
                           <span className="font-medium">{provider.name}</span>
