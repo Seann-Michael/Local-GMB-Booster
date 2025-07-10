@@ -44,6 +44,7 @@ import {
   AlertCircle,
   XCircle,
   Info,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 
