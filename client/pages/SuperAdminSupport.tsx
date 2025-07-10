@@ -107,6 +107,7 @@ interface StaffMember {
 export default function SuperAdminSupport() {
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [staffMembers, setStaffMembers] = useState<StaffMember[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
@@ -318,6 +319,7 @@ export default function SuperAdminSupport() {
 
     setTickets(sampleTickets);
     setStaffMembers(sampleStaff);
+    setIsLoading(false);
   };
 
   const handleCreateTicket = () => {
