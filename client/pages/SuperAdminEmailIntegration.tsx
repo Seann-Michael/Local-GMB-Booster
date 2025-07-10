@@ -501,7 +501,7 @@ export default function SuperAdminEmailIntegration() {
       },
     };
 
-    setProviders([...(providers || []), newProvider]);
+    setProviders([...safeProviders, newProvider]);
     toast.success("Email provider configured successfully!");
     setShowProviderDialog(false);
     resetProviderForm();
@@ -578,7 +578,7 @@ export default function SuperAdminEmailIntegration() {
   };
 
   const deleteProvider = (providerId: string) => {
-    setProviders((providers || []).filter((p) => p.id !== providerId));
+    setProviders(safeProviders.filter((p) => p.id !== providerId));
     toast.success("Provider deleted!");
   };
 
