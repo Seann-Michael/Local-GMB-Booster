@@ -322,14 +322,44 @@ export default function Index() {
               </Button>
             </div>
 
-            <Button
-              variant="outline"
-              onClick={() => setShowFilters(!showFilters)}
-              className="gap-2"
-            >
-              <Filter className="h-4 w-4" />
-              Filters
-            </Button>
+            <div className="flex gap-2">
+              {/* Card Size Controls */}
+              <div className="flex border rounded-lg p-1 bg-muted/30">
+                <Button
+                  variant={cardSize === "small" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setCardSize("small")}
+                  className="px-3 h-8 text-xs"
+                >
+                  Small
+                </Button>
+                <Button
+                  variant={cardSize === "medium" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setCardSize("medium")}
+                  className="px-3 h-8 text-xs"
+                >
+                  Medium
+                </Button>
+                <Button
+                  variant={cardSize === "large" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setCardSize("large")}
+                  className="px-3 h-8 text-xs"
+                >
+                  Large
+                </Button>
+              </div>
+
+              <Button
+                variant="outline"
+                onClick={() => setShowFilters(!showFilters)}
+                className="gap-2"
+              >
+                <Filter className="h-4 w-4" />
+                Filters
+              </Button>
+            </div>
           </div>
         </div>
 
