@@ -982,7 +982,7 @@ export default function SuperAdminEmailIntegration() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {providers.map((provider) => (
+                    {(providers || []).map((provider) => (
                       <TableRow key={provider.id}>
                         <TableCell>
                           <div>
@@ -1422,7 +1422,7 @@ export default function SuperAdminEmailIntegration() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {providers.map((provider) => (
+                    {(providers || []).map((provider) => (
                       <div key={provider.id} className="p-3 border rounded-lg">
                         <div className="flex items-center justify-between mb-2">
                           <span className="font-medium">{provider.name}</span>
