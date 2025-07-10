@@ -17,6 +17,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Camera,
   Video,
@@ -29,6 +36,7 @@ import {
   ArrowUpDown,
   ArrowUp,
   ArrowDown,
+  Columns,
 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
