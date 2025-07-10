@@ -381,6 +381,169 @@ export default function SuperAdminCommunications() {
               </div>
             </TabsContent>
 
+            {/* Campaigns Tab */}
+            <TabsContent value="campaigns" className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-3">
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">
+                      Active Campaigns
+                    </CardTitle>
+                    <Target className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">12</div>
+                    <p className="text-xs text-muted-foreground">
+                      Currently running
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">
+                      Draft Campaigns
+                    </CardTitle>
+                    <FileText className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">8</div>
+                    <p className="text-xs text-muted-foreground">
+                      Being prepared
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">
+                      Scheduled
+                    </CardTitle>
+                    <Clock className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">5</div>
+                    <p className="text-xs text-muted-foreground">
+                      Ready to launch
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Current Campaigns</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      {
+                        id: "1",
+                        name: "Summer Product Launch",
+                        status: "active",
+                        type: "email",
+                        audience: 12450,
+                        sent: 8230,
+                        opens: 3456,
+                        clicks: 892,
+                        startDate: "2024-01-15",
+                        endDate: "2024-02-15",
+                      },
+                      {
+                        id: "2",
+                        name: "Customer Feedback Survey",
+                        status: "active",
+                        type: "sms",
+                        audience: 5600,
+                        sent: 5600,
+                        opens: 4120,
+                        clicks: 1580,
+                        startDate: "2024-01-20",
+                        endDate: "2024-01-27",
+                      },
+                      {
+                        id: "3",
+                        name: "Holiday Promotion",
+                        status: "scheduled",
+                        type: "email",
+                        audience: 18900,
+                        sent: 0,
+                        opens: 0,
+                        clicks: 0,
+                        startDate: "2024-01-25",
+                        endDate: "2024-02-10",
+                      },
+                      {
+                        id: "4",
+                        name: "New Feature Announcement",
+                        status: "draft",
+                        type: "push",
+                        audience: 24500,
+                        sent: 0,
+                        opens: 0,
+                        clicks: 0,
+                        startDate: "2024-02-01",
+                        endDate: "2024-02-15",
+                      },
+                    ].map((campaign) => (
+                      <div
+                        key={campaign.id}
+                        className="flex items-center justify-between p-4 border rounded-lg"
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-2">
+                            {campaign.type === "email" && (
+                              <Mail className="h-5 w-5 text-blue-500" />
+                            )}
+                            {campaign.type === "sms" && (
+                              <MessageSquare className="h-5 w-5 text-green-500" />
+                            )}
+                            {campaign.type === "push" && (
+                              <Send className="h-5 w-5 text-purple-500" />
+                            )}
+                          </div>
+                          <div>
+                            <div className="font-medium">{campaign.name}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {campaign.audience.toLocaleString()} recipients •{" "}
+                              {new Date(
+                                campaign.startDate,
+                              ).toLocaleDateString()}{" "}
+                              -{" "}
+                              {new Date(campaign.endDate).toLocaleDateString()}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <div className="text-right text-sm">
+                            <div className="font-medium">
+                              {campaign.sent.toLocaleString()} sent
+                            </div>
+                            <div className="text-muted-foreground">
+                              {campaign.opens.toLocaleString()} opens •{" "}
+                              {campaign.clicks.toLocaleString()} clicks
+                            </div>
+                          </div>
+                          {campaign.status === "active" && (
+                            <Badge className="bg-green-500">Active</Badge>
+                          )}
+                          {campaign.status === "scheduled" && (
+                            <Badge className="bg-blue-500">Scheduled</Badge>
+                          )}
+                          {campaign.status === "draft" && (
+                            <Badge variant="secondary">Draft</Badge>
+                          )}
+                          <Button variant="outline" size="sm">
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
             {/* Broadcast Tab */}
             <TabsContent value="broadcast">
               <SuperAdminBroadcast />
