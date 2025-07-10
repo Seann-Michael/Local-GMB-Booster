@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { PhoneInput } from "@/components/ui/phone-input";
 import {
   Card,
   CardContent,
@@ -646,13 +647,10 @@ export function UserManagementSystem() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="userPhone">Phone Number</Label>
-                <Input
+                <PhoneInput
                   id="userPhone"
                   value={newUser.phone}
-                  onChange={(e) =>
-                    setNewUser({ ...newUser, phone: e.target.value })
-                  }
-                  placeholder="Enter phone number"
+                  onChange={(value) => setNewUser({ ...newUser, phone: value })}
                 />
               </div>
               <div className="space-y-2">
