@@ -70,7 +70,7 @@ export default function Index() {
     "all" | "starred" | "my-projects" | "archived"
   >("all");
   const [cardSize, setCardSize] = useState<"small" | "medium" | "large">(
-    "medium",
+    "small",
   );
   const [filters, setFilters] = useState({
     startDate: "",
