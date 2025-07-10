@@ -946,7 +946,6 @@ export default function ProjectDetail() {
                         </Badge>
                       ))}
                       <Badge
-                        key="add-tag-button"
                         variant="outline"
                         className="cursor-pointer hover:bg-muted"
                         onClick={() =>
@@ -1516,7 +1515,7 @@ export default function ProjectDetail() {
                                     </div>
                                   </div>
                                 ) : (
-                                  <div key="task-display">
+                                  <div>
                                     <p
                                       className={`font-medium ${task.completed ? "line-through text-muted-foreground" : ""}`}
                                     >
@@ -1673,7 +1672,7 @@ export default function ProjectDetail() {
                                     </div>
                                   </div>
                                 ) : (
-                                  <div key="checklist-display">
+                                  <div>
                                     <span
                                       className={
                                         item.completed
