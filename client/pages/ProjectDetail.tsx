@@ -1983,7 +1983,7 @@ export default function ProjectDetail() {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            <Card key="project-info-sidebar">
+            <Card>
               <CardHeader>
                 <CardTitle>Project Information</CardTitle>
               </CardHeader>
@@ -2020,9 +2020,9 @@ export default function ProjectDetail() {
                   project.customerPhone ||
                   (project.additionalPhones &&
                     project.additionalPhones.length > 0)) && (
-                  <div key="customer-section">
+                  <div>
                     <Separator />
-                    <div key="customer-info">
+                    <div>
                       <h4 className="font-medium mb-2 flex items-center gap-2">
                         <Phone className="h-4 w-4" />
                         Customer Information
@@ -2090,7 +2090,7 @@ export default function ProjectDetail() {
               </CardContent>
             </Card>
 
-            <Card key="project-statistics">
+            <Card>
               <CardHeader>
                 <CardTitle>Statistics</CardTitle>
               </CardHeader>
