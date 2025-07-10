@@ -46,7 +46,7 @@ import {
   Info,
 } from "lucide-react";
 import { toast } from "sonner";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 
 interface ErrorLog {
   id: string;
