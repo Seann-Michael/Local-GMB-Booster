@@ -382,6 +382,11 @@ export default function Gallery() {
             </div>
           </div>
 
+          <Button onClick={() => setShowUploader(true)} className="gap-2">
+            <Upload className="h-4 w-4" />
+            Upload Files
+          </Button>
+
           <Button
             variant="outline"
             onClick={() => setShowFilters(!showFilters)}
