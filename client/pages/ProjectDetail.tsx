@@ -873,7 +873,7 @@ export default function ProjectDetail() {
         </div>
 
         {/* Tabs */}
-        <div key="project-tabs" className="border-b mb-6">
+        <div className="border-b mb-6">
           <div className="flex space-x-1">
             {[
               { id: "overview", label: "Overview" },
@@ -896,9 +896,9 @@ export default function ProjectDetail() {
           </div>
         </div>
 
-        <div key="main-content-grid" className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 lg:grid-cols-3">
           {/* Main Content */}
-          <div key="main-content" className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-6">
             {/* Overview Tab */}
             {activeTab === "overview" && (
               <div key="overview-content">
