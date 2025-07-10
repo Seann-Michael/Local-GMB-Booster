@@ -2224,6 +2224,17 @@ export default function ProjectDetail() {
           </div>
         </div>
       </div>
+
+      {/* Review Request Dialog */}
+      <ReviewRequest
+        isOpen={showReviewRequest}
+        onClose={() => setShowReviewRequest(false)}
+        customerName={project?.customerName}
+        customerEmail={project?.customerEmail}
+        customerPhone={project?.mobilePhone || project?.customerPhone}
+        projectName={project?.name || ""}
+        onSend={handleSendReviewRequest}
+      />
     </AppLayout>
   );
 }
