@@ -750,7 +750,9 @@ export default function SuperAdminEmailIntegration() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Templates</p>
-                  <p className="text-2xl font-bold">{templates.length}</p>
+                  <p className="text-2xl font-bold">
+                    {(templates || []).length}
+                  </p>
                 </div>
                 <Mail className="h-8 w-8 text-indigo-500" />
               </div>
