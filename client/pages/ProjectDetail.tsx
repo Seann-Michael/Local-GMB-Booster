@@ -1028,7 +1028,7 @@ export default function ProjectDetail() {
                         variant="outline"
                         size="sm"
                         className="gap-2"
-                        onClick={() => fileInputRef.current?.click()}
+                        onClick={() => setShowMediaUploader(true)}
                       >
                         <Plus className="h-4 w-4" />
                         Add Media
@@ -1036,14 +1036,6 @@ export default function ProjectDetail() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      multiple
-                      accept="image/*"
-                      className="hidden"
-                      onChange={(e) => addMorePhotos(e.target.files)}
-                    />
                     {project.photos.length > 0 ? (
                       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                         {project.photos.map((photo, index) => {
