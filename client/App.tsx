@@ -537,22 +537,7 @@ const App = () => (
                     </ProtectedRoute>
                   }
                 />
-                <Route
-                  path="/super-admin/project-messaging"
-                  element={
-                    <ProtectedRoute>
-                      <SuperAdminProjectMessaging />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/super-admin/advanced-features"
-                  element={
-                    <ProtectedRoute>
-                      <SuperAdminAdvancedFeatures />
-                    </ProtectedRoute>
-                  }
-                />
+
                 <Route
                   path="/super-admin/performance"
                   element={
