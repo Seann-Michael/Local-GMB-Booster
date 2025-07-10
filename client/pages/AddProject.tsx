@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { AppLayout } from "@/components/AppLayout";
 import { ModernPhotoCapture } from "@/components/ModernPhotoCapture";
+import { PhoneInput } from "@/components/ui/phone-input";
 import {
   ArrowLeft,
   Save,
