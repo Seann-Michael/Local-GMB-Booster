@@ -395,13 +395,14 @@ export default function SuperAdminPerformance() {
   };
 
   const updateRealTimeMetrics = () => {
-    setPerformanceMetrics((prev) =>
-      (prev || []).map((metric) => ({
+    setPerformanceMetrics((prev) => {
+      if (!Array.isArray(prev)) return [];
+      return prev.map((metric) => ({
         ...metric,
         value: metric.value + (Math.random() - 0.5) * (metric.value * 0.1),
         lastUpdated: new Date().toISOString(),
-      })),
-    );
+      }));
+    });
 
     setSystemHealth((prev) => ({
       overall: Math.max(
