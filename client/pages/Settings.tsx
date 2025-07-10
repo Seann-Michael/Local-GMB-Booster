@@ -2648,7 +2648,7 @@ export default function Settings() {
                       {settings.enableAIAltText && (
                         <Card className="p-4 mt-4">
                           <h4 className="font-semibold mb-3 flex items-center gap-2">
-                            <Settings as SettingsIcon className="h-4 w-4" />
+                            <SettingsIcon className="h-4 w-4" />
                             AI Service Configuration
                           </h4>
                           <div className="grid gap-4 md:grid-cols-2">
