@@ -3657,14 +3657,10 @@ export default function Settings() {
                       </div>
                       <div>
                         <Label htmlFor="contactPhone">Phone Number</Label>
-                        <Input
+                        <PhoneInput
                           id="contactPhone"
-                          type="tel"
                           value={settings.phone || ""}
-                          onChange={(e) =>
-                            updateSetting("phone", e.target.value)
-                          }
-                          placeholder="+1 (555) 123-4567"
+                          onChange={(value) => updateSetting("phone", value)}
                         />
                       </div>
                     </div>

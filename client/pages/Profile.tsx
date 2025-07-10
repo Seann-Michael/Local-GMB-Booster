@@ -220,10 +220,10 @@ export default function Profile() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="phone">Phone</Label>
-                  <Input
+                  <PhoneInput
                     id="phone"
                     value={profileData.phone}
-                    onChange={(e) => handleInputChange("phone", e.target.value)}
+                    onChange={(value) => handleInputChange("phone", value)}
                   />
                 </div>
                 <div className="space-y-2">
