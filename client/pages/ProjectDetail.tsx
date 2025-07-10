@@ -1831,15 +1831,21 @@ export default function ProjectDetail() {
                     Project Documents
                   </CardTitle>
                   <Button
-                    onClick={() =>
-                      toast.success("Upload document functionality coming soon")
-                    }
+                    onClick={() => documentInputRef.current?.click()}
                     size="sm"
                     className="gap-2"
                   >
                     <Plus className="h-4 w-4" />
                     Upload Document
                   </Button>
+                  <input
+                    ref={documentInputRef}
+                    type="file"
+                    multiple
+                    accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.zip,.xls,.xlsx"
+                    className="hidden"
+                    onChange={(e) => handleDocumentUpload(e.target.files)}
+                  />
                 </CardHeader>
                 <CardContent>
                   {project.documents && project.documents.length > 0 ? (
