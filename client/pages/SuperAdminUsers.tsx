@@ -291,7 +291,9 @@ export default function SuperAdminUsers() {
                           ? "Last Active"
                           : key === "signupDate"
                             ? "Signup Date"
-                            : key}
+                            : key === "cancellationDate"
+                              ? "Cancellation Date"
+                              : key}
                       </span>
                     </DropdownMenuItem>
                   ))}
@@ -563,6 +565,21 @@ export default function SuperAdminUsers() {
                                   ) : (
                                     <span className="text-muted-foreground">
                                       Free
+                                    </span>
+                                  )}
+                                </TableCell>
+                              )}
+                              {visibleColumns.cancellationDate && (
+                                <TableCell>
+                                  {user.cancellationDate ? (
+                                    <div className="text-sm text-red-600">
+                                      {new Date(
+                                        user.cancellationDate,
+                                      ).toLocaleDateString()}
+                                    </div>
+                                  ) : (
+                                    <span className="text-muted-foreground">
+                                      -
                                     </span>
                                   )}
                                 </TableCell>
