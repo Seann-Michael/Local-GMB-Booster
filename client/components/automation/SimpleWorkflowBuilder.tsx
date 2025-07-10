@@ -585,7 +585,10 @@ function StepConfigDialog({
                 <div>
                   <Label className="text-sm font-medium">Headers (JSON)</Label>
                   <Textarea
-                    value={config.headers || '{\n  "Content-Type": "application/json",\n  "Authorization": "Bearer your-token"\n}'}
+                    value={
+                      config.headers ||
+                      '{\n  "Content-Type": "application/json",\n  "Authorization": "Bearer your-token"\n}'
+                    }
                     onChange={(e) =>
                       setConfig({ ...config, headers: e.target.value })
                     }
@@ -595,9 +598,14 @@ function StepConfigDialog({
                 </div>
 
                 <div>
-                  <Label className="text-sm font-medium">Request Body (JSON)</Label>
+                  <Label className="text-sm font-medium">
+                    Request Body (JSON)
+                  </Label>
                   <Textarea
-                    value={config.body || '{\n  "event": "automation_triggered",\n  "data": {}\n}'}
+                    value={
+                      config.body ||
+                      '{\n  "event": "automation_triggered",\n  "data": {}\n}'
+                    }
                     onChange={(e) =>
                       setConfig({ ...config, body: e.target.value })
                     }
@@ -607,7 +615,9 @@ function StepConfigDialog({
                 </div>
 
                 <div>
-                  <Label className="text-sm font-medium">Secret Key (Optional)</Label>
+                  <Label className="text-sm font-medium">
+                    Secret Key (Optional)
+                  </Label>
                   <Input
                     type="password"
                     value={config.secret || ""}
@@ -636,9 +646,15 @@ function StepConfigDialog({
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Projects</SelectItem>
-                      <SelectItem value="with-customer">Projects with Customer Info</SelectItem>
-                      <SelectItem value="with-phone">Projects with Phone Number</SelectItem>
-                      <SelectItem value="with-email">Projects with Email</SelectItem>
+                      <SelectItem value="with-customer">
+                        Projects with Customer Info
+                      </SelectItem>
+                      <SelectItem value="with-phone">
+                        Projects with Phone Number
+                      </SelectItem>
+                      <SelectItem value="with-email">
+                        Projects with Email
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -651,7 +667,9 @@ function StepConfigDialog({
                       setConfig({ ...config, immediate: checked })
                     }
                   />
-                  <Label htmlFor="immediate">Trigger immediately on creation</Label>
+                  <Label htmlFor="immediate">
+                    Trigger immediately on creation
+                  </Label>
                 </div>
               </div>
             );
@@ -660,7 +678,9 @@ function StepConfigDialog({
             return (
               <div className="space-y-4">
                 <div>
-                  <Label className="text-sm font-medium">Trigger Condition</Label>
+                  <Label className="text-sm font-medium">
+                    Trigger Condition
+                  </Label>
                   <Select
                     value={config.condition || "marked-complete"}
                     onValueChange={(value) =>
@@ -671,9 +691,15 @@ function StepConfigDialog({
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="marked-complete">When marked as complete</SelectItem>
-                      <SelectItem value="all-tasks-done">When all tasks are completed</SelectItem>
-                      <SelectItem value="checklist-done">When checklist is completed</SelectItem>
+                      <SelectItem value="marked-complete">
+                        When marked as complete
+                      </SelectItem>
+                      <SelectItem value="all-tasks-done">
+                        When all tasks are completed
+                      </SelectItem>
+                      <SelectItem value="checklist-done">
+                        When checklist is completed
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -686,7 +712,9 @@ function StepConfigDialog({
                       setConfig({ ...config, requireCustomer: checked })
                     }
                   />
-                  <Label htmlFor="require-customer">Only trigger if customer info exists</Label>
+                  <Label htmlFor="require-customer">
+                    Only trigger if customer info exists
+                  </Label>
                 </div>
               </div>
             );
@@ -728,7 +756,9 @@ function StepConfigDialog({
                     <SelectContent>
                       <SelectItem value="utm">UTM Parameters</SelectItem>
                       <SelectItem value="pixel">Tracking Pixel</SelectItem>
-                      <SelectItem value="redirect">Redirect Tracking</SelectItem>
+                      <SelectItem value="redirect">
+                        Redirect Tracking
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -787,7 +817,9 @@ function StepConfigDialog({
                       setConfig({ ...config, requireText: checked })
                     }
                   />
-                  <Label htmlFor="has-text">Only trigger if review has text</Label>
+                  <Label htmlFor="has-text">
+                    Only trigger if review has text
+                  </Label>
                 </div>
               </div>
             );
@@ -810,7 +842,9 @@ function StepConfigDialog({
                   <Label className="text-sm font-medium">To</Label>
                   <Input
                     value={config.to || "{{customer.email}}"}
-                    onChange={(e) => setConfig({ ...config, to: e.target.value })}
+                    onChange={(e) =>
+                      setConfig({ ...config, to: e.target.value })
+                    }
                     placeholder="{{customer.email}} or specific email"
                   />
                 </div>
@@ -819,7 +853,9 @@ function StepConfigDialog({
                   <Label className="text-sm font-medium">From Name</Label>
                   <Input
                     value={config.fromName || ""}
-                    onChange={(e) => setConfig({ ...config, fromName: e.target.value })}
+                    onChange={(e) =>
+                      setConfig({ ...config, fromName: e.target.value })
+                    }
                     placeholder="Your Business Name"
                   />
                 </div>
@@ -838,7 +874,10 @@ function StepConfigDialog({
                 <div>
                   <Label className="text-sm font-medium">Email Body</Label>
                   <Textarea
-                    value={config.body || "Hi {{customer.name}},\n\nThank you for choosing us for your project: {{project.name}}\n\nBest regards,\nYour Team"}
+                    value={
+                      config.body ||
+                      "Hi {{customer.name}},\n\nThank you for choosing us for your project: {{project.name}}\n\nBest regards,\nYour Team"
+                    }
                     onChange={(e) =>
                       setConfig({ ...config, body: e.target.value })
                     }
@@ -846,7 +885,8 @@ function StepConfigDialog({
                     rows={8}
                   />
                   <p className="text-xs text-muted-foreground mt-1">
-                    Use variables: {{customer.name}}, {{customer.email}}, {{project.name}}, {{project.address}}
+                    Use variables:{" "}
+                    {`{{customer.name}}, {{customer.email}}, {{project.name}}, {{project.address}}`}
                   </p>
                 </div>
 
@@ -870,7 +910,9 @@ function StepConfigDialog({
                   <Label className="text-sm font-medium">To</Label>
                   <Input
                     value={config.to || "{{customer.phone}}"}
-                    onChange={(e) => setConfig({ ...config, to: e.target.value })}
+                    onChange={(e) =>
+                      setConfig({ ...config, to: e.target.value })
+                    }
                     placeholder="{{customer.phone}} or +1234567890"
                   />
                 </div>
@@ -878,7 +920,10 @@ function StepConfigDialog({
                 <div>
                   <Label className="text-sm font-medium">Message</Label>
                   <Textarea
-                    value={config.message || "Hi {{customer.name}}, your project {{project.name}} has been completed! Thanks for choosing us."}
+                    value={
+                      config.message ||
+                      "Hi {{customer.name}}, your project {{project.name}} has been completed! Thanks for choosing us."
+                    }
                     onChange={(e) =>
                       setConfig({ ...config, message: e.target.value })
                     }
@@ -887,7 +932,8 @@ function StepConfigDialog({
                     maxLength={160}
                   />
                   <p className="text-xs text-muted-foreground mt-1">
-                    {(config.message || "").length}/160 characters. Variables: {{customer.name}}, {{project.name}}
+                    {(config.message || "").length}/160 characters. Variables:{" "}
+                    {`{{customer.name}}, {{project.name}}`}
                   </p>
                 </div>
 
@@ -947,7 +993,9 @@ function StepConfigDialog({
                 </div>
 
                 <div>
-                  <Label className="text-sm font-medium">Message Template</Label>
+                  <Label className="text-sm font-medium">
+                    Message Template
+                  </Label>
                   <Select
                     value={config.template || "friendly"}
                     onValueChange={(value) =>
@@ -968,7 +1016,9 @@ function StepConfigDialog({
 
                 {config.template === "custom" && (
                   <div>
-                    <Label className="text-sm font-medium">Custom Message</Label>
+                    <Label className="text-sm font-medium">
+                      Custom Message
+                    </Label>
                     <Textarea
                       value={config.customMessage || ""}
                       onChange={(e) =>
@@ -988,7 +1038,9 @@ function StepConfigDialog({
                       setConfig({ ...config, includePhotos: checked })
                     }
                   />
-                  <Label htmlFor="include-photos">Include project photos in request</Label>
+                  <Label htmlFor="include-photos">
+                    Include project photos in request
+                  </Label>
                 </div>
               </div>
             );
@@ -1031,7 +1083,10 @@ function StepConfigDialog({
                 <div>
                   <Label className="text-sm font-medium">Headers (JSON)</Label>
                   <Textarea
-                    value={config.headers || '{\n  "Content-Type": "application/json",\n  "Authorization": "Bearer your-token"\n}'}
+                    value={
+                      config.headers ||
+                      '{\n  "Content-Type": "application/json",\n  "Authorization": "Bearer your-token"\n}'
+                    }
                     onChange={(e) =>
                       setConfig({ ...config, headers: e.target.value })
                     }
@@ -1041,9 +1096,14 @@ function StepConfigDialog({
                 </div>
 
                 <div>
-                  <Label className="text-sm font-medium">Request Body (JSON)</Label>
+                  <Label className="text-sm font-medium">
+                    Request Body (JSON)
+                  </Label>
                   <Textarea
-                    value={config.body || '{\n  "customer": "{{customer.name}}",\n  "project": "{{project.name}}",\n  "status": "{{project.status}}"\n}'}
+                    value={
+                      config.body ||
+                      '{\n  "customer": "{{customer.name}}",\n  "project": "{{project.name}}",\n  "status": "{{project.status}}"\n}'
+                    }
                     onChange={(e) =>
                       setConfig({ ...config, body: e.target.value })
                     }
@@ -1051,7 +1111,8 @@ function StepConfigDialog({
                     rows={6}
                   />
                   <p className="text-xs text-muted-foreground mt-1">
-                    Use variables: {{customer.name}}, {{project.name}}, {{project.status}}
+                    Use variables:{" "}
+                    {`{{customer.name}}, {{project.name}}, {{project.status}}`}
                   </p>
                 </div>
               </div>
@@ -1072,9 +1133,15 @@ function StepConfigDialog({
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="this-automation">Only this automation</SelectItem>
-                      <SelectItem value="all-automations">All automations</SelectItem>
-                      <SelectItem value="by-tag">Automations with specific tag</SelectItem>
+                      <SelectItem value="this-automation">
+                        Only this automation
+                      </SelectItem>
+                      <SelectItem value="all-automations">
+                        All automations
+                      </SelectItem>
+                      <SelectItem value="by-tag">
+                        Automations with specific tag
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -1093,7 +1160,9 @@ function StepConfigDialog({
                 )}
 
                 <div>
-                  <Label className="text-sm font-medium">Reason (Optional)</Label>
+                  <Label className="text-sm font-medium">
+                    Reason (Optional)
+                  </Label>
                   <Input
                     value={config.reason || ""}
                     onChange={(e) =>
@@ -1144,7 +1213,9 @@ function StepConfigDialog({
                 <Label className="text-sm font-medium">Unit</Label>
                 <Select
                   value={config.unit || "minutes"}
-                  onValueChange={(value) => setConfig({ ...config, unit: value })}
+                  onValueChange={(value) =>
+                    setConfig({ ...config, unit: value })
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue />
@@ -1172,8 +1243,12 @@ function StepConfigDialog({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="delay">Simple Delay</SelectItem>
-                  <SelectItem value="business-hours">Only During Business Hours</SelectItem>
-                  <SelectItem value="specific-time">Specific Time of Day</SelectItem>
+                  <SelectItem value="business-hours">
+                    Only During Business Hours
+                  </SelectItem>
+                  <SelectItem value="specific-time">
+                    Specific Time of Day
+                  </SelectItem>
                   <SelectItem value="weekdays">Weekdays Only</SelectItem>
                 </SelectContent>
               </Select>
@@ -1185,7 +1260,9 @@ function StepConfigDialog({
                 <Input
                   type="time"
                   value={config.time || "09:00"}
-                  onChange={(e) => setConfig({ ...config, time: e.target.value })}
+                  onChange={(e) =>
+                    setConfig({ ...config, time: e.target.value })
+                  }
                 />
               </div>
             )}
