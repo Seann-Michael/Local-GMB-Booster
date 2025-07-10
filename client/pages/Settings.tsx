@@ -2809,7 +2809,52 @@ export default function Settings() {
   "seo": {
     "altText": "{{altText}}",
     "caption": "{{caption}}",
-    "slug": "{{slug}}"
+    "slug": "{{slug}}",
+    "schema": {
+      "@context": "https://schema.org",
+      "@type": "{{schemaType}}",
+      "name": "{{title}}",
+      "description": "{{description}}",
+      "image": "{{imageUrl}}",
+      "url": "{{canonicalUrl}}",
+      "contentUrl": "{{contentUrl}}",
+      "creator": {
+        "@type": "Organization",
+        "name": "{{businessName}}",
+        "url": "{{businessWebsite}}"
+      },
+      "about": {
+        "@type": "{{projectSchemaType}}",
+        "name": "{{projectName}}",
+        "address": "{{projectAddress}}"
+      },
+      "dateCreated": "{{uploadTimestamp}}",
+      "encodingFormat": "{{fileFormat}}",
+      "contentSize": "{{fileSize}}",
+      "width": "{{imageWidth}}",
+      "height": "{{imageHeight}}"
+    },
+    "openGraph": {
+      "og:type": "{{ogType}}",
+      "og:title": "{{ogTitle}}",
+      "og:description": "{{ogDescription}}",
+      "og:image": "{{ogImage}}",
+      "og:image:width": "{{imageWidth}}",
+      "og:image:height": "{{imageHeight}}",
+      "og:url": "{{canonicalUrl}}",
+      "og:site_name": "{{businessName}}",
+      "article:author": "{{uploadedBy}}",
+      "article:published_time": "{{uploadTimestamp}}",
+      "article:tag": [{{ogTags}}]
+    },
+    "twitter": {
+      "twitter:card": "{{twitterCard}}",
+      "twitter:title": "{{twitterTitle}}",
+      "twitter:description": "{{twitterDescription}}",
+      "twitter:image": "{{twitterImage}}",
+      "twitter:site": "{{twitterHandle}}",
+      "twitter:creator": "{{twitterCreator}}"
+    }
   }
 }`,
                           );
