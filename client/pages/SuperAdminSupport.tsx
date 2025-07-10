@@ -618,11 +618,12 @@ export default function SuperAdminSupport() {
                             <SelectValue placeholder="Select category" />
                           </SelectTrigger>
                           <SelectContent>
-                            {(categories || []).map((category) => (
-                              <SelectItem key={category} value={category}>
-                                {category}
-                              </SelectItem>
-                            ))}
+                            {!isLoading &&
+                              (categories || []).map((category) => (
+                                <SelectItem key={category} value={category}>
+                                  {category}
+                                </SelectItem>
+                              ))}
                           </SelectContent>
                         </Select>
                       </div>
