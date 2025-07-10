@@ -112,8 +112,18 @@ export function AppLayout({ children }: AppLayoutProps) {
       setBusinessName(name);
     };
 
+    const loadZoomLevel = () => {
+      const savedZoom = localStorage.getItem("system_zoom");
+      if (savedZoom) {
+        const zoom = parseInt(savedZoom);
+        setZoomLevel(zoom);
+        document.body.style.zoom = `${zoom}%`;
+      }
+    };
+
     // Load initially
     loadBusinessName();
+    loadZoomLevel();
 
     // Listen for storage changes (in case updated from another tab/window)
     const handleStorageChange = (e: StorageEvent) => {
