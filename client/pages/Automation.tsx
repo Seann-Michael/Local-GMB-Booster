@@ -748,7 +748,10 @@ export default function Automation() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {mockWorkflows.map((workflow) => (
+                  <div className="text-center py-4 text-muted-foreground">
+                    <p>Workflow performance data coming soon...</p>
+                  </div>
+                  {false && mockWorkflows.map((workflow) => (
                     <div
                       key={workflow.id}
                       className="flex items-center justify-between p-4 border rounded-lg"
