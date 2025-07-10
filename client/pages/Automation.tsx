@@ -172,7 +172,7 @@ export default function Automation() {
   if (selectedWorkflow) {
     return (
       <AppLayout>
-        <div className="h-full">
+        <div className="h-screen w-full overflow-hidden relative">
           <WorkflowBuilder
             workflowId={selectedWorkflow.id}
             onSave={(workflow) => {
@@ -191,7 +191,7 @@ export default function Automation() {
             onClick={() => setSelectedWorkflow(null)}
             className="absolute top-4 left-4 z-50"
           >
-            ← Back to Workflows
+            ← Back to Automations
           </Button>
         </div>
       </AppLayout>
@@ -204,7 +204,7 @@ export default function Automation() {
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Automation</h1>
+            <h1 className="text-3xl font-bold tracking-tight">Automations</h1>
             <p className="text-muted-foreground mt-1">
               Create and manage automated workflows to streamline your business
               processes

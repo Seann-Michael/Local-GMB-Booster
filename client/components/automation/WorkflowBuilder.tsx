@@ -153,11 +153,8 @@ export function WorkflowBuilder({
 
   return (
     <div className="flex h-full bg-background overflow-hidden">
-      {/* Node Library */}
-      <NodeLibrary onNodeAdd={handleNodeAdd} isCollapsed={isLibraryCollapsed} />
-
       {/* Main Canvas Area */}
-      <div className="flex-1 flex flex-col relative">
+      <div className="flex-1 flex flex-col relative min-w-0">
         {/* Toolbar */}
         <div className="border-b bg-card p-3 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -168,9 +165,9 @@ export function WorkflowBuilder({
               onClick={() => setIsLibraryCollapsed(!isLibraryCollapsed)}
             >
               {isLibraryCollapsed ? (
-                <ChevronRight className="h-4 w-4" />
-              ) : (
                 <ChevronLeft className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
               )}
             </Button>
 
@@ -393,17 +390,23 @@ export function WorkflowBuilder({
       </div>
 
       {/* Property Panel */}
-      <PropertyPanel
-        node={
-          state.selectedNodeId
-            ? state.workflow.nodes.find((n) => n.id === state.selectedNodeId) ||
-              null
-            : null
-        }
-        onNodeUpdate={actions.updateNode}
-        onClose={() => actions.selectNode(null)}
-        isVisible={isPanelVisible && !!state.selectedNodeId}
-      />
+      {isPanelVisible && !!state.selectedNodeId && (
+        <PropertyPanel
+          node={
+            state.selectedNodeId
+              ? state.workflow.nodes.find(
+                  (n) => n.id === state.selectedNodeId,
+                ) || null
+              : null
+          }
+          onNodeUpdate={actions.updateNode}
+          onClose={() => actions.selectNode(null)}
+          isVisible={true}
+        />
+      )}
+
+      {/* Node Library - Moved to Right */}
+      <NodeLibrary onNodeAdd={handleNodeAdd} isCollapsed={isLibraryCollapsed} />
     </div>
   );
 }

@@ -225,7 +225,7 @@ const App = () => (
                   }
                 />
                 <Route
-                  path="/admin/automation"
+                  path="/admin/automations"
                   element={
                     <ProtectedRoute>
                       <Automation />

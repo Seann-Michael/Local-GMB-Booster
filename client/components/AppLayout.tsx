@@ -214,11 +214,11 @@ export function AppLayout({ children }: AppLayoutProps) {
       comingSoon: false,
     },
     {
-      id: "automation",
-      label: "Automation",
-      href: "/admin/automation",
+      id: "automations",
+      label: "Automations",
+      href: "/admin/automations",
       icon: Workflow,
-      active: location.pathname === "/admin/automation",
+      active: location.pathname === "/admin/automations",
       comingSoon: false,
     },
     {
