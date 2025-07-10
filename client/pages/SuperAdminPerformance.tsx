@@ -396,7 +396,7 @@ export default function SuperAdminPerformance() {
 
   const updateRealTimeMetrics = () => {
     setPerformanceMetrics((prev) =>
-      prev.map((metric) => ({
+      (prev || []).map((metric) => ({
         ...metric,
         value: metric.value + (Math.random() - 0.5) * (metric.value * 0.1),
         lastUpdated: new Date().toISOString(),
@@ -434,7 +434,7 @@ export default function SuperAdminPerformance() {
 
   const toggleScalingRule = (ruleId: string) => {
     setScalingRules((prev) =>
-      prev.map((rule) =>
+      (prev || []).map((rule) =>
         rule.id === ruleId ? { ...rule, enabled: !rule.enabled } : rule,
       ),
     );
@@ -633,7 +633,7 @@ export default function SuperAdminPerformance() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {performanceMetrics.map((metric) => {
+                    {(performanceMetrics || []).map((metric) => {
                       const Icon = getMetricIcon(metric.category);
                       const colorClass = getMetricColor(
                         metric.value,
@@ -693,7 +693,7 @@ export default function SuperAdminPerformance() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {optimizationJobs
+                    {(optimizationJobs || [])
                       .filter((job) => job.status !== "completed")
                       .map((job) => (
                         <div key={job.id} className="p-3 border rounded-lg">
@@ -774,7 +774,7 @@ export default function SuperAdminPerformance() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {cacheMetrics.map((cache) => (
+                    {(cacheMetrics || []).map((cache) => (
                       <TableRow key={cache.id}>
                         <TableCell className="font-medium">
                           {cache.name}
@@ -847,7 +847,7 @@ export default function SuperAdminPerformance() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {dbConnections.map((db) => (
+                    {(dbConnections || []).map((db) => (
                       <TableRow key={db.id}>
                         <TableCell className="font-medium">{db.name}</TableCell>
                         <TableCell>
@@ -930,7 +930,7 @@ export default function SuperAdminPerformance() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {scalingRules.map((rule) => (
+                    {(scalingRules || []).map((rule) => (
                       <TableRow key={rule.id}>
                         <TableCell className="font-medium">
                           {rule.name}
@@ -1004,7 +1004,7 @@ export default function SuperAdminPerformance() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {optimizationJobs.map((job) => (
+                    {(optimizationJobs || []).map((job) => (
                       <TableRow key={job.id}>
                         <TableCell className="font-medium">
                           {job.name}
