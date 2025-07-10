@@ -283,6 +283,15 @@ const App = () => (
                 />
 
                 <Route
+                  path="/admin/crash-logs"
+                  element={
+                    <ProtectedRoute>
+                      <CrashLogs />
+                    </ProtectedRoute>
+                  }
+                />
+
+                <Route
                   path="/support"
                   element={
                     <ProtectedRoute>
