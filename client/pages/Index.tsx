@@ -69,6 +69,9 @@ export default function Index() {
   const [projectSort, setProjectSort] = useState<
     "all" | "starred" | "my-projects" | "archived"
   >("all");
+  const [cardSize, setCardSize] = useState<"small" | "medium" | "large">(
+    "medium",
+  );
   const [filters, setFilters] = useState({
     startDate: "",
     endDate: "",
