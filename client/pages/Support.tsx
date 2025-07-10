@@ -344,14 +344,106 @@ export default function Support() {
               Get help and submit support tickets
             </p>
           </div>
-          <Button
-            onClick={() => setShowCreateForm(true)}
-            className="gap-2"
-            disabled={showCreateForm}
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                document.getElementById("crash-logs-section")?.scrollIntoView({
+                  behavior: "smooth",
+                });
+              }}
+              className="gap-2"
+            >
+              <AlertTriangle className="h-4 w-4" />
+              View Error Logs
+            </Button>
+            <Button
+              onClick={() => setShowCreateForm(true)}
+              className="gap-2"
+              disabled={showCreateForm}
+            >
+              <Plus className="h-4 w-4" />
+              Create Ticket
+            </Button>
+          </div>
+        </div>
+
+        {/* Quick Access Dashboard */}
+        <div className="grid gap-4 md:grid-cols-4">
+          <Card
+            className="cursor-pointer hover:shadow-md transition-shadow"
+            onClick={() => {
+              document.getElementById("crash-logs-section")?.scrollIntoView({
+                behavior: "smooth",
+              });
+            }}
           >
-            <Plus className="h-4 w-4" />
-            Create Ticket
-          </Button>
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-red-100 rounded-lg">
+                  <AlertTriangle className="h-5 w-5 text-red-600" />
+                </div>
+                <div>
+                  <div className="font-semibold text-red-800">7 Critical</div>
+                  <div className="text-sm text-muted-foreground">
+                    Crash Reports
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="cursor-pointer hover:shadow-md transition-shadow">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-yellow-100 rounded-lg">
+                  <Activity className="h-5 w-5 text-yellow-600" />
+                </div>
+                <div>
+                  <div className="font-semibold text-yellow-800">
+                    12 Warnings
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    System Errors
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="cursor-pointer hover:shadow-md transition-shadow">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <MessageSquare className="h-5 w-5 text-blue-600" />
+                </div>
+                <div>
+                  <div className="font-semibold text-blue-800">
+                    {tickets.length} Open
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    Support Tickets
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="cursor-pointer hover:shadow-md transition-shadow">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                </div>
+                <div>
+                  <div className="font-semibold text-green-800">System OK</div>
+                  <div className="text-sm text-muted-foreground">
+                    Overall Status
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Create Ticket Form */}
