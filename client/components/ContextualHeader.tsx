@@ -88,7 +88,7 @@ export function ContextualHeader() {
     <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       {/* Breadcrumbs */}
       {breadcrumbs.length > 1 && (
-        <div className="px-4 py-2 border-t">
+        <div className="px-4 py-4 border-t">
           <Breadcrumb>
             <BreadcrumbList>
               {breadcrumbs.map((crumb, index) => (
