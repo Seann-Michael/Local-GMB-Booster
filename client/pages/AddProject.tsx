@@ -421,12 +421,11 @@ export default function AddProject() {
 
                 <div className="space-y-2">
                   <Label htmlFor="mobilePhone">Mobile Phone</Label>
-                  <Input
+                  <PhoneInput
                     id="mobilePhone"
-                    placeholder="(555) 123-4567"
                     value={formData.mobilePhone}
-                    onChange={(e) =>
-                      handleInputChange("mobilePhone", e.target.value)
+                    onChange={(value) =>
+                      handleInputChange("mobilePhone", value)
                     }
                   />
                 </div>
