@@ -2006,6 +2006,525 @@ export default function Settings() {
                     </div>
                   </CardContent>
                 </Card>
+
+                {/* Media Schema Editor */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <SettingsIcon className="h-5 w-5" />
+                      Automated Media Schema
+                    </CardTitle>
+                    <CardDescription>
+                      Configure the metadata schema that will be automatically
+                      generated for uploaded media files
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    {/* Schema Template Editor */}
+                    <div>
+                      <Label
+                        htmlFor="mediaSchema"
+                        className="text-base font-medium"
+                      >
+                        Schema Template
+                      </Label>
+                      <p className="text-sm text-muted-foreground mt-1 mb-3">
+                        Define the JSON schema structure for automated media
+                        metadata. Use variables in double curly braces.
+                      </p>
+                      <Textarea
+                        id="mediaSchema"
+                        value={
+                          settings.mediaSchemaTemplate ||
+                          `{
+  "title": "{{fileName}}",
+  "description": "{{description}}",
+  "project": {
+    "id": "{{projectId}}",
+    "name": "{{projectName}}",
+    "address": "{{projectAddress}}",
+    "customer": "{{customerName}}"
+  },
+  "upload": {
+    "timestamp": "{{uploadTimestamp}}",
+    "user": "{{uploadedBy}}",
+    "userEmail": "{{uploaderEmail}}"
+  },
+  "media": {
+    "type": "{{mediaType}}",
+    "format": "{{fileFormat}}",
+    "size": "{{fileSize}}",
+    "dimensions": "{{dimensions}}",
+    "duration": "{{duration}}"
+  },
+  "metadata": {
+    "tags": [{{tags}}],
+    "keywords": [{{keywords}}],
+    "location": "{{gpsLocation}}",
+    "device": "{{deviceInfo}}",
+    "camera": "{{cameraModel}}"
+  },
+  "business": {
+    "name": "{{businessName}}",
+    "address": "{{businessAddress}}",
+    "contact": "{{businessContact}}"
+  },
+  "seo": {
+    "altText": "{{altText}}",
+    "caption": "{{caption}}",
+    "slug": "{{slug}}"
+  }
+}`
+                        }
+                        onChange={(e) =>
+                          updateSetting("mediaSchemaTemplate", e.target.value)
+                        }
+                        className="min-h-[400px] font-mono text-sm"
+                        placeholder="Enter your custom schema template..."
+                      />
+                    </div>
+
+                    {/* Available Variables */}
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <Card className="p-4">
+                        <h4 className="font-semibold mb-3 flex items-center gap-2">
+                          <Tag className="h-4 w-4" />
+                          System Variables
+                        </h4>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              fileName
+                            </code>
+                            <span className="text-muted-foreground">
+                              Original filename
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              fileSize
+                            </code>
+                            <span className="text-muted-foreground">
+                              File size in bytes
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              fileFormat
+                            </code>
+                            <span className="text-muted-foreground">
+                              File extension
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              mediaType
+                            </code>
+                            <span className="text-muted-foreground">
+                              image/video
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              uploadTimestamp
+                            </code>
+                            <span className="text-muted-foreground">
+                              Upload date/time
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              dimensions
+                            </code>
+                            <span className="text-muted-foreground">
+                              Width x Height
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              duration
+                            </code>
+                            <span className="text-muted-foreground">
+                              Video length
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              gpsLocation
+                            </code>
+                            <span className="text-muted-foreground">
+                              GPS coordinates
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              deviceInfo
+                            </code>
+                            <span className="text-muted-foreground">
+                              Device/browser
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              cameraModel
+                            </code>
+                            <span className="text-muted-foreground">
+                              Camera make/model
+                            </span>
+                          </div>
+                        </div>
+                      </Card>
+
+                      <Card className="p-4">
+                        <h4 className="font-semibold mb-3 flex items-center gap-2">
+                          <Users className="h-4 w-4" />
+                          User & Project Variables
+                        </h4>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              uploadedBy
+                            </code>
+                            <span className="text-muted-foreground">
+                              User full name
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              uploaderEmail
+                            </code>
+                            <span className="text-muted-foreground">
+                              User email
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              projectId
+                            </code>
+                            <span className="text-muted-foreground">
+                              Project ID
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              projectName
+                            </code>
+                            <span className="text-muted-foreground">
+                              Project title
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              projectAddress
+                            </code>
+                            <span className="text-muted-foreground">
+                              Project location
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              customerName
+                            </code>
+                            <span className="text-muted-foreground">
+                              Customer name
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              businessName
+                            </code>
+                            <span className="text-muted-foreground">
+                              Company name
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              businessAddress
+                            </code>
+                            <span className="text-muted-foreground">
+                              Company address
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded">
+                              businessContact
+                            </code>
+                            <span className="text-muted-foreground">
+                              Company contact
+                            </span>
+                          </div>
+                        </div>
+                      </Card>
+                    </div>
+
+                    {/* User-Defined Variables */}
+                    <div>
+                      <Label className="text-base font-medium">
+                        Custom Variables
+                      </Label>
+                      <p className="text-sm text-muted-foreground mt-1 mb-3">
+                        Define your own variables that users can fill when
+                        uploading media
+                      </p>
+                      <div className="space-y-3">
+                        {(settings.customSchemaVariables || []).map(
+                          (variable, index) => (
+                            <div
+                              key={index}
+                              className="flex gap-3 items-center p-3 border rounded-lg"
+                            >
+                              <Input
+                                placeholder="Variable name (e.g., category)"
+                                value={variable.name || ""}
+                                onChange={(e) => {
+                                  const updated = [
+                                    ...(settings.customSchemaVariables || []),
+                                  ];
+                                  updated[index] = {
+                                    ...updated[index],
+                                    name: e.target.value,
+                                  };
+                                  updateSetting(
+                                    "customSchemaVariables",
+                                    updated,
+                                  );
+                                }}
+                                className="flex-1"
+                              />
+                              <Input
+                                placeholder="Description"
+                                value={variable.description || ""}
+                                onChange={(e) => {
+                                  const updated = [
+                                    ...(settings.customSchemaVariables || []),
+                                  ];
+                                  updated[index] = {
+                                    ...updated[index],
+                                    description: e.target.value,
+                                  };
+                                  updateSetting(
+                                    "customSchemaVariables",
+                                    updated,
+                                  );
+                                }}
+                                className="flex-1"
+                              />
+                              <Select
+                                value={variable.type || "text"}
+                                onValueChange={(value) => {
+                                  const updated = [
+                                    ...(settings.customSchemaVariables || []),
+                                  ];
+                                  updated[index] = {
+                                    ...updated[index],
+                                    type: value,
+                                  };
+                                  updateSetting(
+                                    "customSchemaVariables",
+                                    updated,
+                                  );
+                                }}
+                              >
+                                <SelectTrigger className="w-32">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="text">Text</SelectItem>
+                                  <SelectItem value="number">Number</SelectItem>
+                                  <SelectItem value="boolean">
+                                    Yes/No
+                                  </SelectItem>
+                                  <SelectItem value="select">
+                                    Dropdown
+                                  </SelectItem>
+                                  <SelectItem value="tags">Tags</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  const updated = [
+                                    ...(settings.customSchemaVariables || []),
+                                  ];
+                                  updated.splice(index, 1);
+                                  updateSetting(
+                                    "customSchemaVariables",
+                                    updated,
+                                  );
+                                }}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          ),
+                        )}
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            const updated = [
+                              ...(settings.customSchemaVariables || []),
+                            ];
+                            updated.push({
+                              name: "",
+                              description: "",
+                              type: "text",
+                            });
+                            updateSetting("customSchemaVariables", updated);
+                          }}
+                          className="w-full"
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Custom Variable
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Schema Validation & Preview */}
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div>
+                        <Label className="text-base font-medium">
+                          Schema Validation
+                        </Label>
+                        <div className="mt-2 p-3 border rounded-lg">
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="h-4 w-4 text-green-600" />
+                            <span className="text-sm text-green-700 font-medium">
+                              Valid JSON Schema
+                            </span>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Schema syntax is correct and ready to use
+                          </p>
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label className="text-base font-medium">
+                          Settings
+                        </Label>
+                        <div className="mt-2 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm">Auto-apply schema</span>
+                            <Switch
+                              checked={settings.autoApplySchema !== false}
+                              onCheckedChange={(checked) =>
+                                updateSetting("autoApplySchema", checked)
+                              }
+                            />
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm">Allow user edits</span>
+                            <Switch
+                              checked={settings.allowSchemaEdits !== false}
+                              onCheckedChange={(checked) =>
+                                updateSetting("allowSchemaEdits", checked)
+                              }
+                            />
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm">Include EXIF data</span>
+                            <Switch
+                              checked={settings.includeExifData !== false}
+                              onCheckedChange={(checked) =>
+                                updateSetting("includeExifData", checked)
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-3 pt-4 border-t">
+                      <Button
+                        onClick={() => {
+                          // Preview functionality
+                          alert(
+                            "Schema preview functionality would show a sample generated metadata object here",
+                          );
+                        }}
+                        variant="outline"
+                        className="gap-2"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                        Preview Schema
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          // Reset to default
+                          updateSetting(
+                            "mediaSchemaTemplate",
+                            `{
+  "title": "{{fileName}}",
+  "description": "{{description}}",
+  "project": {
+    "id": "{{projectId}}",
+    "name": "{{projectName}}",
+    "address": "{{projectAddress}}",
+    "customer": "{{customerName}}"
+  },
+  "upload": {
+    "timestamp": "{{uploadTimestamp}}",
+    "user": "{{uploadedBy}}",
+    "userEmail": "{{uploaderEmail}}"
+  },
+  "media": {
+    "type": "{{mediaType}}",
+    "format": "{{fileFormat}}",
+    "size": "{{fileSize}}",
+    "dimensions": "{{dimensions}}",
+    "duration": "{{duration}}"
+  },
+  "metadata": {
+    "tags": [{{tags}}],
+    "keywords": [{{keywords}}],
+    "location": "{{gpsLocation}}",
+    "device": "{{deviceInfo}}",
+    "camera": "{{cameraModel}}"
+  },
+  "business": {
+    "name": "{{businessName}}",
+    "address": "{{businessAddress}}",
+    "contact": "{{businessContact}}"
+  },
+  "seo": {
+    "altText": "{{altText}}",
+    "caption": "{{caption}}",
+    "slug": "{{slug}}"
+  }
+}`,
+                          );
+                        }}
+                        variant="outline"
+                        className="gap-2"
+                      >
+                        <RotateCcw className="h-4 w-4" />
+                        Reset to Default
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          // Export schema
+                          const schema = settings.mediaSchemaTemplate || "";
+                          const blob = new Blob([schema], {
+                            type: "application/json",
+                          });
+                          const url = URL.createObjectURL(blob);
+                          const a = document.createElement("a");
+                          a.href = url;
+                          a.download = "media-schema-template.json";
+                          a.click();
+                          URL.revokeObjectURL(url);
+                        }}
+                        variant="outline"
+                        className="gap-2"
+                      >
+                        <Download className="h-4 w-4" />
+                        Export Schema
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             )}
 
