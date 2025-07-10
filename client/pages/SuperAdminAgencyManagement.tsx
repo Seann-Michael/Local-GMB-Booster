@@ -339,124 +339,127 @@ export default function SuperAdminAgencyManagement() {
             <div className="overflow-x-auto">
               <div className="min-w-full w-max">
                 <Table className="table-fixed w-full min-w-[1200px]">
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Agency</TableHead>
-                    <TableHead>Contact</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Plan</TableHead>
-                    <TableHead>Users</TableHead>
-                    <TableHead>Businesses</TableHead>
-                    <TableHead>Revenue</TableHead>
-                    <TableHead>Last Login</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredAgencies.map((agency) => (
-                    <TableRow key={agency.id}>
-                      <TableCell>
-                        <div>
-                          <div className="font-medium">{agency.agencyName}</div>
-                          <div className="text-sm text-muted-foreground">
-                            ID: {agency.id}
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div>
-                          <div className="font-medium">
-                            {agency.contactName}
-                          </div>
-                          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                            <Mail className="h-3 w-3" />
-                            {agency.email}
-                          </div>
-                          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                            <Phone className="h-3 w-3" />
-                            {agency.phone}
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>{getStatusBadge(agency.status)}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{agency.plan}</Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="font-medium">
-                          {agency.currentUsers}/{agency.maxUsers}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          {agency.maxUsers - agency.currentUsers} available
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <Building2 className="h-3 w-3" />
-                          {agency.businessCount}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="font-medium">
-                          ${agency.monthlyRevenue}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          /month
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-sm">
-                          {new Date(agency.lastLogin).toLocaleDateString()}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <MoreVertical className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem asChild>
-                              <Link
-                                to={`/super-admin/agencies/${agency.id}`}
-                                className="flex items-center"
-                              >
-                                <Eye className="mr-2 h-4 w-4" />
-                                View Details
-                              </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                              <Link
-                                to={`/super-admin/agencies/${agency.id}/edit`}
-                                className="flex items-center"
-                              >
-                                <Edit className="mr-2 h-4 w-4" />
-                                Edit Agency
-                              </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Shield className="mr-2 h-4 w-4" />
-                              Login as Agency
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Mail className="mr-2 h-4 w-4" />
-                              Send Message
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem className="text-destructive">
-                              <ExternalLink className="mr-2 h-4 w-4" />
-                              Suspend Agency
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Agency</TableHead>
+                      <TableHead>Contact</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Plan</TableHead>
+                      <TableHead>Users</TableHead>
+                      <TableHead>Businesses</TableHead>
+                      <TableHead>Revenue</TableHead>
+                      <TableHead>Last Login</TableHead>
+                      <TableHead>Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredAgencies.map((agency) => (
+                      <TableRow key={agency.id}>
+                        <TableCell>
+                          <div>
+                            <div className="font-medium">
+                              {agency.agencyName}
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              ID: {agency.id}
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div>
+                            <div className="font-medium">
+                              {agency.contactName}
+                            </div>
+                            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                              <Mail className="h-3 w-3" />
+                              {agency.email}
+                            </div>
+                            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                              <Phone className="h-3 w-3" />
+                              {agency.phone}
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell>{getStatusBadge(agency.status)}</TableCell>
+                        <TableCell>
+                          <Badge variant="outline">{agency.plan}</Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="font-medium">
+                            {agency.currentUsers}/{agency.maxUsers}
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            {agency.maxUsers - agency.currentUsers} available
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Building2 className="h-3 w-3" />
+                            {agency.businessCount}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="font-medium">
+                            ${agency.monthlyRevenue}
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            /month
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="text-sm">
+                            {new Date(agency.lastLogin).toLocaleDateString()}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" className="h-8 w-8 p-0">
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem asChild>
+                                <Link
+                                  to={`/super-admin/agencies/${agency.id}`}
+                                  className="flex items-center"
+                                >
+                                  <Eye className="mr-2 h-4 w-4" />
+                                  View Details
+                                </Link>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem asChild>
+                                <Link
+                                  to={`/super-admin/agencies/${agency.id}/edit`}
+                                  className="flex items-center"
+                                >
+                                  <Edit className="mr-2 h-4 w-4" />
+                                  Edit Agency
+                                </Link>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <Shield className="mr-2 h-4 w-4" />
+                                Login as Agency
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <Mail className="mr-2 h-4 w-4" />
+                                Send Message
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem className="text-destructive">
+                                <ExternalLink className="mr-2 h-4 w-4" />
+                                Suspend Agency
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </div>
 
             {filteredAgencies.length === 0 && (
