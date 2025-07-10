@@ -52,6 +52,7 @@ import {
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
+import { ReviewRequest } from "@/components/ReviewRequest";
 
 interface TaggedPhoto {
   url: string;
@@ -171,6 +172,7 @@ export default function ProjectDetail() {
   const [newChecklistItem, setNewChecklistItem] = useState("");
   const [mentionQuery, setMentionQuery] = useState("");
   const [showMentionDropdown, setShowMentionDropdown] = useState(false);
+  const [showReviewRequest, setShowReviewRequest] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -268,23 +270,37 @@ export default function ProjectDetail() {
   };
 
   const requestGoogleReview = () => {
+    setShowReviewRequest(true);
+  };
+
+  const handleSendReviewRequest = (
+    method: "sms" | "email" | "both",
+    message: string,
+  ) => {
+    const customerName = project?.customerName || "Customer";
     const phone = project?.mobilePhone || project?.customerPhone;
-    if (!phone) {
-      toast.error(
-        "Customer mobile phone number is required to request a review",
-      );
-      return;
+    const email = project?.customerEmail;
+
+    if (method === "sms" || method === "both") {
+      if (phone) {
+        const phoneUrl = `sms:${phone}?body=${encodeURIComponent(message)}`;
+        window.open(phoneUrl);
+      }
     }
 
-    const customerName = project?.customerName || "Customer";
-    const message = `Hi ${customerName}! We've completed your ${project.name} project. We'd greatly appreciate if you could leave us a Google review. Here's the link: [Your Google Business Link]`;
-    const phoneUrl = `sms:${phone}?body=${encodeURIComponent(message)}`;
-    window.open(phoneUrl);
+    if (method === "email" || method === "both") {
+      if (email) {
+        const subject = `Review Request for ${project.name}`;
+        const emailUrl = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+        window.open(emailUrl);
+      }
+    }
+
     addActivityLogEntry(
       "review_requested",
-      `Google review requested from ${customerName}`,
+      `Google review requested from ${customerName} via ${method}`,
     );
-    toast.success("Review request message prepared!");
+    toast.success(`Review request sent via ${method}!`);
   };
 
   const addMorePhotos = (files: FileList | null) => {
