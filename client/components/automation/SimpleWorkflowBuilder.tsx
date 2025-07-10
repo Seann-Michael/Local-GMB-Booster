@@ -52,7 +52,7 @@ import {
   Facebook,
   Twitter,
   Tag,
-  TagX,
+  Tags,
   Workflow,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -166,7 +166,7 @@ const stepTemplates = {
       id: "remove-tag",
       name: "Remove Tag",
       description: "Remove a tag from contact or project",
-      icon: TagX,
+      icon: Tags,
       category: "action",
     },
     {
