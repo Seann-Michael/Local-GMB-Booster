@@ -848,7 +848,17 @@ export default function Automation() {
                         <div className="text-center">
                           <div className="font-medium">
                             {workflow.lastRun
-                              ? workflow.lastRun.toLocaleDateString()
+                              ? (() => {
+                                  try {
+                                    return workflow.lastRun.toLocaleDateString();
+                                  } catch (error) {
+                                    console.warn(
+                                      "Date formatting error:",
+                                      error,
+                                    );
+                                    return "Invalid Date";
+                                  }
+                                })()
                               : "Never"}
                           </div>
                           <div className="text-muted-foreground">Last Run</div>
