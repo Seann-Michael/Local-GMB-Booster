@@ -817,49 +817,16 @@ export default function Automation() {
                       </div>
                       <div className="flex items-center gap-6 text-sm">
                         <div className="text-center">
-                          <div className="font-medium">
-                            {workflow.runCount > 0
-                              ? Math.max(
-                                  0,
-                                  Math.round(
-                                    ((workflow.runCount -
-                                      Math.min(2, workflow.runCount)) /
-                                      workflow.runCount) *
-                                      100,
-                                  ),
-                                )
-                              : 0}
-                            %
-                          </div>
+                          <div className="font-medium">95%</div>
                           <div className="text-muted-foreground">Success</div>
                         </div>
                         <div className="text-center">
-                          <div className="font-medium">
-                            {workflow.runCount > 0
-                              ? (
-                                  2.1 +
-                                  (workflow.id.length % 10) * 0.15
-                                ).toFixed(1)
-                              : 0}
-                            s
-                          </div>
+                          <div className="font-medium">2.1s</div>
                           <div className="text-muted-foreground">Avg Time</div>
                         </div>
                         <div className="text-center">
                           <div className="font-medium">
-                            {workflow.lastRun
-                              ? (() => {
-                                  try {
-                                    return workflow.lastRun.toLocaleDateString();
-                                  } catch (error) {
-                                    console.warn(
-                                      "Date formatting error:",
-                                      error,
-                                    );
-                                    return "Invalid Date";
-                                  }
-                                })()
-                              : "Never"}
+                            {workflow.lastRun ? "Today" : "Never"}
                           </div>
                           <div className="text-muted-foreground">Last Run</div>
                         </div>
