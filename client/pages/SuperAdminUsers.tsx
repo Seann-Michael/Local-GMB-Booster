@@ -59,13 +59,14 @@ interface User {
   name: string;
   email: string;
   role: "admin" | "agency-admin" | "staff" | "viewer";
-  status: "active" | "inactive" | "pending" | "suspended";
+  status: "active" | "inactive" | "pending" | "suspended" | "cancelled";
   type: "business-owner" | "agency-admin" | "staff-member";
   organization?: string;
   lastLogin: string;
+  lastActive: string;
   signupDate: string;
   subscription?: string;
-  revenue?: number;
+  cancellationDate?: string;
 }
 
 export default function SuperAdminUsers() {
