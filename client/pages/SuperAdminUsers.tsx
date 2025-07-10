@@ -440,30 +440,19 @@ export default function SuperAdminUsers() {
                               </Button>
                             </TableHead>
                           )}
-                          {visibleColumns.lastLogin && (
+                          {visibleColumns.lastActive && (
                             <TableHead>
                               <Button
                                 variant="ghost"
                                 className="h-auto p-0 font-semibold"
-                                onClick={() => handleSort("lastLogin")}
+                                onClick={() => handleSort("lastActive")}
                               >
-                                Last Login
-                                {getSortIcon("lastLogin")}
+                                Last Active
+                                {getSortIcon("lastActive")}
                               </Button>
                             </TableHead>
                           )}
-                          {visibleColumns.revenue && (
-                            <TableHead>
-                              <Button
-                                variant="ghost"
-                                className="h-auto p-0 font-semibold"
-                                onClick={() => handleSort("revenue")}
-                              >
-                                Revenue
-                                {getSortIcon("revenue")}
-                              </Button>
-                            </TableHead>
-                          )}
+
                           {visibleColumns.signupDate && (
                             <TableHead>
                               <Button
