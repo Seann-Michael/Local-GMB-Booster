@@ -559,7 +559,7 @@ export default function SuperAdminEmailIntegration() {
 
   const toggleProviderStatus = (providerId: string) => {
     setProviders(
-      providers.map((p) =>
+      (providers || []).map((p) =>
         p.id === providerId ? { ...p, isActive: !p.isActive } : p,
       ),
     );
@@ -568,7 +568,7 @@ export default function SuperAdminEmailIntegration() {
 
   const setDefaultProvider = (providerId: string) => {
     setProviders(
-      providers.map((p) => ({
+      (providers || []).map((p) => ({
         ...p,
         isDefault: p.id === providerId,
       })),
@@ -1209,7 +1209,7 @@ export default function SuperAdminEmailIntegration() {
 
             {/* Templates Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {templates.map((template) => (
+              {(templates || []).map((template) => (
                 <Card key={template.id}>
                   <CardHeader>
                     <div className="flex items-start justify-between">
@@ -1277,15 +1277,17 @@ export default function SuperAdminEmailIntegration() {
                       </div>
                       {template.variables.length > 0 && (
                         <div className="flex flex-wrap gap-1">
-                          {template.variables.slice(0, 3).map((variable) => (
-                            <Badge
-                              key={variable}
-                              variant="outline"
-                              className="text-xs"
-                            >
-                              {`{{${variable}}}`}
-                            </Badge>
-                          ))}
+                          {(template.variables || [])
+                            .slice(0, 3)
+                            .map((variable) => (
+                              <Badge
+                                key={variable}
+                                variant="outline"
+                                className="text-xs"
+                              >
+                                {`{{${variable}}}`}
+                              </Badge>
+                            ))}
                           {template.variables.length > 3 && (
                             <Badge variant="outline" className="text-xs">
                               +{template.variables.length - 3} more
@@ -1319,7 +1321,7 @@ export default function SuperAdminEmailIntegration() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {campaigns.map((campaign) => (
+                    {(campaigns || []).map((campaign) => (
                       <TableRow key={campaign.id}>
                         <TableCell>
                           <div>
