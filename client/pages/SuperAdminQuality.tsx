@@ -566,546 +566,563 @@ export default function SuperAdminQuality() {
     <SuperAdminLayout>
       <div className="max-w-full overflow-x-hidden">
         <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">
-              Quality Assurance
-            </h1>
-            <p className="text-muted-foreground">
-              Testing, monitoring, error handling, and validation
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => updateRealTimeData()}
-            >
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Refresh
-            </Button>
-            <Button variant="outline" size="sm">
-              <Download className="h-4 w-4 mr-2" />
-              Export Report
-            </Button>
-          </div>
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Test Coverage
-              </CardTitle>
-              <TestTube className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {qualityMetrics.testCoverage.toFixed(1)}%
-              </div>
-              <Progress
-                value={qualityMetrics.testCoverage}
-                className="h-2 mt-2"
-              />
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Error Rate</CardTitle>
-              <Bug className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {qualityMetrics.errorRate.toFixed(2)}%
-              </div>
-              <Progress
-                value={qualityMetrics.errorRate * 50}
-                className="h-2 mt-2"
-              />
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Uptime</CardTitle>
-              <Heart className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {qualityMetrics.uptime.toFixed(2)}%
-              </div>
-              <Progress value={qualityMetrics.uptime} className="h-2 mt-2" />
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Performance</CardTitle>
-              <Gauge className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {qualityMetrics.performanceScore.toFixed(1)}
-              </div>
-              <Progress
-                value={qualityMetrics.performanceScore}
-                className="h-2 mt-2"
-              />
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Security Score
-              </CardTitle>
-              <Shield className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {qualityMetrics.securityScore.toFixed(1)}
-              </div>
-              <Progress
-                value={qualityMetrics.securityScore}
-                className="h-2 mt-2"
-              />
-            </CardContent>
-          </Card>
-        </div>
-
-        <Tabs
-          value={activeTab}
-          onValueChange={setActiveTab}
-          className="space-y-4"
-        >
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="testing">Testing</TabsTrigger>
-            <TabsTrigger value="monitoring">Monitoring</TabsTrigger>
-            <TabsTrigger value="errors">Error Logs</TabsTrigger>
-            <TabsTrigger value="validation">Validation</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview" className="space-y-4">
-            <div className="grid gap-6 md:grid-cols-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle>System Health Status</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {healthChecks.slice(0, 4).map((check) => (
-                      <div
-                        key={check.id}
-                        className="flex items-center justify-between p-3 border rounded-lg"
-                      >
-                        <div className="flex items-center gap-3">
-                          {getStatusIcon(check.status)}
-                          <div>
-                            <div className="font-medium">{check.name}</div>
-                            <div className="text-sm text-muted-foreground">
-                              {check.responseTime}ms • {check.type}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-sm font-medium capitalize">
-                            {check.status}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {new Date(check.lastCheck).toLocaleTimeString()}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Recent Alerts</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {performanceAlerts.slice(0, 4).map((alert) => (
-                      <div key={alert.id} className="p-3 border rounded-lg">
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="font-medium">{alert.title}</div>
-                          <Badge
-                            variant={
-                              alert.severity === "critical"
-                                ? "destructive"
-                                : alert.severity === "high"
-                                  ? "destructive"
-                                  : alert.severity === "medium"
-                                    ? "default"
-                                    : "secondary"
-                            }
-                          >
-                            {alert.severity}
-                          </Badge>
-                        </div>
-                        <div className="text-sm text-muted-foreground mb-2">
-                          {alert.description}
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <div className="text-xs text-muted-foreground">
-                            {new Date(alert.triggeredAt).toLocaleString()}
-                          </div>
-                          {!alert.acknowledged && !alert.resolvedAt && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => acknowledgeAlert(alert.id)}
-                            >
-                              Acknowledge
-                            </Button>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight">
+                Quality Assurance
+              </h1>
+              <p className="text-muted-foreground">
+                Testing, monitoring, error handling, and validation
+              </p>
             </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => updateRealTimeData()}
+              >
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Refresh
+              </Button>
+              <Button variant="outline" size="sm">
+                <Download className="h-4 w-4 mr-2" />
+                Export Report
+              </Button>
+            </div>
+          </div>
 
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
             <Card>
-              <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Test Coverage
+                </CardTitle>
+                <TestTube className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="grid gap-4 md:grid-cols-4">
-                  <Button
-                    variant="outline"
-                    onClick={() => runTestSuite("suite-1")}
-                  >
-                    <TestTube className="h-4 w-4 mr-2" />
-                    Run All Tests
-                  </Button>
-                  <Button variant="outline">
-                    <Monitor className="h-4 w-4 mr-2" />
-                    Health Check
-                  </Button>
-                  <Button variant="outline">
-                    <Bug className="h-4 w-4 mr-2" />
-                    Error Analysis
-                  </Button>
-                  <Button variant="outline">
-                    <FileText className="h-4 w-4 mr-2" />
-                    Generate Report
-                  </Button>
+                <div className="text-2xl font-bold">
+                  {qualityMetrics.testCoverage.toFixed(1)}%
                 </div>
+                <Progress
+                  value={qualityMetrics.testCoverage}
+                  className="h-2 mt-2"
+                />
               </CardContent>
             </Card>
-          </TabsContent>
-
-          <TabsContent value="testing" className="space-y-4">
             <Card>
-              <CardHeader>
-                <CardTitle>Test Suites</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                      <TableHead>Suite Name</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Coverage</TableHead>
-                      <TableHead>Duration</TableHead>
-                      <TableHead>Last Run</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {testSuites.map((suite) => (
-                      <TableRow key={suite.id}>
-                        <TableCell className="font-medium">
-                          {suite.name}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline">{suite.type}</Badge>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            {getStatusIcon(suite.status)}
-                            <span className="capitalize">{suite.status}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <div className="w-16 bg-gray-200 rounded-full h-2">
-                              <div
-                                className="bg-blue-600 h-2 rounded-full"
-                                style={{ width: `${suite.coverage}%` }}
-                              />
-                            </div>
-                            <span className="text-sm">
-                              {suite.coverage.toFixed(1)}%
-                            </span>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          {suite.duration > 0
-                            ? `${(suite.duration / 1000).toFixed(1)}s`
-                            : "-"}
-                        </TableCell>
-                        <TableCell className="text-sm">
-                          {new Date(suite.lastRun).toLocaleString()}
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex gap-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => runTestSuite(suite.id)}
-                              disabled={suite.status === "running"}
-                            >
-                              {suite.status === "running" ? (
-                                <Pause className="h-4 w-4" />
-                              ) : (
-                                <Play className="h-4 w-4" />
-                              )}
-                            </Button>
-                            <Button variant="outline" size="sm">
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="monitoring" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Health Checks</CardTitle>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Error Rate
+                </CardTitle>
+                <Bug className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Service</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Response Time</TableHead>
-                      <TableHead>Threshold</TableHead>
-                      <TableHead>Last Check</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {healthChecks.map((check) => (
-                      <TableRow key={check.id}>
-                        <TableCell className="font-medium">
-                          {check.name}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline">{check.type}</Badge>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
+                <div className="text-2xl font-bold">
+                  {qualityMetrics.errorRate.toFixed(2)}%
+                </div>
+                <Progress
+                  value={qualityMetrics.errorRate * 50}
+                  className="h-2 mt-2"
+                />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Uptime</CardTitle>
+                <Heart className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {qualityMetrics.uptime.toFixed(2)}%
+                </div>
+                <Progress value={qualityMetrics.uptime} className="h-2 mt-2" />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Performance
+                </CardTitle>
+                <Gauge className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {qualityMetrics.performanceScore.toFixed(1)}
+                </div>
+                <Progress
+                  value={qualityMetrics.performanceScore}
+                  className="h-2 mt-2"
+                />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Security Score
+                </CardTitle>
+                <Shield className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {qualityMetrics.securityScore.toFixed(1)}
+                </div>
+                <Progress
+                  value={qualityMetrics.securityScore}
+                  className="h-2 mt-2"
+                />
+              </CardContent>
+            </Card>
+          </div>
+
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="space-y-4"
+          >
+            <TabsList className="grid w-full grid-cols-5">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="testing">Testing</TabsTrigger>
+              <TabsTrigger value="monitoring">Monitoring</TabsTrigger>
+              <TabsTrigger value="errors">Error Logs</TabsTrigger>
+              <TabsTrigger value="validation">Validation</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="overview" className="space-y-4">
+              <div className="grid gap-6 md:grid-cols-2">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>System Health Status</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {healthChecks.slice(0, 4).map((check) => (
+                        <div
+                          key={check.id}
+                          className="flex items-center justify-between p-3 border rounded-lg"
+                        >
+                          <div className="flex items-center gap-3">
                             {getStatusIcon(check.status)}
-                            <span className="capitalize">{check.status}</span>
+                            <div>
+                              <div className="font-medium">{check.name}</div>
+                              <div className="text-sm text-muted-foreground">
+                                {check.responseTime}ms • {check.type}
+                              </div>
+                            </div>
                           </div>
-                        </TableCell>
-                        <TableCell>
-                          <span
-                            className={`${
-                              check.responseTime > check.alertThreshold
-                                ? "text-red-600"
-                                : check.responseTime >
-                                    check.alertThreshold * 0.8
-                                  ? "text-yellow-600"
-                                  : "text-green-600"
-                            }`}
-                          >
-                            {check.responseTime}ms
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-sm text-muted-foreground">
-                          {check.alertThreshold}ms
-                        </TableCell>
-                        <TableCell className="text-sm">
-                          {new Date(check.lastCheck).toLocaleString()}
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex gap-2">
-                            <Button variant="outline" size="sm">
-                              <RefreshCw className="h-4 w-4" />
-                            </Button>
-                            <Button variant="outline" size="sm">
-                              <Settings className="h-4 w-4" />
-                            </Button>
+                          <div className="text-right">
+                            <div className="text-sm font-medium capitalize">
+                              {check.status}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {new Date(check.lastCheck).toLocaleTimeString()}
+                            </div>
                           </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
 
-          <TabsContent value="errors" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Error Logs</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Timestamp</TableHead>
-                      <TableHead>Level</TableHead>
-                      <TableHead>Message</TableHead>
-                      <TableHead>User</TableHead>
-                      <TableHead>Frequency</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {errorLogs.map((error) => (
-                      <TableRow key={error.id}>
-                        <TableCell className="text-sm">
-                          {new Date(error.timestamp).toLocaleString()}
-                        </TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={
-                              error.level === "error"
-                                ? "destructive"
-                                : error.level === "warning"
-                                  ? "default"
-                                  : "secondary"
-                            }
-                          >
-                            {error.level}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="max-w-md">
-                          <div className="truncate font-medium">
-                            {error.message}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Recent Alerts</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {performanceAlerts.slice(0, 4).map((alert) => (
+                        <div key={alert.id} className="p-3 border rounded-lg">
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="font-medium">{alert.title}</div>
+                            <Badge
+                              variant={
+                                alert.severity === "critical"
+                                  ? "destructive"
+                                  : alert.severity === "high"
+                                    ? "destructive"
+                                    : alert.severity === "medium"
+                                      ? "default"
+                                      : "secondary"
+                              }
+                            >
+                              {alert.severity}
+                            </Badge>
                           </div>
-                          <div className="text-xs text-muted-foreground truncate">
-                            {error.url}
+                          <div className="text-sm text-muted-foreground mb-2">
+                            {alert.description}
                           </div>
-                        </TableCell>
-                        <TableCell className="text-sm">
-                          {error.user || "-"}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline">{error.frequency}</Badge>
-                        </TableCell>
-                        <TableCell>
-                          {error.resolved ? (
-                            <Badge variant="default">Resolved</Badge>
-                          ) : (
-                            <Badge variant="outline">Open</Badge>
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex gap-2">
-                            <Button variant="outline" size="sm">
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                            {!error.resolved && (
+                          <div className="flex items-center justify-between">
+                            <div className="text-xs text-muted-foreground">
+                              {new Date(alert.triggeredAt).toLocaleString()}
+                            </div>
+                            {!alert.acknowledged && !alert.resolvedAt && (
                               <Button
                                 variant="outline"
                                 size="sm"
-                                onClick={() => resolveError(error.id)}
+                                onClick={() => acknowledgeAlert(alert.id)}
                               >
-                                <CheckCircle className="h-4 w-4" />
+                                Acknowledge
                               </Button>
                             )}
                           </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
 
-          <TabsContent value="validation" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Validation Rules</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Rule Name</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Pattern</TableHead>
-                      <TableHead>Violations</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Last Violation</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {validationRules.map((rule) => (
-                      <TableRow key={rule.id}>
-                        <TableCell className="font-medium">
-                          {rule.name}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline">{rule.type}</Badge>
-                        </TableCell>
-                        <TableCell className="max-w-md">
-                          <div className="text-sm font-mono truncate">
-                            {rule.pattern}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={
-                              rule.violationCount > 20
-                                ? "destructive"
-                                : "default"
-                            }
-                          >
-                            {rule.violationCount}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center space-x-2">
-                            <Switch
-                              checked={rule.enabled}
-                              onCheckedChange={() =>
-                                toggleValidationRule(rule.id)
-                              }
-                            />
-                            <span className="text-sm">
-                              {rule.enabled ? "Active" : "Disabled"}
-                            </span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-sm">
-                          {rule.lastViolation
-                            ? new Date(rule.lastViolation).toLocaleDateString()
-                            : "Never"}
-                        </TableCell>
-                        <TableCell>
-                          <Button variant="outline" size="sm">
-                            Edit
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Quick Actions</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid gap-4 md:grid-cols-4">
+                    <Button
+                      variant="outline"
+                      onClick={() => runTestSuite("suite-1")}
+                    >
+                      <TestTube className="h-4 w-4 mr-2" />
+                      Run All Tests
+                    </Button>
+                    <Button variant="outline">
+                      <Monitor className="h-4 w-4 mr-2" />
+                      Health Check
+                    </Button>
+                    <Button variant="outline">
+                      <Bug className="h-4 w-4 mr-2" />
+                      Error Analysis
+                    </Button>
+                    <Button variant="outline">
+                      <FileText className="h-4 w-4 mr-2" />
+                      Generate Report
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="testing" className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Test Suites</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Suite Name</TableHead>
+                          <TableHead>Type</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Coverage</TableHead>
+                          <TableHead>Duration</TableHead>
+                          <TableHead>Last Run</TableHead>
+                          <TableHead>Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {testSuites.map((suite) => (
+                          <TableRow key={suite.id}>
+                            <TableCell className="font-medium">
+                              {suite.name}
+                            </TableCell>
+                            <TableCell>
+                              <Badge variant="outline">{suite.type}</Badge>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-2">
+                                {getStatusIcon(suite.status)}
+                                <span className="capitalize">
+                                  {suite.status}
+                                </span>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-2">
+                                <div className="w-16 bg-gray-200 rounded-full h-2">
+                                  <div
+                                    className="bg-blue-600 h-2 rounded-full"
+                                    style={{ width: `${suite.coverage}%` }}
+                                  />
+                                </div>
+                                <span className="text-sm">
+                                  {suite.coverage.toFixed(1)}%
+                                </span>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              {suite.duration > 0
+                                ? `${(suite.duration / 1000).toFixed(1)}s`
+                                : "-"}
+                            </TableCell>
+                            <TableCell className="text-sm">
+                              {new Date(suite.lastRun).toLocaleString()}
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex gap-2">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => runTestSuite(suite.id)}
+                                  disabled={suite.status === "running"}
+                                >
+                                  {suite.status === "running" ? (
+                                    <Pause className="h-4 w-4" />
+                                  ) : (
+                                    <Play className="h-4 w-4" />
+                                  )}
+                                </Button>
+                                <Button variant="outline" size="sm">
+                                  <Eye className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="monitoring" className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Health Checks</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Service</TableHead>
+                          <TableHead>Type</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Response Time</TableHead>
+                          <TableHead>Threshold</TableHead>
+                          <TableHead>Last Check</TableHead>
+                          <TableHead>Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {healthChecks.map((check) => (
+                          <TableRow key={check.id}>
+                            <TableCell className="font-medium">
+                              {check.name}
+                            </TableCell>
+                            <TableCell>
+                              <Badge variant="outline">{check.type}</Badge>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-2">
+                                {getStatusIcon(check.status)}
+                                <span className="capitalize">
+                                  {check.status}
+                                </span>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <span
+                                className={`${
+                                  check.responseTime > check.alertThreshold
+                                    ? "text-red-600"
+                                    : check.responseTime >
+                                        check.alertThreshold * 0.8
+                                      ? "text-yellow-600"
+                                      : "text-green-600"
+                                }`}
+                              >
+                                {check.responseTime}ms
+                              </span>
+                            </TableCell>
+                            <TableCell className="text-sm text-muted-foreground">
+                              {check.alertThreshold}ms
+                            </TableCell>
+                            <TableCell className="text-sm">
+                              {new Date(check.lastCheck).toLocaleString()}
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex gap-2">
+                                <Button variant="outline" size="sm">
+                                  <RefreshCw className="h-4 w-4" />
+                                </Button>
+                                <Button variant="outline" size="sm">
+                                  <Settings className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="errors" className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Error Logs</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Timestamp</TableHead>
+                          <TableHead>Level</TableHead>
+                          <TableHead>Message</TableHead>
+                          <TableHead>User</TableHead>
+                          <TableHead>Frequency</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {errorLogs.map((error) => (
+                          <TableRow key={error.id}>
+                            <TableCell className="text-sm">
+                              {new Date(error.timestamp).toLocaleString()}
+                            </TableCell>
+                            <TableCell>
+                              <Badge
+                                variant={
+                                  error.level === "error"
+                                    ? "destructive"
+                                    : error.level === "warning"
+                                      ? "default"
+                                      : "secondary"
+                                }
+                              >
+                                {error.level}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="max-w-md">
+                              <div className="truncate font-medium">
+                                {error.message}
+                              </div>
+                              <div className="text-xs text-muted-foreground truncate">
+                                {error.url}
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-sm">
+                              {error.user || "-"}
+                            </TableCell>
+                            <TableCell>
+                              <Badge variant="outline">{error.frequency}</Badge>
+                            </TableCell>
+                            <TableCell>
+                              {error.resolved ? (
+                                <Badge variant="default">Resolved</Badge>
+                              ) : (
+                                <Badge variant="outline">Open</Badge>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex gap-2">
+                                <Button variant="outline" size="sm">
+                                  <Eye className="h-4 w-4" />
+                                </Button>
+                                {!error.resolved && (
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => resolveError(error.id)}
+                                  >
+                                    <CheckCircle className="h-4 w-4" />
+                                  </Button>
+                                )}
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="validation" className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Validation Rules</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Rule Name</TableHead>
+                          <TableHead>Type</TableHead>
+                          <TableHead>Pattern</TableHead>
+                          <TableHead>Violations</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Last Violation</TableHead>
+                          <TableHead>Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {validationRules.map((rule) => (
+                          <TableRow key={rule.id}>
+                            <TableCell className="font-medium">
+                              {rule.name}
+                            </TableCell>
+                            <TableCell>
+                              <Badge variant="outline">{rule.type}</Badge>
+                            </TableCell>
+                            <TableCell className="max-w-md">
+                              <div className="text-sm font-mono truncate">
+                                {rule.pattern}
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <Badge
+                                variant={
+                                  rule.violationCount > 20
+                                    ? "destructive"
+                                    : "default"
+                                }
+                              >
+                                {rule.violationCount}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center space-x-2">
+                                <Switch
+                                  checked={rule.enabled}
+                                  onCheckedChange={() =>
+                                    toggleValidationRule(rule.id)
+                                  }
+                                />
+                                <span className="text-sm">
+                                  {rule.enabled ? "Active" : "Disabled"}
+                                </span>
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-sm">
+                              {rule.lastViolation
+                                ? new Date(
+                                    rule.lastViolation,
+                                  ).toLocaleDateString()
+                                : "Never"}
+                            </TableCell>
+                            <TableCell>
+                              <Button variant="outline" size="sm">
+                                Edit
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </SuperAdminLayout>
