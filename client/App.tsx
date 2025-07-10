@@ -66,8 +66,6 @@ import SuperAdminAutomation from "./pages/SuperAdminAutomation";
 import SuperAdminSegmentation from "./pages/SuperAdminSegmentation";
 import SuperAdminEmailIntegration from "./pages/SuperAdminEmailIntegration";
 import SuperAdminAPI from "./pages/SuperAdminAPI";
-import SuperAdminProjectMessaging from "./pages/SuperAdminProjectMessaging";
-import SuperAdminAdvancedFeatures from "./pages/SuperAdminAdvancedFeatures";
 import SuperAdminPerformance from "./pages/SuperAdminPerformance";
 import SuperAdminQuality from "./pages/SuperAdminQuality";
 import { ComingSoon } from "./pages/ComingSoon";
