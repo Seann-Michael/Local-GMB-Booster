@@ -575,6 +575,30 @@ const App = () => (
                     </ProtectedRoute>
                   }
                 />
+                <Route
+                  path="/super-admin/financial"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminFinancial />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/users"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminUsers />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/communications"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminCommunications />
+                    </ProtectedRoute>
+                  }
+                />
 
                 {/* Legacy/manual route redirects */}
                 <Route
