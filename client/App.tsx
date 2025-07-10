@@ -68,6 +68,8 @@ import SuperAdminEmailIntegration from "./pages/SuperAdminEmailIntegration";
 import SuperAdminAPI from "./pages/SuperAdminAPI";
 import SuperAdminPerformance from "./pages/SuperAdminPerformance";
 import SuperAdminQuality from "./pages/SuperAdminQuality";
+import SuperAdminHelp from "./pages/SuperAdminHelp";
+import SuperAdminSupport from "./pages/SuperAdminSupport";
 import { ComingSoon } from "./pages/ComingSoon";
 
 const queryClient = new QueryClient();
