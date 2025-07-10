@@ -441,7 +441,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         style={{ top: "73px", height: "calc(100vh - 73px)" }}
       >
         {/* Business Selector - Now at top */}
-        <div className="p-3 border-b bg-background">
+        <div className="p-4 border-b bg-background">
           {!sidebarCollapsed && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
