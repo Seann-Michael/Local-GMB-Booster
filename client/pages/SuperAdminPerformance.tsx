@@ -423,7 +423,7 @@ export default function SuperAdminPerformance() {
 
   const clearCache = (cacheId: string) => {
     setCacheMetrics((prev) =>
-      prev.map((cache) =>
+      (prev || []).map((cache) =>
         cache.id === cacheId
           ? { ...cache, lastCleared: new Date().toISOString(), requests: 0 }
           : cache,
@@ -458,7 +458,7 @@ export default function SuperAdminPerformance() {
     // Simulate job progress
     const interval = setInterval(() => {
       setOptimizationJobs((prev) =>
-        prev.map((job) => {
+        (prev || []).map((job) => {
           if (job.id === newJob.id && job.status === "running") {
             const newProgress = Math.min(
               100,
