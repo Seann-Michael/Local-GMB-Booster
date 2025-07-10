@@ -72,6 +72,16 @@ export default function SuperAdminUsers() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortField, setSortField] = useState<string>("name");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [visibleColumns, setVisibleColumns] = useState({
+    user: true,
+    role: true,
+    status: true,
+    organization: true,
+    lastLogin: true,
+    revenue: true,
+    signupDate: false,
+    subscription: false,
+  });
 
   // Mock user data
   const users: User[] = [
