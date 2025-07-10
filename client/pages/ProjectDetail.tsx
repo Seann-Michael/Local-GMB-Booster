@@ -1,3 +1,4 @@
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -1059,7 +1060,7 @@ export default function ProjectDetail() {
 
                               {photoTags.length > 0 && (
                                 <div className="absolute bottom-1 left-1 flex flex-wrap gap-1">
-                                  <>
+                                  <React.Fragment>
                                     {photoTags
                                       .slice(0, 2)
                                       .map((tag, tagIndex) => (
@@ -1079,7 +1080,7 @@ export default function ProjectDetail() {
                                         +{photoTags.length - 2}
                                       </Badge>
                                     )}
-                                  </>
+                                  </React.Fragment>
                                 </div>
                               )}
                               <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
