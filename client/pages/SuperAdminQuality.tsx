@@ -564,7 +564,8 @@ export default function SuperAdminQuality() {
 
   return (
     <SuperAdminLayout>
-      <div className="space-y-6">
+      <div className="max-w-full overflow-x-hidden">
+        <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">
@@ -801,8 +802,9 @@ export default function SuperAdminQuality() {
               <CardHeader>
                 <CardTitle>Test Suites</CardTitle>
               </CardHeader>
-              <CardContent>
-                <Table>
+              <CardContent className="p-0">
+                <div className="overflow-x-auto">
+                  <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead>Suite Name</TableHead>
@@ -1104,6 +1106,7 @@ export default function SuperAdminQuality() {
             </Card>
           </TabsContent>
         </Tabs>
+        </div>
       </div>
     </SuperAdminLayout>
   );
