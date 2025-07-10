@@ -2301,6 +2301,87 @@ export default function Settings() {
                           </div>
                         </div>
                       </Card>
+
+                      <Card className="p-4">
+                        <h4 className="font-semibold mb-3 flex items-center gap-2">
+                          <Globe className="h-4 w-4" />
+                          SEO & Social Media Variables
+                        </h4>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded text-xs">
+                              slug
+                            </code>
+                            <span className="text-muted-foreground text-xs">
+                              🤖 Auto-generated URL slug
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded text-xs">
+                              altText
+                            </code>
+                            <span className="text-muted-foreground text-xs">
+                              🤖 AI-generated description
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded text-xs">
+                              keywords
+                            </code>
+                            <span className="text-muted-foreground text-xs">
+                              🤖 Auto-extracted keywords
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded text-xs">
+                              tags
+                            </code>
+                            <span className="text-muted-foreground text-xs">
+                              🤖 Project-based suggestions
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded text-xs">
+                              schemaType
+                            </code>
+                            <span className="text-muted-foreground text-xs">
+                              Schema.org type
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded text-xs">
+                              ogTitle
+                            </code>
+                            <span className="text-muted-foreground text-xs">
+                              OpenGraph title
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded text-xs">
+                              ogDescription
+                            </code>
+                            <span className="text-muted-foreground text-xs">
+                              OpenGraph description
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded text-xs">
+                              twitterCard
+                            </code>
+                            <span className="text-muted-foreground text-xs">
+                              Twitter card type
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <code className="bg-muted px-2 py-1 rounded text-xs">
+                              canonicalUrl
+                            </code>
+                            <span className="text-muted-foreground text-xs">
+                              Canonical URL
+                            </span>
+                          </div>
+                        </div>
+                      </Card>
                     </div>
 
                     {/* User-Defined Variables */}
