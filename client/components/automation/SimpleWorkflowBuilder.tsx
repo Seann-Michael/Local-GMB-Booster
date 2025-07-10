@@ -1891,7 +1891,7 @@ function StepConfigDialog({
                   <div>
                     <Label className="text-sm font-medium">Existing Tags</Label>
                     <Select
-                      value={config.existingTag || ""}
+                      value={config.existingTag || undefined}
                       onValueChange={(value) =>
                         setConfig({ ...config, existingTag: value })
                       }
@@ -2058,7 +2058,7 @@ function StepConfigDialog({
                   <div>
                     <Label className="text-sm font-medium">Tag to Remove</Label>
                     <Select
-                      value={config.tagToRemove || ""}
+                      value={config.tagToRemove || undefined}
                       onValueChange={(value) =>
                         setConfig({ ...config, tagToRemove: value })
                       }
@@ -2105,7 +2105,7 @@ function StepConfigDialog({
                   <div>
                     <Label className="text-sm font-medium">Tag Category</Label>
                     <Select
-                      value={config.tagCategory || ""}
+                      value={config.tagCategory || undefined}
                       onValueChange={(value) =>
                         setConfig({ ...config, tagCategory: value })
                       }
@@ -2160,7 +2160,7 @@ function StepConfigDialog({
                 <div>
                   <Label className="text-sm font-medium">Target Workflow</Label>
                   <Select
-                    value={config.targetWorkflow || ""}
+                    value={config.targetWorkflow || undefined}
                     onValueChange={(value) =>
                       setConfig({ ...config, targetWorkflow: value })
                     }
@@ -2278,7 +2278,7 @@ function StepConfigDialog({
                       Entry Condition
                     </Label>
                     <Select
-                      value={config.entryCondition || ""}
+                      value={config.entryCondition || undefined}
                       onValueChange={(value) =>
                         setConfig({ ...config, entryCondition: value })
                       }
