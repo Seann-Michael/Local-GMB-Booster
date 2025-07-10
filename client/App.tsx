@@ -628,18 +628,7 @@ const App = () => (
                   path="/photos"
                   element={<Navigate to="/admin/gallery" replace />}
                 />
-                <Route
-                  path="/admin/knowledge-base"
-                  element={<Navigate to="/admin/help" replace />}
-                />
-                <Route
-                  path="/agency/admin/knowledge-base"
-                  element={<Navigate to="/agency/admin/help" replace />}
-                />
-                <Route
-                  path="/super-admin/knowledge-base"
-                  element={<Navigate to="/super-admin/help" replace />}
-                />
+
                 {/* Agency Admin Legacy URL Redirects */}
                 <Route
                   path="/agency-admin"
