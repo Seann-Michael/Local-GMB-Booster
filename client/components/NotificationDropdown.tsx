@@ -18,6 +18,8 @@ import {
   Clock,
   User,
   Building2,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -241,7 +243,7 @@ export function NotificationDropdown() {
                 <Card
                   key={notification.id}
                   className={cn(
-                    "border-l-4 cursor-pointer hover:bg-muted/50 transition-colors",
+                    "group border-l-4 cursor-pointer hover:bg-muted/50 transition-colors",
                     !notification.read && "bg-muted/30",
                     notification.type === "error" && "border-l-red-500",
                     notification.type === "warning" && "border-l-yellow-500",
@@ -280,17 +282,34 @@ export function NotificationDropdown() {
                           </div>
                         </div>
                       </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          removeNotification(notification.id);
-                        }}
-                        className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 hover:bg-destructive hover:text-destructive-foreground"
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
+                      <div className="flex gap-1 opacity-0 group-hover:opacity-100">
+                        {!notification.read && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              markAsRead(notification.id);
+                            }}
+                            className="h-6 w-6 p-0 hover:bg-blue-100 hover:text-blue-600"
+                            title="Mark as read"
+                          >
+                            <Eye className="h-3 w-3" />
+                          </Button>
+                        )}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removeNotification(notification.id);
+                          }}
+                          className="h-6 w-6 p-0 hover:bg-destructive hover:text-destructive-foreground"
+                          title="Remove notification"
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
