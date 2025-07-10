@@ -63,7 +63,7 @@ interface User {
 }
 
 export default function SuperAdminUsers() {
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("all-users");
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -308,8 +308,8 @@ export default function SuperAdminUsers() {
               </TabsTrigger>
             </TabsList>
 
-            {/* Overview Tab */}
-            <TabsContent value="overview" className="space-y-4">
+            {/* All Users Tab */}
+            <TabsContent value="all-users" className="space-y-4">
               {/* Filters */}
               <Card>
                 <CardContent className="p-4">
@@ -453,8 +453,8 @@ export default function SuperAdminUsers() {
               </Card>
             </TabsContent>
 
-            {/* Businesses Tab */}
-            <TabsContent value="businesses">
+            {/* Business Owners Tab */}
+            <TabsContent value="business-owners">
               <BusinessManagement />
             </TabsContent>
 
