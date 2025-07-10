@@ -793,20 +793,19 @@ export default function ProjectDetail() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem key="share" onClick={handleShare}>
+                <DropdownMenuItem onClick={handleShare}>
                   <Share className="h-4 w-4 mr-2" />
                   Share Project
                 </DropdownMenuItem>
-                <DropdownMenuItem key="upload-website">
+                <DropdownMenuItem>
                   <ExternalLink className="h-4 w-4 mr-2" />
                   Upload to Website
                 </DropdownMenuItem>
-                <DropdownMenuItem key="post-gmb">
+                <DropdownMenuItem>
                   <ExternalLink className="h-4 w-4 mr-2" />
                   Post to Google My Business
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  key="delete"
                   onClick={handleDelete}
                   className="text-destructive focus:text-destructive"
                 >
