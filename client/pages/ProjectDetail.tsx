@@ -1126,7 +1126,7 @@ export default function ProjectDetail() {
                 </Card>
 
                 {/* Google Map Section */}
-                <Card key="project-location">
+                <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <MapPin className="h-5 w-5" />
@@ -1174,7 +1174,7 @@ export default function ProjectDetail() {
                 </Card>
 
                 {/* Notes Section */}
-                <Card key="project-notes">
+                <Card>
                   <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle>Project Notes</CardTitle>
                     <Button
@@ -1334,7 +1334,7 @@ export default function ProjectDetail() {
             {/* Tasks & Checklists Tab */}
             {activeTab === "tasks" && (
               <div className="space-y-6">
-                <Card key="tasks-card">
+                <Card>
                   <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle>Tasks</CardTitle>
                     <Button
