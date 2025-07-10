@@ -755,6 +755,49 @@ export function AppLayout({ children }: AppLayoutProps) {
                 <HeaderSearch />
               </div>
 
+              {/* Zoom Controls */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="relative">
+                    <Monitor className="h-4 w-4 md:h-5 md:w-5" />
+                    <span className="absolute -bottom-1 -right-1 text-xs bg-primary text-primary-foreground rounded px-1">
+                      {zoomLevel}%
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuLabel>System Zoom</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <div className="p-2 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleZoomOut}
+                      >
+                        <span className="text-lg">-</span>
+                      </Button>
+                      <span className="text-sm font-medium">{zoomLevel}%</span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleZoomIn}
+                      >
+                        <span className="text-lg">+</span>
+                      </Button>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={resetZoom}
+                      className="w-full"
+                    >
+                      Reset to 100%
+                    </Button>
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
               {/* Theme Toggle - Now visible on mobile too */}
               <ThemeToggle />
 
