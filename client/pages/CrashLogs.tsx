@@ -133,7 +133,7 @@ const mockErrorLogs: ErrorLog[] = [
 ];
 
 export function CrashLogs() {
-  const { currentUser } = useAuth();
+  const { user: currentUser } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [severityFilter, setSeverityFilter] = useState<string>("all");
   const [componentFilter, setComponentFilter] = useState<string>("all");
