@@ -233,6 +233,10 @@ const App = () => (
                   }
                 />
                 <Route
+                  path="/admin/automation"
+                  element={<Navigate to="/admin/automations" replace />}
+                />
+                <Route
                   path="/coming-soon"
                   element={
                     <ProtectedRoute>
