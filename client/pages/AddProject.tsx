@@ -18,6 +18,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import type { ProjectInfo } from "@/lib/mediaMetadata";
+import { SmartDropdownInput } from "@/components/SmartDropdownInput";
+import { DROPDOWN_FIELDS } from "@/hooks/useDropdownState";
 
 interface EnhancedPhoto {
   url: string;
