@@ -891,6 +891,57 @@ export default function Gallery() {
           </div>
         </div>
       )}
+
+      {/* Upload Modal */}
+      <Dialog open={showUploader} onOpenChange={setShowUploader}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <div className="flex items-center justify-between">
+              <DialogTitle className="flex items-center gap-2">
+                <Upload className="h-5 w-5" />
+                Upload Files to Gallery
+              </DialogTitle>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowUploader(false)}
+                className="h-6 w-6 p-0"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="flex items-start gap-3">
+                <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <div className="space-y-1">
+                  <p className="text-sm font-medium text-blue-900">
+                    Gallery Upload
+                  </p>
+                  <p className="text-sm text-blue-700">
+                    Files uploaded here will be added to a "Gallery Uploads"
+                    project or attached to your first available project. You can
+                    move them to specific projects later.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <EnhancedFileUploader
+              onFilesReady={handleFilesReady}
+              acceptedTypes={["image/*", "video/*"]}
+              maxFiles={50}
+              maxFileSize={200}
+              projectInfo={{
+                name: "Gallery Uploads",
+                keywords: ["gallery", "upload"],
+              }}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </AppLayout>
   );
 }
