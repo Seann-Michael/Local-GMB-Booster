@@ -97,9 +97,9 @@ export default function SuperAdminUsers() {
       type: "business-owner",
       organization: "Smith Construction LLC",
       lastLogin: "2024-01-21T10:30:00Z",
+      lastActive: "2024-01-21T15:45:00Z",
       signupDate: "2023-08-15",
       subscription: "Pro",
-      revenue: 348,
     },
     {
       id: "2",
@@ -110,9 +110,9 @@ export default function SuperAdminUsers() {
       type: "agency-admin",
       organization: "Digital Marketing Pro",
       lastLogin: "2024-01-21T09:15:00Z",
+      lastActive: "2024-01-21T14:22:00Z",
       signupDate: "2024-01-10",
       subscription: "Professional",
-      revenue: 392,
     },
     {
       id: "3",
@@ -123,6 +123,7 @@ export default function SuperAdminUsers() {
       type: "staff-member",
       organization: "Joe's Pizza",
       lastLogin: "2024-01-20T16:45:00Z",
+      lastActive: "2024-01-21T08:30:00Z",
       signupDate: "2024-01-15",
     },
     {
@@ -130,13 +131,14 @@ export default function SuperAdminUsers() {
       name: "Lisa Rodriguez",
       email: "lisa@premierrenovations.com",
       role: "admin",
-      status: "pending",
+      status: "cancelled",
       type: "business-owner",
       organization: "Premier Renovations",
       lastLogin: "2024-01-19T14:20:00Z",
+      lastActive: "2024-01-19T14:20:00Z",
       signupDate: "2024-01-18",
       subscription: "Enterprise",
-      revenue: 1197,
+      cancellationDate: "2024-01-20",
     },
   ];
 
