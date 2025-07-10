@@ -123,11 +123,11 @@ export default function Automation() {
     return matchesSearch && matchesFilter;
   });
 
-  const handleCreateWorkflow = (name: string, description: string) => {
+  const handleCreateWorkflow = () => {
     const newWorkflow: Workflow = {
       id: generateId("workflow"),
-      name,
-      description,
+      name: "Untitled Workflow",
+      description: "",
       status: "draft",
       nodes: [],
       connections: [],
@@ -211,26 +211,10 @@ export default function Automation() {
             </p>
           </div>
 
-          <Dialog
-            open={isCreateDialogOpen}
-            onOpenChange={setIsCreateDialogOpen}
-          >
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="mr-2 h-4 w-4" />
-                New Workflow
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Create New Workflow</DialogTitle>
-                <DialogDescription>
-                  Give your workflow a name and description to get started.
-                </DialogDescription>
-              </DialogHeader>
-              <CreateWorkflowForm onSubmit={handleCreateWorkflow} />
-            </DialogContent>
-          </Dialog>
+          <Button onClick={handleCreateWorkflow}>
+            <Plus className="mr-2 h-4 w-4" />
+            New Workflow
+          </Button>
         </div>
 
         {/* Stats Cards */}
@@ -348,140 +332,146 @@ export default function Automation() {
               </DropdownMenu>
             </div>
 
-            {/* Workflows Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredWorkflows.map((workflow) => (
-                <Card
-                  key={workflow.id}
-                  className="hover:shadow-md transition-shadow cursor-pointer"
-                >
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Badge
-                          variant={
-                            workflow.status === "active"
-                              ? "default"
-                              : workflow.status === "draft"
-                                ? "secondary"
-                                : workflow.status === "paused"
-                                  ? "outline"
-                                  : "destructive"
-                          }
-                          className="flex items-center gap-1"
-                        >
-                          {workflow.status === "active" && (
-                            <CheckCircle className="h-3 w-3" />
-                          )}
-                          {workflow.status === "draft" && (
-                            <Edit className="h-3 w-3" />
-                          )}
-                          {workflow.status === "paused" && (
-                            <Pause className="h-3 w-3" />
-                          )}
-                          {workflow.status === "error" && (
-                            <XCircle className="h-3 w-3" />
-                          )}
-                          {workflow.status}
-                        </Badge>
-                      </div>
-
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8"
-                          >
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem
-                            onClick={() => setSelectedWorkflow(workflow)}
-                          >
-                            <Edit className="mr-2 h-4 w-4" />
-                            Edit
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => {}}>
-                            <Copy className="mr-2 h-4 w-4" />
-                            Duplicate
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          {workflow.status === "active" ? (
-                            <DropdownMenuItem
-                              onClick={() =>
-                                handleWorkflowAction(workflow.id, "pause")
-                              }
-                            >
-                              <Pause className="mr-2 h-4 w-4" />
-                              Pause
-                            </DropdownMenuItem>
-                          ) : (
-                            <DropdownMenuItem
-                              onClick={() =>
-                                handleWorkflowAction(workflow.id, "activate")
-                              }
-                            >
-                              <Play className="mr-2 h-4 w-4" />
-                              Activate
-                            </DropdownMenuItem>
-                          )}
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem
-                            onClick={() =>
-                              handleWorkflowAction(workflow.id, "delete")
+            {/* Workflows Horizontal Scroll */}
+            <div className="overflow-x-auto pb-4">
+              <div className="flex gap-4 min-w-max">
+                {filteredWorkflows.map((workflow) => (
+                  <Card
+                    key={workflow.id}
+                    className="hover:shadow-md transition-shadow cursor-pointer flex-shrink-0 w-80"
+                  >
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Badge
+                            variant={
+                              workflow.status === "active"
+                                ? "default"
+                                : workflow.status === "draft"
+                                  ? "secondary"
+                                  : workflow.status === "paused"
+                                    ? "outline"
+                                    : "destructive"
                             }
-                            className="text-destructive focus:text-destructive"
+                            className="flex items-center gap-1"
                           >
-                            <Trash2 className="mr-2 h-4 w-4" />
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
+                            {workflow.status === "active" && (
+                              <CheckCircle className="h-3 w-3" />
+                            )}
+                            {workflow.status === "draft" && (
+                              <Edit className="h-3 w-3" />
+                            )}
+                            {workflow.status === "paused" && (
+                              <Pause className="h-3 w-3" />
+                            )}
+                            {workflow.status === "error" && (
+                              <XCircle className="h-3 w-3" />
+                            )}
+                            {workflow.status}
+                          </Badge>
+                        </div>
 
-                    <CardTitle
-                      className="text-lg"
-                      onClick={() => setSelectedWorkflow(workflow)}
-                    >
-                      {workflow.name}
-                    </CardTitle>
-                    <CardDescription
-                      onClick={() => setSelectedWorkflow(workflow)}
-                    >
-                      {workflow.description}
-                    </CardDescription>
-                  </CardHeader>
-
-                  <CardContent onClick={() => setSelectedWorkflow(workflow)}>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">
-                          Executions
-                        </span>
-                        <span className="font-medium">{workflow.runCount}</span>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
+                            >
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                              onClick={() => setSelectedWorkflow(workflow)}
+                            >
+                              <Edit className="mr-2 h-4 w-4" />
+                              Edit
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => {}}>
+                              <Copy className="mr-2 h-4 w-4" />
+                              Duplicate
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            {workflow.status === "active" ? (
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  handleWorkflowAction(workflow.id, "pause")
+                                }
+                              >
+                                <Pause className="mr-2 h-4 w-4" />
+                                Pause
+                              </DropdownMenuItem>
+                            ) : (
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  handleWorkflowAction(workflow.id, "activate")
+                                }
+                              >
+                                <Play className="mr-2 h-4 w-4" />
+                                Activate
+                              </DropdownMenuItem>
+                            )}
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                              onClick={() =>
+                                handleWorkflowAction(workflow.id, "delete")
+                              }
+                              className="text-destructive focus:text-destructive"
+                            >
+                              <Trash2 className="mr-2 h-4 w-4" />
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </div>
 
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Last run</span>
-                        <span className="font-medium">
-                          {workflow.lastRun
-                            ? workflow.lastRun.toLocaleDateString()
-                            : "Never"}
-                        </span>
-                      </div>
+                      <CardTitle
+                        className="text-lg"
+                        onClick={() => setSelectedWorkflow(workflow)}
+                      >
+                        {workflow.name}
+                      </CardTitle>
+                      <CardDescription
+                        onClick={() => setSelectedWorkflow(workflow)}
+                      >
+                        {workflow.description}
+                      </CardDescription>
+                    </CardHeader>
 
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">Updated</span>
-                        <span className="font-medium">
-                          {workflow.updatedAt.toLocaleDateString()}
-                        </span>
+                    <CardContent onClick={() => setSelectedWorkflow(workflow)}>
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">
+                            Executions
+                          </span>
+                          <span className="font-medium">
+                            {workflow.runCount}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">
+                            Last run
+                          </span>
+                          <span className="font-medium">
+                            {workflow.lastRun
+                              ? workflow.lastRun.toLocaleDateString()
+                              : "Never"}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">Updated</span>
+                          <span className="font-medium">
+                            {workflow.updatedAt.toLocaleDateString()}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
 
             {filteredWorkflows.length === 0 && (
@@ -496,7 +486,7 @@ export default function Automation() {
                     : "Create your first workflow to get started"}
                 </p>
                 {!searchQuery && (
-                  <Button onClick={() => setIsCreateDialogOpen(true)}>
+                  <Button onClick={handleCreateWorkflow}>
                     <Plus className="mr-2 h-4 w-4" />
                     Create Workflow
                   </Button>
@@ -558,63 +548,5 @@ export default function Automation() {
         </Tabs>
       </div>
     </AppLayout>
-  );
-}
-
-// Create Workflow Form Component
-function CreateWorkflowForm({
-  onSubmit,
-}: {
-  onSubmit: (name: string, description: string) => void;
-}) {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (name.trim()) {
-      onSubmit(name.trim(), description.trim());
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label
-          htmlFor="workflow-name"
-          className="block text-sm font-medium mb-2"
-        >
-          Workflow Name
-        </label>
-        <Input
-          id="workflow-name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Enter workflow name..."
-          required
-        />
-      </div>
-
-      <div>
-        <label
-          htmlFor="workflow-description"
-          className="block text-sm font-medium mb-2"
-        >
-          Description (Optional)
-        </label>
-        <Input
-          id="workflow-description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Describe what this workflow does..."
-        />
-      </div>
-
-      <div className="flex justify-end gap-2 pt-4">
-        <Button type="submit" disabled={!name.trim()}>
-          Create Workflow
-        </Button>
-      </div>
-    </form>
   );
 }

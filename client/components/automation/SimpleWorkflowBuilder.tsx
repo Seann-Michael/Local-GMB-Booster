@@ -214,7 +214,8 @@ export function SimpleWorkflowBuilder({
   onSave,
   onPublish,
 }: SimpleWorkflowBuilderProps) {
-  const [workflowName, setWorkflowName] = useState("New Workflow");
+  const [workflowName, setWorkflowName] = useState("Untitled Workflow");
+  const [workflowDescription, setWorkflowDescription] = useState("");
   const [steps, setSteps] = useState<WorkflowStep[]>([]);
   const [showStepSelector, setShowStepSelector] = useState(false);
   const [selectedStepIndex, setSelectedStepIndex] = useState<number | null>(
@@ -222,6 +223,9 @@ export function SimpleWorkflowBuilder({
   );
   const [showConfigDialog, setShowConfigDialog] = useState(false);
   const [configStep, setConfigStep] = useState<WorkflowStep | null>(null);
+  const [isPublished, setIsPublished] = useState(false);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [showTestDialog, setShowTestDialog] = useState(false);
 
   const addStep = (template: any, index: number) => {
     const newStep: WorkflowStep = {
@@ -293,23 +297,76 @@ export function SimpleWorkflowBuilder({
       {/* Header */}
       <div className="border-b bg-white px-6 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Input
-              value={workflowName}
-              onChange={(e) => setWorkflowName(e.target.value)}
-              className="text-lg font-semibold border-none bg-transparent px-0 focus-visible:ring-0"
-            />
-            <Badge variant="secondary">Draft</Badge>
+          <div className="flex items-center gap-4 flex-1">
+            <div className="flex-1 max-w-md">
+              <Input
+                value={workflowName}
+                onChange={(e) => setWorkflowName(e.target.value)}
+                className="text-lg font-semibold border-none bg-transparent px-0 focus-visible:ring-0"
+                placeholder="Enter workflow name..."
+              />
+              <Input
+                value={workflowDescription}
+                onChange={(e) => setWorkflowDescription(e.target.value)}
+                className="text-sm text-muted-foreground border-none bg-transparent px-0 focus-visible:ring-0 mt-1"
+                placeholder="Add description..."
+              />
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Badge variant={isPublished ? "default" : "secondary"}>
+                {isPublished ? "Published" : "Draft"}
+              </Badge>
+
+              {lastSaved && (
+                <span className="text-xs text-muted-foreground">
+                  Saved {lastSaved.toLocaleTimeString()}
+                </span>
+              )}
+            </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <Button variant="outline" onClick={() => onSave?.({})}>
-              <Save className="mr-2 h-4 w-4" />
-              Save
-            </Button>
-            <Button onClick={() => onPublish?.({})}>
+            <Button
+              variant="outline"
+              onClick={() => setShowTestDialog(true)}
+              disabled={steps.length === 0}
+            >
               <Play className="mr-2 h-4 w-4" />
-              Publish
+              Test
+            </Button>
+
+            <Button
+              variant="outline"
+              onClick={() => {
+                setLastSaved(new Date());
+                onSave?.({
+                  name: workflowName,
+                  description: workflowDescription,
+                  steps,
+                  status: "draft",
+                });
+              }}
+            >
+              <Save className="mr-2 h-4 w-4" />
+              Save Draft
+            </Button>
+
+            <Button
+              onClick={() => {
+                setIsPublished(true);
+                setLastSaved(new Date());
+                onPublish?.({
+                  name: workflowName,
+                  description: workflowDescription,
+                  steps,
+                  status: "active",
+                });
+              }}
+              disabled={steps.length === 0}
+            >
+              <Play className="mr-2 h-4 w-4" />
+              {isPublished ? "Update" : "Publish"}
             </Button>
           </div>
         </div>
@@ -560,6 +617,92 @@ export function SimpleWorkflowBuilder({
           onSave={(config) => saveStepConfig(configStep.id, config)}
         />
       )}
+
+      {/* Test Workflow Dialog */}
+      <Dialog open={showTestDialog} onOpenChange={setShowTestDialog}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Test Workflow: {workflowName}</DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-medium mb-2">Test Configuration</h4>
+              <div className="space-y-3">
+                <div>
+                  <Label className="text-sm font-medium">
+                    Test Data Source
+                  </Label>
+                  <Select defaultValue="sample">
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="sample">Use Sample Data</SelectItem>
+                      <SelectItem value="recent">Recent Customer</SelectItem>
+                      <SelectItem value="custom">Custom Test Data</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Execution Mode</Label>
+                  <Select defaultValue="simulation">
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="simulation">
+                        Simulation (No actual sending)
+                      </SelectItem>
+                      <SelectItem value="test-send">
+                        Test Send (Real actions)
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+
+            <div className="border rounded-lg p-4 bg-muted/20">
+              <h4 className="font-medium mb-2 flex items-center gap-2">
+                <Play className="h-4 w-4" />
+                Test Results
+              </h4>
+
+              <div className="space-y-2 text-sm">
+                {steps.map((step, index) => (
+                  <div key={step.id} className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    <span>
+                      Step {index + 1}: {step.name}
+                    </span>
+                    <Badge variant="outline" className="ml-auto">
+                      Success
+                    </Badge>
+                  </div>
+                ))}
+
+                {steps.length === 0 && (
+                  <p className="text-muted-foreground italic">
+                    Add steps to your workflow to test them
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={() => setShowTestDialog(false)}>
+              Close
+            </Button>
+            <Button disabled={steps.length === 0}>
+              <Play className="mr-2 h-4 w-4" />
+              Run Test
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
