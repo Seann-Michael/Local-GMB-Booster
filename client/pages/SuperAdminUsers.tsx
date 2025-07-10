@@ -158,6 +158,13 @@ export default function SuperAdminUsers() {
     );
   };
 
+  const toggleColumn = (columnKey: string) => {
+    setVisibleColumns((prev) => ({
+      ...prev,
+      [columnKey]: !prev[columnKey as keyof typeof prev],
+    }));
+  };
+
   const filteredUsers = users
     .filter((user) => {
       if (roleFilter !== "all" && user.role !== roleFilter) return false;
