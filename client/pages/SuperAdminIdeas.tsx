@@ -51,6 +51,7 @@ import {
   ThumbsDown,
   MessageSquare,
   Rocket,
+  ArrowUpDown,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -87,6 +88,8 @@ export default function SuperAdminIdeas() {
       status: "planned",
     },
   );
+  const [sortField, setSortField] = useState<string>("submittedAt");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
 
   useEffect(() => {
     loadIdeas();
@@ -223,17 +226,38 @@ export default function SuperAdminIdeas() {
     toast.success("Idea assigned to roadmap successfully");
   };
 
-  const filteredIdeas = ideas.filter((idea) => {
-    if (statusFilter !== "all" && idea.status !== statusFilter) return false;
-    if (
-      searchTerm &&
-      !idea.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      !idea.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      !idea.author.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-      return false;
-    return true;
-  });
+  const handleSort = (field: string) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDirection("asc");
+    }
+  };
+
+  const filteredIdeas = ideas
+    .filter((idea) => {
+      if (statusFilter !== "all" && idea.status !== statusFilter) return false;
+      if (
+        searchTerm &&
+        !idea.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        !idea.description.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        !idea.author.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+        return false;
+      return true;
+    })
+    .sort((a, b) => {
+      let aValue = a[sortField as keyof IdeaSubmission];
+      let bValue = b[sortField as keyof IdeaSubmission];
+
+      if (typeof aValue === "string") aValue = aValue.toLowerCase();
+      if (typeof bValue === "string") bValue = bValue.toLowerCase();
+
+      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
+      return 0;
+    });
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -390,18 +414,76 @@ export default function SuperAdminIdeas() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="min-w-[200px]">Idea</TableHead>
-                    <TableHead className="min-w-[120px]">Author</TableHead>
-                    <TableHead className="min-w-[100px]">Status</TableHead>
-                    <TableHead className="min-w-[80px]">Priority</TableHead>
-                    <TableHead className="min-w-[100px]">Engagement</TableHead>
-                    <TableHead className="min-w-[100px]">Submitted</TableHead>
+                    <TableHead className="min-w-[200px]">
+                      <Button
+                        variant="ghost"
+                        className="h-8 p-0 font-medium"
+                        onClick={() => handleSort("title")}
+                      >
+                        Idea
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                      </Button>
+                    </TableHead>
+                    <TableHead className="min-w-[120px]">
+                      <Button
+                        variant="ghost"
+                        className="h-8 p-0 font-medium"
+                        onClick={() => handleSort("author")}
+                      >
+                        Author
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                      </Button>
+                    </TableHead>
+                    <TableHead className="min-w-[100px]">
+                      <Button
+                        variant="ghost"
+                        className="h-8 p-0 font-medium"
+                        onClick={() => handleSort("status")}
+                      >
+                        Status
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                      </Button>
+                    </TableHead>
+                    <TableHead className="min-w-[80px]">
+                      <Button
+                        variant="ghost"
+                        className="h-8 p-0 font-medium"
+                        onClick={() => handleSort("priority")}
+                      >
+                        Priority
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                      </Button>
+                    </TableHead>
+                    <TableHead className="min-w-[100px]">
+                      <Button
+                        variant="ghost"
+                        className="h-8 p-0 font-medium"
+                        onClick={() => handleSort("upvotes")}
+                      >
+                        Engagement
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                      </Button>
+                    </TableHead>
+                    <TableHead className="min-w-[100px]">
+                      <Button
+                        variant="ghost"
+                        className="h-8 p-0 font-medium"
+                        onClick={() => handleSort("submittedAt")}
+                      >
+                        Submitted
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                      </Button>
+                    </TableHead>
                     <TableHead className="min-w-[80px]">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredIdeas.map((idea) => (
-                    <TableRow key={idea.id}>
+                    <TableRow
+                      key={idea.id}
+                      className="cursor-pointer hover:bg-muted/50"
+                      onClick={() => window.open(`/ideas/${idea.id}`, "_blank")}
+                    >
                       <TableCell>
                         <div>
                           <p className="font-medium line-clamp-1">
@@ -443,7 +525,7 @@ export default function SuperAdminIdeas() {
                           {new Date(idea.submittedAt).toLocaleDateString()}
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell onClick={(e) => e.stopPropagation()}>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="icon">
