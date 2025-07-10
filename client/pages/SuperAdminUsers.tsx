@@ -390,66 +390,102 @@ export default function SuperAdminUsers() {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>
-                            <Button
-                              variant="ghost"
-                              className="h-auto p-0 font-semibold"
-                              onClick={() => handleSort("name")}
-                            >
-                              User
-                              {getSortIcon("name")}
-                            </Button>
-                          </TableHead>
-                          <TableHead>
-                            <Button
-                              variant="ghost"
-                              className="h-auto p-0 font-semibold"
-                              onClick={() => handleSort("role")}
-                            >
-                              Role
-                              {getSortIcon("role")}
-                            </Button>
-                          </TableHead>
-                          <TableHead>
-                            <Button
-                              variant="ghost"
-                              className="h-auto p-0 font-semibold"
-                              onClick={() => handleSort("status")}
-                            >
-                              Status
-                              {getSortIcon("status")}
-                            </Button>
-                          </TableHead>
-                          <TableHead>
-                            <Button
-                              variant="ghost"
-                              className="h-auto p-0 font-semibold"
-                              onClick={() => handleSort("organization")}
-                            >
-                              Organization
-                              {getSortIcon("organization")}
-                            </Button>
-                          </TableHead>
-                          <TableHead>
-                            <Button
-                              variant="ghost"
-                              className="h-auto p-0 font-semibold"
-                              onClick={() => handleSort("lastLogin")}
-                            >
-                              Last Login
-                              {getSortIcon("lastLogin")}
-                            </Button>
-                          </TableHead>
-                          <TableHead>
-                            <Button
-                              variant="ghost"
-                              className="h-auto p-0 font-semibold"
-                              onClick={() => handleSort("revenue")}
-                            >
-                              Revenue
-                              {getSortIcon("revenue")}
-                            </Button>
-                          </TableHead>
+                          {visibleColumns.user && (
+                            <TableHead>
+                              <Button
+                                variant="ghost"
+                                className="h-auto p-0 font-semibold"
+                                onClick={() => handleSort("name")}
+                              >
+                                User
+                                {getSortIcon("name")}
+                              </Button>
+                            </TableHead>
+                          )}
+                          {visibleColumns.role && (
+                            <TableHead>
+                              <Button
+                                variant="ghost"
+                                className="h-auto p-0 font-semibold"
+                                onClick={() => handleSort("role")}
+                              >
+                                Role
+                                {getSortIcon("role")}
+                              </Button>
+                            </TableHead>
+                          )}
+                          {visibleColumns.status && (
+                            <TableHead>
+                              <Button
+                                variant="ghost"
+                                className="h-auto p-0 font-semibold"
+                                onClick={() => handleSort("status")}
+                              >
+                                Status
+                                {getSortIcon("status")}
+                              </Button>
+                            </TableHead>
+                          )}
+                          {visibleColumns.organization && (
+                            <TableHead>
+                              <Button
+                                variant="ghost"
+                                className="h-auto p-0 font-semibold"
+                                onClick={() => handleSort("organization")}
+                              >
+                                Organization
+                                {getSortIcon("organization")}
+                              </Button>
+                            </TableHead>
+                          )}
+                          {visibleColumns.lastLogin && (
+                            <TableHead>
+                              <Button
+                                variant="ghost"
+                                className="h-auto p-0 font-semibold"
+                                onClick={() => handleSort("lastLogin")}
+                              >
+                                Last Login
+                                {getSortIcon("lastLogin")}
+                              </Button>
+                            </TableHead>
+                          )}
+                          {visibleColumns.revenue && (
+                            <TableHead>
+                              <Button
+                                variant="ghost"
+                                className="h-auto p-0 font-semibold"
+                                onClick={() => handleSort("revenue")}
+                              >
+                                Revenue
+                                {getSortIcon("revenue")}
+                              </Button>
+                            </TableHead>
+                          )}
+                          {visibleColumns.signupDate && (
+                            <TableHead>
+                              <Button
+                                variant="ghost"
+                                className="h-auto p-0 font-semibold"
+                                onClick={() => handleSort("signupDate")}
+                              >
+                                Signup Date
+                                {getSortIcon("signupDate")}
+                              </Button>
+                            </TableHead>
+                          )}
+                          {visibleColumns.subscription && (
+                            <TableHead>
+                              <Button
+                                variant="ghost"
+                                className="h-auto p-0 font-semibold"
+                                onClick={() => handleSort("subscription")}
+                              >
+                                Subscription
+                                {getSortIcon("subscription")}
+                              </Button>
+                            </TableHead>
+                          )}
                           <TableHead>Actions</TableHead>
                         </TableRow>
                       </TableHeader>
