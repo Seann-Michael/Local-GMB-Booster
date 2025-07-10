@@ -2,6 +2,14 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 import { ContextualHeader } from "@/components/ContextualHeader";
 import { HeaderSearch } from "@/components/SmartSearch";
@@ -742,6 +750,25 @@ export function AppLayout({ children }: AppLayoutProps) {
                 </div>
                 <span className="font-bold text-lg">GMB Booster</span>
               </div>
+
+              {/* Breadcrumbs */}
+              {location.pathname === "/admin/settings" && (
+                <div className="hidden sm:block">
+                  <Breadcrumb>
+                    <BreadcrumbList>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink href="/admin/projects">
+                          Dashboard
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator />
+                      <BreadcrumbItem>
+                        <BreadcrumbPage>Settings</BreadcrumbPage>
+                      </BreadcrumbItem>
+                    </BreadcrumbList>
+                  </Breadcrumb>
+                </div>
+              )}
 
               {isImpersonated && (
                 <div className="flex items-center gap-2 px-3 py-1 bg-yellow-100 text-yellow-800 rounded-lg text-sm">
