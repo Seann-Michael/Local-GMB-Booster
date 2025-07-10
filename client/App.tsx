@@ -23,6 +23,7 @@ import SuperAdmin from "./pages/SuperAdmin";
 import BusinessDetail from "./pages/BusinessDetail";
 import BusinessManagement from "./pages/BusinessManagement";
 import UserManagement from "./pages/UserManagement";
+import { CrashLogs } from "./pages/CrashLogs";
 
 import Profile from "./pages/Profile";
 import PublicProject from "./pages/PublicProject";
