@@ -300,14 +300,12 @@ export default function SignUp() {
 
                   <div className="space-y-2">
                     <Label htmlFor="ownerPhone">Owner Phone</Label>
-                    <Input
+                    <PhoneInput
                       id="ownerPhone"
-                      type="tel"
                       value={formData.ownerPhone}
-                      onChange={(e) =>
-                        handleInputChange("ownerPhone", e.target.value)
+                      onChange={(value) =>
+                        handleInputChange("ownerPhone", value)
                       }
-                      placeholder="(555) 123-4567"
                     />
                   </div>
                 </div>
