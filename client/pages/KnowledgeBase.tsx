@@ -2072,21 +2072,70 @@ Contact our billing support team:
           </div>
         )}
 
-        {/* Status Page Section at Bottom */}
+        {/* Administrative Tools Section at Bottom */}
         <div className="mt-16 pt-8 border-t bg-gray-50">
-          <div className="text-center py-8">
-            <h3 className="text-lg font-semibold mb-2">System Status</h3>
-            <p className="text-muted-foreground mb-4">
-              Check the current status of our services and any ongoing incidents
-            </p>
-            <Button
-              variant="outline"
-              onClick={() => window.open("/status", "_blank")}
-              className="gap-2"
-            >
-              <ExternalLink className="h-4 w-4" />
-              View System Status
-            </Button>
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-xl font-semibold mb-6 text-center">
+              Administrative Tools
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Crash Logs Card */}
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardContent className="pt-6">
+                  <div className="text-center">
+                    <div className="flex justify-center mb-4">
+                      <div className="p-3 bg-red-100 rounded-full">
+                        <AlertTriangle className="h-8 w-8 text-red-600" />
+                      </div>
+                    </div>
+                    <h4 className="text-lg font-semibold mb-2">
+                      Crash Logs & Error Monitoring
+                    </h4>
+                    <p className="text-muted-foreground mb-4">
+                      View detailed error logs, crash reports, and system
+                      monitoring data to troubleshoot issues
+                    </p>
+                    <Button
+                      onClick={() =>
+                        (window.location.href = "/admin/crash-logs")
+                      }
+                      className="gap-2"
+                    >
+                      <Bug className="h-4 w-4" />
+                      View Crash Logs
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* System Status Card */}
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardContent className="pt-6">
+                  <div className="text-center">
+                    <div className="flex justify-center mb-4">
+                      <div className="p-3 bg-green-100 rounded-full">
+                        <Activity className="h-8 w-8 text-green-600" />
+                      </div>
+                    </div>
+                    <h4 className="text-lg font-semibold mb-2">
+                      System Status
+                    </h4>
+                    <p className="text-muted-foreground mb-4">
+                      Check the current status of our services and any ongoing
+                      incidents
+                    </p>
+                    <Button
+                      variant="outline"
+                      onClick={() => window.open("/status", "_blank")}
+                      className="gap-2"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                      View System Status
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </div>
