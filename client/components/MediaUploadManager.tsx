@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { PhotoCapture } from "@/components/PhotoCapture";
+import { ModernPhotoCapture } from "@/components/ModernPhotoCapture";
 import { MediaViewer } from "@/components/MediaViewer";
 import { Plus, Upload, Download, Info } from "lucide-react";
 import { useState } from "react";
@@ -143,7 +143,7 @@ export function MediaUploadManager({
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <PhotoCapture
+            <ModernPhotoCapture
               photos={[]}
               onPhotosChange={(newPhotos) => {
                 handlePhotosChange([...photos, ...newPhotos]);
