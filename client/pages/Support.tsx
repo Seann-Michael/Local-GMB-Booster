@@ -876,6 +876,65 @@ export default function Support() {
             </div>
           </CardHeader>
           <CardContent>
+            {/* Error Statistics Summary */}
+            <div className="grid gap-4 md:grid-cols-4 mb-6">
+              <div className="p-4 bg-red-50 rounded-lg border border-red-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-2xl font-bold text-red-800">7</div>
+                    <div className="text-sm text-red-600">Critical Crashes</div>
+                  </div>
+                  <AlertTriangle className="h-8 w-8 text-red-600" />
+                </div>
+                <div className="text-xs text-red-500 mt-1">
+                  +3 since yesterday
+                </div>
+              </div>
+
+              <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-2xl font-bold text-yellow-800">12</div>
+                    <div className="text-sm text-yellow-600">
+                      Runtime Errors
+                    </div>
+                  </div>
+                  <Activity className="h-8 w-8 text-yellow-600" />
+                </div>
+                <div className="text-xs text-yellow-500 mt-1">
+                  -2 since yesterday
+                </div>
+              </div>
+
+              <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-2xl font-bold text-blue-800">156</div>
+                    <div className="text-sm text-blue-600">Affected Users</div>
+                  </div>
+                  <Users className="h-8 w-8 text-blue-600" />
+                </div>
+                <div className="text-xs text-blue-500 mt-1">
+                  23% of total users
+                </div>
+              </div>
+
+              <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-2xl font-bold text-purple-800">
+                      89%
+                    </div>
+                    <div className="text-sm text-purple-600">System Uptime</div>
+                  </div>
+                  <Activity className="h-8 w-8 text-purple-600" />
+                </div>
+                <div className="text-xs text-purple-500 mt-1">
+                  Above 95% target
+                </div>
+              </div>
+            </div>
+
             <div className="space-y-4">
               {/* Critical Crashes */}
               <div>
