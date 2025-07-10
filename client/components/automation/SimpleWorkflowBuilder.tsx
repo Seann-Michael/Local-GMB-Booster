@@ -46,6 +46,11 @@ import {
   Star,
   UserMinus,
   Link,
+  Share2,
+  MapPin,
+  Instagram,
+  Facebook,
+  Twitter,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -124,6 +129,20 @@ const stepTemplates = {
       name: "Send Review Request",
       description: "Send Google review request to customer",
       icon: Star,
+      category: "action",
+    },
+    {
+      id: "post-social-media",
+      name: "Post on Social Media",
+      description: "Post content to social media platforms",
+      icon: Share2,
+      category: "action",
+    },
+    {
+      id: "post-google-my-business",
+      name: "Post on Google My Business",
+      description: "Create a post on Google My Business",
+      icon: MapPin,
       category: "action",
     },
     {
