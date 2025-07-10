@@ -70,6 +70,9 @@ import SuperAdminPerformance from "./pages/SuperAdminPerformance";
 import SuperAdminQuality from "./pages/SuperAdminQuality";
 import SuperAdminHelp from "./pages/SuperAdminHelp";
 import SuperAdminSupport from "./pages/SuperAdminSupport";
+import SuperAdminFinancial from "./pages/SuperAdminFinancial";
+import SuperAdminUsers from "./pages/SuperAdminUsers";
+import SuperAdminCommunications from "./pages/SuperAdminCommunications";
 import { ComingSoon } from "./pages/ComingSoon";
 
 const queryClient = new QueryClient();
