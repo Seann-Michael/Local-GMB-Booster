@@ -69,6 +69,15 @@ export default function BusinessManagement() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>(null);
+  const [visibleColumns, setVisibleColumns] = useState({
+    business: true,
+    status: true,
+    plan: true,
+    users: true,
+    content: true,
+    storage: true,
+    lastActivity: true,
+  });
 
   const mockBusinesses: Business[] = [
     {
