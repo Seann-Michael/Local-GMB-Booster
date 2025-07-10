@@ -323,12 +323,19 @@ export default function Gallery() {
       // Save updated projects
       localStorage.setItem("projects", JSON.stringify(projectsData));
 
-      // Refresh the gallery view
-      window.location.reload();
+      toast.success(
+        `Successfully uploaded ${files.length} file${files.length !== 1 ? "s" : ""} to gallery!`,
+      );
 
       setShowUploader(false);
+
+      // Refresh the gallery view after a short delay
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       console.error("Error processing uploaded files:", error);
+      toast.error("Failed to upload files. Please try again.");
     }
   };
 
