@@ -127,18 +127,52 @@ export default function SuperAdminUsers() {
     },
   ];
 
-  const filteredUsers = users.filter((user) => {
-    if (roleFilter !== "all" && user.role !== roleFilter) return false;
-    if (statusFilter !== "all" && user.status !== statusFilter) return false;
-    if (
-      searchTerm &&
-      !user.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      !user.email.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      !user.organization?.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-      return false;
-    return true;
-  });
+  const handleSort = (field: string) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDirection("asc");
+    }
+  };
+
+  const getSortIcon = (field: string) => {
+    if (sortField !== field) return <ArrowUpDown className="h-4 w-4" />;
+    return sortDirection === "asc" ? (
+      <ArrowUp className="h-4 w-4" />
+    ) : (
+      <ArrowDown className="h-4 w-4" />
+    );
+  };
+
+  const filteredUsers = users
+    .filter((user) => {
+      if (roleFilter !== "all" && user.role !== roleFilter) return false;
+      if (statusFilter !== "all" && user.status !== statusFilter) return false;
+      if (
+        searchTerm &&
+        !user.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        !user.email.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        !user.organization?.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+        return false;
+      return true;
+    })
+    .sort((a, b) => {
+      const aValue = a[sortField as keyof User];
+      const bValue = b[sortField as keyof User];
+
+      if (typeof aValue === "string" && typeof bValue === "string") {
+        const comparison = aValue.localeCompare(bValue);
+        return sortDirection === "asc" ? comparison : -comparison;
+      }
+
+      if (typeof aValue === "number" && typeof bValue === "number") {
+        return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
+      }
+
+      return 0;
+    });
 
   const getStatusBadge = (status: string) => {
     const statusConfig = {
