@@ -825,9 +825,20 @@ export default function Support() {
             <CardTitle className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <AlertTriangle className="h-5 w-5" />
-                User Crash Reports
+                User Crash Reports & Error Logs
               </div>
               <div className="flex gap-2">
+                <Select defaultValue="all">
+                  <SelectTrigger className="w-40">
+                    <SelectValue placeholder="Filter by severity" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Errors</SelectItem>
+                    <SelectItem value="critical">Critical Only</SelectItem>
+                    <SelectItem value="warning">Warnings Only</SelectItem>
+                    <SelectItem value="info">Info Only</SelectItem>
+                  </SelectContent>
+                </Select>
                 <Button variant="outline" size="sm">
                   <RefreshCw className="h-4 w-4 mr-2" />
                   Refresh
@@ -839,8 +850,30 @@ export default function Support() {
               </div>
             </CardTitle>
             <CardDescription>
-              Detailed error reports and crash logs from user sessions
+              Real-time monitoring of application errors, crashes, and system
+              issues. Last updated: {new Date().toLocaleTimeString()}
             </CardDescription>
+
+            {/* Search and Filter Controls */}
+            <div className="flex gap-4 mt-4">
+              <div className="flex-1">
+                <Input
+                  placeholder="Search error messages, components, or user emails..."
+                  className="w-full"
+                />
+              </div>
+              <Select defaultValue="24h">
+                <SelectTrigger className="w-32">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1h">Last Hour</SelectItem>
+                  <SelectItem value="24h">Last 24h</SelectItem>
+                  <SelectItem value="7d">Last 7 days</SelectItem>
+                  <SelectItem value="30d">Last 30 days</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
