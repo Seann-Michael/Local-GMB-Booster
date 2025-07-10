@@ -260,6 +260,15 @@ export default function Gallery() {
   };
 
   const handleFilesReady = async (files: any[]) => {
+    if (files.length === 0) {
+      toast.error("No files to upload");
+      return;
+    }
+
+    toast.info(
+      `Processing ${files.length} file${files.length !== 1 ? "s" : ""}...`,
+    );
+
     try {
       // Get current projects to find a project to attach files to
       const projectsData = JSON.parse(localStorage.getItem("projects") || "[]");
