@@ -409,9 +409,9 @@ export default function SuperAdminEmailIntegration() {
       },
     ];
 
-    setProviders(mockProviders);
-    setTemplates(mockTemplates);
-    setCampaigns(mockCampaigns);
+    setProviders(mockProviders || []);
+    setTemplates(mockTemplates || []);
+    setCampaigns(mockCampaigns || []);
 
     // Calculate stats
     const totalSent = mockProviders.reduce((sum, p) => sum + p.stats.sent, 0);
