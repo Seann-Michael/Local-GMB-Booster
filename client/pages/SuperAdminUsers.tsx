@@ -268,6 +268,32 @@ export default function SuperAdminUsers() {
               </p>
             </div>
             <div className="flex gap-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="gap-2">
+                    <Columns className="h-4 w-4" />
+                    Columns
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  {Object.entries(visibleColumns).map(([key, visible]) => (
+                    <DropdownMenuItem
+                      key={key}
+                      className="flex items-center gap-2"
+                      onClick={() => toggleColumn(key)}
+                    >
+                      <Checkbox checked={visible} onChange={() => {}} />
+                      <span className="capitalize">
+                        {key === "lastLogin"
+                          ? "Last Login"
+                          : key === "signupDate"
+                            ? "Signup Date"
+                            : key}
+                      </span>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
               <Button variant="outline" className="gap-2">
                 <RefreshCw className="h-4 w-4" />
                 Refresh
