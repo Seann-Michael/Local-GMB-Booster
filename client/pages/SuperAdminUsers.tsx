@@ -492,44 +492,86 @@ export default function SuperAdminUsers() {
                       <TableBody>
                         {filteredUsers.map((user) => (
                           <TableRow key={user.id}>
-                            <TableCell>
-                              <div className="flex items-center gap-3">
-                                {getTypeIcon(user.type)}
-                                <div>
-                                  <div className="font-medium">{user.name}</div>
-                                  <div className="text-sm text-muted-foreground flex items-center gap-1">
-                                    <Mail className="h-3 w-3" />
-                                    {user.email}
+                            {visibleColumns.user && (
+                              <TableCell>
+                                <div className="flex items-center gap-3">
+                                  {getTypeIcon(user.type)}
+                                  <div>
+                                    <div className="font-medium">
+                                      {user.name}
+                                    </div>
+                                    <div className="text-sm text-muted-foreground flex items-center gap-1">
+                                      <Mail className="h-3 w-3" />
+                                      {user.email}
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            </TableCell>
-                            <TableCell>{getRoleBadge(user.role)}</TableCell>
-                            <TableCell>{getStatusBadge(user.status)}</TableCell>
-                            <TableCell>
-                              <div className="font-medium">
-                                {user.organization}
-                              </div>
-                              {user.subscription && (
-                                <div className="text-sm text-muted-foreground">
-                                  {user.subscription} plan
-                                </div>
-                              )}
-                            </TableCell>
-                            <TableCell>
-                              <div className="text-sm">
-                                {new Date(user.lastLogin).toLocaleDateString()}
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              {user.revenue ? (
+                              </TableCell>
+                            )}
+                            {visibleColumns.role && (
+                              <TableCell>{getRoleBadge(user.role)}</TableCell>
+                            )}
+                            {visibleColumns.status && (
+                              <TableCell>
+                                {getStatusBadge(user.status)}
+                              </TableCell>
+                            )}
+                            {visibleColumns.organization && (
+                              <TableCell>
                                 <div className="font-medium">
-                                  ${user.revenue}
+                                  {user.organization}
                                 </div>
-                              ) : (
-                                <span className="text-muted-foreground">-</span>
-                              )}
-                            </TableCell>
+                                {user.subscription && (
+                                  <div className="text-sm text-muted-foreground">
+                                    {user.subscription} plan
+                                  </div>
+                                )}
+                              </TableCell>
+                            )}
+                            {visibleColumns.lastLogin && (
+                              <TableCell>
+                                <div className="text-sm">
+                                  {new Date(
+                                    user.lastLogin,
+                                  ).toLocaleDateString()}
+                                </div>
+                              </TableCell>
+                            )}
+                            {visibleColumns.revenue && (
+                              <TableCell>
+                                {user.revenue ? (
+                                  <div className="font-medium">
+                                    ${user.revenue}
+                                  </div>
+                                ) : (
+                                  <span className="text-muted-foreground">
+                                    -
+                                  </span>
+                                )}
+                              </TableCell>
+                            )}
+                            {visibleColumns.signupDate && (
+                              <TableCell>
+                                <div className="text-sm">
+                                  {new Date(
+                                    user.signupDate,
+                                  ).toLocaleDateString()}
+                                </div>
+                              </TableCell>
+                            )}
+                            {visibleColumns.subscription && (
+                              <TableCell>
+                                {user.subscription ? (
+                                  <Badge variant="outline">
+                                    {user.subscription}
+                                  </Badge>
+                                ) : (
+                                  <span className="text-muted-foreground">
+                                    Free
+                                  </span>
+                                )}
+                              </TableCell>
+                            )}
                             <TableCell>
                               <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
