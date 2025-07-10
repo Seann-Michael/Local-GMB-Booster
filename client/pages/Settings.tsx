@@ -2131,7 +2131,7 @@ export default function Settings() {
                     </div>
 
                     {/* Available Variables */}
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-4 md:grid-cols-3">
                       <Card className="p-4">
                         <h4 className="font-semibold mb-3 flex items-center gap-2">
                           <Tag className="h-4 w-4" />
