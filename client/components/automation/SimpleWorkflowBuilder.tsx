@@ -1137,6 +1137,542 @@ function StepConfigDialog({
               </div>
             );
 
+          case "Post on Social Media":
+            return (
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-sm font-medium">
+                    Social Media Platforms
+                  </Label>
+                  <div className="space-y-2 mt-2">
+                    <div className="flex items-center space-x-2">
+                      <Switch
+                        id="facebook"
+                        checked={config.platforms?.facebook || false}
+                        onCheckedChange={(checked) =>
+                          setConfig({
+                            ...config,
+                            platforms: {
+                              ...config.platforms,
+                              facebook: checked,
+                            },
+                          })
+                        }
+                      />
+                      <Label
+                        htmlFor="facebook"
+                        className="flex items-center gap-2"
+                      >
+                        <Facebook className="h-4 w-4 text-blue-600" />
+                        Facebook
+                      </Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Switch
+                        id="instagram"
+                        checked={config.platforms?.instagram || false}
+                        onCheckedChange={(checked) =>
+                          setConfig({
+                            ...config,
+                            platforms: {
+                              ...config.platforms,
+                              instagram: checked,
+                            },
+                          })
+                        }
+                      />
+                      <Label
+                        htmlFor="instagram"
+                        className="flex items-center gap-2"
+                      >
+                        <Instagram className="h-4 w-4 text-pink-600" />
+                        Instagram
+                      </Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Switch
+                        id="twitter"
+                        checked={config.platforms?.twitter || false}
+                        onCheckedChange={(checked) =>
+                          setConfig({
+                            ...config,
+                            platforms: {
+                              ...config.platforms,
+                              twitter: checked,
+                            },
+                          })
+                        }
+                      />
+                      <Label
+                        htmlFor="twitter"
+                        className="flex items-center gap-2"
+                      >
+                        <Twitter className="h-4 w-4 text-blue-400" />
+                        Twitter / X
+                      </Label>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Switch
+                        id="linkedin"
+                        checked={config.platforms?.linkedin || false}
+                        onCheckedChange={(checked) =>
+                          setConfig({
+                            ...config,
+                            platforms: {
+                              ...config.platforms,
+                              linkedin: checked,
+                            },
+                          })
+                        }
+                      />
+                      <Label
+                        htmlFor="linkedin"
+                        className="flex items-center gap-2"
+                      >
+                        <Link className="h-4 w-4 text-blue-700" />
+                        LinkedIn
+                      </Label>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Post Content</Label>
+                  <Textarea
+                    value={
+                      config.content ||
+                      "🎉 Project completed for {{customer.name}}!\n\nWe just finished an amazing {{project.name}} project. Check out the results!\n\n#ProjectComplete #Quality #{{business.name}}"
+                    }
+                    onChange={(e) =>
+                      setConfig({ ...config, content: e.target.value })
+                    }
+                    placeholder="Post content with variables..."
+                    rows={6}
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Use variables:{" "}
+                    {`{{customer.name}}, {{project.name}}, {{business.name}}, {{project.address}}`}
+                  </p>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Post Type</Label>
+                  <Select
+                    value={config.postType || "text"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, postType: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="text">Text Only</SelectItem>
+                      <SelectItem value="image">Text with Images</SelectItem>
+                      <SelectItem value="carousel">Image Carousel</SelectItem>
+                      <SelectItem value="video">Video Post</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {(config.postType === "image" ||
+                  config.postType === "carousel" ||
+                  config.postType === "video") && (
+                  <div>
+                    <Label className="text-sm font-medium">Media Source</Label>
+                    <Select
+                      value={config.mediaSource || "project-photos"}
+                      onValueChange={(value) =>
+                        setConfig({ ...config, mediaSource: value })
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="project-photos">
+                          Use Project Photos
+                        </SelectItem>
+                        <SelectItem value="business-photos">
+                          Use Business Photos
+                        </SelectItem>
+                        <SelectItem value="template-images">
+                          Use Template Images
+                        </SelectItem>
+                        <SelectItem value="custom-url">
+                          Custom Image URL
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
+                {config.mediaSource === "custom-url" && (
+                  <div>
+                    <Label className="text-sm font-medium">Image URL</Label>
+                    <Input
+                      value={config.customImageUrl || ""}
+                      onChange={(e) =>
+                        setConfig({ ...config, customImageUrl: e.target.value })
+                      }
+                      placeholder="https://example.com/image.jpg"
+                    />
+                  </div>
+                )}
+
+                <div>
+                  <Label className="text-sm font-medium">Hashtags</Label>
+                  <Input
+                    value={
+                      config.hashtags || "#ProjectComplete #Quality #Business"
+                    }
+                    onChange={(e) =>
+                      setConfig({ ...config, hashtags: e.target.value })
+                    }
+                    placeholder="#tag1 #tag2 #tag3"
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Separate hashtags with spaces. Variables supported.
+                  </p>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Post Timing</Label>
+                  <Select
+                    value={config.timing || "immediate"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, timing: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="immediate">
+                        Post Immediately
+                      </SelectItem>
+                      <SelectItem value="optimal">
+                        Optimal Time (AI-suggested)
+                      </SelectItem>
+                      <SelectItem value="business-hours">
+                        Next Business Hours
+                      </SelectItem>
+                      <SelectItem value="specific-time">
+                        Specific Time
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {config.timing === "specific-time" && (
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <Label className="text-sm font-medium">Date</Label>
+                      <Input
+                        type="date"
+                        value={config.postDate || ""}
+                        onChange={(e) =>
+                          setConfig({ ...config, postDate: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-sm font-medium">Time</Label>
+                      <Input
+                        type="time"
+                        value={config.postTime || ""}
+                        onChange={(e) =>
+                          setConfig({ ...config, postTime: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+
+          case "Post on Google My Business":
+            return (
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-sm font-medium">GMB Location</Label>
+                  <Select
+                    value={config.location || "primary"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, location: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="primary">
+                        Primary Business Location
+                      </SelectItem>
+                      <SelectItem value="project-location">
+                        Near Project Location
+                      </SelectItem>
+                      <SelectItem value="all-locations">
+                        All Business Locations
+                      </SelectItem>
+                      <SelectItem value="custom">Specific Location</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {config.location === "custom" && (
+                  <div>
+                    <Label className="text-sm font-medium">
+                      Business Location ID
+                    </Label>
+                    <Input
+                      value={config.customLocationId || ""}
+                      onChange={(e) =>
+                        setConfig({
+                          ...config,
+                          customLocationId: e.target.value,
+                        })
+                      }
+                      placeholder="accounts/123/locations/456"
+                    />
+                  </div>
+                )}
+
+                <div>
+                  <Label className="text-sm font-medium">Post Type</Label>
+                  <Select
+                    value={config.gmbPostType || "update"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, gmbPostType: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="update">What's New</SelectItem>
+                      <SelectItem value="offer">Special Offer</SelectItem>
+                      <SelectItem value="event">Event</SelectItem>
+                      <SelectItem value="product">Product Showcase</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Post Content</Label>
+                  <Textarea
+                    value={
+                      config.content ||
+                      "✅ Another successful project completed!\n\nWe just wrapped up {{project.name}} for {{customer.name}}. Our team delivered exceptional results!\n\n📞 Contact us for your next project!"
+                    }
+                    onChange={(e) =>
+                      setConfig({ ...config, content: e.target.value })
+                    }
+                    placeholder="GMB post content..."
+                    rows={6}
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Use variables:{" "}
+                    {`{{customer.name}}, {{project.name}}, {{business.name}}, {{business.phone}}`}
+                  </p>
+                </div>
+
+                {config.gmbPostType === "offer" && (
+                  <div className="space-y-3">
+                    <div>
+                      <Label className="text-sm font-medium">Offer Title</Label>
+                      <Input
+                        value={config.offerTitle || "Special Discount"}
+                        onChange={(e) =>
+                          setConfig({ ...config, offerTitle: e.target.value })
+                        }
+                        placeholder="20% Off Your Next Project"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <Label className="text-sm font-medium">
+                          Start Date
+                        </Label>
+                        <Input
+                          type="date"
+                          value={config.offerStartDate || ""}
+                          onChange={(e) =>
+                            setConfig({
+                              ...config,
+                              offerStartDate: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-sm font-medium">End Date</Label>
+                        <Input
+                          type="date"
+                          value={config.offerEndDate || ""}
+                          onChange={(e) =>
+                            setConfig({
+                              ...config,
+                              offerEndDate: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label className="text-sm font-medium">
+                        Coupon Code (Optional)
+                      </Label>
+                      <Input
+                        value={config.couponCode || ""}
+                        onChange={(e) =>
+                          setConfig({ ...config, couponCode: e.target.value })
+                        }
+                        placeholder="SAVE20"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {config.gmbPostType === "event" && (
+                  <div className="space-y-3">
+                    <div>
+                      <Label className="text-sm font-medium">Event Title</Label>
+                      <Input
+                        value={config.eventTitle || "Open House Event"}
+                        onChange={(e) =>
+                          setConfig({ ...config, eventTitle: e.target.value })
+                        }
+                        placeholder="Free Consultation Day"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <Label className="text-sm font-medium">
+                          Event Date
+                        </Label>
+                        <Input
+                          type="date"
+                          value={config.eventDate || ""}
+                          onChange={(e) =>
+                            setConfig({ ...config, eventDate: e.target.value })
+                          }
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-sm font-medium">
+                          Event Time
+                        </Label>
+                        <Input
+                          type="time"
+                          value={config.eventTime || ""}
+                          onChange={(e) =>
+                            setConfig({ ...config, eventTime: e.target.value })
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div>
+                  <Label className="text-sm font-medium">Call-to-Action</Label>
+                  <Select
+                    value={config.cta || "contact"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, cta: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="contact">Contact Us</SelectItem>
+                      <SelectItem value="book">Book Now</SelectItem>
+                      <SelectItem value="call">Call Now</SelectItem>
+                      <SelectItem value="website">Visit Website</SelectItem>
+                      <SelectItem value="directions">Get Directions</SelectItem>
+                      <SelectItem value="none">No CTA Button</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium">Include Media</Label>
+                  <Select
+                    value={config.includeMedia || "project-photos"}
+                    onValueChange={(value) =>
+                      setConfig({ ...config, includeMedia: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">No Media</SelectItem>
+                      <SelectItem value="project-photos">
+                        Project Photos
+                      </SelectItem>
+                      <SelectItem value="business-photos">
+                        Business Photos
+                      </SelectItem>
+                      <SelectItem value="before-after">
+                        Before/After Photos
+                      </SelectItem>
+                      <SelectItem value="custom">Custom Image</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {config.includeMedia === "custom" && (
+                  <div>
+                    <Label className="text-sm font-medium">
+                      Custom Image URL
+                    </Label>
+                    <Input
+                      value={config.customImage || ""}
+                      onChange={(e) =>
+                        setConfig({ ...config, customImage: e.target.value })
+                      }
+                      placeholder="https://example.com/image.jpg"
+                    />
+                  </div>
+                )}
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="auto-approve"
+                    checked={config.autoApprove || false}
+                    onCheckedChange={(checked) =>
+                      setConfig({ ...config, autoApprove: checked })
+                    }
+                  />
+                  <Label htmlFor="auto-approve">
+                    Auto-approve and publish immediately
+                  </Label>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="include-location"
+                    checked={config.includeLocation || true}
+                    onCheckedChange={(checked) =>
+                      setConfig({ ...config, includeLocation: checked })
+                    }
+                  />
+                  <Label htmlFor="include-location">
+                    Include business location in post
+                  </Label>
+                </div>
+              </div>
+            );
+
           case "Remove from Automation":
             return (
               <div className="space-y-4">
