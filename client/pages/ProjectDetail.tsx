@@ -1588,7 +1588,7 @@ export default function ProjectDetail() {
                   </CardContent>
                 </Card>
 
-                <Card key="checklists-card">
+                <Card>
                   <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle>Checklists</CardTitle>
                     <Button
@@ -1740,7 +1740,7 @@ export default function ProjectDetail() {
 
             {/* Documents Tab */}
             {activeTab === "documents" && (
-              <Card key="documents-card">
+              <Card>
                 <CardHeader className="flex flex-row items-center justify-between">
                   <CardTitle className="flex items-center gap-2">
                     <FileText className="h-5 w-5" />
