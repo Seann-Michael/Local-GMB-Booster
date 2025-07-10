@@ -730,281 +730,254 @@ export default function Automation() {
 
           <TabsContent value="analytics" className="space-y-6">
             {/* Performance Overview */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                      <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                          <CardTitle className="text-sm font-medium">
-                            Success Rate
-                          </CardTitle>
-                          <TrendingUp className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                          <div className="text-2xl font-bold">97.1%</div>
-                          <p className="text-xs text-muted-foreground">
-                            +2.3% from last month
-                          </p>
-                        </CardContent>
-                      </Card>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Success Rate
+                  </CardTitle>
+                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">97.1%</div>
+                  <p className="text-xs text-muted-foreground">
+                    +2.3% from last month
+                  </p>
+                </CardContent>
+              </Card>
 
-                      <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                          <CardTitle className="text-sm font-medium">
-                            Avg Response Time
-                          </CardTitle>
-                          <Clock className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                          <div className="text-2xl font-bold">1.2s</div>
-                          <p className="text-xs text-muted-foreground">
-                            -0.3s from last month
-                          </p>
-                        </CardContent>
-                      </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Avg Response Time
+                  </CardTitle>
+                  <Clock className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">1.2s</div>
+                  <p className="text-xs text-muted-foreground">
+                    -0.3s from last month
+                  </p>
+                </CardContent>
+              </Card>
 
-                      <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                          <CardTitle className="text-sm font-medium">
-                            Daily Executions
-                          </CardTitle>
-                          <BarChart3 className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                          <div className="text-2xl font-bold">156</div>
-                          <p className="text-xs text-muted-foreground">
-                            +12% from yesterday
-                          </p>
-                        </CardContent>
-                      </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Daily Executions
+                  </CardTitle>
+                  <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">156</div>
+                  <p className="text-xs text-muted-foreground">
+                    +12% from yesterday
+                  </p>
+                </CardContent>
+              </Card>
 
-                      <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                          <CardTitle className="text-sm font-medium">
-                            Error Rate
-                          </CardTitle>
-                          <AlertCircle className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                          <div className="text-2xl font-bold">2.9%</div>
-                          <p className="text-xs text-muted-foreground">
-                            -1.1% from last month
-                          </p>
-                        </CardContent>
-                      </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Error Rate
+                  </CardTitle>
+                  <AlertCircle className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">2.9%</div>
+                  <p className="text-xs text-muted-foreground">
+                    -1.1% from last month
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Workflow Performance */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Workflow Performance</CardTitle>
+                <CardDescription>
+                  Individual workflow metrics and trends
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {mockWorkflows.map((workflow) => (
+                    <div
+                      key={workflow.id}
+                      className="flex items-center justify-between p-4 border rounded-lg"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div>
+                          <div className="font-medium">{workflow.name}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {workflow.runCount} executions
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-6 text-sm">
+                        <div className="text-center">
+                          <div className="font-medium">
+                            {workflow.runCount > 0
+                              ? Math.max(
+                                  0,
+                                  Math.round(
+                                    ((workflow.runCount -
+                                      Math.min(2, workflow.runCount)) /
+                                      workflow.runCount) *
+                                      100,
+                                  ),
+                                )
+                              : 0}
+                            %
+                          </div>
+                          <div className="text-muted-foreground">Success</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="font-medium">
+                            {workflow.runCount > 0
+                              ? (
+                                  2.1 +
+                                  (workflow.id.length % 10) * 0.15
+                                ).toFixed(1)
+                              : 0}
+                            s
+                          </div>
+                          <div className="text-muted-foreground">Avg Time</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="font-medium">
+                            {workflow.lastRun
+                              ? (() => {
+                                  try {
+                                    return workflow.lastRun.toLocaleDateString();
+                                  } catch (error) {
+                                    console.warn(
+                                      "Date formatting error:",
+                                      error,
+                                    );
+                                    return "Invalid Date";
+                                  }
+                                })()
+                              : "Never"}
+                          </div>
+                          <div className="text-muted-foreground">Last Run</div>
+                        </div>
+                      </div>
                     </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
 
-                    {/* Workflow Performance */}
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Workflow Performance</CardTitle>
-                        <CardDescription>
-                          Individual workflow metrics and trends
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-4">
-                          {mockWorkflows.map((workflow) => (
-                            <div
-                              key={workflow.id}
-                              className="flex items-center justify-between p-4 border rounded-lg"
-                            >
-                              <div className="flex items-center gap-4">
-                                <div>
-                                  <div className="font-medium">
-                                    {workflow.name}
-                                  </div>
-                                  <div className="text-sm text-muted-foreground">
-                                    {workflow.runCount} executions
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="flex items-center gap-6 text-sm">
-                                <div className="text-center">
-                                  <div className="font-medium">
-                                    {workflow.runCount > 0
-                                      ? Math.max(
-                                          0,
-                                          Math.round(
-                                            ((workflow.runCount -
-                                              Math.min(2, workflow.runCount)) /
-                                              workflow.runCount) *
-                                              100,
-                                          ),
-                                        )
-                                      : 0}
-                                    %
-                                  </div>
-                                  <div className="text-muted-foreground">
-                                    Success
-                                  </div>
-                                </div>
-                                <div className="text-center">
-                                  <div className="font-medium">
-                                    {workflow.runCount > 0
-                                      ? (
-                                          2.1 +
-                                          (workflow.id.length % 10) * 0.15
-                                        ).toFixed(1)
-                                      : 0}
-                                    s
-                                  </div>
-                                  <div className="text-muted-foreground">
-                                    Avg Time
-                                  </div>
-                                </div>
-                                <div className="text-center">
-                                  <div className="font-medium">
-                                    {workflow.lastRun
-                                      ? (() => {
-                                          try {
-                                            return workflow.lastRun.toLocaleDateString();
-                                          } catch (error) {
-                                            console.warn(
-                                              "Date formatting error:",
-                                              error,
-                                            );
-                                            return "Invalid Date";
-                                          }
-                                        })()
-                                      : "Never"}
-                                  </div>
-                                  <div className="text-muted-foreground">
-                                    Last Run
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    {/* Usage Trends */}
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Usage Trends</CardTitle>
-                        <CardDescription>
-                          Execution patterns over the last 30 days
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div>
-                            <h4 className="font-medium mb-3">
-                              Most Active Triggers
-                            </h4>
-                            <div className="space-y-2">
-                              {[
-                                {
-                                  name: "Project Completed",
-                                  count: 45,
-                                  percentage: 38,
-                                },
-                                {
-                                  name: "New Lead Added",
-                                  count: 32,
-                                  percentage: 27,
-                                },
-                                { name: "Schedule", count: 28, percentage: 24 },
-                                {
-                                  name: "Manual Trigger",
-                                  count: 13,
-                                  percentage: 11,
-                                },
-                              ].map((trigger) => (
-                                <div
-                                  key={trigger.name}
-                                  className="flex items-center justify-between"
-                                >
-                                  <div className="flex items-center gap-2">
-                                    <div className="text-sm">
-                                      {trigger.name}
-                                    </div>
-                                  </div>
-                                  <div className="flex items-center gap-2">
-                                    <div className="text-sm font-medium">
-                                      {trigger.count}
-                                    </div>
-                                    <div className="w-16 bg-muted rounded-full h-2">
-                                      <div
-                                        className="bg-primary h-2 rounded-full"
-                                        style={{
-                                          width: `${trigger.percentage}%`,
-                                        }}
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
+            {/* Usage Trends */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Usage Trends</CardTitle>
+                <CardDescription>
+                  Execution patterns over the last 30 days
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="font-medium mb-3">Most Active Triggers</h4>
+                    <div className="space-y-2">
+                      {[
+                        {
+                          name: "Project Completed",
+                          count: 45,
+                          percentage: 38,
+                        },
+                        {
+                          name: "New Lead Added",
+                          count: 32,
+                          percentage: 27,
+                        },
+                        { name: "Schedule", count: 28, percentage: 24 },
+                        {
+                          name: "Manual Trigger",
+                          count: 13,
+                          percentage: 11,
+                        },
+                      ].map((trigger) => (
+                        <div
+                          key={trigger.name}
+                          className="flex items-center justify-between"
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className="text-sm">{trigger.name}</div>
                           </div>
-
-                          <div>
-                            <h4 className="font-medium mb-3">
-                              Error Categories
-                            </h4>
-                            <div className="space-y-2">
-                              {[
-                                {
-                                  name: "Email Delivery",
-                                  count: 5,
-                                  percentage: 42,
-                                },
-                                {
-                                  name: "API Timeout",
-                                  count: 3,
-                                  percentage: 25,
-                                },
-                                {
-                                  name: "Invalid Data",
-                                  count: 2,
-                                  percentage: 17,
-                                },
-                                {
-                                  name: "Network Error",
-                                  count: 2,
-                                  percentage: 17,
-                                },
-                              ].map((error) => (
-                                <div
-                                  key={error.name}
-                                  className="flex items-center justify-between"
-                                >
-                                  <div className="flex items-center gap-2">
-                                    <div className="text-sm">{error.name}</div>
-                                  </div>
-                                  <div className="flex items-center gap-2">
-                                    <div className="text-sm font-medium">
-                                      {error.count}
-                                    </div>
-                                    <div className="w-16 bg-muted rounded-full h-2">
-                                      <div
-                                        className="bg-destructive h-2 rounded-full"
-                                        style={{
-                                          width: `${error.percentage}%`,
-                                        }}
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                              ))}
+                          <div className="flex items-center gap-2">
+                            <div className="text-sm font-medium">
+                              {trigger.count}
+                            </div>
+                            <div className="w-16 bg-muted rounded-full h-2">
+                              <div
+                                className="bg-primary h-2 rounded-full"
+                                style={{
+                                  width: `${trigger.percentage}%`,
+                                }}
+                              />
                             </div>
                           </div>
                         </div>
-                      </CardContent>
-                    </Card>
-                  </>
-                );
-              } catch (error) {
-                console.error("Analytics error:", error);
-                return (
-                  <div className="text-center py-8">
-                    <p className="text-muted-foreground">
-                      Error loading analytics data. Please refresh the page.
-                    </p>
+                      ))}
+                    </div>
                   </div>
-                );
-              }
-            })()}
+
+                  <div>
+                    <h4 className="font-medium mb-3">Error Categories</h4>
+                    <div className="space-y-2">
+                      {[
+                        {
+                          name: "Email Delivery",
+                          count: 5,
+                          percentage: 42,
+                        },
+                        {
+                          name: "API Timeout",
+                          count: 3,
+                          percentage: 25,
+                        },
+                        {
+                          name: "Invalid Data",
+                          count: 2,
+                          percentage: 17,
+                        },
+                        {
+                          name: "Network Error",
+                          count: 2,
+                          percentage: 17,
+                        },
+                      ].map((error) => (
+                        <div
+                          key={error.name}
+                          className="flex items-center justify-between"
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className="text-sm">{error.name}</div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="text-sm font-medium">
+                              {error.count}
+                            </div>
+                            <div className="w-16 bg-muted rounded-full h-2">
+                              <div
+                                className="bg-destructive h-2 rounded-full"
+                                style={{
+                                  width: `${error.percentage}%`,
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
