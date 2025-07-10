@@ -1057,26 +1057,27 @@ export default function ProjectDetail() {
 
                               {photoTags.length > 0 && (
                                 <div className="absolute bottom-1 left-1 flex flex-wrap gap-1">
-                                  {photoTags
-                                    .slice(0, 2)
-                                    .map((tag, tagIndex) => (
+                                  <>
+                                    {photoTags
+                                      .slice(0, 2)
+                                      .map((tag, tagIndex) => (
+                                        <Badge
+                                          key={`photo-${index}-tag-${tag}-${tagIndex}`}
+                                          variant="secondary"
+                                          className="text-xs"
+                                        >
+                                          {tag}
+                                        </Badge>
+                                      ))}
+                                    {photoTags.length > 2 && (
                                       <Badge
-                                        key={`photo-${index}-tag-${tag}-${tagIndex}`}
-                                        variant="secondary"
+                                        variant="outline"
                                         className="text-xs"
                                       >
-                                        {tag}
+                                        +{photoTags.length - 2}
                                       </Badge>
-                                    ))}
-                                  {photoTags.length > 2 && (
-                                    <Badge
-                                      key={`photo-${index}-more-tags`}
-                                      variant="outline"
-                                      className="text-xs"
-                                    >
-                                      +{photoTags.length - 2}
-                                    </Badge>
-                                  )}
+                                    )}
+                                  </>
                                 </div>
                               )}
                               <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
