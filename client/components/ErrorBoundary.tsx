@@ -10,6 +10,8 @@ import {
   Shield,
   ChevronDown,
   ChevronUp,
+  Copy,
+  MessageSquare,
 } from "lucide-react";
 import { toast } from "sonner";
 
