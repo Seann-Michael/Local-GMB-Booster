@@ -3948,56 +3948,23 @@ export default function Settings() {
                   </CardContent>
                 </Card>
 
+                {/* Billing History */}
                 <Card>
                   <CardHeader>
-                    <CardTitle>Payment Method</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <CreditCard className="h-8 w-8 text-muted-foreground" />
-                        <div>
-                          <p className="font-medium">
-                            {settings.creditCard?.brand || "Visa"} ending in{" "}
-                            {settings.creditCard?.last4 || "4242"}
-                          </p>
-                          <p className="text-sm text-muted-foreground">
-                            Expires {settings.creditCard?.expMonth || 12}/
-                            {settings.creditCard?.expYear || 2025}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button variant="outline">Add Card</Button>
-                        <Button variant="outline">Update</Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Separate Invoices Table */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
-                      <span>Invoices</span>
-                      <Button variant="outline" size="sm">
-                        <Download className="h-4 w-4 mr-2" />
-                        Export All
-                      </Button>
-                    </CardTitle>
+                    <CardTitle>Billing History</CardTitle>
                     <CardDescription>
-                      Download and manage your billing invoices
+                      View your past invoices and payments
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="overflow-x-auto">
-                      <table className="w-full border-collapse">
+                    <div className="rounded-md border">
+                      <table className="w-full">
                         <thead>
                           <tr className="border-b">
-                            <th className="text-left p-3 font-medium">
-                              Invoice #
-                            </th>
                             <th className="text-left p-3 font-medium">Date</th>
+                            <th className="text-left p-3 font-medium">
+                              Description
+                            </th>
                             <th className="text-left p-3 font-medium">
                               Amount
                             </th>
@@ -4005,50 +3972,153 @@ export default function Settings() {
                               Status
                             </th>
                             <th className="text-left p-3 font-medium">
-                              Actions
+                              Invoice
                             </th>
                           </tr>
                         </thead>
                         <tbody>
-                          {(settings.invoices || []).map((invoice) => (
-                            <tr
-                              key={invoice.id}
-                              className="border-b hover:bg-gray-50"
-                            >
-                              <td className="p-3 font-mono text-sm">
-                                {invoice.id}
-                              </td>
-                              <td className="p-3">{invoice.date}</td>
-                              <td className="p-3 font-medium">
-                                ${invoice.amount.toFixed(2)}
-                              </td>
-                              <td className="p-3">
-                                <Badge
-                                  variant={
-                                    invoice.status === "paid"
-                                      ? "default"
-                                      : invoice.status === "pending"
-                                        ? "secondary"
-                                        : "destructive"
-                                  }
-                                >
-                                  {invoice.status}
-                                </Badge>
-                              </td>
-                              <td className="p-3">
-                                <div className="flex gap-2">
-                                  <Button variant="outline" size="sm">
-                                    <Download className="h-4 w-4" />
-                                  </Button>
-                                  <Button variant="outline" size="sm">
-                                    <ExternalLink className="h-4 w-4" />
-                                  </Button>
-                                </div>
-                              </td>
-                            </tr>
-                          ))}
+                          <tr className="border-b">
+                            <td className="p-3">March 15, 2024</td>
+                            <td className="p-3">Professional Plan - 3 Users</td>
+                            <td className="p-3 font-medium">$147.00</td>
+                            <td className="p-3">
+                              <Badge variant="default" className="gap-1">
+                                <CheckCircle className="h-3 w-3" />
+                                Paid
+                              </Badge>
+                            </td>
+                            <td className="p-3">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="gap-2"
+                              >
+                                <Download className="h-4 w-4" />
+                                Download
+                              </Button>
+                            </td>
+                          </tr>
+                          <tr className="border-b">
+                            <td className="p-3">February 15, 2024</td>
+                            <td className="p-3">Professional Plan - 3 Users</td>
+                            <td className="p-3 font-medium">$147.00</td>
+                            <td className="p-3">
+                              <Badge variant="default" className="gap-1">
+                                <CheckCircle className="h-3 w-3" />
+                                Paid
+                              </Badge>
+                            </td>
+                            <td className="p-3">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="gap-2"
+                              >
+                                <Download className="h-4 w-4" />
+                                Download
+                              </Button>
+                            </td>
+                          </tr>
+                          <tr className="border-b">
+                            <td className="p-3">January 15, 2024</td>
+                            <td className="p-3">Professional Plan - 2 Users</td>
+                            <td className="p-3 font-medium">$98.00</td>
+                            <td className="p-3">
+                              <Badge variant="default" className="gap-1">
+                                <CheckCircle className="h-3 w-3" />
+                                Paid
+                              </Badge>
+                            </td>
+                            <td className="p-3">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="gap-2"
+                              >
+                                <Download className="h-4 w-4" />
+                                Download
+                              </Button>
+                            </td>
+                          </tr>
                         </tbody>
                       </table>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Payment Information */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Payment Information</CardTitle>
+                    <CardDescription>
+                      Manage your payment methods and billing details
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-medium mb-2">Payment Method</h4>
+                          <div className="flex items-center gap-3 p-3 border rounded-lg">
+                            <CreditCard className="h-5 w-5" />
+                            <div>
+                              <p className="font-medium">•••• •••• •••• 4242</p>
+                              <p className="text-sm text-muted-foreground">
+                                Expires 12/25
+                              </p>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="ml-auto"
+                            >
+                              Update
+                            </Button>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="font-medium mb-2">Billing Address</h4>
+                          <div className="text-sm text-muted-foreground space-y-1">
+                            <p>Smith Construction LLC</p>
+                            <p>123 Business St</p>
+                            <p>San Francisco, CA 94105</p>
+                            <p>United States</p>
+                          </div>
+                          <Button variant="ghost" size="sm" className="mt-2">
+                            Update Address
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-medium mb-2">Next Payment</h4>
+                          <div className="p-3 bg-muted rounded-lg">
+                            <div className="flex justify-between items-center">
+                              <span>Amount Due:</span>
+                              <span className="font-medium">$147</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <span>Due Date:</span>
+                              <span className="font-medium">
+                                April 15, 2024
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <h4 className="font-medium mb-2">Auto-renewal</h4>
+                          <p className="text-sm text-muted-foreground">
+                            Your subscription will automatically renew on April
+                            15, 2024. You can cancel anytime.
+                          </p>
+                          <Button variant="outline" size="sm" className="mt-2">
+                            Manage Auto-renewal
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
