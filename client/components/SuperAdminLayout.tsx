@@ -85,18 +85,6 @@ export function SuperAdminLayout({
       active: location.pathname.startsWith("/super-admin/users"),
     },
     {
-      label: "Business Management",
-      href: "/super-admin/businesses",
-      icon: Building2,
-      active: location.pathname.startsWith("/super-admin/business"),
-    },
-    {
-      label: "Agency Management",
-      href: "/super-admin/agencies",
-      icon: Shield,
-      active: location.pathname.startsWith("/super-admin/agencies"),
-    },
-    {
       label: "Super Admin Staff",
       href: "/super-admin/staff",
       icon: User,
@@ -109,22 +97,10 @@ export function SuperAdminLayout({
       active: location.pathname.startsWith("/super-admin/ideas"),
     },
     {
-      label: "Broadcast Messages",
-      href: "/super-admin/broadcast",
+      label: "Communications",
+      href: "/super-admin/communications",
       icon: Megaphone,
-      active: location.pathname.startsWith("/super-admin/broadcast"),
-    },
-    {
-      label: "Message Templates",
-      href: "/super-admin/templates",
-      icon: FileText,
-      active: location.pathname.startsWith("/super-admin/templates"),
-    },
-    {
-      label: "Analytics",
-      href: "/super-admin/analytics",
-      icon: BarChart3,
-      active: location.pathname.startsWith("/super-admin/analytics"),
+      active: location.pathname.startsWith("/super-admin/communications"),
     },
     {
       label: "Automation",
@@ -150,18 +126,7 @@ export function SuperAdminLayout({
       icon: Code,
       active: location.pathname.startsWith("/super-admin/api"),
     },
-    {
-      label: "Project Messaging",
-      href: "/super-admin/project-messaging",
-      icon: FolderOpen,
-      active: location.pathname.startsWith("/super-admin/project-messaging"),
-    },
-    {
-      label: "Advanced Features",
-      href: "/super-admin/advanced-features",
-      icon: TestTube,
-      active: location.pathname.startsWith("/super-admin/advanced-features"),
-    },
+
     {
       label: "Performance & Scale",
       href: "/super-admin/performance",
@@ -188,9 +153,9 @@ export function SuperAdminLayout({
     },
     {
       label: "Support",
-      href: "/support",
+      href: "/super-admin/support",
       icon: MessageSquare,
-      active: location.pathname === "/support",
+      active: location.pathname === "/super-admin/support",
     },
   ];
 
