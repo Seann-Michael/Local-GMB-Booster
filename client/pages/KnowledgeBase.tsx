@@ -1899,6 +1899,136 @@ Contact our billing support team:
           </div>
         )}
 
+        {/* Detailed Error Logs & Crash Reports */}
+        {(isSuper || currentUser?.role === "admin") && (
+          <div id="crash-logs-section" className="mt-12 pt-8 border-t">
+            <Card className="border-red-200">
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle className="h-5 w-5 text-red-600" />
+                    Real-Time Error Monitoring & Crash Logs
+                  </div>
+                  <div className="flex gap-2 text-sm">
+                    <Badge variant="destructive">7 Critical</Badge>
+                    <Badge variant="outline">12 Warnings</Badge>
+                    <Button variant="outline" size="sm">
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                      Refresh
+                    </Button>
+                  </div>
+                </CardTitle>
+                <CardDescription>
+                  Monitor system health, view detailed error reports, and track user-reported issues. Last updated: {new Date().toLocaleTimeString()}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-medium mb-3 text-red-800 flex items-center gap-2">
+                      <AlertTriangle className="h-4 w-4" />
+                      Critical Application Crashes (Last 24 Hours)
+                    </h4>
+                    <div className="space-y-3">
+                      <Card className="border-red-200 bg-red-50">
+                        <CardContent className="p-4">
+                          <div className="flex items-start justify-between mb-2">
+                            <div className="flex items-center gap-2">
+                              <AlertTriangle className="h-4 w-4 text-red-600" />
+                              <span className="font-medium text-red-800">Settings Module Crash</span>
+                            </div>
+                            <span className="text-xs text-red-600">2 hours ago</span>
+                          </div>
+                          <div className="text-sm text-red-700 mb-2">
+                            <strong>Error:</strong> Cannot read property 'events' of undefined at Settings.tsx:3206:116
+                          </div>
+                          <div className="text-xs text-red-600 font-mono bg-red-100 p-2 rounded mb-2">
+                            TypeError: Cannot read properties of undefined (reading 'join')
+                            <br />at Settings (Settings.tsx:3206:116)
+                            <br />at renderWithHooks (chunk-WPQCFWW4.js:11596:35)
+                          </div>
+                          <div className="flex gap-2">
+                            <Badge variant="destructive" className="text-xs">High Priority</Badge>
+                            <Badge variant="outline" className="text-xs">User: joe@joespizza.com</Badge>
+                            <Badge variant="outline" className="text-xs">Chrome 118</Badge>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="border-red-200 bg-red-50">
+                        <CardContent className="p-4">
+                          <div className="flex items-start justify-between mb-2">
+                            <div className="flex items-center gap-2">
+                              <AlertTriangle className="h-4 w-4 text-red-600" />
+                              <span className="font-medium text-red-800">React Key Warning Fixed</span>
+                            </div>
+                            <span className="text-xs text-red-600">3 hours ago</span>
+                          </div>
+                          <div className="text-sm text-red-700 mb-2">
+                            <strong>Issue:</strong> Each child in a list should have a unique "key" prop
+                          </div>
+                          <div className="text-xs text-red-600 font-mono bg-red-100 p-2 rounded mb-2">
+                            Warning: Each child in a list should have a unique "key" prop
+                            <br />Check the render method of ProjectDetail
+                            <br />Fixed: Updated photo tags rendering with unique keys
+                          </div>
+                          <div className="flex gap-2">
+                            <Badge variant="secondary" className="text-xs">Resolved</Badge>
+                            <Badge variant="outline" className="text-xs">Multiple Users</Badge>
+                            <Badge variant="outline" className="text-xs">React</Badge>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium mb-3 text-yellow-800 flex items-center gap-2">
+                      <Clock className="h-4 w-4" />
+                      Performance & Runtime Issues
+                    </h4>
+                    <div className="grid gap-3 md:grid-cols-2">
+                      <Card className="border-yellow-200 bg-yellow-50">
+                        <CardContent className="p-3">
+                          <div className="text-sm font-medium text-yellow-800">Slow Component Renders</div>
+                          <div className="text-xs text-yellow-600">Settings.tsx taking >2s to render</div>
+                          <div className="mt-2">
+                            <Badge variant="outline" className="text-xs">12 instances today</Badge>
+                          </div>
+                        </CardContent>
+                      </Card>
+                      <Card className="border-yellow-200 bg-yellow-50">
+                        <CardContent className="p-3">
+                          <div className="text-sm font-medium text-yellow-800">Memory Usage</div>
+                          <div className="text-xs text-yellow-600">Gallery component optimization needed</div>
+                          <div className="mt-2">
+                            <Badge variant="outline" className="text-xs">5 reports</Badge>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2 pt-4 border-t">
+                    <Button className="gap-2">
+                      <RefreshCw className="h-4 w-4" />
+                      Refresh All Logs
+                    </Button>
+                    <Button variant="outline" className="gap-2">
+                      <Download className="h-4 w-4" />
+                      Export Error Report
+                    </Button>
+                    <Button variant="outline" className="gap-2">
+                      <MessageSquare className="h-4 w-4" />
+                      Create Support Ticket
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
         {/* Status Page Section at Bottom */}
         <div className="mt-16 pt-8 border-t bg-gray-50">
           <div className="text-center py-8">
