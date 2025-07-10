@@ -556,22 +556,6 @@ export default function Settings() {
   return (
     <AppLayout>
       <div className="space-y-6">
-        {/* Breadcrumbs */}
-        <div className="px-6 pt-6">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/admin/projects">
-                  Dashboard
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Settings</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
@@ -580,10 +564,26 @@ export default function Settings() {
               Manage your business settings and preferences
             </p>
           </div>
-          <Button onClick={handleSave} disabled={isLoading} className="gap-2">
-            <Save className="h-4 w-4" />
-            {isLoading ? "Saving..." : "Save Changes"}
-          </Button>
+          <div className="flex items-center gap-4">
+            {/* Breadcrumbs */}
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink href="/admin/projects">
+                    Dashboard
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Settings</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+            <Button onClick={handleSave} disabled={isLoading} className="gap-2">
+              <Save className="h-4 w-4" />
+              {isLoading ? "Saving..." : "Save Changes"}
+            </Button>
+          </div>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6">
