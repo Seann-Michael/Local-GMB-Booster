@@ -12,8 +12,15 @@ import {
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { AppLayout } from "@/components/AppLayout";
 import { MediaViewer } from "@/components/MediaViewer";
+import { EnhancedFileUploader } from "@/components/EnhancedFileUploader";
 import {
   ArrowLeft,
   Images,
@@ -26,6 +33,9 @@ import {
   Filter,
   SlidersHorizontal,
   Info,
+  Upload,
+  Plus,
+  X,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
