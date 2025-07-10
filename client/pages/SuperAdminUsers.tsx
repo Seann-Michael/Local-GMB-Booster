@@ -519,28 +519,16 @@ export default function SuperAdminUsers() {
                                 )}
                               </TableCell>
                             )}
-                            {visibleColumns.lastLogin && (
+                            {visibleColumns.lastActive && (
                               <TableCell>
                                 <div className="text-sm">
                                   {new Date(
-                                    user.lastLogin,
+                                    user.lastActive,
                                   ).toLocaleDateString()}
                                 </div>
                               </TableCell>
                             )}
-                            {visibleColumns.revenue && (
-                              <TableCell>
-                                {user.revenue ? (
-                                  <div className="font-medium">
-                                    ${user.revenue}
-                                  </div>
-                                ) : (
-                                  <span className="text-muted-foreground">
-                                    -
-                                  </span>
-                                )}
-                              </TableCell>
-                            )}
+
                             {visibleColumns.signupDate && (
                               <TableCell>
                                 <div className="text-sm">
