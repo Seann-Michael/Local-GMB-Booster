@@ -289,7 +289,7 @@ export default function SuperAdminUsers() {
             onValueChange={setActiveTab}
             className="space-y-4"
           >
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="all-users">
                 <Users className="h-4 w-4 mr-2" />
                 All Users
@@ -301,10 +301,6 @@ export default function SuperAdminUsers() {
               <TabsTrigger value="agencies">
                 <Shield className="h-4 w-4 mr-2" />
                 Agencies
-              </TabsTrigger>
-              <TabsTrigger value="staff">
-                <Users className="h-4 w-4 mr-2" />
-                Staff Members
               </TabsTrigger>
             </TabsList>
 
