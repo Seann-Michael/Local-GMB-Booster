@@ -176,6 +176,8 @@ export default function ProjectDetail() {
   const [showMentionDropdown, setShowMentionDropdown] = useState(false);
   const [showReviewRequest, setShowReviewRequest] = useState(false);
   const [showMediaUploader, setShowMediaUploader] = useState(false);
+  const [showDocumentUploader, setShowDocumentUploader] = useState(false);
+  const documentInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -336,6 +338,42 @@ export default function ProjectDetail() {
     updateProject(projectWithActivity);
     setShowMediaUploader(false);
     toast.success(`Added ${newPhotos.length} photos to the project`);
+  };
+
+  const handleDocumentUpload = (files: FileList | null) => {
+    if (!files || !project) return;
+
+    const newDocuments: ProjectDocument[] = Array.from(files).map((file) => ({
+      id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+      name: file.name,
+      type: file.type || "application/octet-stream",
+      size: file.size,
+      uploadedAt: new Date().toISOString(),
+      uploadedBy: getCurrentUser()?.name || "Unknown",
+      url: URL.createObjectURL(file), // In real app, this would be uploaded to cloud storage
+    }));
+
+    const updatedProject = {
+      ...project,
+      documents: [...(project.documents || []), ...newDocuments],
+    };
+
+    const entry = {
+      id: Date.now().toString(),
+      action: "documents_added",
+      description: `Added ${newDocuments.length} document(s): ${newDocuments.map((d) => d.name).join(", ")}`,
+      timestamp: new Date().toISOString(),
+      user: getCurrentUser()?.name || "Unknown",
+      platform: "web" as const,
+    };
+
+    const projectWithActivity = {
+      ...updatedProject,
+      activityLog: [entry, ...(updatedProject.activityLog || [])],
+    };
+
+    updateProject(projectWithActivity);
+    toast.success(`Added ${newDocuments.length} document(s) to the project`);
   };
 
   const addMorePhotos = (files: FileList | null) => {
