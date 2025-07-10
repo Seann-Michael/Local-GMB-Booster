@@ -1,26 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { SuperAdminLayout } from "@/components/SuperAdminLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { SuperAdminLayout } from "@/components/SuperAdminLayout";
 import {
   Dialog,
   DialogContent,
@@ -30,619 +31,772 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
-  Plus,
   Search,
+  BookOpen,
+  Users,
+  Building2,
+  Settings,
+  Camera,
+  FolderOpen,
+  MessageSquare,
+  CreditCard,
+  BarChart3,
+  Shield,
+  HelpCircle,
+  ExternalLink,
+  ChevronRight,
+  Star,
+  Clock,
+  User,
+  Plus,
   Edit,
   Trash2,
-  MessageSquare,
+  Save,
+  X,
   Eye,
-  MoreVertical,
-  Book,
-  FileText,
-  Video,
-  HelpCircle,
-  Settings,
-  Users,
-  Target,
-  TrendingUp,
   Calendar,
-  CheckCircle,
-  XCircle,
-  Star,
-  ThumbsUp,
-  ThumbsDown,
 } from "lucide-react";
-import { toast } from "sonner";
+import { useState } from "react";
 
-interface HelpArticle {
+interface Article {
   id: string;
   title: string;
-  content: string;
-  category: string;
-  tags: string[];
-  status: "published" | "draft" | "archived";
-  author: string;
-  createdAt: string;
-  updatedAt: string;
-  views: number;
-  helpfulVotes: number;
-  unhelpfulVotes: number;
-  featured: boolean;
-  difficulty: "beginner" | "intermediate" | "advanced";
-}
-
-interface HelpComment {
-  id: string;
-  articleId: string;
-  author: string;
-  content: string;
-  createdAt: string;
-  status: "approved" | "pending" | "spam";
-  helpful: boolean;
-}
-
-interface HelpCategory {
-  id: string;
-  name: string;
   description: string;
-  icon: string;
-  articleCount: number;
-  order: number;
-  visible: boolean;
+  category: string;
+  userType: "all" | "business" | "agency" | "admin";
+  content: string;
+  tags: string[];
+  lastUpdated: string;
+  popular?: boolean;
+  views?: number;
+  rating?: number;
+  status: "published" | "draft" | "archived";
 }
 
 export default function SuperAdminHelp() {
-  const [articles, setArticles] = useState<HelpArticle[]>([]);
-  const [comments, setComments] = useState<HelpComment[]>([]);
-  const [categories, setCategories] = useState<HelpCategory[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("all");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [showCreateDialog, setShowCreateDialog] = useState(false);
-  const [editingArticle, setEditingArticle] = useState<HelpArticle | null>(
-    null,
-  );
-  const [selectedTab, setSelectedTab] = useState("articles");
-
-  const [formData, setFormData] = useState({
+  const [editingArticle, setEditingArticle] = useState<Article | null>(null);
+  const [newArticle, setNewArticle] = useState({
     title: "",
-    content: "",
+    description: "",
     category: "",
+    userType: "all" as const,
+    content: "",
     tags: "",
-    status: "draft" as const,
-    difficulty: "beginner" as const,
-    featured: false,
   });
 
-  useEffect(() => {
-    loadHelpData();
-  }, []);
+  const categories = [
+    { id: "getting-started", name: "Getting Started", icon: BookOpen },
+    { id: "account", name: "Account Management", icon: User },
+    { id: "business", name: "Business Management", icon: Building2 },
+    { id: "agency", name: "Agency Features", icon: Users },
+    { id: "photos", name: "Photo Management", icon: Camera },
+    { id: "projects", name: "Project Management", icon: FolderOpen },
+    { id: "reviews", name: "Review Management", icon: MessageSquare },
+    { id: "billing", name: "Billing & Subscriptions", icon: CreditCard },
+    { id: "analytics", name: "Analytics & Reports", icon: BarChart3 },
+    { id: "security", name: "Security & Privacy", icon: Shield },
+    { id: "support", name: "Support & Troubleshooting", icon: HelpCircle },
+    { id: "api", name: "API & Integrations", icon: Settings },
+  ];
 
-  const loadHelpData = () => {
-    // Load sample data
-    const sampleArticles: HelpArticle[] = [
-      {
-        id: "1",
-        title: "Getting Started with Your Dashboard",
-        content:
-          "Welcome to your new dashboard! This comprehensive guide will walk you through all the essential features...",
-        category: "Getting Started",
-        tags: ["dashboard", "basics", "tutorial"],
-        status: "published",
-        author: "Admin Team",
-        createdAt: "2024-01-15T10:00:00Z",
-        updatedAt: "2024-01-20T14:30:00Z",
-        views: 1247,
-        helpfulVotes: 89,
-        unhelpfulVotes: 12,
-        featured: true,
-        difficulty: "beginner",
-      },
-      {
-        id: "2",
-        title: "Advanced Project Management Features",
-        content:
-          "Learn how to use advanced features like custom workflows, automation rules, and team collaboration tools...",
-        category: "Project Management",
-        tags: ["projects", "advanced", "workflow"],
-        status: "published",
-        author: "Product Team",
-        createdAt: "2024-01-10T09:00:00Z",
-        updatedAt: "2024-01-18T16:45:00Z",
-        views: 856,
-        helpfulVotes: 67,
-        unhelpfulVotes: 8,
-        featured: false,
-        difficulty: "advanced",
-      },
-      {
-        id: "3",
-        title: "Billing and Payment FAQ",
-        content:
-          "Common questions about billing, payments, plan changes, and subscription management...",
-        category: "Billing",
-        tags: ["billing", "payments", "faq"],
-        status: "published",
-        author: "Support Team",
-        createdAt: "2024-01-05T11:00:00Z",
-        updatedAt: "2024-01-15T10:20:00Z",
-        views: 542,
-        helpfulVotes: 45,
-        unhelpfulVotes: 5,
-        featured: false,
-        difficulty: "beginner",
-      },
-      {
-        id: "4",
-        title: "API Integration Guide",
-        content:
-          "Complete guide for integrating with our REST API, including authentication, endpoints, and examples...",
-        category: "Developers",
-        tags: ["api", "integration", "developers"],
-        status: "draft",
-        author: "Engineering Team",
-        createdAt: "2024-01-20T15:00:00Z",
-        updatedAt: "2024-01-21T09:30:00Z",
-        views: 23,
-        helpfulVotes: 2,
-        unhelpfulVotes: 0,
-        featured: false,
-        difficulty: "advanced",
-      },
-    ];
+  const articles: Article[] = [
+    {
+      id: "getting-started-guide",
+      title: "Getting Started with the Platform",
+      description: "A comprehensive guide to help you get started quickly",
+      category: "getting-started",
+      userType: "all",
+      status: "published",
+      content: `
+# Getting Started with the Platform
 
-    const sampleCategories: HelpCategory[] = [
-      {
-        id: "1",
-        name: "Getting Started",
-        description: "Essential guides for new users",
-        icon: "rocket",
-        articleCount: 8,
-        order: 1,
-        visible: true,
-      },
-      {
-        id: "2",
-        name: "Project Management",
-        description: "Learn to manage projects effectively",
-        icon: "folder",
-        articleCount: 12,
-        order: 2,
-        visible: true,
-      },
-      {
-        id: "3",
-        name: "Billing",
-        description: "Payment and subscription help",
-        icon: "credit-card",
-        articleCount: 6,
-        order: 3,
-        visible: true,
-      },
-      {
-        id: "4",
-        name: "Developers",
-        description: "Technical documentation and APIs",
-        icon: "code",
-        articleCount: 15,
-        order: 4,
-        visible: true,
-      },
-    ];
+Welcome to our comprehensive business management platform! This guide will help you get up and running quickly.
 
-    const sampleComments: HelpComment[] = [
-      {
-        id: "1",
-        articleId: "1",
-        author: "john@example.com",
-        content:
-          "This guide was really helpful! Thanks for the clear explanations.",
-        createdAt: "2024-01-21T10:30:00Z",
-        status: "approved",
-        helpful: true,
-      },
-      {
-        id: "2",
-        articleId: "1",
-        author: "spam@bot.com",
-        content: "Click here for amazing deals!!!",
-        createdAt: "2024-01-20T16:45:00Z",
-        status: "spam",
-        helpful: false,
-      },
-      {
-        id: "3",
-        articleId: "2",
-        author: "sarah@company.com",
-        content: "Could you add more examples for the workflow automation?",
-        createdAt: "2024-01-19T14:20:00Z",
-        status: "pending",
-        helpful: true,
-      },
-    ];
+## What You Can Do
 
-    setArticles(sampleArticles);
-    setCategories(sampleCategories);
-    setComments(sampleComments);
-  };
+Our platform helps you:
+- **Manage Your Business Profile**: Keep your business information up-to-date
+- **Handle Customer Reviews**: Respond to and manage customer feedback
+- **Organize Photos**: Upload and organize your business photos
+- **Track Projects**: Manage ongoing projects and tasks
+- **View Analytics**: Get insights into your business performance
+
+## First Steps
+
+### 1. Complete Your Profile
+Make sure your business profile is complete:
+- Business name and description
+- Contact information
+- Address and hours
+- Business category
+
+### 2. Upload Photos
+Add high-quality photos of your business:
+- Exterior and interior shots
+- Products or services
+- Team photos
+- Customer experiences
+
+### 3. Set Up Projects
+Organize your work with projects:
+- Create project categories
+- Set up project templates
+- Invite team members
+- Track progress
+
+### 4. Configure Settings
+Customize your experience:
+- Notification preferences
+- Privacy settings
+- Integration options
+- User permissions
+
+## Need Help?
+
+If you need assistance:
+- Check our FAQ section
+- Contact support through the help desk
+- Join our community forum
+- Schedule a training session
+      `,
+      tags: ["getting-started", "setup", "basics"],
+      lastUpdated: "2024-01-20",
+      popular: true,
+      views: 1250,
+      rating: 4.8,
+    },
+    {
+      id: "photo-management",
+      title: "Photo Management Best Practices",
+      description: "Learn how to organize and optimize your business photos",
+      category: "photos",
+      userType: "all",
+      status: "published",
+      content: `
+# Photo Management Best Practices
+
+High-quality photos are crucial for your business success. This guide covers best practices for managing your photo library.
+
+## Photo Organization
+
+### Categories
+Organize photos into clear categories:
+- **Exterior**: Building facades, signage, parking
+- **Interior**: Dining areas, workspaces, amenities
+- **Products**: Individual items, displays, packaging
+- **Services**: Work in progress, completed projects
+- **Team**: Staff photos, behind-the-scenes
+- **Events**: Special occasions, promotions
+
+### Naming Convention
+Use descriptive, consistent naming:
+- Include date: "2024-01-20-exterior-storefront.jpg"
+- Add location: "main-dining-room-overview.jpg"
+- Specify purpose: "holiday-promotion-banner.jpg"
+
+## Quality Guidelines
+
+### Technical Requirements
+- **Resolution**: Minimum 1920x1080 for web display
+- **Format**: JPEG for photos, PNG for graphics with transparency
+- **File Size**: Optimize for web (under 2MB per image)
+- **Aspect Ratio**: 16:9 for headers, 4:3 for general use
+
+### Photography Tips
+1. **Lighting**: Use natural light when possible
+2. **Composition**: Follow rule of thirds
+3. **Focus**: Ensure sharp, clear images
+4. **Background**: Keep backgrounds clean and uncluttered
+5. **Consistency**: Maintain similar style across photos
+
+## Photo Management Tools
+
+### Uploading
+- **Bulk Upload**: Select multiple files at once
+- **Drag and Drop**: Simple interface for quick uploads
+- **Mobile App**: Upload directly from your phone
+- **Auto-Sync**: Connect cloud storage for automatic updates
+
+### Editing
+- **Basic Adjustments**: Brightness, contrast, saturation
+- **Cropping**: Adjust composition and aspect ratio
+- **Filters**: Apply consistent styling
+- **Text Overlay**: Add captions or branding
+
+### Organization
+- **Tags**: Add searchable keywords
+- **Albums**: Group related photos
+- **Favorites**: Mark best photos for easy access
+- **Archive**: Store older photos without deleting
+      `,
+      tags: ["photos", "organization", "quality", "tips"],
+      lastUpdated: "2024-01-18",
+      views: 890,
+      rating: 4.6,
+    },
+    {
+      id: "review-management",
+      title: "Managing Customer Reviews",
+      description:
+        "Best practices for responding to and managing customer reviews",
+      category: "reviews",
+      userType: "business",
+      status: "published",
+      content: `
+# Managing Customer Reviews
+
+Customer reviews are crucial for your business reputation. Learn how to effectively manage and respond to reviews.
+
+## Review Response Strategy
+
+### Positive Reviews
+**Thank customers promptly**:
+- Respond within 24-48 hours
+- Personalize your response
+- Mention specific details they shared
+- Invite them to return
+
+**Example Response**:
+"Thank you so much for your wonderful review, Sarah! We're thrilled you enjoyed our pasta special and found our staff welcoming. We can't wait to serve you again soon!"
+
+### Negative Reviews
+**Address concerns professionally**:
+- Acknowledge their experience
+- Apologize sincerely if appropriate
+- Offer to resolve the issue
+- Take conversation offline when needed
+
+**Example Response**:
+"We're sorry to hear about your experience, John. This doesn't reflect our usual standards. Please contact us directly at [phone] so we can make this right."
+
+## Review Management Tools
+
+### Dashboard Features
+- **Review Monitoring**: Track all reviews in one place
+- **Response Templates**: Save time with pre-written responses
+- **Sentiment Analysis**: Understand review trends
+- **Alert System**: Get notified of new reviews
+
+### Response Workflow
+1. **Review Alert**: Receive notification of new review
+2. **Assessment**: Evaluate sentiment and urgency
+3. **Response**: Craft appropriate response
+4. **Follow-up**: Monitor for customer response
+5. **Analysis**: Learn from feedback patterns
+
+## Best Practices
+
+### Do's
+- ✅ Respond to all reviews, positive and negative
+- ✅ Keep responses professional and friendly
+- ✅ Use the customer's name when possible
+- ✅ Address specific points mentioned
+- ✅ Invite customers to return or contact you
+
+### Don'ts
+- ❌ Argue with customers publicly
+- ❌ Share personal information
+- ❌ Copy and paste generic responses
+- ❌ Ignore negative feedback
+- ❌ Get emotional or defensive
+
+## Encouraging Reviews
+
+### Ask at the Right Time
+- After positive interactions
+- Following successful project completion
+- During checkout or payment
+- In follow-up communications
+
+### Make It Easy
+- Provide direct links to review platforms
+- Include review requests in email signatures
+- Create QR codes for physical locations
+- Offer incentives (where appropriate)
+      `,
+      tags: ["reviews", "reputation", "customer-service", "response"],
+      lastUpdated: "2024-01-15",
+      views: 1100,
+      rating: 4.7,
+    },
+    {
+      id: "agency-onboarding",
+      title: "Agency Client Onboarding Guide",
+      description: "Step-by-step process for onboarding new business clients",
+      category: "agency",
+      userType: "agency",
+      status: "published",
+      content: `
+# Agency Client Onboarding Guide
+
+Successfully onboarding new clients is crucial for agency success. This guide covers the complete process.
+
+## Pre-Onboarding Preparation
+
+### Agency Setup
+1. **Complete Agency Profile**: Ensure your agency information is complete
+2. **Set Service Packages**: Define your service offerings
+3. **Prepare Documentation**: Create onboarding materials
+4. **Set Up Billing**: Configure payment processing
+
+### Client Requirements
+- Valid business information
+- Google My Business account access
+- Business photos and content
+- Contact information for key stakeholders
+
+## Onboarding Steps
+
+### Step 1: Initial Client Setup
+1. **Navigate to Business Owners**: Go to /agency/admin/business-owners
+2. **Add New Client**: Click "Add Business Owner"
+3. **Enter Business Details**:
+   - Business name and description
+   - Contact information
+   - Address and location details
+   - Industry and business type
+
+### Step 2: Account Configuration
+1. **Set Permissions**: Define what the client can access
+2. **Configure Services**: Select service packages
+3. **Set Up Billing**: Choose subscription plan
+4. **Create Login Credentials**: Set up client access
+
+### Step 3: Integration Setup
+1. **Google My Business**: Connect client's GMB account
+2. **Social Media**: Link relevant social platforms
+3. **Analytics**: Set up tracking and reporting
+4. **Custom Integrations**: Configure any specific tools
+
+### Step 4: Training and Support
+1. **Initial Training**: Schedule onboarding call
+2. **Provide Documentation**: Share relevant guides
+3. **Set Expectations**: Clarify roles and responsibilities
+4. **Ongoing Support**: Establish communication channels
+
+## Managing Client Relationships
+
+### Communication
+- Regular check-ins and updates
+- Clear reporting schedules
+- Responsive support channels
+- Transparent billing and invoicing
+
+### Service Delivery
+- Monitor client performance metrics
+- Provide regular reports and insights
+- Proactive recommendations
+- Quality assurance processes
+
+### Account Management
+- Track client satisfaction
+- Identify upselling opportunities
+- Handle contract renewals
+- Manage service changes
+
+## Best Practices
+
+1. **Standardize Process**: Use consistent onboarding steps
+2. **Document Everything**: Keep detailed client records
+3. **Set Clear Expectations**: Define scope and deliverables
+4. **Regular Reviews**: Schedule periodic account reviews
+5. **Continuous Improvement**: Gather feedback and optimize
+      `,
+      tags: ["onboarding", "clients", "agency", "process"],
+      lastUpdated: "2024-01-15",
+      views: 650,
+      rating: 4.5,
+    },
+    {
+      id: "common-issues",
+      title: "Common Issues and Solutions",
+      description: "Quick fixes for the most frequently encountered problems",
+      category: "support",
+      userType: "all",
+      status: "published",
+      content: `
+# Common Issues and Solutions
+
+This guide covers the most frequently encountered issues and their solutions.
+
+## Login and Authentication Issues
+
+### Can't Log In
+**Problem**: Unable to access your account
+**Solutions**:
+1. **Check Credentials**: Verify email and password
+2. **Reset Password**: Use the "Forgot Password" link
+3. **Clear Browser Cache**: Clear cookies and cached data
+4. **Try Different Browser**: Test with another browser
+
+### Two-Factor Authentication Issues
+**Problem**: Not receiving 2FA codes
+**Solutions**:
+1. **Check Time Sync**: Ensure device time is accurate
+2. **Backup Codes**: Use saved backup codes
+3. **Contact Support**: Request 2FA reset if needed
+
+## Photo Upload Issues
+
+### Upload Fails
+**Problem**: Photos won't upload
+**Solutions**:
+1. **Check File Size**: Ensure files are under 10MB
+2. **Supported Formats**: Use JPEG, PNG, or WebP
+3. **Internet Connection**: Verify stable connection
+4. **Browser Update**: Use latest browser version
+
+### Slow Upload Speed
+**Problem**: Uploads taking too long
+**Solutions**:
+1. **Compress Images**: Reduce file size before upload
+2. **Batch Uploads**: Upload fewer files at once
+3. **Peak Hours**: Try uploading during off-peak times
+4. **Browser Cache**: Clear cache and try again
+
+## Project Management Issues
+
+### Can't Create Projects
+**Problem**: Unable to create new projects
+**Solutions**:
+1. **Check Permissions**: Verify you have project creation rights
+2. **Subscription Limits**: Check if you've reached project limits
+3. **Required Fields**: Ensure all required fields are filled
+4. **Browser Issues**: Try refreshing page or different browser
+
+### Missing Project Data
+**Problem**: Project information disappeared
+**Solutions**:
+1. **Check Filters**: Remove any active filters
+2. **Archive Status**: Check if project was archived
+3. **Permissions**: Verify you still have access
+4. **Contact Support**: Report data loss immediately
+
+## Performance Issues
+
+### Slow Loading
+**Problem**: Pages load slowly
+**Solutions**:
+1. **Clear Cache**: Clear browser cache and cookies
+2. **Internet Speed**: Test connection speed
+3. **Extensions**: Disable browser extensions temporarily
+4. **Peak Usage**: Try during off-peak hours
+
+### Error Messages
+**Problem**: Getting error messages
+**Solutions**:
+1. **Screenshot Errors**: Capture error details
+2. **Browser Console**: Check for console errors
+3. **Different Browser**: Test with another browser
+4. **Contact Support**: Report with error details
+
+## Getting Additional Help
+
+If these solutions don't resolve your issue:
+1. **Contact Support**: Use the support ticket system
+2. **Check Status Page**: Verify system status
+3. **Community Forum**: Ask the community
+4. **Live Chat**: Available during business hours
+      `,
+      tags: ["troubleshooting", "issues", "solutions", "support"],
+      lastUpdated: "2024-01-12",
+      views: 2100,
+      rating: 4.4,
+    },
+  ];
+
+  const filteredArticles = articles.filter((article) => {
+    const matchesSearch =
+      article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      article.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      article.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      article.tags.some((tag) =>
+        tag.toLowerCase().includes(searchTerm.toLowerCase()),
+      );
+
+    const matchesCategory =
+      selectedCategory === "all" || article.category === selectedCategory;
+
+    return matchesSearch && matchesCategory;
+  });
+
+  const popularArticles = articles.filter((article) => article.popular);
+  const recentArticles = articles
+    .sort(
+      (a, b) =>
+        new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime(),
+    )
+    .slice(0, 5);
 
   const handleCreateArticle = () => {
-    if (!formData.title || !formData.content || !formData.category) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
-
-    const newArticle: HelpArticle = {
-      id: Date.now().toString(),
-      title: formData.title,
-      content: formData.content,
-      category: formData.category,
-      tags: formData.tags
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter((tag) => tag),
-      status: formData.status,
-      author: "Super Admin",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      views: 0,
-      helpfulVotes: 0,
-      unhelpfulVotes: 0,
-      featured: formData.featured,
-      difficulty: formData.difficulty,
-    };
-
-    setArticles([newArticle, ...articles]);
-    resetForm();
+    // In real implementation, this would make an API call
+    console.log("Creating article:", newArticle);
     setShowCreateDialog(false);
-    toast.success("Article created successfully!");
+    setNewArticle({
+      title: "",
+      description: "",
+      category: "",
+      userType: "all",
+      content: "",
+      tags: "",
+    });
   };
 
-  const handleEditArticle = (article: HelpArticle) => {
+  const handleEditArticle = (article: Article) => {
     setEditingArticle(article);
-    setFormData({
+    setNewArticle({
       title: article.title,
-      content: article.content,
+      description: article.description,
       category: article.category,
+      userType: article.userType,
+      content: article.content,
       tags: article.tags.join(", "),
-      status: article.status,
-      difficulty: article.difficulty,
-      featured: article.featured,
     });
     setShowCreateDialog(true);
   };
 
-  const handleUpdateArticle = () => {
-    if (!editingArticle) return;
-
-    const updatedArticles = articles.map((article) =>
-      article.id === editingArticle.id
-        ? {
-            ...article,
-            title: formData.title,
-            content: formData.content,
-            category: formData.category,
-            tags: formData.tags
-              .split(",")
-              .map((tag) => tag.trim())
-              .filter((tag) => tag),
-            status: formData.status,
-            difficulty: formData.difficulty,
-            featured: formData.featured,
-            updatedAt: new Date().toISOString(),
-          }
-        : article,
-    );
-
-    setArticles(updatedArticles);
-    resetForm();
+  const handleSaveEdit = () => {
+    // In real implementation, this would make an API call
+    console.log("Updating article:", editingArticle?.id, newArticle);
     setShowCreateDialog(false);
     setEditingArticle(null);
-    toast.success("Article updated successfully!");
-  };
-
-  const handleDeleteArticle = (articleId: string) => {
-    if (confirm("Are you sure you want to delete this article?")) {
-      setArticles(articles.filter((article) => article.id !== articleId));
-      toast.success("Article deleted successfully!");
-    }
-  };
-
-  const handleDeleteComment = (commentId: string) => {
-    if (confirm("Are you sure you want to delete this comment?")) {
-      setComments(comments.filter((comment) => comment.id !== commentId));
-      toast.success("Comment deleted successfully!");
-    }
-  };
-
-  const handleModerateComment = (
-    commentId: string,
-    status: "approved" | "spam",
-  ) => {
-    setComments(
-      comments.map((comment) =>
-        comment.id === commentId ? { ...comment, status } : comment,
-      ),
-    );
-    toast.success(`Comment ${status} successfully!`);
-  };
-
-  const toggleFeatured = (articleId: string) => {
-    setArticles(
-      articles.map((article) =>
-        article.id === articleId
-          ? { ...article, featured: !article.featured }
-          : article,
-      ),
-    );
-    toast.success("Article updated!");
-  };
-
-  const resetForm = () => {
-    setFormData({
+    setNewArticle({
       title: "",
-      content: "",
+      description: "",
       category: "",
+      userType: "all",
+      content: "",
       tags: "",
-      status: "draft",
-      difficulty: "beginner",
-      featured: false,
     });
   };
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "published":
-        return <Badge className="bg-green-500">Published</Badge>;
-      case "draft":
-        return <Badge variant="secondary">Draft</Badge>;
-      case "archived":
-        return <Badge variant="outline">Archived</Badge>;
-      default:
-        return <Badge variant="outline">{status}</Badge>;
-    }
-  };
-
-  const getDifficultyBadge = (difficulty: string) => {
-    switch (difficulty) {
-      case "beginner":
-        return <Badge className="bg-blue-500">Beginner</Badge>;
-      case "intermediate":
-        return <Badge className="bg-yellow-500">Intermediate</Badge>;
-      case "advanced":
-        return <Badge className="bg-red-500">Advanced</Badge>;
-      default:
-        return <Badge variant="outline">{difficulty}</Badge>;
-    }
-  };
-
-  const filteredArticles = articles.filter((article) => {
-    if (categoryFilter !== "all" && article.category !== categoryFilter)
-      return false;
-    if (statusFilter !== "all" && article.status !== statusFilter) return false;
-    if (
-      searchTerm &&
-      !article.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      !article.content.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      !article.tags.some((tag) =>
-        tag.toLowerCase().includes(searchTerm.toLowerCase()),
-      )
-    )
-      return false;
-    return true;
-  });
-
-  const pendingComments = comments.filter(
-    (comment) => comment.status === "pending",
-  );
-  const spamComments = comments.filter((comment) => comment.status === "spam");
 
   return (
     <SuperAdminLayout>
       <div className="max-w-full overflow-x-hidden">
-        <div className="space-y-6">
+        <div className="container mx-auto px-4 py-8 space-y-8">
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold">Help Center Management</h1>
               <p className="text-muted-foreground">
-                Manage help articles, comments, and knowledge base content
+                Create and manage help articles and documentation
               </p>
             </div>
-            <div className="flex gap-2">
-              <Dialog
-                open={showCreateDialog}
-                onOpenChange={setShowCreateDialog}
-              >
-                <DialogTrigger asChild>
-                  <Button onClick={resetForm} className="gap-2">
-                    <Plus className="h-4 w-4" />
-                    Create Article
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-                  <DialogHeader>
-                    <DialogTitle>
-                      {editingArticle ? "Edit Article" : "Create New Article"}
-                    </DialogTitle>
-                    <DialogDescription>
-                      {editingArticle
-                        ? "Update the article details."
-                        : "Create a new help article for users."}
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="grid gap-4 py-4">
-                    <div className="grid gap-2">
+            <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
+              <DialogTrigger asChild>
+                <Button className="gap-2">
+                  <Plus className="h-4 w-4" />
+                  Add New Article
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>
+                    {editingArticle ? "Edit Article" : "Create New Article"}
+                  </DialogTitle>
+                  <DialogDescription>
+                    {editingArticle
+                      ? "Update the article information below."
+                      : "Fill in the details to create a new help article."}
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
                       <Label htmlFor="title">Title</Label>
                       <Input
                         id="title"
-                        value={formData.title}
+                        value={newArticle.title}
                         onChange={(e) =>
-                          setFormData((prev) => ({
+                          setNewArticle((prev) => ({
                             ...prev,
                             title: e.target.value,
                           }))
                         }
-                        placeholder="Enter article title..."
+                        placeholder="Article title"
                       />
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="grid gap-2">
-                        <Label htmlFor="category">Category</Label>
-                        <Select
-                          value={formData.category}
-                          onValueChange={(value) =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              category: value,
-                            }))
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select category" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {categories.map((category) => (
-                              <SelectItem
-                                key={category.id}
-                                value={category.name}
-                              >
-                                {category.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="difficulty">Difficulty</Label>
-                        <Select
-                          value={formData.difficulty}
-                          onValueChange={(value: any) =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              difficulty: value,
-                            }))
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="beginner">Beginner</SelectItem>
-                            <SelectItem value="intermediate">
-                              Intermediate
+                    <div>
+                      <Label htmlFor="category">Category</Label>
+                      <Select
+                        value={newArticle.category}
+                        onValueChange={(value) =>
+                          setNewArticle((prev) => ({
+                            ...prev,
+                            category: value,
+                          }))
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {categories.map((category) => (
+                            <SelectItem key={category.id} value={category.id}>
+                              {category.name}
                             </SelectItem>
-                            <SelectItem value="advanced">Advanced</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="tags">Tags (comma-separated)</Label>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="userType">User Type</Label>
+                      <Select
+                        value={newArticle.userType}
+                        onValueChange={(value: any) =>
+                          setNewArticle((prev) => ({
+                            ...prev,
+                            userType: value,
+                          }))
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select user type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All Users</SelectItem>
+                          <SelectItem value="business">
+                            Business Owners
+                          </SelectItem>
+                          <SelectItem value="agency">Agency Admins</SelectItem>
+                          <SelectItem value="admin">Super Admins</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="tags">Tags (comma separated)</Label>
                       <Input
                         id="tags"
-                        value={formData.tags}
+                        value={newArticle.tags}
                         onChange={(e) =>
-                          setFormData((prev) => ({
+                          setNewArticle((prev) => ({
                             ...prev,
                             tags: e.target.value,
                           }))
                         }
-                        placeholder="e.g. tutorial, getting started, dashboard"
+                        placeholder="getting-started, setup, basics"
                       />
-                    </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="content">Content</Label>
-                      <Textarea
-                        id="content"
-                        value={formData.content}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            content: e.target.value,
-                          }))
-                        }
-                        placeholder="Enter article content in Markdown..."
-                        rows={12}
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="grid gap-2">
-                        <Label htmlFor="status">Status</Label>
-                        <Select
-                          value={formData.status}
-                          onValueChange={(value: any) =>
-                            setFormData((prev) => ({ ...prev, status: value }))
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="draft">Draft</SelectItem>
-                            <SelectItem value="published">Published</SelectItem>
-                            <SelectItem value="archived">Archived</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="flex items-center space-x-2 mt-6">
-                        <input
-                          type="checkbox"
-                          id="featured"
-                          checked={formData.featured}
-                          onChange={(e) =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              featured: e.target.checked,
-                            }))
-                          }
-                          className="h-4 w-4"
-                        />
-                        <Label htmlFor="featured">Featured Article</Label>
-                      </div>
                     </div>
                   </div>
-                  <DialogFooter>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        setShowCreateDialog(false);
-                        setEditingArticle(null);
-                        resetForm();
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      onClick={
-                        editingArticle
-                          ? handleUpdateArticle
-                          : handleCreateArticle
+                  <div>
+                    <Label htmlFor="description">Description</Label>
+                    <Input
+                      id="description"
+                      value={newArticle.description}
+                      onChange={(e) =>
+                        setNewArticle((prev) => ({
+                          ...prev,
+                          description: e.target.value,
+                        }))
                       }
-                    >
-                      {editingArticle ? "Update Article" : "Create Article"}
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            </div>
+                      placeholder="Brief description of the article"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="content">Content (Markdown)</Label>
+                    <Textarea
+                      id="content"
+                      value={newArticle.content}
+                      onChange={(e) =>
+                        setNewArticle((prev) => ({
+                          ...prev,
+                          content: e.target.value,
+                        }))
+                      }
+                      placeholder="Write your article content in Markdown format..."
+                      rows={15}
+                      className="font-mono"
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setShowCreateDialog(false);
+                      setEditingArticle(null);
+                      setNewArticle({
+                        title: "",
+                        description: "",
+                        category: "",
+                        userType: "all",
+                        content: "",
+                        tags: "",
+                      });
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={
+                      editingArticle ? handleSaveEdit : handleCreateArticle
+                    }
+                  >
+                    {editingArticle ? "Save Changes" : "Create Article"}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
 
-          {/* Stats Overview */}
-          <div className="grid gap-4 md:grid-cols-4">
+          {/* Search and Filters */}
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-1">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                    <Input
+                      placeholder="Search articles..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                </div>
+                <Select
+                  value={selectedCategory}
+                  onValueChange={setSelectedCategory}
+                >
+                  <SelectTrigger className="w-full md:w-48">
+                    <SelectValue placeholder="All Categories" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Categories</SelectItem>
+                    {categories.map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Quick Stats */}
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   Total Articles
                 </CardTitle>
-                <FileText className="h-4 w-4 text-muted-foreground" />
+                <BookOpen className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{articles.length}</div>
@@ -661,7 +815,9 @@ export default function SuperAdminHelp() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {articles.reduce((sum, article) => sum + article.views, 0)}
+                  {articles
+                    .reduce((sum, article) => sum + (article.views || 0), 0)
+                    .toLocaleString()}
                 </div>
                 <p className="text-xs text-muted-foreground">
                   Across all articles
@@ -671,414 +827,281 @@ export default function SuperAdminHelp() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Pending Comments
+                  Average Rating
                 </CardTitle>
-                <MessageSquare className="h-4 w-4 text-muted-foreground" />
+                <Star className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {pendingComments.length}
+                  {(
+                    articles.reduce(
+                      (sum, article) => sum + (article.rating || 0),
+                      0,
+                    ) / articles.length
+                  ).toFixed(1)}
                 </div>
-                <p className="text-xs text-muted-foreground">Need moderation</p>
+                <p className="text-xs text-muted-foreground">
+                  User satisfaction
+                </p>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Spam Detected
+                  Categories
                 </CardTitle>
-                <XCircle className="h-4 w-4 text-muted-foreground" />
+                <Settings className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{spamComments.length}</div>
+                <div className="text-2xl font-bold">{categories.length}</div>
                 <p className="text-xs text-muted-foreground">
-                  Flagged comments
+                  Available topics
                 </p>
               </CardContent>
             </Card>
           </div>
 
-          {/* Tabs */}
-          <div className="flex gap-2 border-b">
-            <Button
-              variant={selectedTab === "articles" ? "default" : "ghost"}
-              onClick={() => setSelectedTab("articles")}
-              className="gap-2"
-            >
-              <FileText className="h-4 w-4" />
-              Articles
-            </Button>
-            <Button
-              variant={selectedTab === "comments" ? "default" : "ghost"}
-              onClick={() => setSelectedTab("comments")}
-              className="gap-2"
-            >
-              <MessageSquare className="h-4 w-4" />
-              Comments ({pendingComments.length})
-            </Button>
-            <Button
-              variant={selectedTab === "categories" ? "default" : "ghost"}
-              onClick={() => setSelectedTab("categories")}
-              className="gap-2"
-            >
-              <Book className="h-4 w-4" />
-              Categories
-            </Button>
-          </div>
+          <Tabs defaultValue="browse" className="space-y-6">
+            <TabsList>
+              <TabsTrigger value="browse">Browse Articles</TabsTrigger>
+              <TabsTrigger value="popular">Popular</TabsTrigger>
+              <TabsTrigger value="recent">Recent</TabsTrigger>
+              <TabsTrigger value="categories">Categories</TabsTrigger>
+            </TabsList>
 
-          {/* Articles Tab */}
-          {selectedTab === "articles" && (
-            <>
-              {/* Filters */}
-              <Card>
-                <CardContent className="p-4">
-                  <div className="flex flex-col lg:flex-row gap-4">
-                    <div className="relative flex-1">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        placeholder="Search articles..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10"
-                      />
-                    </div>
-                    <div className="flex gap-2">
-                      <Select
-                        value={categoryFilter}
-                        onValueChange={setCategoryFilter}
-                      >
-                        <SelectTrigger className="w-48">
-                          <SelectValue placeholder="Filter by category" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="all">All Categories</SelectItem>
-                          {categories.map((category) => (
-                            <SelectItem key={category.id} value={category.name}>
-                              {category.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <Select
-                        value={statusFilter}
-                        onValueChange={setStatusFilter}
-                      >
-                        <SelectTrigger className="w-48">
-                          <SelectValue placeholder="Filter by status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="all">All Statuses</SelectItem>
-                          <SelectItem value="published">Published</SelectItem>
-                          <SelectItem value="draft">Draft</SelectItem>
-                          <SelectItem value="archived">Archived</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Articles Table */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>
-                    Help Articles ({filteredArticles.length})
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <div className="overflow-x-auto">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Article</TableHead>
-                          <TableHead>Category</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>Difficulty</TableHead>
-                          <TableHead>Views</TableHead>
-                          <TableHead>Rating</TableHead>
-                          <TableHead>Updated</TableHead>
-                          <TableHead>Actions</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {filteredArticles.map((article) => (
-                          <TableRow key={article.id}>
-                            <TableCell>
-                              <div className="space-y-1">
-                                <div className="flex items-center gap-2">
-                                  <div className="font-medium">
-                                    {article.title}
-                                  </div>
-                                  {article.featured && (
-                                    <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                                  )}
-                                </div>
-                                <div className="text-sm text-muted-foreground">
-                                  By {article.author}
-                                </div>
-                                <div className="flex gap-1">
-                                  {article.tags.slice(0, 3).map((tag) => (
-                                    <Badge
-                                      key={tag}
-                                      variant="outline"
-                                      className="text-xs"
-                                    >
-                                      {tag}
-                                    </Badge>
-                                  ))}
-                                  {article.tags.length > 3 && (
-                                    <Badge
-                                      variant="outline"
-                                      className="text-xs"
-                                    >
-                                      +{article.tags.length - 3}
-                                    </Badge>
-                                  )}
-                                </div>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <Badge variant="outline">
-                                {article.category}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>
-                              {getStatusBadge(article.status)}
-                            </TableCell>
-                            <TableCell>
-                              {getDifficultyBadge(article.difficulty)}
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex items-center gap-1">
-                                <Eye className="h-3 w-3" />
-                                {article.views}
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex items-center gap-3 text-sm">
-                                <span className="flex items-center gap-1">
-                                  <ThumbsUp className="h-3 w-3 text-green-500" />
-                                  {article.helpfulVotes}
-                                </span>
-                                <span className="flex items-center gap-1">
-                                  <ThumbsDown className="h-3 w-3 text-red-500" />
-                                  {article.unhelpfulVotes}
-                                </span>
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-sm">
-                              {new Date(article.updatedAt).toLocaleDateString()}
-                            </TableCell>
-                            <TableCell>
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="icon">
-                                    <MoreVertical className="h-4 w-4" />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                  <DropdownMenuItem
-                                    onClick={() =>
-                                      window.open(
-                                        `/help/${article.id}`,
-                                        "_blank",
-                                      )
-                                    }
-                                  >
-                                    <Eye className="h-4 w-4 mr-2" />
-                                    View Article
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem
-                                    onClick={() => handleEditArticle(article)}
-                                  >
-                                    <Edit className="h-4 w-4 mr-2" />
-                                    Edit Article
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem
-                                    onClick={() => toggleFeatured(article.id)}
-                                  >
-                                    <Star className="h-4 w-4 mr-2" />
-                                    {article.featured ? "Unfeature" : "Feature"}
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem
-                                    onClick={() =>
-                                      handleDeleteArticle(article.id)
-                                    }
-                                    className="text-red-600 focus:text-red-600"
-                                  >
-                                    <Trash2 className="h-4 w-4 mr-2" />
-                                    Delete Article
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                </CardContent>
-              </Card>
-            </>
-          )}
-
-          {/* Comments Tab */}
-          {selectedTab === "comments" && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Comment Moderation</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Comment</TableHead>
-                        <TableHead>Article</TableHead>
-                        <TableHead>Author</TableHead>
-                        <TableHead>Date</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {comments.map((comment) => {
-                        const article = articles.find(
-                          (a) => a.id === comment.articleId,
-                        );
-                        return (
-                          <TableRow key={comment.id}>
-                            <TableCell className="max-w-md">
-                              <div className="truncate">{comment.content}</div>
-                            </TableCell>
-                            <TableCell>
-                              <div className="font-medium">
-                                {article?.title || "Unknown"}
-                              </div>
-                            </TableCell>
-                            <TableCell>{comment.author}</TableCell>
-                            <TableCell className="text-sm">
-                              {new Date(comment.createdAt).toLocaleDateString()}
-                            </TableCell>
-                            <TableCell>
-                              <Badge
-                                variant={
-                                  comment.status === "approved"
-                                    ? "default"
-                                    : comment.status === "spam"
-                                      ? "destructive"
-                                      : "secondary"
-                                }
-                              >
-                                {comment.status}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex gap-2">
-                                {comment.status === "pending" && (
-                                  <>
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      onClick={() =>
-                                        handleModerateComment(
-                                          comment.id,
-                                          "approved",
-                                        )
-                                      }
-                                    >
-                                      <CheckCircle className="h-4 w-4" />
-                                    </Button>
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      onClick={() =>
-                                        handleModerateComment(
-                                          comment.id,
-                                          "spam",
-                                        )
-                                      }
-                                    >
-                                      <XCircle className="h-4 w-4" />
-                                    </Button>
-                                  </>
-                                )}
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() =>
-                                    handleDeleteComment(comment.id)
-                                  }
-                                >
-                                  <Trash2 className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Categories Tab */}
-          {selectedTab === "categories" && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Help Categories</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Category</TableHead>
-                        <TableHead>Description</TableHead>
-                        <TableHead>Articles</TableHead>
-                        <TableHead>Order</TableHead>
-                        <TableHead>Visible</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {categories.map((category) => (
-                        <TableRow key={category.id}>
-                          <TableCell className="font-medium">
-                            {category.name}
-                          </TableCell>
-                          <TableCell>{category.description}</TableCell>
-                          <TableCell>{category.articleCount}</TableCell>
-                          <TableCell>{category.order}</TableCell>
-                          <TableCell>
+            <TabsContent value="browse" className="space-y-6">
+              <div className="grid gap-6">
+                {filteredArticles.map((article) => (
+                  <Card
+                    key={article.id}
+                    className="hover:shadow-md transition-shadow"
+                  >
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div className="space-y-2 flex-1">
+                          <div className="flex items-center gap-2">
+                            <CardTitle className="text-lg hover:text-primary cursor-pointer">
+                              {article.title}
+                            </CardTitle>
+                            <Badge variant="outline" className="text-xs">
+                              {categories.find((c) => c.id === article.category)
+                                ?.name || article.category}
+                            </Badge>
                             <Badge
                               variant={
-                                category.visible ? "default" : "secondary"
+                                article.status === "published"
+                                  ? "default"
+                                  : "secondary"
                               }
+                              className="text-xs"
                             >
-                              {category.visible ? "Visible" : "Hidden"}
+                              {article.status}
                             </Badge>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex gap-2">
-                              <Button variant="outline" size="sm">
-                                <Edit className="h-4 w-4" />
-                              </Button>
-                              <Button variant="outline" size="sm">
-                                <Settings className="h-4 w-4" />
-                              </Button>
+                          </div>
+                          <CardDescription>
+                            {article.description}
+                          </CardDescription>
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <Eye className="h-4 w-4" />
+                              {article.views?.toLocaleString() || 0} views
                             </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+                            <div className="flex items-center gap-1">
+                              <Star className="h-4 w-4" />
+                              {article.rating || 0} rating
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Calendar className="h-4 w-4" />
+                              Updated{" "}
+                              {new Date(
+                                article.lastUpdated,
+                              ).toLocaleDateString()}
+                            </div>
+                          </div>
+                        </div>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                              <span className="sr-only">Open menu</span>
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                              onClick={() => handleEditArticle(article)}
+                            >
+                              <Edit className="mr-2 h-4 w-4" />
+                              Edit Article
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <Eye className="mr-2 h-4 w-4" />
+                              Preview
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="text-destructive">
+                              <Trash2 className="mr-2 h-4 w-4" />
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-wrap gap-1">
+                        {article.tags.map((tag) => (
+                          <Badge
+                            key={tag}
+                            variant="outline"
+                            className="text-xs"
+                          >
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="popular" className="space-y-6">
+              <div className="grid gap-6">
+                {popularArticles.map((article) => (
+                  <Card
+                    key={article.id}
+                    className="hover:shadow-md transition-shadow"
+                  >
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div className="space-y-2 flex-1">
+                          <div className="flex items-center gap-2">
+                            <CardTitle className="text-lg hover:text-primary cursor-pointer">
+                              {article.title}
+                            </CardTitle>
+                            <Badge variant="outline" className="text-xs">
+                              {categories.find((c) => c.id === article.category)
+                                ?.name || article.category}
+                            </Badge>
+                            <Badge className="text-xs bg-yellow-100 text-yellow-800">
+                              Popular
+                            </Badge>
+                          </div>
+                          <CardDescription>
+                            {article.description}
+                          </CardDescription>
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <Eye className="h-4 w-4" />
+                              {article.views?.toLocaleString() || 0} views
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Star className="h-4 w-4" />
+                              {article.rating || 0} rating
+                            </div>
+                          </div>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEditArticle(article)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </CardHeader>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="recent" className="space-y-6">
+              <div className="grid gap-6">
+                {recentArticles.map((article) => (
+                  <Card
+                    key={article.id}
+                    className="hover:shadow-md transition-shadow"
+                  >
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div className="space-y-2 flex-1">
+                          <div className="flex items-center gap-2">
+                            <CardTitle className="text-lg hover:text-primary cursor-pointer">
+                              {article.title}
+                            </CardTitle>
+                            <Badge variant="outline" className="text-xs">
+                              {categories.find((c) => c.id === article.category)
+                                ?.name || article.category}
+                            </Badge>
+                          </div>
+                          <CardDescription>
+                            {article.description}
+                          </CardDescription>
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <Calendar className="h-4 w-4" />
+                              Updated{" "}
+                              {new Date(
+                                article.lastUpdated,
+                              ).toLocaleDateString()}
+                            </div>
+                          </div>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEditArticle(article)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </CardHeader>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="categories" className="space-y-6">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {categories.map((category) => {
+                  const categoryArticles = articles.filter(
+                    (a) => a.category === category.id,
+                  );
+                  const Icon = category.icon;
+                  return (
+                    <Card
+                      key={category.id}
+                      className="hover:shadow-md transition-shadow cursor-pointer"
+                      onClick={() => setSelectedCategory(category.id)}
+                    >
+                      <CardHeader>
+                        <div className="flex items-center gap-3">
+                          <Icon className="h-8 w-8 text-primary" />
+                          <div>
+                            <CardTitle className="text-lg">
+                              {category.name}
+                            </CardTitle>
+                            <CardDescription>
+                              {categoryArticles.length} articles
+                            </CardDescription>
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-sm text-muted-foreground">
+                          {categoryArticles
+                            .reduce(
+                              (sum, article) => sum + (article.views || 0),
+                              0,
+                            )
+                            .toLocaleString()}{" "}
+                          total views
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </SuperAdminLayout>
