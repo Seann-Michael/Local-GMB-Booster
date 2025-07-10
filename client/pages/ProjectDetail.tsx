@@ -1065,7 +1065,7 @@ export default function ProjectDetail() {
                                     .slice(0, 2)
                                     .map((tag, tagIndex) => (
                                       <Badge
-                                        key={`photo-${index}-tag-${tag}-${tagIndex}`}
+                                        key={`photo-${index}-tag-${tagIndex}-${tag.replace(/\s+/g, "-").toLowerCase()}`}
                                         variant="secondary"
                                         className="text-xs"
                                       >
