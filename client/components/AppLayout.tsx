@@ -83,7 +83,28 @@ export function AppLayout({ children }: AppLayoutProps) {
   const [businessName, setBusinessName] = useState("");
   const [zoomLevel, setZoomLevel] = useState(100);
 
-  // Load business name on mount and listen for changes
+  // Zoom functions
+  const handleZoomIn = () => {
+    const newZoom = Math.min(zoomLevel + 10, 150);
+    setZoomLevel(newZoom);
+    document.body.style.zoom = `${newZoom}%`;
+    localStorage.setItem("system_zoom", newZoom.toString());
+  };
+
+  const handleZoomOut = () => {
+    const newZoom = Math.max(zoomLevel - 10, 50);
+    setZoomLevel(newZoom);
+    document.body.style.zoom = `${newZoom}%`;
+    localStorage.setItem("system_zoom", newZoom.toString());
+  };
+
+  const resetZoom = () => {
+    setZoomLevel(100);
+    document.body.style.zoom = "100%";
+    localStorage.setItem("system_zoom", "100");
+  };
+
+  // Load business name and zoom level on mount and listen for changes
   useEffect(() => {
     const loadBusinessName = () => {
       const name = localStorage.getItem("business_name") || "My Business";
