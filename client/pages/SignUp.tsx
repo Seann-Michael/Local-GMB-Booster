@@ -16,6 +16,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { PhoneInput } from "@/components/ui/phone-input";
+import { StateSelect } from "@/components/ui/state-select";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -263,14 +265,12 @@ export default function SignUp() {
 
                 <div className="space-y-2">
                   <Label htmlFor="businessPhone">Business Phone</Label>
-                  <Input
+                  <PhoneInput
                     id="businessPhone"
-                    type="tel"
                     value={formData.businessPhone}
-                    onChange={(e) =>
-                      handleInputChange("businessPhone", e.target.value)
+                    onChange={(value) =>
+                      handleInputChange("businessPhone", value)
                     }
-                    placeholder="(555) 123-4567"
                   />
                 </div>
               </div>
