@@ -729,8 +729,19 @@ export default function Automation() {
           </TabsContent>
 
           <TabsContent value="analytics" className="space-y-6">
-            {/* Performance Overview */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="text-center py-12">
+              <BarChart3 className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+              <h3 className="text-lg font-medium mb-2">Analytics Dashboard</h3>
+              <p className="text-muted-foreground max-w-md mx-auto">
+                Detailed analytics and performance metrics will be available
+                soon. Monitor your workflow performance, success rates, and
+                execution trends.
+              </p>
+            </div>
+            <div
+              style={{ display: "none" }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+            >
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">
