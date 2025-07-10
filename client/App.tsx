@@ -273,15 +273,6 @@ const App = () => (
                   }
                 />
                 <Route
-                  path="/super-admin/users"
-                  element={
-                    <ProtectedRoute>
-                      <UserManagement />
-                    </ProtectedRoute>
-                  }
-                />
-
-                <Route
                   path="/admin/profile"
                   element={
                     <ProtectedRoute>
