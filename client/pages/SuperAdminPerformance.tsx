@@ -527,6 +527,17 @@ export default function SuperAdminPerformance() {
     }
   };
 
+  // Ensure all arrays are properly initialized
+  const safePerformanceMetrics = Array.isArray(performanceMetrics)
+    ? performanceMetrics
+    : [];
+  const safeCacheMetrics = Array.isArray(cacheMetrics) ? cacheMetrics : [];
+  const safeDbConnections = Array.isArray(dbConnections) ? dbConnections : [];
+  const safeScalingRules = Array.isArray(scalingRules) ? scalingRules : [];
+  const safeOptimizationJobs = Array.isArray(optimizationJobs)
+    ? optimizationJobs
+    : [];
+
   return (
     <SuperAdminLayout>
       <div className="space-y-6">
