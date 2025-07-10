@@ -1374,6 +1374,105 @@ Contact our billing support team:
           })}
         </div>
 
+        {/* System Monitoring & Error Logs */}
+        {(isSuper || currentUser?.role === "admin") && (
+          <Card className="mb-8 border-orange-200 bg-orange-50">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="h-5 w-5 text-orange-600" />
+                  System Monitoring & Error Logs
+                </div>
+                <Badge variant="outline" className="bg-white">
+                  Admin Access
+                </Badge>
+              </CardTitle>
+              <CardDescription>
+                Monitor application health, view crash reports, and access error
+                logs for troubleshooting
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4 md:grid-cols-3 mb-4">
+                <Card
+                  className="cursor-pointer hover:shadow-md transition-shadow border-red-200 bg-red-50"
+                  onClick={() => {
+                    document
+                      .getElementById("crash-logs-section")
+                      ?.scrollIntoView({
+                        behavior: "smooth",
+                      });
+                  }}
+                >
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3">
+                      <AlertTriangle className="h-8 w-8 text-red-600" />
+                      <div>
+                        <div className="font-semibold text-red-800">
+                          7 Critical Errors
+                        </div>
+                        <div className="text-sm text-red-600">
+                          Last 24 hours
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="cursor-pointer hover:shadow-md transition-shadow border-yellow-200 bg-yellow-50">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3">
+                      <RefreshCw className="h-8 w-8 text-yellow-600" />
+                      <div>
+                        <div className="font-semibold text-yellow-800">
+                          89% Uptime
+                        </div>
+                        <div className="text-sm text-yellow-600">This week</div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="cursor-pointer hover:shadow-md transition-shadow border-blue-200 bg-blue-50">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3">
+                      <User className="h-8 w-8 text-blue-600" />
+                      <div>
+                        <div className="font-semibold text-blue-800">
+                          156 Users
+                        </div>
+                        <div className="text-sm text-blue-600">
+                          Affected by errors
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="flex gap-2">
+                <Button
+                  className="gap-2"
+                  onClick={() => {
+                    document
+                      .getElementById("crash-logs-section")
+                      ?.scrollIntoView({
+                        behavior: "smooth",
+                      });
+                  }}
+                >
+                  <AlertTriangle className="h-4 w-4" />
+                  View Detailed Error Logs
+                </Button>
+                <Button variant="outline" className="gap-2">
+                  <RefreshCw className="h-4 w-4" />
+                  Export Error Report
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Popular Articles */}
         {!selectedCategory && (
           <div className="mb-8">
