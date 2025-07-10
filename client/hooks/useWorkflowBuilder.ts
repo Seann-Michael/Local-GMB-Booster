@@ -38,8 +38,8 @@ export function useWorkflowBuilder(initialWorkflow?: Workflow) {
     isDragging: false,
     dragOffset: { x: 0, y: 0 },
     connectionStart: null,
-    zoom: 1,
-    pan: { x: 0, y: 0 },
+    zoom: 0.8,
+    pan: { x: 50, y: 50 },
     isConnecting: false,
   });
 
@@ -282,8 +282,8 @@ export function useWorkflowBuilder(initialWorkflow?: Workflow) {
   const resetView = useCallback(() => {
     setState((prev) => ({
       ...prev,
-      zoom: 1,
-      pan: { x: 0, y: 0 },
+      zoom: 0.8,
+      pan: { x: 50, y: 50 },
     }));
   }, []);
 

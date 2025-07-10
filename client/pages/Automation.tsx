@@ -171,28 +171,33 @@ export default function Automation() {
 
   if (selectedWorkflow) {
     return (
-      <div className="h-screen w-screen overflow-hidden bg-background">
-        <WorkflowBuilder
-          workflowId={selectedWorkflow.id}
-          onSave={(workflow) => {
-            setWorkflows((prev) =>
-              prev.map((w) => (w.id === workflow.id ? workflow : w)),
-            );
-          }}
-          onPublish={(workflow) => {
-            handleWorkflowAction(workflow.id, "activate");
-          }}
-        />
-
-        {/* Back Button */}
-        <Button
-          variant="outline"
-          onClick={() => setSelectedWorkflow(null)}
-          className="absolute top-4 left-4 z-50"
+      <AppLayout>
+        <div
+          className="h-full w-full overflow-hidden relative"
+          style={{ height: "calc(100vh - 73px)" }}
         >
-          ← Back to Automations
-        </Button>
-      </div>
+          <WorkflowBuilder
+            workflowId={selectedWorkflow.id}
+            onSave={(workflow) => {
+              setWorkflows((prev) =>
+                prev.map((w) => (w.id === workflow.id ? workflow : w)),
+              );
+            }}
+            onPublish={(workflow) => {
+              handleWorkflowAction(workflow.id, "activate");
+            }}
+          />
+
+          {/* Back Button */}
+          <Button
+            variant="outline"
+            onClick={() => setSelectedWorkflow(null)}
+            className="absolute top-4 left-4 z-50"
+          >
+            ← Back to Automations
+          </Button>
+        </div>
+      </AppLayout>
     );
   }
 

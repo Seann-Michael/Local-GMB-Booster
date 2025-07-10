@@ -152,7 +152,7 @@ export function WorkflowBuilder({
   }, [actions, state.selectedNodeId, state.isConnecting, handleSave]);
 
   return (
-    <div className="flex h-screen bg-background overflow-hidden">
+    <div className="flex h-full bg-background overflow-hidden">
       {/* Main Canvas Area */}
       <div className="flex-1 flex flex-col relative min-w-0">
         {/* Toolbar */}
