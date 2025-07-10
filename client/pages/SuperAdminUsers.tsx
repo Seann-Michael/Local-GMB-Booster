@@ -394,7 +394,7 @@ export default function SuperAdminUsers() {
                         <TableHeader>
                           <TableRow>
                             {visibleColumns.user && (
-                              <TableHead>
+                              <TableHead className="w-64 min-w-[200px]">
                                 <Button
                                   variant="ghost"
                                   className="h-auto p-0 font-semibold"
@@ -406,7 +406,7 @@ export default function SuperAdminUsers() {
                               </TableHead>
                             )}
                             {visibleColumns.role && (
-                              <TableHead>
+                              <TableHead className="w-32 min-w-[120px]">
                                 <Button
                                   variant="ghost"
                                   className="h-auto p-0 font-semibold"
@@ -418,7 +418,7 @@ export default function SuperAdminUsers() {
                               </TableHead>
                             )}
                             {visibleColumns.status && (
-                              <TableHead>
+                              <TableHead className="w-32 min-w-[120px]">
                                 <Button
                                   variant="ghost"
                                   className="h-auto p-0 font-semibold"
@@ -430,7 +430,7 @@ export default function SuperAdminUsers() {
                               </TableHead>
                             )}
                             {visibleColumns.organization && (
-                              <TableHead>
+                              <TableHead className="w-48 min-w-[180px]">
                                 <Button
                                   variant="ghost"
                                   className="h-auto p-0 font-semibold"
@@ -442,7 +442,7 @@ export default function SuperAdminUsers() {
                               </TableHead>
                             )}
                             {visibleColumns.lastActive && (
-                              <TableHead>
+                              <TableHead className="w-36 min-w-[140px]">
                                 <Button
                                   variant="ghost"
                                   className="h-auto p-0 font-semibold"
