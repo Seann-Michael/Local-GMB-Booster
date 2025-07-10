@@ -1036,7 +1036,7 @@ export default function ProjectDetail() {
                           const photoTags = getPhotoTags(photo);
                           return (
                             <div
-                              key={index}
+                              key={`photo-${index}-${photoUrl.slice(-10)}`}
                               className={`group relative aspect-square cursor-pointer overflow-hidden rounded-lg bg-muted ${
                                 selectedPhotos.includes(index)
                                   ? "ring-2 ring-primary"
