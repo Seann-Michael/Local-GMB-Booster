@@ -109,18 +109,13 @@ export const useTheme = () => {
 export function ThemeToggle() {
   const { theme, setTheme, actualTheme } = useTheme();
 
-  const cycleTheme = () => {
-    if (theme === "light") {
-      setTheme("dark");
-    } else if (theme === "dark") {
-      setTheme("system");
-    } else {
-      setTheme("light");
-    }
+  const toggleTheme = () => {
+    setTheme(actualTheme === "light" ? "dark" : "light");
   };
 
   const getIcon = () => {
-    if (theme === "light") {
+    // Show icon based on CURRENT theme, not next theme
+    if (actualTheme === "light") {
       return (
         <svg
           className="h-4 w-4"
@@ -136,7 +131,7 @@ export function ThemeToggle() {
           />
         </svg>
       );
-    } else if (theme === "dark") {
+    } else {
       return (
         <svg
           className="h-4 w-4"
