@@ -337,7 +337,8 @@ export default function SuperAdminAgencyManagement() {
           </CardHeader>
           <CardContent className="p-0">
             <div className="overflow-x-auto">
-              <Table>
+              <div className="min-w-full w-max">
+                <Table className="table-fixed w-full min-w-[1200px]">
                 <TableHeader>
                   <TableRow>
                     <TableHead>Agency</TableHead>
