@@ -460,8 +460,9 @@ export default function SuperAdminPerformance() {
 
     // Simulate job progress
     const interval = setInterval(() => {
-      setOptimizationJobs((prev) =>
-        (prev || []).map((job) => {
+      setOptimizationJobs((prev) => {
+        if (!Array.isArray(prev)) return [];
+        return prev.map((job) => {
           if (job.id === newJob.id && job.status === "running") {
             const newProgress = Math.min(
               100,
@@ -471,7 +472,7 @@ export default function SuperAdminPerformance() {
               ...job,
               progress: newProgress,
               logs: [
-                ...job.logs,
+                ...(job.logs || []),
                 `Progress: ${Math.round(newProgress)}% complete`,
               ],
             };
