@@ -423,22 +423,24 @@ export default function SuperAdminPerformance() {
   };
 
   const clearCache = (cacheId: string) => {
-    setCacheMetrics((prev) =>
-      (prev || []).map((cache) =>
+    setCacheMetrics((prev) => {
+      if (!Array.isArray(prev)) return [];
+      return prev.map((cache) =>
         cache.id === cacheId
           ? { ...cache, lastCleared: new Date().toISOString(), requests: 0 }
           : cache,
-      ),
-    );
+      );
+    });
     toast.success("Cache cleared successfully");
   };
 
   const toggleScalingRule = (ruleId: string) => {
-    setScalingRules((prev) =>
-      (prev || []).map((rule) =>
+    setScalingRules((prev) => {
+      if (!Array.isArray(prev)) return [];
+      return prev.map((rule) =>
         rule.id === ruleId ? { ...rule, enabled: !rule.enabled } : rule,
-      ),
-    );
+      );
+    });
     toast.success("Scaling rule updated");
   };
 
