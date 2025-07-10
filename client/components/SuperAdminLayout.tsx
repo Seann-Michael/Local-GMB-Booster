@@ -10,6 +10,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { NotificationDropdown } from "@/components/NotificationDropdown";
+import { HeaderSearch } from "@/components/SmartSearch";
+import { ThemeToggle } from "@/components/ThemeProvider";
 import {
   Shield,
   BarChart3,
@@ -358,25 +361,16 @@ export function SuperAdminLayout({
             </div>
 
             <div className="flex items-center gap-1 md:gap-2">
-              {/* Search - Hide on small mobile */}
-              <Button variant="ghost" size="icon" className="hidden sm:flex">
-                <Search className="h-5 w-5" />
-              </Button>
+              {/* Search */}
+              <div className="hidden sm:flex">
+                <HeaderSearch placeholder="Search super admin..." />
+              </div>
+
+              {/* Theme Toggle */}
+              <ThemeToggle />
 
               {/* Notifications */}
-              <div className="relative">
-                <Button variant="ghost" size="icon">
-                  <Bell className="h-5 w-5" />
-                  {notificationCount > 0 && (
-                    <Badge
-                      variant="destructive"
-                      className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center text-xs p-0"
-                    >
-                      {notificationCount}
-                    </Badge>
-                  )}
-                </Button>
-              </div>
+              <NotificationDropdown />
 
               {/* User Menu */}
               <DropdownMenu>
@@ -408,6 +402,12 @@ export function SuperAdminLayout({
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile" className="cursor-pointer">
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link to="/super-admin/settings" className="cursor-pointer">
                       <Settings className="mr-2 h-4 w-4" />
