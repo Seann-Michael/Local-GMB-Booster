@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { SuperAdminLayout } from "@/components/SuperAdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -558,602 +557,575 @@ export default function SuperAdminMessageTemplates() {
   });
 
   return (
-    <SuperAdminLayout>
-      <div className="max-w-full overflow-x-hidden">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-          <div className="min-w-0">
-            <h1 className="text-xl sm:text-2xl font-bold">Message Templates</h1>
-            <p className="text-muted-foreground text-sm sm:text-base">
-              Create and manage reusable message templates with variables
-            </p>
-          </div>
-          <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
-            <DialogTrigger asChild>
-              <Button onClick={resetForm} className="gap-2 w-full sm:w-auto">
-                <Plus className="h-4 w-4" />
-                <span className="hidden sm:inline">Create Template</span>
-                <span className="sm:hidden">Create</span>
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>
-                  {editingTemplate
-                    ? "Edit Template"
-                    : "Create Message Template"}
-                </DialogTitle>
-                <DialogDescription>
-                  {editingTemplate
-                    ? "Update the template details and variables."
-                    : "Create a reusable message template with placeholder variables."}
-                </DialogDescription>
-              </DialogHeader>
-              <Tabs defaultValue="details" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="details">Details</TabsTrigger>
-                  <TabsTrigger value="content">Content</TabsTrigger>
-                  <TabsTrigger value="variables">Variables</TabsTrigger>
-                </TabsList>
+    <div className="max-w-full overflow-x-hidden">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+        <div className="min-w-0">
+          <h1 className="text-xl sm:text-2xl font-bold">Message Templates</h1>
+          <p className="text-muted-foreground text-sm sm:text-base">
+            Create and manage reusable message templates with variables
+          </p>
+        </div>
+        <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
+          <DialogTrigger asChild>
+            <Button onClick={resetForm} className="gap-2 w-full sm:w-auto">
+              <Plus className="h-4 w-4" />
+              <span className="hidden sm:inline">Create Template</span>
+              <span className="sm:hidden">Create</span>
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>
+                {editingTemplate ? "Edit Template" : "Create Message Template"}
+              </DialogTitle>
+              <DialogDescription>
+                {editingTemplate
+                  ? "Update the template details and variables."
+                  : "Create a reusable message template with placeholder variables."}
+              </DialogDescription>
+            </DialogHeader>
+            <Tabs defaultValue="details" className="w-full">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="details">Details</TabsTrigger>
+                <TabsTrigger value="content">Content</TabsTrigger>
+                <TabsTrigger value="variables">Variables</TabsTrigger>
+              </TabsList>
 
-                <TabsContent value="details" className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="grid gap-2">
-                      <Label htmlFor="name">Template Name *</Label>
-                      <Input
-                        id="name"
-                        value={formData.name}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            name: e.target.value,
-                          }))
-                        }
-                        placeholder="e.g., System Maintenance"
-                      />
-                    </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="category">Category *</Label>
-                      <Select
-                        value={formData.category}
-                        onValueChange={(value: any) =>
-                          setFormData((prev) => ({ ...prev, category: value }))
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="system">System</SelectItem>
-                          <SelectItem value="marketing">Marketing</SelectItem>
-                          <SelectItem value="support">Support</SelectItem>
-                          <SelectItem value="emergency">Emergency</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
+              <TabsContent value="details" className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="description">Description</Label>
-                    <Textarea
-                      id="description"
-                      value={formData.description}
+                    <Label htmlFor="name">Template Name *</Label>
+                    <Input
+                      id="name"
+                      value={formData.name}
                       onChange={(e) =>
                         setFormData((prev) => ({
                           ...prev,
-                          description: e.target.value,
+                          name: e.target.value,
                         }))
                       }
-                      placeholder="Brief description of when to use this template..."
-                      rows={3}
+                      placeholder="e.g., System Maintenance"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="type">Message Type *</Label>
+                    <Label htmlFor="category">Category *</Label>
                     <Select
-                      value={formData.type}
+                      value={formData.category}
                       onValueChange={(value: any) =>
-                        setFormData((prev) => ({ ...prev, type: value }))
+                        setFormData((prev) => ({ ...prev, category: value }))
                       }
                     >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="info">Information</SelectItem>
-                        <SelectItem value="warning">Warning</SelectItem>
-                        <SelectItem value="success">Success</SelectItem>
-                        <SelectItem value="error">Error</SelectItem>
+                        <SelectItem value="system">System</SelectItem>
+                        <SelectItem value="marketing">Marketing</SelectItem>
+                        <SelectItem value="support">Support</SelectItem>
+                        <SelectItem value="emergency">Emergency</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
-                </TabsContent>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea
+                    id="description"
+                    value={formData.description}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        description: e.target.value,
+                      }))
+                    }
+                    placeholder="Brief description of when to use this template..."
+                    rows={3}
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="type">Message Type *</Label>
+                  <Select
+                    value={formData.type}
+                    onValueChange={(value: any) =>
+                      setFormData((prev) => ({ ...prev, type: value }))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="info">Information</SelectItem>
+                      <SelectItem value="warning">Warning</SelectItem>
+                      <SelectItem value="success">Success</SelectItem>
+                      <SelectItem value="error">Error</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </TabsContent>
 
-                <TabsContent value="content" className="space-y-4">
-                  <div className="grid gap-2">
-                    <Label htmlFor="title">Message Title *</Label>
-                    <Input
-                      id="title"
-                      value={formData.title}
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          title: e.target.value,
-                        }))
-                      }
-                      placeholder="e.g., Scheduled System Maintenance"
-                    />
-                    <p className="text-xs text-muted-foreground">
-                      Use {`{{variable_name}}`} for placeholders
-                    </p>
-                  </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="content">Message Content *</Label>
-                    <Textarea
-                      id="content"
-                      value={formData.content}
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          content: e.target.value,
-                        }))
-                      }
-                      placeholder="e.g., We will be performing maintenance on {{date}} from {{start_time}} to {{end_time}}..."
-                      rows={6}
-                    />
-                    <p className="text-xs text-muted-foreground">
-                      Variables will be automatically detected from your content
-                    </p>
-                  </div>
-                </TabsContent>
+              <TabsContent value="content" className="space-y-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="title">Message Title *</Label>
+                  <Input
+                    id="title"
+                    value={formData.title}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        title: e.target.value,
+                      }))
+                    }
+                    placeholder="e.g., Scheduled System Maintenance"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Use {`{{variable_name}}`} for placeholders
+                  </p>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="content">Message Content *</Label>
+                  <Textarea
+                    id="content"
+                    value={formData.content}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        content: e.target.value,
+                      }))
+                    }
+                    placeholder="e.g., We will be performing maintenance on {{date}} from {{start_time}} to {{end_time}}..."
+                    rows={6}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Variables will be automatically detected from your content
+                  </p>
+                </div>
+              </TabsContent>
 
-                <TabsContent value="variables" className="space-y-4">
-                  <div className="grid gap-2">
-                    <Label>Detected Variables</Label>
-                    <div className="flex flex-wrap gap-2">
-                      {extractVariables(
-                        formData.title + " " + formData.content,
-                      ).map((variable) => (
-                        <Badge
-                          key={variable}
-                          variant="secondary"
-                          className="gap-1"
-                        >
-                          {variable}
-                          <span className="text-xs text-muted-foreground">
-                            auto
-                          </span>
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="grid gap-2">
-                    <Label>Manual Variables</Label>
-                    <div className="flex gap-2">
-                      <Input
-                        value={formData.newVariable}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            newVariable: e.target.value,
-                          }))
-                        }
-                        placeholder="Add custom variable..."
-                        onKeyPress={(e) => e.key === "Enter" && addVariable()}
-                      />
-                      <Button
-                        type="button"
-                        onClick={addVariable}
-                        variant="outline"
+              <TabsContent value="variables" className="space-y-4">
+                <div className="grid gap-2">
+                  <Label>Detected Variables</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {extractVariables(
+                      formData.title + " " + formData.content,
+                    ).map((variable) => (
+                      <Badge
+                        key={variable}
+                        variant="secondary"
+                        className="gap-1"
                       >
-                        Add
-                      </Button>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {formData.variables.map((variable) => (
-                        <Badge
-                          key={variable}
-                          variant="outline"
-                          className="gap-1"
-                        >
-                          {variable}
-                          <button
-                            onClick={() => removeVariable(variable)}
-                            className="ml-1 hover:text-red-500"
-                          >
-                            ×
-                          </button>
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </TabsContent>
-              </Tabs>
-              <DialogFooter>
-                <Button
-                  variant="outline"
-                  onClick={() => setShowCreateDialog(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={
-                    editingTemplate
-                      ? handleUpdateTemplate
-                      : handleCreateTemplate
-                  }
-                >
-                  {editingTemplate ? "Update Template" : "Create Template"}
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
-
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">
-                    Total Templates
-                  </p>
-                  <p className="text-2xl font-bold">{stats.totalTemplates}</p>
-                </div>
-                <FileText className="h-8 w-8 text-primary" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">
-                    Active Templates
-                  </p>
-                  <p className="text-2xl font-bold">{stats.activeTemplates}</p>
-                </div>
-                <CheckCircle className="h-8 w-8 text-green-500" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">
-                    Pending Approval
-                  </p>
-                  <p className="text-2xl font-bold">{stats.pendingApproval}</p>
-                </div>
-                <Clock className="h-8 w-8 text-yellow-500" />
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Usage</p>
-                  <p className="text-2xl font-bold">{stats.totalUsage}</p>
-                </div>
-                <Star className="h-8 w-8 text-purple-500" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Filters */}
-        <Card className="mb-6">
-          <CardContent className="p-4">
-            <div className="flex flex-col lg:flex-row gap-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search templates..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-              <div className="flex flex-col sm:flex-row gap-2">
-                <Select
-                  value={categoryFilter}
-                  onValueChange={setCategoryFilter}
-                >
-                  <SelectTrigger className="w-full sm:w-48">
-                    <SelectValue placeholder="Filter by category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Categories</SelectItem>
-                    <SelectItem value="system">System</SelectItem>
-                    <SelectItem value="marketing">Marketing</SelectItem>
-                    <SelectItem value="support">Support</SelectItem>
-                    <SelectItem value="emergency">Emergency</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-full sm:w-48">
-                    <SelectValue placeholder="Filter by status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Statuses</SelectItem>
-                    <SelectItem value="approved">Approved</SelectItem>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="rejected">Rejected</SelectItem>
-                    <SelectItem value="draft">Draft</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Templates Table */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg sm:text-xl">
-              Message Templates
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="responsive-table">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Template</TableHead>
-                    <TableHead className="hidden sm:table-cell">
-                      Category
-                    </TableHead>
-                    <TableHead className="hidden md:table-cell">Type</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="hidden lg:table-cell">
-                      Version
-                    </TableHead>
-                    <TableHead className="hidden lg:table-cell">
-                      Usage
-                    </TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredTemplates.map((template) => (
-                    <TableRow key={template.id}>
-                      <TableCell>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-2">
-                            <p className="font-medium truncate text-sm sm:text-base">
-                              {template.name}
-                            </p>
-                            {template.isDefault && (
-                              <Badge variant="secondary" className="text-xs">
-                                Default
-                              </Badge>
-                            )}
-                            {!template.isActive && (
-                              <Badge variant="outline" className="text-xs">
-                                Inactive
-                              </Badge>
-                            )}
-                          </div>
-                          <p className="text-xs text-muted-foreground line-clamp-1">
-                            {template.title}
-                          </p>
-                          <div className="sm:hidden mt-1 space-y-1">
-                            <div className="flex items-center gap-2">
-                              {getCategoryIcon(template.category)}
-                              <span className="text-xs text-muted-foreground capitalize">
-                                {template.category}
-                              </span>
-                            </div>
-                            <div className="md:hidden flex items-center gap-2">
-                              {getTypeIcon(template.type)}
-                              <span className="text-xs text-muted-foreground capitalize">
-                                {template.type}
-                              </span>
-                            </div>
-                            <div className="lg:hidden text-xs text-muted-foreground">
-                              v{template.version} | Used {template.usageCount}{" "}
-                              times
-                            </div>
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        <div className="flex items-center gap-2">
-                          {getCategoryIcon(template.category)}
-                          <span className="capitalize">
-                            {template.category}
-                          </span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        <div className="flex items-center gap-2">
-                          {getTypeIcon(template.type)}
-                          <span className="capitalize">{template.type}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        {getStatusBadge(template.approvalStatus)}
-                      </TableCell>
-                      <TableCell className="hidden lg:table-cell">
-                        <div className="flex items-center gap-1">
-                          <GitBranch className="h-3 w-3 text-muted-foreground" />
-                          <span>v{template.version}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="hidden lg:table-cell">
-                        <span>{template.usageCount} times</span>
-                      </TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              className="h-8 w-8"
-                            >
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem
-                              onClick={() => {
-                                setPreviewTemplate(template);
-                                setShowPreviewDialog(true);
-                              }}
-                            >
-                              <Eye className="h-4 w-4 mr-2" />
-                              Preview
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() => handleEditTemplate(template)}
-                            >
-                              <Edit className="h-4 w-4 mr-2" />
-                              Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() => handleDuplicateTemplate(template)}
-                            >
-                              <Copy className="h-4 w-4 mr-2" />
-                              Duplicate
-                            </DropdownMenuItem>
-                            {template.approvalStatus === "pending" && (
-                              <>
-                                <DropdownMenuItem
-                                  onClick={() =>
-                                    handleApproveTemplate(template.id)
-                                  }
-                                  className="text-green-600 focus:text-green-600"
-                                >
-                                  <CheckCircle className="h-4 w-4 mr-2" />
-                                  Approve
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                  onClick={() =>
-                                    handleRejectTemplate(template.id)
-                                  }
-                                  className="text-red-600 focus:text-red-600"
-                                >
-                                  <XCircle className="h-4 w-4 mr-2" />
-                                  Reject
-                                </DropdownMenuItem>
-                              </>
-                            )}
-                            {template.approvalStatus === "approved" && (
-                              <DropdownMenuItem
-                                onClick={() => handleToggleActive(template.id)}
-                              >
-                                <Zap className="h-4 w-4 mr-2" />
-                                {template.isActive ? "Deactivate" : "Activate"}
-                              </DropdownMenuItem>
-                            )}
-                            {!template.isDefault && (
-                              <DropdownMenuItem
-                                onClick={() =>
-                                  handleDeleteTemplate(template.id)
-                                }
-                                className="text-red-600 focus:text-red-600"
-                              >
-                                <Trash2 className="h-4 w-4 mr-2" />
-                                Delete
-                              </DropdownMenuItem>
-                            )}
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Preview Dialog */}
-        <Dialog open={showPreviewDialog} onOpenChange={setShowPreviewDialog}>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>Template Preview</DialogTitle>
-              <DialogDescription>
-                Preview of the template with variable placeholders
-              </DialogDescription>
-            </DialogHeader>
-            {previewTemplate && (
-              <div className="space-y-4">
-                <div className="grid gap-2">
-                  <Label>Template Information</Label>
-                  <div className="bg-muted/30 p-4 rounded-lg space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">
-                        {previewTemplate.name}
-                      </span>
-                      <div className="flex items-center gap-2">
-                        {getCategoryIcon(previewTemplate.category)}
-                        <span className="text-sm capitalize">
-                          {previewTemplate.category}
+                        {variable}
+                        <span className="text-xs text-muted-foreground">
+                          auto
                         </span>
-                      </div>
-                    </div>
-                    {previewTemplate.description && (
-                      <p className="text-sm text-muted-foreground">
-                        {previewTemplate.description}
-                      </p>
-                    )}
-                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                      <span>Version {previewTemplate.version}</span>
-                      <span>Used {previewTemplate.usageCount} times</span>
-                      {getStatusBadge(previewTemplate.approvalStatus)}
-                    </div>
+                      </Badge>
+                    ))}
                   </div>
                 </div>
                 <div className="grid gap-2">
-                  <Label>Message Preview</Label>
-                  <div className="bg-muted/30 p-4 rounded-lg border">
-                    <h4 className="font-medium mb-2">
-                      {previewTemplate.title}
-                    </h4>
-                    <p className="text-sm whitespace-pre-wrap">
-                      {previewTemplate.content}
-                    </p>
+                  <Label>Manual Variables</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      value={formData.newVariable}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          newVariable: e.target.value,
+                        }))
+                      }
+                      placeholder="Add custom variable..."
+                      onKeyPress={(e) => e.key === "Enter" && addVariable()}
+                    />
+                    <Button
+                      type="button"
+                      onClick={addVariable}
+                      variant="outline"
+                    >
+                      Add
+                    </Button>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {formData.variables.map((variable) => (
+                      <Badge key={variable} variant="outline" className="gap-1">
+                        {variable}
+                        <button
+                          onClick={() => removeVariable(variable)}
+                          className="ml-1 hover:text-red-500"
+                        >
+                          ×
+                        </button>
+                      </Badge>
+                    ))}
                   </div>
                 </div>
-                {previewTemplate.variables.length > 0 && (
-                  <div className="grid gap-2">
-                    <Label>
-                      Variables ({previewTemplate.variables.length})
-                    </Label>
-                    <div className="flex flex-wrap gap-2">
-                      {previewTemplate.variables.map((variable) => (
-                        <Badge key={variable} variant="outline">
-                          {variable}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
+              </TabsContent>
+            </Tabs>
             <DialogFooter>
               <Button
                 variant="outline"
-                onClick={() => setShowPreviewDialog(false)}
+                onClick={() => setShowCreateDialog(false)}
               >
-                Close
+                Cancel
               </Button>
-              {previewTemplate && (
-                <Button
-                  onClick={() => {
-                    setShowPreviewDialog(false);
-                    handleEditTemplate(previewTemplate);
-                  }}
-                >
-                  Edit Template
-                </Button>
-              )}
+              <Button
+                onClick={
+                  editingTemplate ? handleUpdateTemplate : handleCreateTemplate
+                }
+              >
+                {editingTemplate ? "Update Template" : "Create Template"}
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
-    </SuperAdminLayout>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Total Templates</p>
+                <p className="text-2xl font-bold">{stats.totalTemplates}</p>
+              </div>
+              <FileText className="h-8 w-8 text-primary" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">
+                  Active Templates
+                </p>
+                <p className="text-2xl font-bold">{stats.activeTemplates}</p>
+              </div>
+              <CheckCircle className="h-8 w-8 text-green-500" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">
+                  Pending Approval
+                </p>
+                <p className="text-2xl font-bold">{stats.pendingApproval}</p>
+              </div>
+              <Clock className="h-8 w-8 text-yellow-500" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Total Usage</p>
+                <p className="text-2xl font-bold">{stats.totalUsage}</p>
+              </div>
+              <Star className="h-8 w-8 text-purple-500" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Filters */}
+      <Card className="mb-6">
+        <CardContent className="p-4">
+          <div className="flex flex-col lg:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search templates..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                <SelectTrigger className="w-full sm:w-48">
+                  <SelectValue placeholder="Filter by category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  <SelectItem value="system">System</SelectItem>
+                  <SelectItem value="marketing">Marketing</SelectItem>
+                  <SelectItem value="support">Support</SelectItem>
+                  <SelectItem value="emergency">Emergency</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-full sm:w-48">
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Statuses</SelectItem>
+                  <SelectItem value="approved">Approved</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="rejected">Rejected</SelectItem>
+                  <SelectItem value="draft">Draft</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Templates Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg sm:text-xl">
+            Message Templates
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="responsive-table">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Template</TableHead>
+                  <TableHead className="hidden sm:table-cell">
+                    Category
+                  </TableHead>
+                  <TableHead className="hidden md:table-cell">Type</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="hidden lg:table-cell">
+                    Version
+                  </TableHead>
+                  <TableHead className="hidden lg:table-cell">Usage</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredTemplates.map((template) => (
+                  <TableRow key={template.id}>
+                    <TableCell>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <p className="font-medium truncate text-sm sm:text-base">
+                            {template.name}
+                          </p>
+                          {template.isDefault && (
+                            <Badge variant="secondary" className="text-xs">
+                              Default
+                            </Badge>
+                          )}
+                          {!template.isActive && (
+                            <Badge variant="outline" className="text-xs">
+                              Inactive
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-xs text-muted-foreground line-clamp-1">
+                          {template.title}
+                        </p>
+                        <div className="sm:hidden mt-1 space-y-1">
+                          <div className="flex items-center gap-2">
+                            {getCategoryIcon(template.category)}
+                            <span className="text-xs text-muted-foreground capitalize">
+                              {template.category}
+                            </span>
+                          </div>
+                          <div className="md:hidden flex items-center gap-2">
+                            {getTypeIcon(template.type)}
+                            <span className="text-xs text-muted-foreground capitalize">
+                              {template.type}
+                            </span>
+                          </div>
+                          <div className="lg:hidden text-xs text-muted-foreground">
+                            v{template.version} | Used {template.usageCount}{" "}
+                            times
+                          </div>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                      <div className="flex items-center gap-2">
+                        {getCategoryIcon(template.category)}
+                        <span className="capitalize">{template.category}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      <div className="flex items-center gap-2">
+                        {getTypeIcon(template.type)}
+                        <span className="capitalize">{template.type}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      {getStatusBadge(template.approvalStatus)}
+                    </TableCell>
+                    <TableCell className="hidden lg:table-cell">
+                      <div className="flex items-center gap-1">
+                        <GitBranch className="h-3 w-3 text-muted-foreground" />
+                        <span>v{template.version}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden lg:table-cell">
+                      <span>{template.usageCount} times</span>
+                    </TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                          >
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setPreviewTemplate(template);
+                              setShowPreviewDialog(true);
+                            }}
+                          >
+                            <Eye className="h-4 w-4 mr-2" />
+                            Preview
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => handleEditTemplate(template)}
+                          >
+                            <Edit className="h-4 w-4 mr-2" />
+                            Edit
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => handleDuplicateTemplate(template)}
+                          >
+                            <Copy className="h-4 w-4 mr-2" />
+                            Duplicate
+                          </DropdownMenuItem>
+                          {template.approvalStatus === "pending" && (
+                            <>
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  handleApproveTemplate(template.id)
+                                }
+                                className="text-green-600 focus:text-green-600"
+                              >
+                                <CheckCircle className="h-4 w-4 mr-2" />
+                                Approve
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  handleRejectTemplate(template.id)
+                                }
+                                className="text-red-600 focus:text-red-600"
+                              >
+                                <XCircle className="h-4 w-4 mr-2" />
+                                Reject
+                              </DropdownMenuItem>
+                            </>
+                          )}
+                          {template.approvalStatus === "approved" && (
+                            <DropdownMenuItem
+                              onClick={() => handleToggleActive(template.id)}
+                            >
+                              <Zap className="h-4 w-4 mr-2" />
+                              {template.isActive ? "Deactivate" : "Activate"}
+                            </DropdownMenuItem>
+                          )}
+                          {!template.isDefault && (
+                            <DropdownMenuItem
+                              onClick={() => handleDeleteTemplate(template.id)}
+                              className="text-red-600 focus:text-red-600"
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Delete
+                            </DropdownMenuItem>
+                          )}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Preview Dialog */}
+      <Dialog open={showPreviewDialog} onOpenChange={setShowPreviewDialog}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Template Preview</DialogTitle>
+            <DialogDescription>
+              Preview of the template with variable placeholders
+            </DialogDescription>
+          </DialogHeader>
+          {previewTemplate && (
+            <div className="space-y-4">
+              <div className="grid gap-2">
+                <Label>Template Information</Label>
+                <div className="bg-muted/30 p-4 rounded-lg space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium">{previewTemplate.name}</span>
+                    <div className="flex items-center gap-2">
+                      {getCategoryIcon(previewTemplate.category)}
+                      <span className="text-sm capitalize">
+                        {previewTemplate.category}
+                      </span>
+                    </div>
+                  </div>
+                  {previewTemplate.description && (
+                    <p className="text-sm text-muted-foreground">
+                      {previewTemplate.description}
+                    </p>
+                  )}
+                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                    <span>Version {previewTemplate.version}</span>
+                    <span>Used {previewTemplate.usageCount} times</span>
+                    {getStatusBadge(previewTemplate.approvalStatus)}
+                  </div>
+                </div>
+              </div>
+              <div className="grid gap-2">
+                <Label>Message Preview</Label>
+                <div className="bg-muted/30 p-4 rounded-lg border">
+                  <h4 className="font-medium mb-2">{previewTemplate.title}</h4>
+                  <p className="text-sm whitespace-pre-wrap">
+                    {previewTemplate.content}
+                  </p>
+                </div>
+              </div>
+              {previewTemplate.variables.length > 0 && (
+                <div className="grid gap-2">
+                  <Label>Variables ({previewTemplate.variables.length})</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {previewTemplate.variables.map((variable) => (
+                      <Badge key={variable} variant="outline">
+                        {variable}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowPreviewDialog(false)}
+            >
+              Close
+            </Button>
+            {previewTemplate && (
+              <Button
+                onClick={() => {
+                  setShowPreviewDialog(false);
+                  handleEditTemplate(previewTemplate);
+                }}
+              >
+                Edit Template
+              </Button>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }
