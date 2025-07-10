@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { AppLayout } from "@/components/AppLayout";
-import { PhotoCapture } from "@/components/PhotoCapture";
+import { ModernPhotoCapture } from "@/components/ModernPhotoCapture";
 import {
   ArrowLeft,
   Save,
@@ -519,7 +519,7 @@ export default function AddProject() {
               <CardTitle>Project Photos</CardTitle>
             </CardHeader>
             <CardContent>
-              <PhotoCapture
+              <ModernPhotoCapture
                 photos={photos}
                 onPhotosChange={handlePhotosChange}
                 projectInfo={{
