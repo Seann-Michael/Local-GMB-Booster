@@ -2215,6 +2215,18 @@ export default function ProjectDetail() {
           </div>
         </div>
       )}
+
+      {/* Project ID Display - Bottom Right */}
+      <div className="fixed bottom-4 right-4 z-40">
+        <div className="bg-muted/90 backdrop-blur-sm border rounded-lg px-3 py-2 shadow-lg">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <span>Project ID:</span>
+            <code className="font-mono text-foreground font-medium">
+              {project?.id}
+            </code>
+          </div>
+        </div>
+      </div>
     </AppLayout>
   );
 }
