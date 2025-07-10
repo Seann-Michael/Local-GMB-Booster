@@ -557,7 +557,7 @@ export default function Settings() {
     <AppLayout>
       <div className="space-y-6">
         {/* Breadcrumbs */}
-        <div className="px-6">
+        <div className="px-6 pt-6">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
