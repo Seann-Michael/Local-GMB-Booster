@@ -819,10 +819,14 @@ export default function Automation() {
                         <div className="text-center">
                           <div className="font-medium">
                             {workflow.runCount > 0
-                              ? Math.round(
-                                  ((workflow.runCount - 2) /
-                                    workflow.runCount) *
-                                    100,
+                              ? Math.max(
+                                  0,
+                                  Math.round(
+                                    ((workflow.runCount -
+                                      Math.min(2, workflow.runCount)) /
+                                      workflow.runCount) *
+                                      100,
+                                  ),
                                 )
                               : 0}
                             %
@@ -832,7 +836,10 @@ export default function Automation() {
                         <div className="text-center">
                           <div className="font-medium">
                             {workflow.runCount > 0
-                              ? (2.1 + Math.random() * 1.5).toFixed(1)
+                              ? (
+                                  2.1 +
+                                  (workflow.id.length % 10) * 0.15
+                                ).toFixed(1)
                               : 0}
                             s
                           </div>
