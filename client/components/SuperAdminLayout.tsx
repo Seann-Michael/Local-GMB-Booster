@@ -65,9 +65,6 @@ export function SuperAdminLayout({
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
-  // Mock notification count
-  const notificationCount = 2;
-
   const handleSignOut = () => {
     signOut();
     toast.success("Signed out successfully");
