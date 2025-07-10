@@ -630,6 +630,11 @@ export default function SuperAdminEmailIntegration() {
     }
   };
 
+  // Ensure arrays are always defined
+  const safeProviders = providers || [];
+  const safeTemplates = templates || [];
+  const safeCampaigns = campaigns || [];
+
   return (
     <SuperAdminLayout>
       <div className="max-w-full overflow-x-hidden">
