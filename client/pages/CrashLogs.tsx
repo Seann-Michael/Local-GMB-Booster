@@ -264,26 +264,6 @@ ${log.stack ? `Stack Trace:\n${log.stack}` : ""}
     toast.success("Error status updated");
   };
 
-  if (currentUser?.role !== "admin" && currentUser?.role !== "super-admin") {
-    return (
-      <AppLayout>
-        <div className="p-6">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-center text-muted-foreground">
-                <AlertTriangle className="h-12 w-12 mx-auto mb-4 text-yellow-500" />
-                <h3 className="text-lg font-semibold mb-2">
-                  Access Restricted
-                </h3>
-                <p>You don't have permission to view crash logs.</p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </AppLayout>
-    );
-  }
-
   return (
     <AppLayout>
       <div className="p-6 space-y-6">
