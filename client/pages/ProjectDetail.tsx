@@ -120,6 +120,7 @@ interface Project {
   gpsLng?: string;
   customerName?: string;
   customerPhone?: string;
+  customerEmail?: string;
   mobilePhone?: string;
   additionalPhones?: string[];
   keywords: string[];
