@@ -60,11 +60,9 @@ import {
   RotateCcw,
   Video,
   FileImage,
+  HardDrive,
   Webhook,
   Palette,
-  FileImage,
-  Video,
-  HardDrive,
   Archive,
   Copy,
 } from "lucide-react";
