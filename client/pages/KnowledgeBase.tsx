@@ -56,6 +56,8 @@ import {
   Paperclip,
   RefreshCw,
   Download,
+  Bug,
+  Activity,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getCurrentUser, isSuperAdmin } from "@/lib/auth";
