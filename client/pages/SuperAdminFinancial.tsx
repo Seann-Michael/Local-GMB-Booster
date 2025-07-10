@@ -127,7 +127,9 @@ export default function SuperAdminFinancial() {
     },
   };
 
-  const currentData = financialData[timeFrame as keyof typeof financialData];
+  const currentData =
+    financialData[timeFrame as keyof typeof financialData] ||
+    financialData["30d"];
 
   // Revenue trend data for charts
   const revenueTrends = [
@@ -338,7 +340,7 @@ export default function SuperAdminFinancial() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {revenueTrends.map((data, index) => (
+                {(revenueTrends || []).map((data, index) => (
                   <div
                     key={index}
                     className="flex items-center justify-between"
@@ -380,7 +382,7 @@ export default function SuperAdminFinancial() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {Object.entries(currentData.planBreakdown).map(
+                {Object.entries(currentData?.planBreakdown || {}).map(
                   ([plan, data], index) => (
                     <div
                       key={index}
