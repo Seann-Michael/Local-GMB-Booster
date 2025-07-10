@@ -58,6 +58,8 @@ import {
   Upload,
   RefreshCw,
   RotateCcw,
+  Video,
+  FileImage,
   Webhook,
   Palette,
   FileImage,
