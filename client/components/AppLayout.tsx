@@ -49,6 +49,7 @@ import {
   X,
   DollarSign,
   Zap,
+  Monitor,
 } from "lucide-react";
 import { useState, useEffect, ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
