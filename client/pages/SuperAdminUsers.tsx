@@ -458,25 +458,6 @@ export default function SuperAdminUsers() {
             <TabsContent value="agencies">
               <SuperAdminAgencyManagement />
             </TabsContent>
-
-            {/* Staff Tab */}
-            <TabsContent value="staff" className="space-y-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Staff Members</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>Staff management interface</p>
-                    <p className="text-sm">
-                      Detailed staff management features would be implemented
-                      here
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
           </Tabs>
         </div>
       </div>
