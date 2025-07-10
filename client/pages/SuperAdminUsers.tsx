@@ -80,8 +80,7 @@ export default function SuperAdminUsers() {
     role: true,
     status: true,
     organization: true,
-    lastLogin: true,
-    revenue: true,
+    lastActive: true,
     signupDate: false,
     subscription: false,
   });
