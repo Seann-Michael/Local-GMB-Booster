@@ -598,7 +598,7 @@ export default function SuperAdminBroadcast() {
                         <SelectValue placeholder="Choose a template..." />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">
+                        <SelectItem value="none">
                           None - Create from scratch
                         </SelectItem>
                         {templates.map((template) => (
