@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { SuperAdminLayout } from "@/components/SuperAdminLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SuperAdminBroadcast from "./SuperAdminBroadcast";
-import SuperAdminMessageTemplates from "./SuperAdminMessageTemplates";
+import SuperAdminMessageTemplatesEmbedded from "./SuperAdminMessageTemplatesEmbedded";
 import SuperAdminAnalytics from "./SuperAdminAnalytics";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -552,7 +552,7 @@ export default function SuperAdminCommunications() {
 
             {/* Templates Tab */}
             <TabsContent value="templates">
-              <SuperAdminMessageTemplates />
+              <SuperAdminMessageTemplatesEmbedded />
             </TabsContent>
 
             {/* Analytics Tab */}
