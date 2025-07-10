@@ -753,17 +753,22 @@ export function AppLayout({ children }: AppLayoutProps) {
 
               {/* Breadcrumbs */}
               {location.pathname === "/admin/settings" && (
-                <div className="hidden sm:block">
+                <div className="hidden sm:flex items-center ml-6 pl-6 border-l border-border">
                   <Breadcrumb>
                     <BreadcrumbList>
                       <BreadcrumbItem>
-                        <BreadcrumbLink href="/admin/projects">
+                        <BreadcrumbLink
+                          href="/admin/projects"
+                          className="text-sm"
+                        >
                           Dashboard
                         </BreadcrumbLink>
                       </BreadcrumbItem>
                       <BreadcrumbSeparator />
                       <BreadcrumbItem>
-                        <BreadcrumbPage>Settings</BreadcrumbPage>
+                        <BreadcrumbPage className="text-sm">
+                          Settings
+                        </BreadcrumbPage>
                       </BreadcrumbItem>
                     </BreadcrumbList>
                   </Breadcrumb>
