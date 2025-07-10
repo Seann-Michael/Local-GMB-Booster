@@ -290,13 +290,13 @@ export default function SuperAdminUsers() {
             className="space-y-4"
           >
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="overview">
+              <TabsTrigger value="all-users">
                 <Users className="h-4 w-4 mr-2" />
-                Overview
+                All Users
               </TabsTrigger>
-              <TabsTrigger value="businesses">
+              <TabsTrigger value="business-owners">
                 <Building2 className="h-4 w-4 mr-2" />
-                Businesses
+                Business Owners
               </TabsTrigger>
               <TabsTrigger value="agencies">
                 <Shield className="h-4 w-4 mr-2" />
@@ -304,7 +304,7 @@ export default function SuperAdminUsers() {
               </TabsTrigger>
               <TabsTrigger value="staff">
                 <Users className="h-4 w-4 mr-2" />
-                Staff
+                Staff Members
               </TabsTrigger>
             </TabsList>
 
