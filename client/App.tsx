@@ -560,7 +560,15 @@ const App = () => (
                   path="/super-admin/help"
                   element={
                     <ProtectedRoute>
-                      <KnowledgeBase />
+                      <SuperAdminHelp />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/super-admin/support"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdminSupport />
                     </ProtectedRoute>
                   }
                 />
