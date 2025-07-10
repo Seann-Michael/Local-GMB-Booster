@@ -805,7 +805,7 @@ export default function SuperAdminQuality() {
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
                   <Table>
-                  <TableHeader>
+                    <TableHeader>
                     <TableRow>
                       <TableHead>Suite Name</TableHead>
                       <TableHead>Type</TableHead>
