@@ -199,7 +199,7 @@ export default function SuperAdminAgencyManagement() {
   const stats = getTotalStats();
 
   return (
-    <div className="max-w-full overflow-x-hidden">
+    <div className="w-full max-w-none overflow-x-auto min-w-0">
       <div className="space-y-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

@@ -220,7 +220,7 @@ export default function BusinessManagement() {
   };
 
   return (
-    <div className="max-w-full overflow-x-hidden">
+    <div className="w-full max-w-none overflow-x-auto min-w-0">
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
