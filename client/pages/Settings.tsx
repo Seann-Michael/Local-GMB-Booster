@@ -57,6 +57,7 @@ import {
   Shield,
   Upload,
   RefreshCw,
+  RotateCcw,
   Webhook,
   Palette,
   FileImage,
