@@ -173,8 +173,12 @@ export default function Automation() {
     return (
       <AppLayout>
         <div
-          className="h-full w-full overflow-hidden relative"
-          style={{ height: "calc(100vh - 73px)" }}
+          className="fixed inset-0 overflow-hidden bg-background"
+          style={{
+            top: "73px",
+            height: "calc(100vh - 73px)",
+            paddingLeft: "var(--sidebar-width, 288px)", // 288px = w-72, will be overridden by CSS
+          }}
         >
           <WorkflowBuilder
             workflowId={selectedWorkflow.id}
@@ -197,6 +201,18 @@ export default function Automation() {
             ← Back to Automations
           </Button>
         </div>
+
+        {/* CSS to make automation builder responsive to sidebar */}
+        <style jsx>{`
+          .fixed {
+            padding-left: 288px; /* w-72 expanded */
+          }
+          @media (max-width: 768px) {
+            .fixed {
+              padding-left: 0;
+            }
+          }
+        `}</style>
       </AppLayout>
     );
   }
