@@ -318,10 +318,18 @@ export default function Gallery() {
         uploadedBy: "Current User",
         title: fileData.title,
         description: fileData.description,
+        altText: fileData.altText,
+        category: fileData.category,
+        keywords: fileData.keywords
+          .split(",")
+          .map((keyword: string) => keyword.trim())
+          .filter(Boolean),
         metadata: {
           originalFileName: fileData.file.name,
           fileSize: fileData.file.size,
           fileType: fileData.file.type,
+          category: fileData.category,
+          altText: fileData.altText,
         },
       }));
 
