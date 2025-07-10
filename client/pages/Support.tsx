@@ -820,7 +820,7 @@ export default function Support() {
         </Card>
 
         {/* Detailed Crash Logs */}
-        <Card>
+        <Card id="crash-logs-section">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <div className="flex items-center gap-2">
