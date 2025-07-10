@@ -500,7 +500,15 @@ export default function Index() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr">
+          <div
+            className={`grid gap-4 auto-rows-fr ${
+              cardSize === "small"
+                ? "grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+                : cardSize === "medium"
+                  ? "md:grid-cols-2 lg:grid-cols-3"
+                  : "md:grid-cols-1 lg:grid-cols-2"
+            }`}
+          >
             {filteredProjects.map((project) => (
               <div key={project.id} className="flex">
                 <ProjectCard
