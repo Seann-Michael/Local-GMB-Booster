@@ -803,20 +803,8 @@ export function AppLayout({ children }: AppLayoutProps) {
               {/* Theme Toggle - Now visible on mobile too */}
               <ThemeToggle />
 
-              {/* Notifications - Now in Settings */}
-              <Link to="/admin/settings?tab=notifications">
-                <Button variant="ghost" size="icon" className="relative">
-                  <Bell className="h-4 w-4 md:h-5 md:w-5" />
-                  {notificationCount > 0 && (
-                    <Badge
-                      variant="destructive"
-                      className="absolute -top-1 -right-1 h-4 w-4 md:h-5 md:w-5 flex items-center justify-center p-0 text-xs"
-                    >
-                      {notificationCount > 9 ? "9+" : notificationCount}
-                    </Badge>
-                  )}
-                </Button>
-              </Link>
+              {/* Notifications Dropdown */}
+              <NotificationDropdown />
 
               {/* User Profile Dropdown */}
               <DropdownMenu>
