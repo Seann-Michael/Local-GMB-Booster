@@ -2069,8 +2069,10 @@ export default function ProjectDetail() {
                         {project.activityLog.length > 10 && (
                           <div className="flex items-center justify-between text-sm text-muted-foreground">
                             <span>
-                              Showing 1-10 of {project.activityLog.length}{" "}
-                              entries
+                              <span key="pagination-text">
+                                Showing 1-10 of {project.activityLog.length}{" "}
+                                entries
+                              </span>
                             </span>
                             <div className="flex gap-2">
                               <Button
