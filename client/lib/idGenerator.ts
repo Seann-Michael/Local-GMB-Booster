@@ -132,3 +132,18 @@ export function getIdTimestamp(id: string): Date | null {
   }
   return null;
 }
+
+// Extract sub account ID from project ID (for new format)
+export function getSubAccountIdFromProjectId(id: string): string | null {
+  try {
+    // Handle new format: SUBACCOUNT_TIMESTAMP
+    if (id.includes("_") && /^[A-Z0-9_]+_\d{16}$/.test(id)) {
+      const parts = id.split("_");
+      // Join all parts except the last one (which is the timestamp)
+      return parts.slice(0, -1).join("_");
+    }
+  } catch {
+    // Ignore parsing errors
+  }
+  return null;
+}
