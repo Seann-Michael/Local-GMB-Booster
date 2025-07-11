@@ -181,6 +181,7 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
             type="text"
             value={inputValue}
             onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
             placeholder={
               apiKeyAvailable
                 ? placeholder
