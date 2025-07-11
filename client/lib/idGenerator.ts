@@ -90,9 +90,11 @@ export function generateNotificationId(): string {
 // Validate if an ID matches expected format
 export function isValidProjectId(id: string): boolean {
   return (
-    /^proj-[a-z0-9]+-[a-z0-9]+$/.test(id) ||
-    /^proj-[a-z0-9]{16}$/.test(id) ||
-    /^demo-\d+$/.test(id)
+    /^[A-Z0-9_]+_\d{16}$/.test(id) || // New format: SUBACCOUNT_TIMESTAMP
+    /^proj-[a-z0-9]+-[a-z0-9]+$/.test(id) || // Legacy format
+    /^proj-[a-z0-9]{16}$/.test(id) || // Legacy format
+    /^demo-\d+$/.test(id) || // Demo format
+    /^\d{13}$/.test(id) // Simple timestamp format (for existing projects)
   );
 }
 
