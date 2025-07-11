@@ -592,13 +592,7 @@ export default function SuperAdminAPI() {
   };
 
   const formatApiKey = (apiKey: string) => {
-    if (!apiKey || apiKey.length < 6) return "••••••";
-    const cleanKey = apiKey.replace(/[^\w.-]/g, "");
-    const lastSix = cleanKey.slice(-6);
-    if (cleanKey.startsWith("SG.")) return `SG.•••••${lastSix}`;
-    if (cleanKey.startsWith("AC")) return `AC•••••${lastSix}`;
-    if (cleanKey.startsWith("AIza")) return `AI•••••${lastSix}`;
-    return `•••••${lastSix}`;
+    return apiKey || "";
   };
 
   const getMethodBadge = (method: string) => {
