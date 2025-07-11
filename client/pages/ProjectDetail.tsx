@@ -1004,7 +1004,7 @@ export default function ProjectDetail() {
                   </Card>
 
                   {/* Project Keywords/Tags */}
-                  <Card key="project-keywords">
+                  <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <Tag className="h-5 w-5" />
