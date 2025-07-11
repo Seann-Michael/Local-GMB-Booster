@@ -318,16 +318,19 @@ export function AgencyProjectDocuments({
 
           {allCategories.length > 0 && (
             <Select
-              value={filter.category || ""}
+              value={filter.category || "all"}
               onValueChange={(value) =>
-                setFilter((prev) => ({ ...prev, category: value || undefined }))
+                setFilter((prev) => ({
+                  ...prev,
+                  category: value === "all" ? undefined : value,
+                }))
               }
             >
               <SelectTrigger className="w-40">
                 <SelectValue placeholder="All Categories" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Categories</SelectItem>
+                <SelectItem value="all">All Categories</SelectItem>
                 {allCategories.map((category) => (
                   <SelectItem key={category} value={category}>
                     {category}
