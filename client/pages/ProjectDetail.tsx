@@ -2092,7 +2092,7 @@ export default function ProjectDetail() {
             </div>
 
             {/* Sidebar */}
-            <div className="space-y-6">
+            <div key="sidebar" className="space-y-6">
               <Card>
                 <CardHeader>
                   <CardTitle>Project Information</CardTitle>
