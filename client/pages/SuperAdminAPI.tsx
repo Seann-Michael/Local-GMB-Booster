@@ -670,7 +670,19 @@ export default function SuperAdminAPI() {
     setApiKeys(mockKeys);
     setWebhooks(mockWebhooks);
     setEndpoints(mockEndpoints);
-    setIntegrations(mockIntegrations);
+    // Load from localStorage or use mock data
+    const savedIntegrations = localStorage.getItem("third_party_integrations");
+    if (savedIntegrations) {
+      try {
+        setIntegrations(JSON.parse(savedIntegrations));
+      } catch (error) {
+        console.error("Failed to load saved integrations:", error);
+        setIntegrations(mockIntegrations);
+      }
+    } else {
+      setIntegrations(mockIntegrations);
+    }
+
     setRateLimitRules(mockRateLimits);
     setUsageLogs(mockUsageLogs);
 
