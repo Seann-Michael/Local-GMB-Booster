@@ -83,6 +83,9 @@ import AgencyProjectCreate from "./pages/AgencyProjectCreate";
 import AgencyProjectDetail from "./pages/AgencyProjectDetail";
 import AgencyProjectEdit from "./pages/AgencyProjectEdit";
 
+// Agency Task Management
+import AgencyTasks from "./pages/AgencyTasks";
+
 const queryClient = new QueryClient();
 
 // PWA Service Worker Registration
