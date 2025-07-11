@@ -1237,17 +1237,40 @@ export default function ProjectDetail() {
                         </div>
                       )}
                       <div className="w-full h-64 bg-muted rounded-lg overflow-hidden">
-                        <iframe
-                          width="100%"
-                          height="100%"
-                          style={{ border: 0 }}
-                          loading="lazy"
-                          allowFullScreen
-                          referrerPolicy="no-referrer-when-downgrade"
-                          src={`https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${encodeURIComponent(project.address)}`}
-                          title="Project Location"
-                          className="w-full h-full"
-                        />
+                        {project.gpsLat && project.gpsLng ? (
+                          <iframe
+                            width="100%"
+                            height="100%"
+                            style={{ border: 0 }}
+                            loading="lazy"
+                            allowFullScreen
+                            referrerPolicy="no-referrer-when-downgrade"
+                            src={`https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d12000!2d${project.gpsLng}!3d${project.gpsLat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus`}
+                            title="Project Location"
+                            className="w-full h-full"
+                          />
+                        ) : project.address ? (
+                          <iframe
+                            width="100%"
+                            height="100%"
+                            style={{ border: 0 }}
+                            loading="lazy"
+                            allowFullScreen
+                            referrerPolicy="no-referrer-when-downgrade"
+                            src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000!2d-122.4194!3d37.7749!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM37Csy3igJkxNC4zOCIsIDEyMsKwMjXigJkxMi4zOSJX!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus&q=${encodeURIComponent(project.address)}`}
+                            title="Project Location"
+                            className="w-full h-full"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground">
+                            <div className="text-center">
+                              <MapPin className="h-8 w-8 mx-auto mb-2" />
+                              <p className="text-sm">
+                                No location data available
+                              </p>
+                            </div>
+                          </div>
+                        )}
                       </div>
                       <p className="text-xs text-muted-foreground">
                         Click the address above to open in Google Maps for
