@@ -557,7 +557,7 @@ export default function SuperAdminAPI() {
         name: "Twilio SMS Service",
         service: "Twilio",
         category: "sms",
-        apiKey: "AC•••••••••••••••••••••••••••••••••���",
+        apiKey: "AC•••••••••••••••••••••••••••••••••����",
         apiSecret: "••••••••••••••••••••••••••••••••",
         isActive: true,
         isConnected: true,
@@ -1144,7 +1144,7 @@ export default function SuperAdminAPI() {
               </TabsTrigger>
               <TabsTrigger
                 value="rate-limits"
-                className="text-xs px-2 whitespace-nowrap"
+                className="text-xs px-3 py-2 min-w-0 whitespace-nowrap flex-shrink-0"
               >
                 Limits
               </TabsTrigger>
