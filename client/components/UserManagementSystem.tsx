@@ -951,6 +951,212 @@ export function UserManagementSystem() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Edit User Dialog */}
+      <Dialog open={isEditUserOpen} onOpenChange={setIsEditUserOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit User</DialogTitle>
+            <DialogDescription>
+              Update user information and permissions
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-6">
+            {/* User Basic Information */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="editFirstName">First Name</Label>
+                <Input
+                  id="editFirstName"
+                  value={selectedUser?.firstName || ""}
+                  onChange={(e) =>
+                    setSelectedUser(
+                      selectedUser
+                        ? { ...selectedUser, firstName: e.target.value }
+                        : null,
+                    )
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="editLastName">Last Name</Label>
+                <Input
+                  id="editLastName"
+                  value={selectedUser?.lastName || ""}
+                  onChange={(e) =>
+                    setSelectedUser(
+                      selectedUser
+                        ? { ...selectedUser, lastName: e.target.value }
+                        : null,
+                    )
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="editEmail">Email Address</Label>
+              <Input
+                id="editEmail"
+                type="email"
+                value={selectedUser?.email || ""}
+                onChange={(e) =>
+                  setSelectedUser(
+                    selectedUser
+                      ? { ...selectedUser, email: e.target.value }
+                      : null,
+                  )
+                }
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="editPhone">Phone Number</Label>
+              <PhoneInput
+                value={selectedUser?.phone || ""}
+                onChange={(value) =>
+                  setSelectedUser(
+                    selectedUser ? { ...selectedUser, phone: value } : null,
+                  )
+                }
+              />
+            </div>
+
+            {/* User Role and Status */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="editRole">Role</Label>
+                <Select
+                  value={selectedUser?.role || ""}
+                  onValueChange={(value) =>
+                    setSelectedUser(
+                      selectedUser ? { ...selectedUser, role: value } : null,
+                    )
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="manager">Manager</SelectItem>
+                    <SelectItem value="worker">Worker</SelectItem>
+                    <SelectItem value="client">Client</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="editStatus">Status</Label>
+                <Select
+                  value={selectedUser?.status || ""}
+                  onValueChange={(value) =>
+                    setSelectedUser(
+                      selectedUser
+                        ? {
+                            ...selectedUser,
+                            status: value as "active" | "inactive",
+                          }
+                        : null,
+                    )
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="inactive">Inactive</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* User Permissions */}
+            <div className="space-y-4">
+              <Label className="text-base font-medium">Permissions</Label>
+              <div className="grid grid-cols-2 gap-4">
+                {Object.entries(permissionCategories).map(
+                  ([category, perms]) => (
+                    <div key={category} className="space-y-2">
+                      <Label className="text-sm font-medium capitalize">
+                        {category.replace("_", " ")}
+                      </Label>
+                      <div className="space-y-1">
+                        {perms.map((permission) => (
+                          <div
+                            key={permission}
+                            className="flex items-center space-x-2"
+                          >
+                            <Switch
+                              id={`edit-${permission}`}
+                              checked={
+                                selectedUser?.permissions?.includes(
+                                  permission,
+                                ) || false
+                              }
+                              onCheckedChange={(checked) => {
+                                if (!selectedUser) return;
+                                const currentPermissions =
+                                  selectedUser.permissions || [];
+                                const updatedPermissions = checked
+                                  ? [...currentPermissions, permission]
+                                  : currentPermissions.filter(
+                                      (p) => p !== permission,
+                                    );
+                                setSelectedUser({
+                                  ...selectedUser,
+                                  permissions: updatedPermissions,
+                                });
+                              }}
+                            />
+                            <Label
+                              htmlFor={`edit-${permission}`}
+                              className="text-xs cursor-pointer"
+                            >
+                              {permission
+                                .replace(/_/g, " ")
+                                .replace(/\b\w/g, (l) => l.toUpperCase())}
+                            </Label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ),
+                )}
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex justify-end gap-2 pt-4 border-t">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setIsEditUserOpen(false);
+                  setSelectedUser(null);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  if (selectedUser) {
+                    const updatedUsers = users.map((user) =>
+                      user.id === selectedUser.id ? selectedUser : user,
+                    );
+                    setUsers(updatedUsers);
+                    setIsEditUserOpen(false);
+                    setSelectedUser(null);
+                  }
+                }}
+              >
+                <Edit className="mr-2 h-4 w-4" />
+                Update User
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
