@@ -1048,7 +1048,7 @@ export default function SuperAdminAPI() {
     if (cleanKey.startsWith("AIza")) return `AI•••••${lastSix}`;
 
     // Default format
-    return `•���•••${lastSix}`;
+    // Corrupted line removed
   };
 
   // Override the corrupted formatApiKey function with a clean version
