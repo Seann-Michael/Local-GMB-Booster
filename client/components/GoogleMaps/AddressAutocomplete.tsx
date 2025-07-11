@@ -117,6 +117,27 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
     }
   };
 
+  const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && inputValue && !selectedPlace && apiKeyAvailable) {
+      // Try to geocode the entered address
+      try {
+        const { geocodeAddress } = await import("@/lib/googleMaps");
+        const result = await geocodeAddress(inputValue);
+        if (result) {
+          setSelectedPlace(result);
+          if (onChange) {
+            onChange(result.formattedAddress, result);
+          }
+          if (onCoordinatesChange) {
+            onCoordinatesChange(result.lat, result.lng);
+          }
+        }
+      } catch (error) {
+        console.error("Geocoding failed:", error);
+      }
+    }
+  };
+
   const clearInput = () => {
     setInputValue("");
     setSelectedPlace(null);
