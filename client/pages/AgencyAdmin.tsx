@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AgencyAdminLayout } from "@/components/AgencyAdminLayout";
+import { AgencyLayout } from "@/components/AgencyLayout";
 import { EnhancedBroadcastAlert } from "@/components/EnhancedBroadcastAlert";
 import {
   Users,
