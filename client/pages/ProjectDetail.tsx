@@ -2021,12 +2021,15 @@ export default function ProjectDetail() {
                               >
                                 <td className="p-2">
                                   <div className="flex items-center gap-2">
-                                    {entry.platform === "mobile" ? (
-                                      <Smartphone className="h-4 w-4 text-muted-foreground" />
-                                    ) : (
-                                      <Monitor className="h-4 w-4 text-muted-foreground" />
-                                    )}
+                                    <span key="platform-icon">
+                                      {entry.platform === "mobile" ? (
+                                        <Smartphone className="h-4 w-4 text-muted-foreground" />
+                                      ) : (
+                                        <Monitor className="h-4 w-4 text-muted-foreground" />
+                                      )}
+                                    </span>
                                     <Badge
+                                      key="platform-badge"
                                       variant="outline"
                                       className="text-xs capitalize"
                                     >
