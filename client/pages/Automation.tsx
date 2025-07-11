@@ -78,6 +78,8 @@ import {
   MessageSquare,
   Smartphone,
   Monitor,
+  Star,
+  Bell,
 } from "lucide-react";
 
 // Types and Interfaces
