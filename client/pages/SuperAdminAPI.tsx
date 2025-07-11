@@ -2034,12 +2034,57 @@ export default function SuperAdminAPI() {
                     </Button>
                     <Button
                       onClick={() => {
-                        toast.success("Integration added successfully");
+                        if (editingIntegration) {
+                          // Update existing integration
+                          setIntegrations((prev) =>
+                            prev.map((int) =>
+                              int.id === editingIntegration.id
+                                ? {
+                                    ...int,
+                                    name: integrationForm.name,
+                                    service: integrationForm.service,
+                                    category: integrationForm.category,
+                                    apiKey: integrationForm.apiKey,
+                                    apiSecret: integrationForm.apiSecret,
+                                    additionalConfig:
+                                      integrationForm.additionalConfig,
+                                    isActive: integrationForm.isActive,
+                                    updatedAt: new Date().toISOString(),
+                                  }
+                                : int,
+                            ),
+                          );
+                          toast.success("Integration updated successfully");
+                        } else {
+                          // Create new integration
+                          const newIntegration: ThirdPartyIntegration = {
+                            id: `int-${Date.now()}`,
+                            name: integrationForm.name,
+                            service: integrationForm.service,
+                            category: integrationForm.category,
+                            apiKey: integrationForm.apiKey,
+                            apiSecret: integrationForm.apiSecret,
+                            additionalConfig: integrationForm.additionalConfig,
+                            isActive: integrationForm.isActive,
+                            isConnected: false,
+                            createdAt: new Date().toISOString(),
+                            updatedAt: new Date().toISOString(),
+                            usage: {
+                              requestsToday: 0,
+                              requestsThisMonth: 0,
+                              errorRate: 0,
+                            },
+                          };
+                          setIntegrations((prev) => [...prev, newIntegration]);
+                          toast.success("Integration added successfully");
+                        }
                         setShowIntegrationDialog(false);
                         resetIntegrationForm();
                       }}
                     >
-                      Add Integration
+                      {editingIntegration
+                        ? "Update Integration"
+                        : "Add Integration"}
                     </Button>
                   </DialogFooter>
                 </DialogContent>
