@@ -337,7 +337,10 @@ export default function SuperAdminSupport() {
       description: formData.description,
       createdDate: new Date().toISOString(),
       updatedDate: new Date().toISOString(),
-      assignedTo: formData.assignedTo || undefined,
+      assignedTo:
+        formData.assignedTo === "unassigned"
+          ? ""
+          : formData.assignedTo || undefined,
       submittedBy: "super-admin@system.com",
       userType: "super-admin",
       organization: "Internal",
