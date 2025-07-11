@@ -113,7 +113,7 @@ export default function AgencyAdmin() {
   }, []);
 
   return (
-    <AgencyAdminLayout>
+    <AgencyLayout>
       <div className="space-y-6">
         {/* Broadcast Messages */}
         <EnhancedBroadcastAlert />
