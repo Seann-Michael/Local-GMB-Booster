@@ -30,11 +30,37 @@ function generateRandomString(length: number): string {
   return result;
 }
 
-// Generate short, human-readable project IDs
+// Get sub account ID from business settings
+function getSubAccountId(): string {
+  try {
+    const saved = localStorage.getItem("business_settings");
+    if (saved) {
+      const settings = JSON.parse(saved);
+      return settings.subAccountId || "DEFAULT";
+    }
+  } catch {
+    // Ignore parsing errors
+  }
+  return "DEFAULT";
+}
+
+// Generate backend-style timestamp (microseconds precision simulation)
+function getBackendTimestamp(): string {
+  const now = Date.now();
+  // Add microsecond precision simulation (3 additional digits)
+  const microseconds = Math.floor(Math.random() * 1000)
+    .toString()
+    .padStart(3, "0");
+  return `${now}${microseconds}`;
+}
+
+// Generate project IDs based on sub account ID + backend timestamp
 export function generateProjectId(): string {
-  const timestamp = Date.now().toString(36); // Base36 timestamp
-  const random = generateRandomString(4); // 4 random chars
-  return `proj-${timestamp}-${random}`;
+  const subAccountId = getSubAccountId();
+  const backendTimestamp = getBackendTimestamp();
+
+  // Format: SUBACCOUNT_TIMESTAMP (mimicking backend structure)
+  return `${subAccountId}_${backendTimestamp}`;
 }
 
 // Generic ID generator with prefix support
