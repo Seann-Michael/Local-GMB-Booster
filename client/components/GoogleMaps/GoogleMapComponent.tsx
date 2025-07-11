@@ -29,6 +29,7 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
 }) => {
   const [marker, setMarker] = useState<google.maps.Marker | null>(null);
   const [useIframeFallback, setUseIframeFallback] = useState(false);
+  const [loadingTimeout, setLoadingTimeout] = useState(false);
 
   // Check if API key is available
   useEffect(() => {
