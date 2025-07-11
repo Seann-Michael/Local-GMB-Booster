@@ -1035,21 +1035,7 @@ export default function SuperAdminAPI() {
     );
   };
 
-  const formatApiKey = (apiKey: string) => {
-    if (!apiKey || apiKey.length < 6) return "••••••";
-
-    // Clean the key first - remove any problematic characters
-    const cleanKey = apiKey.replace(/[^\w.-]/g, "");
-    const lastSix = cleanKey.slice(-6);
-
-    // Check if it has a recognizable prefix
-    if (cleanKey.startsWith("SG.")) return `SG.•••••${lastSix}`;
-    if (cleanKey.startsWith("AC")) return `AC•••••${lastSix}`;
-    if (cleanKey.startsWith("AIza")) return `AI•••••${lastSix}`;
-
-    // Default format
-    // Corrupted line removed
-  };
+  // Original formatApiKey function removed due to corruption
 
   // Override the corrupted formatApiKey function with a clean version
   const formatApiKey = (apiKey: string) => {
