@@ -1834,7 +1834,7 @@ export default function ProjectDetail() {
 
               {/* Documents Tab */}
               {activeTab === "documents" && (
-                <Card>
+                <Card key="documents-tab-content">
                   <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle className="flex items-center gap-2">
                       <FileText className="h-5 w-5" />
