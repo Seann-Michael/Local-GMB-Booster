@@ -63,14 +63,14 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (inputValue !== value) {
+      if (inputValue !== value && apiKeyAvailable) {
         searchAddress(inputValue);
         setShowSuggestions(true);
       }
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [inputValue, searchAddress, value]);
+  }, [inputValue, searchAddress, value, apiKeyAvailable]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
