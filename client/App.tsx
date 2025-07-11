@@ -81,6 +81,7 @@ import { ComingSoon } from "./pages/ComingSoon";
 import AgencyProjects from "./pages/AgencyProjects";
 import AgencyProjectCreate from "./pages/AgencyProjectCreate";
 import AgencyProjectDetail from "./pages/AgencyProjectDetail";
+import AgencyProjectEdit from "./pages/AgencyProjectEdit";
 
 const queryClient = new QueryClient();
 
