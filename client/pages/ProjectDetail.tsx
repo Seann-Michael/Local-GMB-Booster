@@ -957,7 +957,7 @@ export default function ProjectDetail() {
         )}
 
         {/* Tabs */}
-        <div className="border-b mb-6">
+        <div key="tabs-section" className="border-b mb-6">
           <div className="flex space-x-1">
             {[
               { id: "overview", label: "Overview" },
