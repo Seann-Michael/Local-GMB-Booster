@@ -299,6 +299,42 @@ export const createMapEmbedUrl = (
   return `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${query}&zoom=14`;
 };
 
+// Test API key validity by making a direct request
+export const validateGoogleMapsApiKey = async (
+  apiKey: string,
+): Promise<{ valid: boolean; error?: string }> => {
+  try {
+    console.log("🔍 Validating API key with direct request...");
+
+    const testUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=${apiKey}`;
+
+    const response = await fetch(testUrl);
+    const data = await response.json();
+
+    console.log("📡 API response status:", data.status);
+    console.log("📡 API response:", data);
+
+    if (data.status === "OK") {
+      return { valid: true };
+    } else if (data.status === "REQUEST_DENIED") {
+      return {
+        valid: false,
+        error: `API key denied: ${data.error_message || "Invalid API key or restrictions"}`,
+      };
+    } else if (data.status === "OVER_QUERY_LIMIT") {
+      return { valid: false, error: "API quota exceeded" };
+    } else {
+      return {
+        valid: false,
+        error: `API error: ${data.status} - ${data.error_message || "Unknown error"}`,
+      };
+    }
+  } catch (error) {
+    console.error("💥 API key validation failed:", error);
+    return { valid: false, error: `Network error: ${error.message}` };
+  }
+};
+
 // Test API key connection
 export const testGoogleMapsConnection = async (): Promise<boolean> => {
   try {
