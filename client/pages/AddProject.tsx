@@ -22,6 +22,7 @@ import type { ProjectInfo } from "@/lib/mediaMetadata";
 import { SmartDropdownInput } from "@/components/SmartDropdownInput";
 import { DROPDOWN_FIELDS } from "@/hooks/useDropdownState";
 import { generateProjectId } from "@/lib/idGenerator";
+import { AddressAutocomplete } from "@/components/GoogleMaps";
 
 interface EnhancedPhoto {
   url: string;
