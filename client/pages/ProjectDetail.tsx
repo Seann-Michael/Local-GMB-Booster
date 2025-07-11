@@ -1969,7 +1969,7 @@ export default function ProjectDetail() {
 
               {/* Activity Log Tab */}
               {activeTab === "activity" && (
-                <Card>
+                <Card key="activity-tab-content">
                   <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle>Activity Log</CardTitle>
                     <div className="flex items-center gap-2">
