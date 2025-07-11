@@ -1720,7 +1720,6 @@ export default function ProjectDetail() {
                         </div>
                       </div>
                     )}
-
                     <div className="space-y-3">
                       {project.checklist &&
                       Array.isArray(project.checklist) &&
