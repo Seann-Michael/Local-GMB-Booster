@@ -81,6 +81,11 @@ import {
   Monitor,
   Star,
   Bell,
+  ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 // Types and Interfaces
