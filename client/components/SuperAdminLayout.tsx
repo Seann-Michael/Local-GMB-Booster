@@ -435,7 +435,7 @@ export function SuperAdminLayout({
         </div>
 
         {/* Page Content */}
-        <main className="flex-1 p-4 md:p-6 overflow-auto pb-20 md:pb-6">
+        <main className="flex-1 p-4 md:p-6 overflow-auto mobile-bottom-safe md:pb-6">
           {children}
         </main>
 
