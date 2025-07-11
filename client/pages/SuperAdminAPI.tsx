@@ -821,6 +821,18 @@ export default function SuperAdminAPI() {
     }
   };
 
+  const saveIntegrationsToStorage = (integrations: ThirdPartyIntegration[]) => {
+    try {
+      localStorage.setItem(
+        "third_party_integrations",
+        JSON.stringify(integrations),
+      );
+    } catch (error) {
+      console.error("Failed to save integrations:", error);
+      toast.error("Failed to save integration settings");
+    }
+  };
+
   const handleCreateAPIKey = () => {
     if (!keyForm.name.trim()) {
       toast.error("Please enter a name for the API key");
