@@ -496,7 +496,7 @@ const App = () => (
                   path="/agency/admin/projects/:id/edit"
                   element={
                     <ProtectedRoute>
-                      <AgencyProjectCreate />
+                      <AgencyProjectEdit />
                     </ProtectedRoute>
                   }
                 />
