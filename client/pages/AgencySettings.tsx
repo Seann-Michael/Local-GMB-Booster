@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { AgencyAdminLayout } from "@/components/AgencyAdminLayout";
+import { AgencyLayout } from "@/components/AgencyLayout";
 import {
   Save,
   Building2,
