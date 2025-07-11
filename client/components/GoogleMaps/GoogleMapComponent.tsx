@@ -28,6 +28,15 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
   className,
 }) => {
   const [marker, setMarker] = useState<google.maps.Marker | null>(null);
+  const [useIframeFallback, setUseIframeFallback] = useState(false);
+
+  // Check if API key is available
+  useEffect(() => {
+    const apiKey = getGoogleMapsApiKey();
+    if (!apiKey) {
+      setUseIframeFallback(true);
+    }
+  }, []);
 
   const mapOptions: google.maps.MapOptions = {
     zoom,
