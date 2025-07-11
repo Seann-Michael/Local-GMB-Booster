@@ -858,7 +858,7 @@ export default function ProjectDetail() {
   return (
     <AppLayout>
       <div className="container px-4 py-6">
-        <div key="main-wrapper">
+        <React.Fragment>
           <div key="header-section" className="flex items-center gap-4 mb-6">
             <Link to="/admin/projects">
               <Button variant="ghost" size="icon">
