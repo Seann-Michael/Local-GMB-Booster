@@ -558,7 +558,7 @@ export default function SuperAdminAPI() {
         service: "Twilio",
         category: "sms",
         apiKey: "AC••••••••••••••••••••••••••••••••4n2B8q",
-        apiSecret: "••••••••••••••••••••••••••••••••7f9K3m",
+        apiSecret: "•••••••••••••���••••••••••••••••••7f9K3m",
         isActive: true,
         isConnected: true,
         lastTested: "2024-01-19T16:45:00Z",
@@ -2271,9 +2271,11 @@ export default function SuperAdminAPI() {
                                 `Are you sure you want to delete ${integration.name}?`,
                               )
                             ) {
-                              setIntegrations((prev) =>
-                                prev.filter((int) => int.id !== integration.id),
+                              const updatedIntegrations = integrations.filter(
+                                (int) => int.id !== integration.id,
                               );
+                              setIntegrations(updatedIntegrations);
+                              saveIntegrationsToStorage(updatedIntegrations);
                               toast.success(
                                 `${integration.name} has been deleted`,
                               );
