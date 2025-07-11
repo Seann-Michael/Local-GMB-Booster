@@ -809,14 +809,6 @@ export default function SuperAdminAPI() {
     }
   };
 
-  const getStatusBadge = (isActive: boolean) => {
-    return (
-      <Badge variant={isActive ? "default" : "secondary"}>
-        {isActive ? "Active" : "Inactive"}
-      </Badge>
-    );
-  };
-
   const handleCreateAPIKey = () => {
     if (!keyForm.name.trim()) {
       toast.error("Please enter a name for the API key");
