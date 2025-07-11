@@ -139,6 +139,9 @@ function getAgencyBreadcrumbs(pathname: string): BreadcrumbItem[] {
         { label: "Create Project" },
       ];
 
+    case "/agency/admin/tasks":
+      return [baseBreadcrumb, { label: "Tasks" }];
+
     default:
       // Handle dynamic routes like /agency/admin/business-owners/:id
       if (
