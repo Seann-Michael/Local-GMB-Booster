@@ -439,19 +439,22 @@ export default function WorkflowBuilder() {
                             <span className="text-xs">Setup required</span>
                           </div>
                         )}
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8"
+                          onClick={() => editStep(step)}
+                        >
                           <Settings className="h-3 w-3" />
                         </Button>
-                        {steps.length > 1 && (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 text-red-600 hover:text-red-700"
-                            onClick={() => removeStep(step.id)}
-                          >
-                            <Trash2 className="h-3 w-3" />
-                          </Button>
-                        )}
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-red-600 hover:text-red-700"
+                          onClick={() => removeStep(step.id)}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
                       </div>
                     </div>
                   </CardHeader>
