@@ -259,16 +259,19 @@ export function AgencyProjectTasks({
           </Select>
 
           <Select
-            value={filter.assignedTo || ""}
+            value={filter.assignedTo || "all"}
             onValueChange={(value) =>
-              setFilter((prev) => ({ ...prev, assignedTo: value || undefined }))
+              setFilter((prev) => ({
+                ...prev,
+                assignedTo: value === "all" ? undefined : value,
+              }))
             }
           >
             <SelectTrigger className="w-40">
               <SelectValue placeholder="All Assignees" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Assignees</SelectItem>
+              <SelectItem value="all">All Assignees</SelectItem>
               <SelectItem value="internal">Internal Team</SelectItem>
               <SelectItem value="client">Client</SelectItem>
             </SelectContent>
