@@ -535,7 +535,7 @@ export default function SuperAdminAPI() {
         name: "SendGrid Email Service",
         service: "SendGrid",
         category: "email",
-        apiKey: "SG.••••••••••���•••••••••••••••••••••••8k7X9p",
+        apiKey: "SG.•••��••••••���•••••••••••••••••••••••8k7X9p",
         isActive: true,
         isConnected: true,
         lastTested: "2024-01-20T10:30:00Z",
@@ -845,6 +845,35 @@ export default function SuperAdminAPI() {
       console.error("Failed to save integrations:", error);
       toast.error("Failed to save integration settings");
     }
+  };
+
+  const resetGoogleMapsIntegration = () => {
+    const cleanGoogleMapsIntegration = {
+      id: "int-3",
+      name: "Google Maps API",
+      service: "Google Maps",
+      category: "maps" as const,
+      apiKey: "",
+      isActive: true,
+      isConnected: false,
+      lastTested: undefined,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      additionalConfig: {},
+      usage: {
+        requestsToday: 0,
+        requestsThisMonth: 0,
+        errorRate: 0,
+      },
+    };
+
+    const updatedIntegrations = integrations.map((int) =>
+      int.service === "Google Maps" ? cleanGoogleMapsIntegration : int,
+    );
+
+    setIntegrations(updatedIntegrations);
+    saveIntegrationsToStorage(updatedIntegrations);
+    toast.success("Google Maps integration reset. Please add your API key.");
   };
 
   const handleCreateAPIKey = () => {
