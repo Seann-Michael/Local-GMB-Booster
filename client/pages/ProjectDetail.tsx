@@ -193,6 +193,9 @@ export default function ProjectDetail() {
         tasks: foundProject.tasks || [],
         checklist: foundProject.checklist || [],
         keywords: foundProject.keywords || [],
+        photos: foundProject.photos || [],
+        documents: foundProject.documents || [],
+        additionalPhones: foundProject.additionalPhones || [],
       };
       setProject(projectWithDefaults);
     }
