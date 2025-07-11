@@ -270,7 +270,7 @@ export function AgencyProjectNotes({
           <Select
             value={
               filter.pinned === undefined
-                ? ""
+                ? "all"
                 : filter.pinned
                   ? "pinned"
                   : "unpinned"
@@ -291,7 +291,7 @@ export function AgencyProjectNotes({
               <SelectValue placeholder="All" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All</SelectItem>
+              <SelectItem value="all">All</SelectItem>
               <SelectItem value="pinned">Pinned</SelectItem>
               <SelectItem value="unpinned">Unpinned</SelectItem>
             </SelectContent>
