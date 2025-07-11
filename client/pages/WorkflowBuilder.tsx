@@ -255,6 +255,8 @@ export default function WorkflowBuilder() {
   const [selectorType, setSelectorType] = useState<"trigger" | "action">(
     "trigger",
   );
+  const [editingStep, setEditingStep] = useState<WorkflowStep | null>(null);
+  const [showStepConfig, setShowStepConfig] = useState(false);
 
   const addStep = (app: any, actionData: any) => {
     const newStep: WorkflowStep = {
@@ -271,6 +273,30 @@ export default function WorkflowBuilder() {
 
   const removeStep = (stepId: string) => {
     setSteps(steps.filter((step) => step.id !== stepId));
+  };
+
+  const editStep = (step: WorkflowStep) => {
+    setEditingStep(step);
+    setShowStepConfig(true);
+  };
+
+  const updateStep = (stepId: string, updates: Partial<WorkflowStep>) => {
+    setSteps(
+      steps.map((step) =>
+        step.id === stepId ? { ...step, ...updates } : step,
+      ),
+    );
+  };
+
+  const saveStepConfig = (config: Record<string, any>) => {
+    if (editingStep) {
+      updateStep(editingStep.id, {
+        config,
+        configured: Object.keys(config).length > 0,
+      });
+      setShowStepConfig(false);
+      setEditingStep(null);
+    }
   };
 
   const getStepIcon = (app: string) => {
