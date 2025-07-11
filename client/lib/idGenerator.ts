@@ -54,7 +54,14 @@ function getBackendTimestamp(): string {
   return `${now}${microseconds}`;
 }
 
-// Generate project IDs based on sub account ID + backend timestamp
+/**
+ * Generate project IDs based on sub account ID + backend timestamp
+ * Format: SUBACCOUNTID_TIMESTAMPMICROSECONDS
+ * Example: SUB_ABC123XYZ_1703123456789123
+ *
+ * The timestamp includes milliseconds + 3 additional digits for microsecond simulation
+ * This mimics backend timestamp precision down to the millisecond with additional precision
+ */
 export function generateProjectId(): string {
   const subAccountId = getSubAccountId();
   const backendTimestamp = getBackendTimestamp();
