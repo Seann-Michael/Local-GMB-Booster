@@ -760,24 +760,34 @@ export function AppLayout({ children }: AppLayoutProps) {
               </div>
 
               {/* Breadcrumbs */}
-              {location.pathname === "/admin/settings" && (
+              {getBreadcrumbs(location.pathname).length > 0 && (
                 <div className="hidden sm:flex items-center ml-6 pl-6 border-l border-border">
                   <Breadcrumb>
                     <BreadcrumbList>
-                      <BreadcrumbItem>
-                        <BreadcrumbLink
-                          href="/admin/projects"
-                          className="text-sm"
-                        >
-                          Dashboard
-                        </BreadcrumbLink>
-                      </BreadcrumbItem>
-                      <BreadcrumbSeparator />
-                      <BreadcrumbItem>
-                        <BreadcrumbPage className="text-sm">
-                          Settings
-                        </BreadcrumbPage>
-                      </BreadcrumbItem>
+                      {getBreadcrumbs(location.pathname).map((crumb, index) => (
+                        <React.Fragment key={index}>
+                          <BreadcrumbItem>
+                            {crumb.href &&
+                            index <
+                              getBreadcrumbs(location.pathname).length - 1 ? (
+                              <BreadcrumbLink
+                                href={crumb.href}
+                                className="text-sm"
+                              >
+                                {crumb.label}
+                              </BreadcrumbLink>
+                            ) : (
+                              <BreadcrumbPage className="text-sm">
+                                {crumb.label}
+                              </BreadcrumbPage>
+                            )}
+                          </BreadcrumbItem>
+                          {index <
+                            getBreadcrumbs(location.pathname).length - 1 && (
+                            <BreadcrumbSeparator />
+                          )}
+                        </React.Fragment>
+                      ))}
                     </BreadcrumbList>
                   </Breadcrumb>
                 </div>
