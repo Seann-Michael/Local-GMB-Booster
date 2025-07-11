@@ -299,6 +299,14 @@ export function AgencyLayout({ children }: AgencyLayoutProps) {
       comingSoon: false,
     },
     {
+      id: "tasks",
+      label: "Tasks",
+      href: "/agency/admin/tasks",
+      icon: CheckCircle,
+      active: location.pathname === "/agency/admin/tasks",
+      comingSoon: false,
+    },
+    {
       id: "business-owners",
       label: "Business Owners",
       href: "/agency/admin/business-owners",
