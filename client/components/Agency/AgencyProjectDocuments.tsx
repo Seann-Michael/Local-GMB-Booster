@@ -297,16 +297,19 @@ export function AgencyProjectDocuments({
           </div>
 
           <Select
-            value={filter.visibility || ""}
+            value={filter.visibility || "all"}
             onValueChange={(value) =>
-              setFilter((prev) => ({ ...prev, visibility: value || undefined }))
+              setFilter((prev) => ({
+                ...prev,
+                visibility: value === "all" ? undefined : value,
+              }))
             }
           >
             <SelectTrigger className="w-40">
               <SelectValue placeholder="All Visibility" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Visibility</SelectItem>
+              <SelectItem value="all">All Visibility</SelectItem>
               <SelectItem value="internal">Internal</SelectItem>
               <SelectItem value="team">Team Only</SelectItem>
               <SelectItem value="client">Client Visible</SelectItem>
