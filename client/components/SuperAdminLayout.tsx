@@ -435,7 +435,9 @@ export function SuperAdminLayout({
         </div>
 
         {/* Page Content */}
-        <main className="flex-1 p-4 md:p-6 overflow-auto">{children}</main>
+        <main className="flex-1 p-4 md:p-6 overflow-auto pb-20 md:pb-6">
+          {children}
+        </main>
 
         {/* Mobile Bottom Navigation */}
         <div className="md:hidden bg-background border-t">
