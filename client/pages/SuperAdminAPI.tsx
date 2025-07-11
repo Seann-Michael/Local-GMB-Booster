@@ -164,6 +164,63 @@ interface APIStats {
   webhookSuccessRate: number;
 }
 
+interface ThirdPartyIntegration {
+  id: string;
+  name: string;
+  service: string;
+  category:
+    | "email"
+    | "sms"
+    | "payment"
+    | "storage"
+    | "analytics"
+    | "social"
+    | "maps"
+    | "other";
+  apiKey: string;
+  apiSecret?: string;
+  additionalConfig: Record<string, string>;
+  isActive: boolean;
+  isConnected: boolean;
+  lastTested?: string;
+  createdAt: string;
+  updatedAt: string;
+  usage: {
+    requestsToday: number;
+    requestsThisMonth: number;
+    lastRequest?: string;
+    errorRate: number;
+  };
+}
+
+interface APIUsageLog {
+  id: string;
+  timestamp: string;
+  endpoint: string;
+  method: string;
+  apiKey: string;
+  sourceIP: string;
+  userAgent: string;
+  responseCode: number;
+  responseTime: number;
+  requestSize: number;
+  responseSize: number;
+  error?: string;
+}
+
+interface RateLimitRule {
+  id: string;
+  name: string;
+  description: string;
+  endpoint: string;
+  method: string;
+  limit: number;
+  window: "minute" | "hour" | "day";
+  isActive: boolean;
+  exemptApiKeys: string[];
+  createdAt: string;
+}
+
 const API_SCOPES = [
   { value: "read", label: "Read Access", description: "View data" },
   { value: "write", label: "Write Access", description: "Create/update data" },
