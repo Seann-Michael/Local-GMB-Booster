@@ -863,6 +863,18 @@ export default function ProjectDetail() {
     <AppLayout>
       <div className="container px-4 py-6">
         <div>
+          <h1>Project Detail - {project.name}</h1>
+          <p>Testing minimal version</p>
+        </div>
+      </div>
+    </AppLayout>
+  );
+
+  // Original return commented out for testing
+  const originalReturn = (
+    <AppLayout>
+      <div className="container px-4 py-6">
+        <div>
           <div className="flex items-center gap-4 mb-6">
             <Link to="/admin/projects">
               <Button variant="ghost" size="icon">
