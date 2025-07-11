@@ -908,41 +908,37 @@ export default function ProjectDetail() {
         </div>
 
         {/* Project Status and Completion */}
-        <div>
-          {project.status !== "completed" ? (
-            <Card key="status-incomplete" className="mb-6">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="font-medium">Project Status</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Started:{" "}
-                      {new Date(
-                        project.startDate || project.createdAt,
-                      ).toLocaleDateString()}
-                      {project.completionDate && (
-                        <span>
-                          {" "}
-                          • Expected:{" "}
-                          {new Date(
-                            project.completionDate,
-                          ).toLocaleDateString()}
-                        </span>
-                      )}
-                    </p>
-                  </div>
-                  <Button onClick={markProjectCompleted} className="gap-2">
-                    <CheckCircle className="h-4 w-4" />
-                    Mark Completed
-                  </Button>
+        {project.status !== "completed" ? (
+          <Card className="mb-6">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium">Project Status</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Started:{" "}
+                    {new Date(
+                      project.startDate || project.createdAt,
+                    ).toLocaleDateString()}
+                    {project.completionDate && (
+                      <span>
+                        {" "}
+                        • Expected:{" "}
+                        {new Date(
+                          project.completionDate,
+                        ).toLocaleDateString()}
+                      </span>
+                    )}
+                  </p>
                 </div>
-              </CardContent>
-            </Card>
-          ) : (
-            <Card
-              key="status-completed"
-              className="mb-6 border-green-200 bg-green-50"
-            >
+                <Button onClick={markProjectCompleted} className="gap-2">
+                  <CheckCircle className="h-4 w-4" />
+                  Mark Completed
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="mb-6 border-green-200 bg-green-50">
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-green-600" />
@@ -1889,7 +1885,7 @@ export default function ProjectDetail() {
                                     doc.uploadedAt,
                                   ).toLocaleDateString()}
                                 </span>
-                                <span>•</span>
+                                <span>���</span>
                                 <span>by {doc.uploadedBy}</span>
                               </div>
                             </div>
