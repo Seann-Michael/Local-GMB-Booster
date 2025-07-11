@@ -16,6 +16,7 @@ import {
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { AddressAutocomplete } from "@/components/GoogleMaps";
 
 interface Project {
   id: string;
