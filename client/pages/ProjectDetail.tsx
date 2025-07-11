@@ -857,8 +857,9 @@ export default function ProjectDetail() {
 
   return (
     <AppLayout>
-      <div className="container px-4 py-6" key="project-detail-container">
-        <div key="project-detail-wrapper">
+      <React.Fragment key="project-detail-fragment">
+        <div className="container px-4 py-6" key="project-detail-container">
+          <div key="project-detail-wrapper">
           <div className="flex items-center gap-4 mb-6" key="header-section">
             <Link to="/admin/projects">
               <Button variant="ghost" size="icon">
@@ -2354,10 +2355,7 @@ export default function ProjectDetail() {
 
       {/* Smart Media Uploader */}
       {showMediaUploader && (
-        <div
-          key="media-uploader-modal"
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-        >
+        <div key="media-uploader-modal" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">Add Photos & Videos</h3>
