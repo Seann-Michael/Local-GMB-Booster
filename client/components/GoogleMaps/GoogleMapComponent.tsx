@@ -57,9 +57,16 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
 
   // Add timeout for loading state
   useEffect(() => {
+    if (useIframeFallback) return;
+
     const timer = setTimeout(() => {
-      if (!isLoaded && !error && !useIframeFallback) {
-        console.warn("Google Maps loading timeout, falling back to iframe");
+      try {
+        if (!isLoaded && !error && !useIframeFallback) {
+          console.warn("Google Maps loading timeout, falling back to iframe");
+          setUseIframeFallback(true);
+        }
+      } catch (error) {
+        console.error("Error in timeout handler:", error);
         setUseIframeFallback(true);
       }
     }, 10000); // 10 second timeout
