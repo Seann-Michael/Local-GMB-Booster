@@ -910,7 +910,7 @@ export default function ProjectDetail() {
           </div>
 
           {/* Project Status and Completion */}
-          <div>
+          <div key="status-section">
             {project.status !== "completed" ? (
               <Card className="mb-6">
                 <CardContent className="p-4">
