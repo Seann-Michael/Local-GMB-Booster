@@ -1025,27 +1025,33 @@ export default function ProjectDetail() {
                     </CardHeader>
                     <CardContent>
                       <div className="flex flex-wrap gap-2">
-                        {project.keywords && project.keywords.length > 0 ? project.keywords.map((keyword, index) => (
-                          <Badge
-                            key={`keyword-${index}-${keyword.replace(/\s+/g, "-")}`}
-                            variant="secondary"
-                            className="cursor-pointer hover:bg-secondary/80"
-                          >
-                            <span>{keyword}</span>
-                            <button
-                              className="ml-1 hover:text-destructive"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                // Add remove keyword functionality here
-                                toast.success(
-                                  "Keyword removal functionality coming soon",
-                                );
-                              }}
+                        {project.keywords && project.keywords.length > 0 ? (
+                          project.keywords.map((keyword, index) => (
+                            <Badge
+                              key={`keyword-${index}-${keyword.replace(/\s+/g, "-")}`}
+                              variant="secondary"
+                              className="cursor-pointer hover:bg-secondary/80"
                             >
-                              ×
-                            </button>
-                          </Badge>
-                        ))}
+                              <span>{keyword}</span>
+                              <button
+                                className="ml-1 hover:text-destructive"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  // Add remove keyword functionality here
+                                  toast.success(
+                                    "Keyword removal functionality coming soon",
+                                  );
+                                }}
+                              >
+                                ×
+                              </button>
+                            </Badge>
+                          ))
+                        ) : (
+                          <span className="text-sm text-muted-foreground">
+                            No keywords added
+                          </span>
+                        )}
                         {/* Add keyword button */}
                         <Badge
                           key="add-keyword-button"
