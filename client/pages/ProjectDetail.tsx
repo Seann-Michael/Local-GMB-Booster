@@ -923,9 +923,7 @@ export default function ProjectDetail() {
                       <span>
                         {" "}
                         • Expected:{" "}
-                        {new Date(
-                          project.completionDate,
-                        ).toLocaleDateString()}
+                        {new Date(project.completionDate).toLocaleDateString()}
                       </span>
                     )}
                   </p>
@@ -939,25 +937,24 @@ export default function ProjectDetail() {
           </Card>
         ) : (
           <Card className="mb-6 border-green-200 bg-green-50">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5 text-green-600" />
-                  <div>
-                    <h3 className="font-medium text-green-800">
-                      Project Completed
-                    </h3>
-                    <p className="text-sm text-green-700">
-                      Completed on{" "}
-                      {project.completedDate
-                        ? new Date(project.completedDate).toLocaleDateString()
-                        : "Unknown"}
-                    </p>
-                  </div>
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5 text-green-600" />
+                <div>
+                  <h3 className="font-medium text-green-800">
+                    Project Completed
+                  </h3>
+                  <p className="text-sm text-green-700">
+                    Completed on{" "}
+                    {project.completedDate
+                      ? new Date(project.completedDate).toLocaleDateString()
+                      : "Unknown"}
+                  </p>
                 </div>
-              </CardContent>
-            </Card>
-          )}
-        </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Tabs */}
         <div className="border-b mb-6">
