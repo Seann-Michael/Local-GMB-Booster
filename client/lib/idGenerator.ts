@@ -101,9 +101,28 @@ export function isValidProjectId(id: string): boolean {
 // Extract creation timestamp from ID (if possible)
 export function getIdTimestamp(id: string): Date | null {
   try {
+    // Handle new format: SUBACCOUNT_TIMESTAMP
+    if (id.includes("_") && /^[A-Z0-9_]+_\d{16}$/.test(id)) {
+      const parts = id.split("_");
+      const timestampStr = parts[parts.length - 1]; // Last part is timestamp
+      const timestamp = parseInt(timestampStr.substring(0, 13)); // Extract milliseconds (first 13 digits)
+      if (!isNaN(timestamp)) {
+        return new Date(timestamp);
+      }
+    }
+
+    // Handle legacy formats
     const parts = id.split("-");
     if (parts.length >= 2) {
       const timestamp = parseInt(parts[1], 36);
+      if (!isNaN(timestamp)) {
+        return new Date(timestamp);
+      }
+    }
+
+    // Handle simple timestamp format
+    if (/^\d{13}$/.test(id)) {
+      const timestamp = parseInt(id);
       if (!isNaN(timestamp)) {
         return new Date(timestamp);
       }
