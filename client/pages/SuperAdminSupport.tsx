@@ -665,7 +665,7 @@ export default function SuperAdminSupport() {
                           <SelectValue placeholder="Select staff member" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="">Unassigned</SelectItem>
+                          <SelectItem value="unassigned">Unassigned</SelectItem>
                           {!isLoading &&
                             (staffMembers || [])
                               .filter(
