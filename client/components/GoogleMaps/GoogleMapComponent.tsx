@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Navigation, Maximize } from "lucide-react";
 import { toast } from "sonner";
+import { getGoogleMapsApiKey } from "@/lib/googleMaps";
 
 interface GoogleMapComponentProps {
   address?: string;
