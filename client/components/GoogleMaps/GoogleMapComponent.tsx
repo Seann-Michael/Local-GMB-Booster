@@ -39,6 +39,17 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
     }
   }, []);
 
+  const mapOptions: google.maps.MapOptions = {
+    zoom,
+    disableDefaultUI: !showControls,
+    zoomControl: showControls,
+    streetViewControl: showControls,
+    fullscreenControl: showControls,
+  };
+
+  const { mapRef, map, isLoaded, error, addMarker, setCenter } =
+    useGoogleMaps(mapOptions);
+
   // Add timeout for loading state
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -50,17 +61,6 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
 
     return () => clearTimeout(timer);
   }, [isLoaded, error, useIframeFallback]);
-
-  const mapOptions: google.maps.MapOptions = {
-    zoom,
-    disableDefaultUI: !showControls,
-    zoomControl: showControls,
-    streetViewControl: showControls,
-    fullscreenControl: showControls,
-  };
-
-  const { mapRef, map, isLoaded, error, addMarker, setCenter } =
-    useGoogleMaps(mapOptions);
 
   useEffect(() => {
     if (map && lat !== undefined && lng !== undefined) {
