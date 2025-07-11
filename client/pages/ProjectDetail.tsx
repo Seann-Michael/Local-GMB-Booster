@@ -1237,46 +1237,15 @@ export default function ProjectDetail() {
                             {project.gpsLat}, {project.gpsLng}
                           </div>
                         )}
-                        <div className="w-full h-64 bg-muted rounded-lg overflow-hidden">
-                          {project.gpsLat && project.gpsLng ? (
-                            <iframe
-                              width="100%"
-                              height="100%"
-                              style={{ border: 0 }}
-                              loading="lazy"
-                              allowFullScreen
-                              referrerPolicy="no-referrer-when-downgrade"
-                              src={`https://maps.google.com/maps?q=${project.gpsLat},${project.gpsLng}&hl=en&z=14&output=embed`}
-                              title="Project Location"
-                              className="w-full h-full"
-                            />
-                          ) : project.address ? (
-                            <iframe
-                              width="100%"
-                              height="100%"
-                              style={{ border: 0 }}
-                              loading="lazy"
-                              allowFullScreen
-                              referrerPolicy="no-referrer-when-downgrade"
-                              src={`https://maps.google.com/maps?q=${encodeURIComponent(project.address)}&hl=en&z=14&output=embed`}
-                              title="Project Location"
-                              className="w-full h-full"
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground">
-                              <div className="text-center">
-                                <MapPin className="h-8 w-8 mx-auto mb-2" />
-                                <p className="text-sm">
-                                  No location data available
-                                </p>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                        <p className="text-xs text-muted-foreground">
-                          Click the address above to open in Google Maps for
-                          directions
-                        </p>
+                        <GoogleMapComponent
+                          address={project.address}
+                          lat={project.gpsLat}
+                          lng={project.gpsLng}
+                          height="256px"
+                          zoom={15}
+                          showControls={true}
+                          showDirectionsButton={true}
+                        />
                       </div>
                     </CardContent>
                   </Card>
