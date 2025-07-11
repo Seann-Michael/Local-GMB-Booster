@@ -12,7 +12,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useAddressSearch } from "@/hooks/useGoogleMaps";
-import { PlaceResult } from "@/lib/googleMaps";
+import { PlaceResult, getGoogleMapsApiKey } from "@/lib/googleMaps";
 import { cn } from "@/lib/utils";
 
 interface AddressAutocompleteProps {
