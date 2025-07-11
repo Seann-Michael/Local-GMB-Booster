@@ -993,7 +993,7 @@ export default function SuperAdminAPI() {
   };
 
   const formatApiKey = (apiKey: string) => {
-    if (!apiKey || apiKey.length < 6) return "•••••���";
+    if (!apiKey || apiKey.length < 6) return "••••••";
 
     // Clean the key first - remove any problematic characters
     const cleanKey = apiKey.replace(/[^\w.-]/g, "");
@@ -2152,7 +2152,12 @@ export default function SuperAdminAPI() {
                               errorRate: 0,
                             },
                           };
-                          setIntegrations((prev) => [...prev, newIntegration]);
+                          const updatedIntegrations = [
+                            ...integrations,
+                            newIntegration,
+                          ];
+                          setIntegrations(updatedIntegrations);
+                          saveIntegrationsToStorage(updatedIntegrations);
                           toast.success("Integration added successfully");
                         }
                         setShowIntegrationDialog(false);
