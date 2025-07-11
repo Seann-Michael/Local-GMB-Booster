@@ -992,7 +992,7 @@ export default function ProjectDetail() {
               {activeTab === "overview" && (
                 <div className="space-y-6">
                   {/* Project Description */}
-                  <Card
+                  <Card>
                     <CardHeader>
                       <CardTitle>Project Description</CardTitle>
                     </CardHeader>
