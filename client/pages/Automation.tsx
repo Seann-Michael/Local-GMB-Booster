@@ -440,7 +440,7 @@ export default function Automation() {
           </Card>
         </div>
 
-        {/* Workflows List */}
+        {/* Workflows Table */}
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
@@ -456,105 +456,118 @@ export default function Automation() {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {workflows.map((workflow) => (
-                <div
-                  key={workflow.id}
-                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                      <Zap className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Executions</TableHead>
+                  <TableHead>Last Run</TableHead>
+                  <TableHead>Updated</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {workflows.map((workflow) => (
+                  <TableRow key={workflow.id}>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
+                          <Zap className="h-4 w-4 text-primary" />
+                        </div>
+                        <div>
+                          <div className="font-medium">{workflow.name}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {workflow.description}
+                          </div>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>{getStatusBadge(workflow.status)}</TableCell>
+                    <TableCell>{workflow.runCount}</TableCell>
+                    <TableCell>
+                      {workflow.lastRun
+                        ? workflow.lastRun.toLocaleDateString()
+                        : "Never"}
+                    </TableCell>
+                    <TableCell>
+                      {workflow.updatedAt.toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>
                       <div className="flex items-center gap-2">
-                        <h3 className="font-medium">{workflow.name}</h3>
-                        {getStatusBadge(workflow.status)}
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        {workflow.description}
-                      </p>
-                      <div className="flex items-center gap-4 mt-1 text-xs text-muted-foreground">
-                        <span>{workflow.runCount} executions</span>
-                        <span>
-                          Updated {workflow.updatedAt.toLocaleDateString()}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                        {workflow.status === "active" && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              handleWorkflowAction(workflow.id, "pause")
+                            }
+                          >
+                            <Pause className="h-4 w-4" />
+                          </Button>
+                        )}
+                        {workflow.status === "paused" && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              handleWorkflowAction(workflow.id, "play")
+                            }
+                          >
+                            <Play className="h-4 w-4" />
+                          </Button>
+                        )}
 
-                  <div className="flex items-center gap-2">
-                    {workflow.status === "active" && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() =>
-                          handleWorkflowAction(workflow.id, "pause")
-                        }
-                      >
-                        <Pause className="h-4 w-4" />
-                      </Button>
-                    )}
-                    {workflow.status === "paused" && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() =>
-                          handleWorkflowAction(workflow.id, "play")
-                        }
-                      >
-                        <Play className="h-4 w-4" />
-                      </Button>
-                    )}
-
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                          onClick={() =>
-                            handleWorkflowAction(workflow.id, "edit")
-                          }
-                        >
-                          <Edit className="mr-2 h-4 w-4" />
-                          Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() =>
-                            handleWorkflowAction(workflow.id, "copy")
-                          }
-                        >
-                          <Copy className="mr-2 h-4 w-4" />
-                          Duplicate
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Download className="mr-2 h-4 w-4" />
-                          Export
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                          <BarChart3 className="mr-2 h-4 w-4" />
-                          View Analytics
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          className="text-destructive"
-                          onClick={() =>
-                            handleWorkflowAction(workflow.id, "delete")
-                          }
-                        >
-                          <Trash2 className="mr-2 h-4 w-4" />
-                          Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </div>
-              ))}
-            </div>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm">
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                              onClick={() =>
+                                handleWorkflowAction(workflow.id, "edit")
+                              }
+                            >
+                              <Edit className="mr-2 h-4 w-4" />
+                              Edit Workflow
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() =>
+                                handleWorkflowAction(workflow.id, "copy")
+                              }
+                            >
+                              <Copy className="mr-2 h-4 w-4" />
+                              Duplicate
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <Download className="mr-2 h-4 w-4" />
+                              Export
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>
+                              <BarChart3 className="mr-2 h-4 w-4" />
+                              View Analytics
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                              className="text-destructive"
+                              onClick={() =>
+                                handleWorkflowAction(workflow.id, "delete")
+                              }
+                            >
+                              <Trash2 className="mr-2 h-4 w-4" />
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
 
