@@ -2342,6 +2342,7 @@ export default function ProjectDetail() {
 
       {/* Review Request Dialog */}
       <ReviewRequest
+        key="review-request-dialog"
         isOpen={showReviewRequest}
         onClose={() => setShowReviewRequest(false)}
         customerName={project?.customerName}
