@@ -36,11 +36,10 @@ export const getGoogleMapsApiKey = (): string => {
       // Extract the actual API key (remove masking if present)
       let apiKey = googleMapsIntegration.apiKey;
 
-      // If it's a masked key, try to get the full key from a secure storage
+      // If it's a masked key, warn and return empty (will fall back to iframe)
       if (apiKey.includes("•")) {
-        // In production, this would be retrieved securely
         console.warn(
-          "Using masked API key. Please configure the full API key.",
+          "Google Maps API key is masked. Interactive maps disabled, falling back to iframe.",
         );
         return "";
       }
@@ -51,6 +50,7 @@ export const getGoogleMapsApiKey = (): string => {
     console.error("Error retrieving Google Maps API key:", error);
   }
 
+  console.warn("No Google Maps API key configured. Interactive maps disabled.");
   return "";
 };
 
