@@ -1,16 +1,4 @@
 import React from "react";
-
-// Temporary suppression of React key warning for this component
-// TODO: Find and fix the root cause of the key warning
-const originalConsoleWarn = console.warn;
-console.warn = (...args) => {
-  if (
-    args[0]?.includes?.('Each child in a list should have a unique "key" prop')
-  ) {
-    return; // Suppress this specific warning
-  }
-  originalConsoleWarn.apply(console, args);
-};
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
