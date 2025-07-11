@@ -438,133 +438,140 @@ export default function AgencyProjects() {
               className="block"
             >
               <Card className="hover:shadow-md transition-shadow cursor-pointer">
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <CardTitle className="text-lg line-clamp-1">
-                      {project.name}
-                    </CardTitle>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {project.clientName}
-                    </p>
+                <CardHeader className="pb-3">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <CardTitle className="text-lg line-clamp-1">
+                        {project.name}
+                      </CardTitle>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {project.clientName}
+                      </p>
+                    </div>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          onClick={() =>
+                            handleProjectAction("view", project.id)
+                          }
+                        >
+                          <Eye className="h-4 w-4 mr-2" />
+                          View Details
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() =>
+                            handleProjectAction("edit", project.id)
+                          }
+                        >
+                          <Edit className="h-4 w-4 mr-2" />
+                          Edit Project
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() =>
+                            handleProjectAction("duplicate", project.id)
+                          }
+                        >
+                          <Copy className="h-4 w-4 mr-2" />
+                          Duplicate
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() =>
+                            handleProjectAction("archive", project.id)
+                          }
+                        >
+                          <Archive className="h-4 w-4 mr-2" />
+                          Archive
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem
-                        onClick={() => handleProjectAction("view", project.id)}
-                      >
-                        <Eye className="h-4 w-4 mr-2" />
-                        View Details
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => handleProjectAction("edit", project.id)}
-                      >
-                        <Edit className="h-4 w-4 mr-2" />
-                        Edit Project
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() =>
-                          handleProjectAction("duplicate", project.id)
-                        }
-                      >
-                        <Copy className="h-4 w-4 mr-2" />
-                        Duplicate
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() =>
-                          handleProjectAction("archive", project.id)
-                        }
-                      >
-                        <Archive className="h-4 w-4 mr-2" />
-                        Archive
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              </CardHeader>
+                </CardHeader>
 
-              <CardContent className="space-y-4">
-                {/* Description */}
-                <p className="text-sm text-muted-foreground line-clamp-2">
-                  {project.description}
-                </p>
-
-                {/* Status and Type */}
-                <div className="flex gap-2">
-                  <Badge variant={getStatusVariant(project.status)}>
-                    {
-                      PROJECT_STATUSES.find((s) => s.value === project.status)
-                        ?.label
-                    }
-                  </Badge>
-                  <Badge variant="outline">
-                    {project.type === "one-off" ? "One-off" : "Recurring"}
-                  </Badge>
-                </div>
-
-                {/* Services */}
-                <div>
-                  <p className="text-xs text-muted-foreground mb-1">Services</p>
-                  <p className="text-sm line-clamp-1">
-                    {getServiceLabels(project.services)}
+                <CardContent className="space-y-4">
+                  {/* Description */}
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {project.description}
                   </p>
-                </div>
 
-                {/* Progress */}
-                <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="text-muted-foreground">Progress</span>
-                    <span className="font-medium">{project.progress}%</span>
+                  {/* Status and Type */}
+                  <div className="flex gap-2">
+                    <Badge variant={getStatusVariant(project.status)}>
+                      {
+                        PROJECT_STATUSES.find((s) => s.value === project.status)
+                          ?.label
+                      }
+                    </Badge>
+                    <Badge variant="outline">
+                      {project.type === "one-off" ? "One-off" : "Recurring"}
+                    </Badge>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-primary h-2 rounded-full transition-all"
-                      style={{ width: `${project.progress}%` }}
-                    ></div>
-                  </div>
-                </div>
 
-                {/* Budget and Timeline */}
-                <div className="grid grid-cols-2 gap-4 text-sm">
+                  {/* Services */}
                   <div>
-                    <p className="text-muted-foreground">Budget</p>
-                    <p className="font-medium">
-                      {formatCurrency(project.budget)}
+                    <p className="text-xs text-muted-foreground mb-1">
+                      Services
+                    </p>
+                    <p className="text-sm line-clamp-1">
+                      {getServiceLabels(project.services)}
                     </p>
                   </div>
-                  <div>
-                    <p className="text-muted-foreground">
-                      {project.type === "recurring" ? "Next Due" : "Due Date"}
-                    </p>
-                    <p className="font-medium">
-                      {project.type === "recurring"
-                        ? project.recurringSettings?.nextDueDate
-                          ? formatDate(project.recurringSettings.nextDueDate)
-                          : "N/A"
-                        : project.dueDate
-                          ? formatDate(project.dueDate)
-                          : "N/A"}
-                    </p>
-                  </div>
-                </div>
 
-                {/* Team */}
-                <div>
-                  <p className="text-xs text-muted-foreground mb-1">Team</p>
-                  <div className="flex items-center gap-1">
-                    <Users className="h-3 w-3 text-muted-foreground" />
-                    <span className="text-sm">
-                      {project.assignedTeam.length} members
-                    </span>
+                  {/* Progress */}
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-muted-foreground">Progress</span>
+                      <span className="font-medium">{project.progress}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-primary h-2 rounded-full transition-all"
+                        style={{ width: `${project.progress}%` }}
+                      ></div>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+
+                  {/* Budget and Timeline */}
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <p className="text-muted-foreground">Budget</p>
+                      <p className="font-medium">
+                        {formatCurrency(project.budget)}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground">
+                        {project.type === "recurring" ? "Next Due" : "Due Date"}
+                      </p>
+                      <p className="font-medium">
+                        {project.type === "recurring"
+                          ? project.recurringSettings?.nextDueDate
+                            ? formatDate(project.recurringSettings.nextDueDate)
+                            : "N/A"
+                          : project.dueDate
+                            ? formatDate(project.dueDate)
+                            : "N/A"}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Team */}
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">Team</p>
+                    <div className="flex items-center gap-1">
+                      <Users className="h-3 w-3 text-muted-foreground" />
+                      <span className="text-sm">
+                        {project.assignedTeam.length} members
+                      </span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
 
