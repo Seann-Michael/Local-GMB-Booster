@@ -39,6 +39,18 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
     }
   }, []);
 
+  // Add timeout for loading state
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!isLoaded && !error && !useIframeFallback) {
+        console.warn("Google Maps loading timeout, falling back to iframe");
+        setUseIframeFallback(true);
+      }
+    }, 10000); // 10 second timeout
+
+    return () => clearTimeout(timer);
+  }, [isLoaded, error, useIframeFallback]);
+
   const mapOptions: google.maps.MapOptions = {
     zoom,
     disableDefaultUI: !showControls,
