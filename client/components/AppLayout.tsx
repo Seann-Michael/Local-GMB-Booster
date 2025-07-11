@@ -122,6 +122,13 @@ function getBreadcrumbs(pathname: string): BreadcrumbItem[] {
     case "/admin/help":
       return [baseBreadcrumb, { label: "Help Center" }];
 
+    case "/admin/workflow-builder":
+      return [
+        baseBreadcrumb,
+        { label: "Automations", href: "/admin/automations" },
+        { label: "Workflow Builder" },
+      ];
+
     default:
       // Handle dynamic routes like /project/:id
       if (pathname.startsWith("/project/") && pathname.endsWith("/edit")) {
