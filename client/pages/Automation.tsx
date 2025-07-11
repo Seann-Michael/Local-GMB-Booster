@@ -365,7 +365,7 @@ export default function Automation() {
               <Upload className="h-4 w-4 mr-2" />
               Import
             </Button>
-            <Button size="sm">
+            <Button size="sm" onClick={() => setIsNewWorkflowOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
               New Workflow
             </Button>
