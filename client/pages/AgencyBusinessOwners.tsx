@@ -31,7 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { AgencyAdminLayout } from "@/components/AgencyAdminLayout";
+import { AgencyLayout } from "@/components/AgencyLayout";
 import {
   Search,
   Filter,
