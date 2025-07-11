@@ -958,10 +958,13 @@ export default function ProjectDetail() {
                 className="mb-6 border-green-200 bg-green-50"
                 key="project-status-completed"
               >
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-2">
+                <CardContent className="p-4" key="status-completed-content">
+                  <div
+                    className="flex items-center gap-2"
+                    key="status-completed-inner"
+                  >
                     <CheckCircle className="h-5 w-5 text-green-600" />
-                    <div>
+                    <div key="completion-text">
                       <h3 className="font-medium text-green-800">
                         Project Completed
                       </h3>
