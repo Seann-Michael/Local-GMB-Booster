@@ -557,7 +557,7 @@ export default function SuperAdminAPI() {
         name: "Twilio SMS Service",
         service: "Twilio",
         category: "sms",
-        apiKey: "AC•••••••••••••••••••••••••••••••••���",
+        apiKey: "AC••••••••••••••••••���••••••••••••••���",
         apiSecret: "••••••••••••••••••••••••••••••••",
         isActive: true,
         isConnected: true,
@@ -1110,8 +1110,8 @@ export default function SuperAdminAPI() {
           onValueChange={setActiveTab}
           className="space-y-6"
         >
-          <div className="w-full overflow-x-auto">
-            <TabsList className="flex w-max min-w-full">
+          <div className="w-full overflow-x-auto pb-2">
+            <TabsList className="flex w-max min-w-full h-auto p-1 gap-1">
               <TabsTrigger
                 value="keys"
                 className="text-xs px-2 whitespace-nowrap"
