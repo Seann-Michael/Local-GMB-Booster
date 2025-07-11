@@ -1058,6 +1058,7 @@ export default function SuperAdminAPI() {
     return <Badge className={colors[method] || "bg-gray-500"}>{method}</Badge>;
   };
 
+  console.log("About to return JSX");
   return (
     <SuperAdminLayout>
       <div className="max-w-full overflow-x-hidden pb-20 md:pb-0">
