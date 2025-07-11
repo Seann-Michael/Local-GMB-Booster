@@ -2171,6 +2171,14 @@ export default function SuperAdminAPI() {
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-muted-foreground">
+                          API Key:
+                        </span>
+                        <span className="text-sm font-mono text-muted-foreground">
+                          {formatApiKey(integration.apiKey)}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground">
                           Requests Today:
                         </span>
                         <span className="text-sm font-medium">
