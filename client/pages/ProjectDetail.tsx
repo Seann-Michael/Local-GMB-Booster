@@ -2394,5 +2394,5 @@ export default function ProjectDetail() {
         </div>
       )}
     </AppLayout>
-  ); // End of commented out original return
+  );
 }
