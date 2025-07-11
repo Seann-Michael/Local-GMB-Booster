@@ -880,12 +880,12 @@ export default function ProjectDetail() {
               </div>
             </div>
             <div className="flex items-center gap-2" key="action-buttons">
-              <Link to={`/project/${id}/edit`}>
+              <Link to={`/project/${id}/edit`} key="edit-link">
                 <Button variant="ghost" size="icon" className="h-8 w-8">
                   <Edit className="h-4 w-4" />
                 </Button>
               </Link>
-              <DropdownMenu>
+              <DropdownMenu key="actions-dropdown">
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon" className="h-8 w-8">
                     <MoreVertical className="h-4 w-4" />
