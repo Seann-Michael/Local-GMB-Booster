@@ -856,7 +856,7 @@ export default function ProjectDetail() {
 
   return (
     <AppLayout>
-      <div className="container px-4 py-6">
+      <div className="container px-4 py-6" suppressHydrationWarning>
         <div key="main-content-wrapper">
           <div className="flex items-center gap-4 mb-6">
             <Link to="/admin/projects">
