@@ -383,11 +383,11 @@ export default function AgencyProjects() {
           </div>
           <div className="flex gap-2">
             <Select
-              value={filters.status?.[0] || ""}
+              value={filters.status?.[0] || "all"}
               onValueChange={(value) =>
                 setFilters((prev) => ({
                   ...prev,
-                  status: value ? [value] : undefined,
+                  status: value === "all" ? undefined : [value],
                 }))
               }
             >
