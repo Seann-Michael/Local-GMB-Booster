@@ -2098,11 +2098,48 @@ export default function SuperAdminAPI() {
                           <TestTube className="h-3 w-3" />
                           Test
                         </Button>
-                        <Button size="sm" variant="outline" className="gap-1">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="gap-1"
+                          onClick={() => {
+                            setEditingIntegration(integration);
+                            setIntegrationForm({
+                              name: integration.name,
+                              service: integration.service,
+                              category: integration.category,
+                              apiKey: integration.apiKey,
+                              apiSecret: integration.apiSecret || "",
+                              additionalConfig: integration.additionalConfig,
+                              newConfigKey: "",
+                              newConfigValue: "",
+                              isActive: integration.isActive,
+                            });
+                            setShowIntegrationDialog(true);
+                          }}
+                        >
                           <Edit className="h-3 w-3" />
                           Edit
                         </Button>
-                        <Button size="sm" variant="outline" className="gap-1">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="gap-1"
+                          onClick={() => {
+                            if (
+                              confirm(
+                                `Are you sure you want to delete ${integration.name}?`,
+                              )
+                            ) {
+                              setIntegrations((prev) =>
+                                prev.filter((int) => int.id !== integration.id),
+                              );
+                              toast.success(
+                                `${integration.name} has been deleted`,
+                              );
+                            }
+                          }}
+                        >
                           <Trash2 className="h-3 w-3" />
                         </Button>
                       </div>
