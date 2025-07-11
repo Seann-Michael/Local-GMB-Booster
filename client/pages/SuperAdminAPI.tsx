@@ -2023,7 +2023,6 @@ export default function SuperAdminAPI() {
                       Add Integration
                     </Button>
                   </DialogTrigger>
-                  </DialogTrigger>
                 <DialogContent className="max-w-2xl">
                   <DialogHeader>
                     <DialogTitle>
