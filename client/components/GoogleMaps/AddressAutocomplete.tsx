@@ -246,10 +246,16 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
           )}
 
           {!apiKeyAvailable && (
-            <Badge variant="secondary" className="text-xs">
-              <AlertCircle className="h-3 w-3 mr-1" />
-              Autocomplete unavailable - configure Google Maps API
-            </Badge>
+            <div className="space-y-1">
+              <Badge variant="secondary" className="text-xs">
+                <AlertCircle className="h-3 w-3 mr-1" />
+                Address autocomplete disabled
+              </Badge>
+              <p className="text-xs text-muted-foreground">
+                To enable autocomplete: Go to Super Admin → API → Third-Party
+                APIs → Configure Google Maps API key
+              </p>
+            </div>
           )}
 
           {inputValue &&
