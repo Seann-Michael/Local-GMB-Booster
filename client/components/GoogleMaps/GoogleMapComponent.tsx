@@ -92,6 +92,81 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
     window.open(url, "_blank");
   };
 
+  // Iframe fallback when no API key is available
+  if (
+    useIframeFallback &&
+    (address || (lat !== undefined && lng !== undefined))
+  ) {
+    let embedUrl = "";
+    if (lat !== undefined && lng !== undefined) {
+      embedUrl = `https://maps.google.com/maps?q=${lat},${lng}&hl=en&z=${zoom}&output=embed`;
+    } else if (address) {
+      embedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(address)}&hl=en&z=${zoom}&output=embed`;
+    }
+
+    return (
+      <Card className={className}>
+        <CardContent className="p-3">
+          <iframe
+            src={embedUrl}
+            width="100%"
+            height={height}
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="w-full rounded-md"
+          />
+
+          <div className="flex justify-between items-center mt-3 gap-2">
+            <div className="flex-1 min-w-0">
+              {address && (
+                <p
+                  key="address-text"
+                  className="text-xs text-muted-foreground truncate"
+                >
+                  {address}
+                </p>
+              )}
+              {lat !== undefined && lng !== undefined && !address && (
+                <p
+                  key="coordinates-text"
+                  className="text-xs text-muted-foreground font-mono"
+                >
+                  {lat.toFixed(6)}, {lng.toFixed(6)}
+                </p>
+              )}
+            </div>
+
+            <div className="flex gap-1">
+              {showDirectionsButton && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={getDirections}
+                  className="gap-1 text-xs px-2 h-7"
+                >
+                  <Navigation className="h-3 w-3" />
+                  Directions
+                </Button>
+              )}
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={openInGoogleMaps}
+                className="gap-1 text-xs px-2 h-7"
+              >
+                <Maximize className="h-3 w-3" />
+                Open
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   if (error) {
     return (
       <Card className={className}>
