@@ -280,6 +280,17 @@ export default function SuperAdminAPI() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("keys");
 
+  // Third-party integrations state
+  const [integrations, setIntegrations] = useState<ThirdPartyIntegration[]>([]);
+  const [usageLogs, setUsageLogs] = useState<APIUsageLog[]>([]);
+  const [rateLimitRules, setRateLimitRules] = useState<RateLimitRule[]>([]);
+  const [showIntegrationDialog, setShowIntegrationDialog] = useState(false);
+  const [showRateLimitDialog, setShowRateLimitDialog] = useState(false);
+  const [editingIntegration, setEditingIntegration] =
+    useState<ThirdPartyIntegration | null>(null);
+  const [editingRateLimit, setEditingRateLimit] =
+    useState<RateLimitRule | null>(null);
+
   // Form states
   const [keyForm, setKeyForm] = useState({
     name: "",
