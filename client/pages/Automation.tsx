@@ -23,6 +23,14 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -110,6 +118,19 @@ interface WorkflowStats {
   averagePerDay: number;
 }
 
+interface ExecutionHistory {
+  id: string;
+  workflowId: string;
+  workflowName: string;
+  status: "success" | "failed" | "running";
+  startTime: Date;
+  endTime?: Date;
+  duration?: number;
+  trigger: string;
+  errorMessage?: string;
+  progress: number;
+}
+
 // Mock data for workflows
 const mockWorkflows: Workflow[] = [
   {
@@ -161,18 +182,101 @@ const mockStats: WorkflowStats = {
   averagePerDay: 12.5,
 };
 
+// Mock execution history data
+const mockExecutions: ExecutionHistory[] = [
+  {
+    id: "exec-1",
+    workflowId: "workflow-1",
+    workflowName: "Lead Nurturing Campaign",
+    status: "success",
+    startTime: new Date("2024-01-20T10:30:00"),
+    endTime: new Date("2024-01-20T10:32:15"),
+    duration: 135,
+    trigger: "New lead added",
+    progress: 100,
+  },
+  {
+    id: "exec-2",
+    workflowId: "workflow-2",
+    workflowName: "Review Follow-up",
+    status: "success",
+    startTime: new Date("2024-01-20T09:15:00"),
+    endTime: new Date("2024-01-20T09:16:30"),
+    duration: 90,
+    trigger: "Project completed",
+    progress: 100,
+  },
+  {
+    id: "exec-3",
+    workflowId: "workflow-1",
+    workflowName: "Lead Nurturing Campaign",
+    status: "failed",
+    startTime: new Date("2024-01-20T08:45:00"),
+    endTime: new Date("2024-01-20T08:45:45"),
+    duration: 45,
+    trigger: "New lead added",
+    errorMessage: "Email service timeout",
+    progress: 60,
+  },
+  {
+    id: "exec-4",
+    workflowId: "workflow-2",
+    workflowName: "Review Follow-up",
+    status: "running",
+    startTime: new Date("2024-01-20T11:00:00"),
+    trigger: "Manual trigger",
+    progress: 75,
+  },
+  {
+    id: "exec-5",
+    workflowId: "workflow-1",
+    workflowName: "Lead Nurturing Campaign",
+    status: "success",
+    startTime: new Date("2024-01-19T16:20:00"),
+    endTime: new Date("2024-01-19T16:22:10"),
+    duration: 130,
+    trigger: "Scheduled run",
+    progress: 100,
+  },
+];
+
 export default function Automation() {
   const [workflows, setWorkflows] = useState<Workflow[]>(mockWorkflows);
   const [selectedWorkflow, setSelectedWorkflow] = useState<Workflow | null>(
     null,
   );
   const [activeTab, setActiveTab] = useState("executions");
+  const [executionHistory, setExecutionHistory] =
+    useState<ExecutionHistory[]>(mockExecutions);
 
   const handleWorkflowAction = (
     workflowId: string,
     action: "play" | "pause" | "stop" | "edit" | "delete" | "copy",
   ) => {
-    // Handle workflow actions
+    setWorkflows((prev) =>
+      prev
+        .map((workflow) => {
+          if (workflow.id === workflowId) {
+            switch (action) {
+              case "play":
+                return { ...workflow, status: "active" as const };
+              case "pause":
+                return { ...workflow, status: "paused" as const };
+              case "stop":
+                return { ...workflow, status: "draft" as const };
+              case "delete":
+                return workflow; // Handle deletion in filter
+              default:
+                return workflow;
+            }
+          }
+          return workflow;
+        })
+        .filter(
+          (workflow) => !(action === "delete" && workflow.id === workflowId),
+        ),
+    );
+
     console.log(`${action} workflow ${workflowId}`);
   };
 
@@ -202,6 +306,41 @@ export default function Automation() {
       default:
         return null;
     }
+  };
+
+  const getExecutionStatusBadge = (status: ExecutionHistory["status"]) => {
+    switch (status) {
+      case "success":
+        return (
+          <Badge variant="default" className="bg-green-100 text-green-800">
+            <CheckCircle className="h-3 w-3 mr-1" />
+            Success
+          </Badge>
+        );
+      case "failed":
+        return (
+          <Badge variant="destructive">
+            <XCircle className="h-3 w-3 mr-1" />
+            Failed
+          </Badge>
+        );
+      case "running":
+        return (
+          <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+            <RefreshCw className="h-3 w-3 mr-1 animate-spin" />
+            Running
+          </Badge>
+        );
+      default:
+        return null;
+    }
+  };
+
+  const formatDuration = (seconds?: number) => {
+    if (!seconds) return "—";
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
   };
 
   return (
@@ -430,27 +569,273 @@ export default function Automation() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-8 text-muted-foreground">
-                  <Activity className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                  <p>No recent executions</p>
-                  <p className="text-sm mt-1">
-                    Execution history will appear here when workflows run
-                  </p>
-                </div>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Workflow</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Start Time</TableHead>
+                      <TableHead>Duration</TableHead>
+                      <TableHead>Trigger</TableHead>
+                      <TableHead>Progress</TableHead>
+                      <TableHead>Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {executionHistory.map((execution) => (
+                      <TableRow key={execution.id}>
+                        <TableCell className="font-medium">
+                          {execution.workflowName}
+                        </TableCell>
+                        <TableCell>
+                          {getExecutionStatusBadge(execution.status)}
+                        </TableCell>
+                        <TableCell>
+                          {execution.startTime.toLocaleString()}
+                        </TableCell>
+                        <TableCell>
+                          {formatDuration(execution.duration)}
+                        </TableCell>
+                        <TableCell>{execution.trigger}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <Progress
+                              value={execution.progress}
+                              className="w-16"
+                            />
+                            <span className="text-xs text-muted-foreground">
+                              {execution.progress}%
+                            </span>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem>
+                                <Activity className="mr-2 h-4 w-4" />
+                                View Details
+                              </DropdownMenuItem>
+                              {execution.status === "running" && (
+                                <DropdownMenuItem>
+                                  <Square className="mr-2 h-4 w-4" />
+                                  Stop Execution
+                                </DropdownMenuItem>
+                              )}
+                              {execution.status === "failed" && (
+                                <DropdownMenuItem>
+                                  <RefreshCw className="mr-2 h-4 w-4" />
+                                  Retry
+                                </DropdownMenuItem>
+                              )}
+                              <DropdownMenuItem>
+                                <Download className="mr-2 h-4 w-4" />
+                                Export Logs
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </CardContent>
             </Card>
           </TabsContent>
 
           <TabsContent value="analytics" className="space-y-6">
-            <div className="text-center py-12">
-              <BarChart3 className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-              <h3 className="text-lg font-medium mb-2">Analytics Dashboard</h3>
-              <p className="text-muted-foreground max-w-md mx-auto">
-                Detailed analytics and performance metrics will be available
-                soon. Monitor your workflow performance, success rates, and
-                execution trends.
-              </p>
+            {/* Performance Overview */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Success Rate
+                  </CardTitle>
+                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">97.1%</div>
+                  <p className="text-xs text-muted-foreground">
+                    +2.3% from last month
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Avg Response Time
+                  </CardTitle>
+                  <Clock className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">1.2s</div>
+                  <p className="text-xs text-muted-foreground">
+                    -0.3s from last month
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Daily Executions
+                  </CardTitle>
+                  <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">156</div>
+                  <p className="text-xs text-muted-foreground">
+                    +12% from yesterday
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Error Rate
+                  </CardTitle>
+                  <AlertCircle className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">2.9%</div>
+                  <p className="text-xs text-muted-foreground">
+                    -1.1% from last month
+                  </p>
+                </CardContent>
+              </Card>
             </div>
+
+            {/* Workflow Performance */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Workflow Performance</CardTitle>
+                <CardDescription>
+                  Individual workflow metrics and trends
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {workflows.map((workflow) => (
+                    <div
+                      key={workflow.id}
+                      className="flex items-center justify-between p-4 border rounded-lg"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div>
+                          <div className="font-medium">{workflow.name}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {workflow.runCount} executions
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-6 text-sm">
+                        <div className="text-center">
+                          <div className="font-medium">95%</div>
+                          <div className="text-muted-foreground">Success</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="font-medium">2.1s</div>
+                          <div className="text-muted-foreground">Avg Time</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="font-medium">
+                            {workflow.lastRun ? "Today" : "Never"}
+                          </div>
+                          <div className="text-muted-foreground">Last Run</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Usage Trends */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Usage Trends</CardTitle>
+                <CardDescription>
+                  Execution patterns over the last 30 days
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="font-medium mb-3">Most Active Triggers</h4>
+                    <div className="space-y-2">
+                      {[
+                        {
+                          name: "Project Completed",
+                          count: 45,
+                          percentage: 38,
+                        },
+                        { name: "New Lead Added", count: 32, percentage: 27 },
+                        { name: "Schedule", count: 28, percentage: 24 },
+                        { name: "Manual Trigger", count: 13, percentage: 11 },
+                      ].map((trigger) => (
+                        <div
+                          key={trigger.name}
+                          className="flex items-center justify-between"
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className="text-sm">{trigger.name}</div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="text-sm font-medium">
+                              {trigger.count}
+                            </div>
+                            <div className="w-16 bg-muted rounded-full h-2">
+                              <div
+                                className="bg-primary h-2 rounded-full"
+                                style={{ width: `${trigger.percentage}%` }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium mb-3">Error Categories</h4>
+                    <div className="space-y-2">
+                      {[
+                        { name: "Email Delivery", count: 5, percentage: 42 },
+                        { name: "API Timeout", count: 3, percentage: 25 },
+                        { name: "Invalid Data", count: 2, percentage: 17 },
+                        { name: "Network Error", count: 2, percentage: 17 },
+                      ].map((error) => (
+                        <div
+                          key={error.name}
+                          className="flex items-center justify-between"
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className="text-sm">{error.name}</div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="text-sm font-medium">
+                              {error.count}
+                            </div>
+                            <div className="w-16 bg-muted rounded-full h-2">
+                              <div
+                                className="bg-destructive h-2 rounded-full"
+                                style={{ width: `${error.percentage}%` }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
@@ -499,6 +884,11 @@ export default function Automation() {
                         </SelectContent>
                       </Select>
                     </div>
+
+                    <div className="space-y-2">
+                      <Label>Retry Delay (seconds)</Label>
+                      <Input type="number" defaultValue="60" />
+                    </div>
                   </div>
 
                   <div className="space-y-4">
@@ -530,6 +920,78 @@ export default function Automation() {
                         </p>
                       </div>
                       <Switch />
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="space-y-0.5">
+                        <Label>Performance Monitoring</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Track detailed execution metrics
+                        </p>
+                      </div>
+                      <Switch defaultChecked />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Notification Settings */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-medium">
+                    Notification Preferences
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>Email Recipients</Label>
+                        <Textarea
+                          placeholder="Enter email addresses (one per line)"
+                          defaultValue="admin@example.com&#10;manager@example.com"
+                          rows={3}
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label>Daily Summary Reports</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Receive daily execution summaries
+                          </p>
+                        </div>
+                        <Switch defaultChecked />
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>Notification Threshold</Label>
+                        <Select defaultValue="any">
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="any">Any failure</SelectItem>
+                            <SelectItem value="consecutive-3">
+                              3 consecutive failures
+                            </SelectItem>
+                            <SelectItem value="consecutive-5">
+                              5 consecutive failures
+                            </SelectItem>
+                            <SelectItem value="rate-10">
+                              10% failure rate
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <Label>Weekly Performance Reports</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Receive weekly analytics reports
+                          </p>
+                        </div>
+                        <Switch />
+                      </div>
                     </div>
                   </div>
                 </div>
