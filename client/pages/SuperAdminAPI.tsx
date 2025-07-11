@@ -557,8 +557,8 @@ export default function SuperAdminAPI() {
         name: "Twilio SMS Service",
         service: "Twilio",
         category: "sms",
-        apiKey: "AC•••••••••••••••••••••••••••••••••����",
-        apiSecret: "••••••••••••••••••••••••••••••••",
+        apiKey: "AC•••••••••••••••••••••••••••••••••���",
+        apiSecret: "���•••••••••••••••••••••••••••••••",
         isActive: true,
         isConnected: true,
         lastTested: "2024-01-19T16:45:00Z",
@@ -1150,7 +1150,7 @@ export default function SuperAdminAPI() {
               </TabsTrigger>
               <TabsTrigger
                 value="docs"
-                className="text-xs px-2 whitespace-nowrap"
+                className="text-xs px-3 py-2 min-w-0 whitespace-nowrap flex-shrink-0"
               >
                 Docs
               </TabsTrigger>
