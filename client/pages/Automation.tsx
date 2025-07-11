@@ -251,6 +251,7 @@ const mockExecutions: ExecutionHistory[] = [
 ];
 
 export default function Automation() {
+  const navigate = useNavigate();
   const [workflows, setWorkflows] = useState<Workflow[]>(mockWorkflows);
   const [selectedWorkflow, setSelectedWorkflow] = useState<Workflow | null>(
     null,
@@ -270,6 +271,58 @@ export default function Automation() {
   } | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  // Sorting logic
+  const handleSort = (key: string) => {
+    let direction: "asc" | "desc" = "asc";
+    if (
+      sortConfig &&
+      sortConfig.key === key &&
+      sortConfig.direction === "asc"
+    ) {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedWorkflows = useMemo(() => {
+    if (!sortConfig) return workflows;
+
+    return [...workflows].sort((a, b) => {
+      const aVal = a[sortConfig.key as keyof Workflow];
+      const bVal = b[sortConfig.key as keyof Workflow];
+
+      if (aVal === null || aVal === undefined) return 1;
+      if (bVal === null || bVal === undefined) return -1;
+
+      if (aVal < bVal) {
+        return sortConfig.direction === "asc" ? -1 : 1;
+      }
+      if (aVal > bVal) {
+        return sortConfig.direction === "asc" ? 1 : -1;
+      }
+      return 0;
+    });
+  }, [workflows, sortConfig]);
+
+  // Pagination logic
+  const totalPages = Math.ceil(sortedWorkflows.length / rowsPerPage);
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const paginatedWorkflows = sortedWorkflows.slice(
+    startIndex,
+    startIndex + rowsPerPage,
+  );
+
+  const getSortIcon = (key: string) => {
+    if (!sortConfig || sortConfig.key !== key) {
+      return <ArrowUpDown className="h-4 w-4" />;
+    }
+    return sortConfig.direction === "asc" ? (
+      <ArrowUp className="h-4 w-4" />
+    ) : (
+      <ArrowDown className="h-4 w-4" />
+    );
+  };
 
   const handleWorkflowAction = (
     workflowId: string,
