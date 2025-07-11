@@ -955,10 +955,14 @@ export default function ProjectDetail() {
                         Project Completed
                       </h3>
                       <p className="text-sm text-green-700">
-                        Completed on{" "}
-                        {project.completedDate
-                          ? new Date(project.completedDate).toLocaleDateString()
-                          : "Unknown"}
+                        <span key="completion-date-text">
+                          Completed on{" "}
+                          {project.completedDate
+                            ? new Date(
+                                project.completedDate,
+                              ).toLocaleDateString()
+                            : "Unknown"}
+                        </span>
                       </p>
                     </div>
                   </div>
