@@ -1242,8 +1242,13 @@ export default function ProjectDetail() {
                         </div>
                         {project.gpsLat && project.gpsLng && (
                           <div className="text-sm text-muted-foreground">
-                            <span className="font-medium">GPS:</span>{" "}
-                            {project.gpsLat}, {project.gpsLng}
+                            <span key="gps-label" className="font-medium">
+                              GPS:
+                            </span>
+                            <span key="gps-coordinates">
+                              {" "}
+                              {project.gpsLat}, {project.gpsLng}
+                            </span>
                           </div>
                         )}
                         <GoogleMapComponent
