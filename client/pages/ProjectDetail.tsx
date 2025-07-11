@@ -1025,7 +1025,7 @@ export default function ProjectDetail() {
                     </CardHeader>
                     <CardContent>
                       <div className="flex flex-wrap gap-2">
-                        {project.keywords.map((keyword, index) => (
+                        {project.keywords && project.keywords.length > 0 ? project.keywords.map((keyword, index) => (
                           <Badge
                             key={`keyword-${index}-${keyword.replace(/\s+/g, "-")}`}
                             variant="secondary"
