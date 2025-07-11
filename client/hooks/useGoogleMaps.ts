@@ -1,0 +1,253 @@
+import { useState, useEffect, useRef, useCallback } from "react";
+import {
+  loadGoogleMapsAPI,
+  initializeMap,
+  initializeAutocomplete,
+  geocodeAddress,
+  PlaceResult,
+} from "@/lib/googleMaps";
+import { toast } from "sonner";
+
+// Hook for Google Maps
+export const useGoogleMaps = (options: google.maps.MapOptions = {}) => {
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const mapRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const initMap = async () => {
+      try {
+        if (!mapRef.current) return;
+
+        const mapInstance = await initializeMap(mapRef.current, options);
+        setMap(mapInstance);
+        setIsLoaded(true);
+        setError(null);
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to load map";
+        setError(errorMessage);
+        toast.error(`Google Maps: ${errorMessage}`);
+      }
+    };
+
+    initMap();
+  }, []);
+
+  const addMarker = useCallback(
+    (
+      position: google.maps.LatLngLiteral,
+      options: google.maps.MarkerOptions = {},
+    ) => {
+      if (!map) return null;
+
+      return new google.maps.Marker({
+        position,
+        map,
+        ...options,
+      });
+    },
+    [map],
+  );
+
+  const setCenter = useCallback(
+    (position: google.maps.LatLngLiteral) => {
+      if (map) {
+        map.setCenter(position);
+      }
+    },
+    [map],
+  );
+
+  const setZoom = useCallback(
+    (zoom: number) => {
+      if (map) {
+        map.setZoom(zoom);
+      }
+    },
+    [map],
+  );
+
+  return {
+    mapRef,
+    map,
+    isLoaded,
+    error,
+    addMarker,
+    setCenter,
+    setZoom,
+  };
+};
+
+// Hook for Google Places Autocomplete
+export const useGooglePlacesAutocomplete = (
+  options: google.maps.places.AutocompleteOptions = {},
+) => {
+  const [autocomplete, setAutocomplete] =
+    useState<google.maps.places.Autocomplete | null>(null);
+  const [predictions, setPredictions] = useState<
+    google.maps.places.AutocompletePrediction[]
+  >([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const initAutocomplete = async () => {
+      try {
+        if (!inputRef.current) return;
+
+        const autocompleteInstance = await initializeAutocomplete(
+          inputRef.current,
+          options,
+        );
+
+        setAutocomplete(autocompleteInstance);
+        setIsLoaded(true);
+        setError(null);
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to load autocomplete";
+        setError(errorMessage);
+        console.error("Google Places Autocomplete error:", err);
+      }
+    };
+
+    initAutocomplete();
+  }, []);
+
+  const getPlace = useCallback((): google.maps.places.PlaceResult | null => {
+    if (!autocomplete) return null;
+    return autocomplete.getPlace();
+  }, [autocomplete]);
+
+  const addPlaceChangedListener = useCallback(
+    (callback: () => void) => {
+      if (autocomplete) {
+        autocomplete.addListener("place_changed", callback);
+      }
+    },
+    [autocomplete],
+  );
+
+  return {
+    inputRef,
+    autocomplete,
+    isLoaded,
+    error,
+    predictions,
+    getPlace,
+    addPlaceChangedListener,
+  };
+};
+
+// Hook for address search with suggestions
+export const useAddressSearch = () => {
+  const [suggestions, setSuggestions] = useState<PlaceResult[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const searchAddress = useCallback(async (query: string) => {
+    if (!query || query.length < 3) {
+      setSuggestions([]);
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      await loadGoogleMapsAPI();
+
+      const service = new google.maps.places.AutocompleteService();
+
+      service.getPlacePredictions(
+        {
+          input: query,
+          types: ["address"],
+          componentRestrictions: { country: "us" },
+        },
+        async (predictions, status) => {
+          if (
+            status === google.maps.places.PlacesServiceStatus.OK &&
+            predictions
+          ) {
+            // Convert predictions to PlaceResult format
+            const results: PlaceResult[] = [];
+
+            for (const prediction of predictions.slice(0, 5)) {
+              const geocodeResult = await geocodeAddress(
+                prediction.description,
+              );
+              if (geocodeResult) {
+                results.push(geocodeResult);
+              }
+            }
+
+            setSuggestions(results);
+          } else {
+            setSuggestions([]);
+          }
+          setIsLoading(false);
+        },
+      );
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Search failed");
+      setSuggestions([]);
+      setIsLoading(false);
+    }
+  }, []);
+
+  const clearSuggestions = useCallback(() => {
+    setSuggestions([]);
+  }, []);
+
+  return {
+    suggestions,
+    isLoading,
+    error,
+    searchAddress,
+    clearSuggestions,
+  };
+};
+
+// Hook for geolocation
+export const useGeolocation = () => {
+  const [position, setPosition] = useState<GeolocationPosition | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getCurrentPosition = useCallback(() => {
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by this browser");
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setPosition(pos);
+        setIsLoading(false);
+      },
+      (err) => {
+        setError(err.message);
+        setIsLoading(false);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 60000,
+      },
+    );
+  }, []);
+
+  return {
+    position,
+    error,
+    isLoading,
+    getCurrentPosition,
+  };
+};
