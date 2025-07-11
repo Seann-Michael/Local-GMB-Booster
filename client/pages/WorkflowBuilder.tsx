@@ -573,7 +573,279 @@ export default function WorkflowBuilder() {
             </Card>
           </div>
         )}
+
+        {/* Step Configuration Modal */}
+        {showStepConfig && editingStep && (
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+            <Card className="w-full max-w-lg max-h-[80vh] overflow-hidden">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>
+                    Configure {getStepName(editingStep.app, editingStep.action)}
+                  </CardTitle>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      setShowStepConfig(false);
+                      setEditingStep(null);
+                    }}
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="overflow-y-auto">
+                <StepConfigForm
+                  step={editingStep}
+                  onSave={saveStepConfig}
+                  onCancel={() => {
+                    setShowStepConfig(false);
+                    setEditingStep(null);
+                  }}
+                />
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </div>
     </AppLayout>
+  );
+}
+
+// Step Configuration Form Component
+function StepConfigForm({
+  step,
+  onSave,
+  onCancel,
+}: {
+  step: WorkflowStep;
+  onSave: (config: Record<string, any>) => void;
+  onCancel: () => void;
+}) {
+  const [config, setConfig] = useState(step.config);
+
+  const handleSave = () => {
+    onSave(config);
+  };
+
+  const updateConfig = (key: string, value: any) => {
+    setConfig((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const renderConfigFields = () => {
+    switch (`${step.app}_${step.action}`) {
+      case "reviews_send_review_email":
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="email_template">Email Template</Label>
+              <Input
+                id="email_template"
+                value={config.email_template || ""}
+                onChange={(e) => updateConfig("email_template", e.target.value)}
+                placeholder="Select email template"
+              />
+            </div>
+            <div>
+              <Label htmlFor="delay_hours">Delay (hours)</Label>
+              <Input
+                id="delay_hours"
+                type="number"
+                value={config.delay_hours || "24"}
+                onChange={(e) => updateConfig("delay_hours", e.target.value)}
+                placeholder="24"
+              />
+            </div>
+          </div>
+        );
+
+      case "reviews_send_review_sms":
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="sms_template">SMS Template</Label>
+              <Input
+                id="sms_template"
+                value={config.sms_template || ""}
+                onChange={(e) => updateConfig("sms_template", e.target.value)}
+                placeholder="Select SMS template"
+              />
+            </div>
+            <div>
+              <Label htmlFor="delay_hours">Delay (hours)</Label>
+              <Input
+                id="delay_hours"
+                type="number"
+                value={config.delay_hours || "24"}
+                onChange={(e) => updateConfig("delay_hours", e.target.value)}
+                placeholder="24"
+              />
+            </div>
+          </div>
+        );
+
+      case "webhook_receive":
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="webhook_url">Webhook URL</Label>
+              <Input
+                id="webhook_url"
+                value={config.webhook_url || ""}
+                onChange={(e) => updateConfig("webhook_url", e.target.value)}
+                placeholder="https://example.com/webhook"
+              />
+            </div>
+            <div>
+              <Label htmlFor="secret_key">Secret Key (Optional)</Label>
+              <Input
+                id="secret_key"
+                type="password"
+                value={config.secret_key || ""}
+                onChange={(e) => updateConfig("secret_key", e.target.value)}
+                placeholder="Enter secret key"
+              />
+            </div>
+          </div>
+        );
+
+      case "webhook_send_webhook":
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="target_url">Target URL</Label>
+              <Input
+                id="target_url"
+                value={config.target_url || ""}
+                onChange={(e) => updateConfig("target_url", e.target.value)}
+                placeholder="https://api.example.com/webhook"
+              />
+            </div>
+            <div>
+              <Label htmlFor="method">HTTP Method</Label>
+              <Input
+                id="method"
+                value={config.method || "POST"}
+                onChange={(e) => updateConfig("method", e.target.value)}
+                placeholder="POST"
+              />
+            </div>
+          </div>
+        );
+
+      case "schedule_scheduled":
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="schedule_type">Schedule Type</Label>
+              <Input
+                id="schedule_type"
+                value={config.schedule_type || "daily"}
+                onChange={(e) => updateConfig("schedule_type", e.target.value)}
+                placeholder="daily, weekly, monthly"
+              />
+            </div>
+            <div>
+              <Label htmlFor="time">Time</Label>
+              <Input
+                id="time"
+                type="time"
+                value={config.time || "09:00"}
+                onChange={(e) => updateConfig("time", e.target.value)}
+              />
+            </div>
+          </div>
+        );
+
+      case "delay_wait":
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="duration">Duration</Label>
+              <Input
+                id="duration"
+                type="number"
+                value={config.duration || "1"}
+                onChange={(e) => updateConfig("duration", e.target.value)}
+                placeholder="1"
+              />
+            </div>
+            <div>
+              <Label htmlFor="unit">Unit</Label>
+              <Input
+                id="unit"
+                value={config.unit || "hours"}
+                onChange={(e) => updateConfig("unit", e.target.value)}
+                placeholder="minutes, hours, days"
+              />
+            </div>
+          </div>
+        );
+
+      case "tags_add_tag":
+      case "tags_remove_tag":
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="tag_name">Tag Name</Label>
+              <Input
+                id="tag_name"
+                value={config.tag_name || ""}
+                onChange={(e) => updateConfig("tag_name", e.target.value)}
+                placeholder="Enter tag name"
+              />
+            </div>
+          </div>
+        );
+
+      case "gmb_post_to_gmb":
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="post_content">Post Content</Label>
+              <Input
+                id="post_content"
+                value={config.post_content || ""}
+                onChange={(e) => updateConfig("post_content", e.target.value)}
+                placeholder="What's the update?"
+              />
+            </div>
+            <div>
+              <Label htmlFor="include_image">Include Image</Label>
+              <Input
+                id="include_image"
+                type="checkbox"
+                checked={config.include_image || false}
+                onChange={(e) =>
+                  updateConfig("include_image", e.target.checked)
+                }
+              />
+            </div>
+          </div>
+        );
+
+      default:
+        return (
+          <div className="text-center py-8">
+            <p className="text-muted-foreground">
+              No configuration options available for this step.
+            </p>
+          </div>
+        );
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {renderConfigFields()}
+
+      <div className="flex justify-end gap-2 pt-4 border-t">
+        <Button variant="outline" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button onClick={handleSave}>Save Configuration</Button>
+      </div>
+    </div>
   );
 }
