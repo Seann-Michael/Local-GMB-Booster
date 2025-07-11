@@ -202,15 +202,15 @@ export function AgencyProjectDocuments({
 
   const getFileIcon = (fileType: string) => {
     if (fileType.includes("pdf"))
-      return <FilePdf className="h-5 w-5 text-red-600" />;
+      return <File className="h-5 w-5 text-red-600" />;
     if (fileType.includes("image"))
       return <FileImage className="h-5 w-5 text-blue-600" />;
     if (fileType.includes("video"))
-      return <FileVideo className="h-5 w-5 text-purple-600" />;
+      return <Video className="h-5 w-5 text-purple-600" />;
     if (fileType.includes("audio"))
-      return <FileAudio className="h-5 w-5 text-green-600" />;
+      return <Music className="h-5 w-5 text-green-600" />;
     if (fileType.includes("zip") || fileType.includes("rar"))
-      return <FileArchive className="h-5 w-5 text-yellow-600" />;
+      return <Archive className="h-5 w-5 text-yellow-600" />;
     return <FileText className="h-5 w-5 text-gray-600" />;
   };
 
