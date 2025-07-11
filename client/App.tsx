@@ -77,6 +77,11 @@ import SuperAdminUsers from "./pages/SuperAdminUsers";
 import SuperAdminCommunications from "./pages/SuperAdminCommunications";
 import { ComingSoon } from "./pages/ComingSoon";
 
+// Agency Project Management imports
+import AgencyProjects from "./pages/AgencyProjects";
+import AgencyProjectCreate from "./pages/AgencyProjectCreate";
+import AgencyProjectDetail from "./pages/AgencyProjectDetail";
+
 const queryClient = new QueryClient();
 
 // PWA Service Worker Registration
