@@ -1048,7 +1048,7 @@ export default function SuperAdminAPI() {
     if (cleanKey.startsWith("AIza")) return `AI•••••${lastSix}`;
 
     // Default format
-    return `•••••${lastSix}`;
+    return `•���•••${lastSix}`;
   };
 
   const getMethodBadge = (method: string) => {
@@ -2004,16 +2004,25 @@ export default function SuperAdminAPI() {
                   Manage system-wide API integrations and credentials
                 </p>
               </div>
-              <Dialog
-                open={showIntegrationDialog}
-                onOpenChange={setShowIntegrationDialog}
-              >
-                <DialogTrigger asChild>
-                  <Button onClick={resetIntegrationForm} className="gap-2">
-                    <Plus className="h-4 w-4" />
-                    Add Integration
-                  </Button>
-                </DialogTrigger>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  onClick={resetGoogleMapsIntegration}
+                  className="gap-2"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  Reset Google Maps
+                </Button>
+                <Dialog
+                  open={showIntegrationDialog}
+                  onOpenChange={setShowIntegrationDialog}
+                >
+                  <DialogTrigger asChild>
+                    <Button onClick={resetIntegrationForm} className="gap-2">
+                      <Plus className="h-4 w-4" />
+                      Add Integration
+                    </Button>
+                  </DialogTrigger>
                 <DialogContent className="max-w-2xl">
                   <DialogHeader>
                     <DialogTitle>
