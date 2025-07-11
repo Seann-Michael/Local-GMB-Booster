@@ -347,9 +347,19 @@ export const testGoogleMapsConnection = async (): Promise<boolean> => {
       return false;
     }
 
-    console.log("🔑 API key found, testing API loading...");
+    console.log("🔑 API key found, validating API key first...");
 
-    // Test API loading first
+    // Validate API key first with direct request
+    const validation = await validateGoogleMapsApiKey(apiKey);
+    if (!validation.valid) {
+      console.error("❌ API key validation failed:", validation.error);
+      toast.error(`Google Maps API key invalid: ${validation.error}`);
+      return false;
+    }
+
+    console.log("✅ API key is valid, testing API loading...");
+
+    // Test API loading
     try {
       await loadGoogleMapsAPI();
       console.log("✅ Google Maps API loaded successfully");
