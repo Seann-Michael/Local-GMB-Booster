@@ -190,24 +190,38 @@ export const useAddressSearch = () => {
           componentRestrictions: { country: "us" },
         },
         async (predictions, status) => {
+          console.log(
+            "📍 Prediction callback - Status:",
+            status,
+            "Predictions:",
+            predictions?.length,
+          );
+
           if (
             status === google.maps.places.PlacesServiceStatus.OK &&
             predictions
           ) {
+            console.log("✅ Predictions received, processing...");
             // Convert predictions to PlaceResult format
             const results: PlaceResult[] = [];
 
             for (const prediction of predictions.slice(0, 5)) {
+              console.log("🌍 Geocoding prediction:", prediction.description);
               const geocodeResult = await geocodeAddress(
                 prediction.description,
               );
               if (geocodeResult) {
+                console.log("✅ Geocode result:", geocodeResult);
                 results.push(geocodeResult);
+              } else {
+                console.log("❌ Geocoding failed for:", prediction.description);
               }
             }
 
+            console.log("📍 Final results:", results.length, "suggestions");
             setSuggestions(results);
           } else {
+            console.log("❌ No predictions or bad status:", status);
             setSuggestions([]);
           }
           setIsLoading(false);
