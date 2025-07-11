@@ -993,7 +993,7 @@ export default function SuperAdminAPI() {
   };
 
   const formatApiKey = (apiKey: string) => {
-    if (!apiKey || apiKey.length < 6) return "••••••";
+    if (!apiKey || apiKey.length < 6) return "•••••���";
 
     // Clean the key first - remove any problematic characters
     const cleanKey = apiKey.replace(/[^\w.-]/g, "");
@@ -2113,24 +2113,24 @@ export default function SuperAdminAPI() {
                       onClick={() => {
                         if (editingIntegration) {
                           // Update existing integration
-                          setIntegrations((prev) =>
-                            prev.map((int) =>
-                              int.id === editingIntegration.id
-                                ? {
-                                    ...int,
-                                    name: integrationForm.name,
-                                    service: integrationForm.service,
-                                    category: integrationForm.category,
-                                    apiKey: integrationForm.apiKey,
-                                    apiSecret: integrationForm.apiSecret,
-                                    additionalConfig:
-                                      integrationForm.additionalConfig,
-                                    isActive: integrationForm.isActive,
-                                    updatedAt: new Date().toISOString(),
-                                  }
-                                : int,
-                            ),
+                          const updatedIntegrations = integrations.map((int) =>
+                            int.id === editingIntegration.id
+                              ? {
+                                  ...int,
+                                  name: integrationForm.name,
+                                  service: integrationForm.service,
+                                  category: integrationForm.category,
+                                  apiKey: integrationForm.apiKey,
+                                  apiSecret: integrationForm.apiSecret,
+                                  additionalConfig:
+                                    integrationForm.additionalConfig,
+                                  isActive: integrationForm.isActive,
+                                  updatedAt: new Date().toISOString(),
+                                }
+                              : int,
                           );
+                          setIntegrations(updatedIntegrations);
+                          saveIntegrationsToStorage(updatedIntegrations);
                           toast.success("Integration updated successfully");
                         } else {
                           // Create new integration
