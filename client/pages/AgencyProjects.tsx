@@ -405,11 +405,11 @@ export default function AgencyProjects() {
             </Select>
 
             <Select
-              value={filters.type?.[0] || ""}
+              value={filters.type?.[0] || "all"}
               onValueChange={(value) =>
                 setFilters((prev) => ({
                   ...prev,
-                  type: value ? [value] : undefined,
+                  type: value === "all" ? undefined : [value],
                 }))
               }
             >
@@ -417,7 +417,7 @@ export default function AgencyProjects() {
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Types</SelectItem>
+                <SelectItem value="all">All Types</SelectItem>
                 <SelectItem value="one-off">One-off</SelectItem>
                 <SelectItem value="recurring">Recurring</SelectItem>
               </SelectContent>
