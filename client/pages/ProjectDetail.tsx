@@ -192,6 +192,7 @@ export default function ProjectDetail() {
         activityLog: foundProject.activityLog || [],
         tasks: foundProject.tasks || [],
         checklist: foundProject.checklist || [],
+        keywords: foundProject.keywords || [],
       };
       setProject(projectWithDefaults);
     }
