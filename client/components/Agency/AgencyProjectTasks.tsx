@@ -237,16 +237,19 @@ export function AgencyProjectTasks({
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex gap-2">
           <Select
-            value={filter.status || ""}
+            value={filter.status || "all"}
             onValueChange={(value) =>
-              setFilter((prev) => ({ ...prev, status: value || undefined }))
+              setFilter((prev) => ({
+                ...prev,
+                status: value === "all" ? undefined : value,
+              }))
             }
           >
             <SelectTrigger className="w-40">
               <SelectValue placeholder="All Statuses" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Statuses</SelectItem>
+              <SelectItem value="all">All Statuses</SelectItem>
               {TASK_STATUSES.map((status) => (
                 <SelectItem key={status.value} value={status.value}>
                   {status.label}
