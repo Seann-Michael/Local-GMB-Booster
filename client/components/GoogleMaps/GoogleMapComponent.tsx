@@ -141,12 +141,18 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
           <div className="flex justify-between items-center mt-3 gap-2">
             <div className="flex-1 min-w-0">
               {address && (
-                <p className="text-xs text-muted-foreground truncate">
+                <p
+                  key="address-text"
+                  className="text-xs text-muted-foreground truncate"
+                >
                   {address}
                 </p>
               )}
               {lat !== undefined && lng !== undefined && !address && (
-                <p className="text-xs text-muted-foreground font-mono">
+                <p
+                  key="coordinates-text"
+                  className="text-xs text-muted-foreground font-mono"
+                >
                   {lat.toFixed(6)}, {lng.toFixed(6)}
                 </p>
               )}
