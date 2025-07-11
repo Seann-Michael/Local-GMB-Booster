@@ -2046,7 +2046,7 @@ export default function ProjectDetail() {
                                 >
                                   <td className="p-2">
                                     <div className="flex items-center gap-2">
-                                      <span key="platform-icon">
+                                      <span>
                                         {entry.platform === "mobile" ? (
                                           <Smartphone className="h-4 w-4 text-muted-foreground" />
                                         ) : (
@@ -2054,7 +2054,6 @@ export default function ProjectDetail() {
                                         )}
                                       </span>
                                       <Badge
-                                        key="platform-badge"
                                         variant="outline"
                                         className="text-xs capitalize"
                                       >
