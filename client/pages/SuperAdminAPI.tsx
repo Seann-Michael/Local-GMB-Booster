@@ -323,6 +323,29 @@ export default function SuperAdminAPI() {
     newHeaderValue: "",
   });
 
+  const [integrationForm, setIntegrationForm] = useState({
+    name: "",
+    service: "",
+    category: "other" as const,
+    apiKey: "",
+    apiSecret: "",
+    additionalConfig: {} as Record<string, string>,
+    newConfigKey: "",
+    newConfigValue: "",
+    isActive: true,
+  });
+
+  const [rateLimitForm, setRateLimitForm] = useState({
+    name: "",
+    description: "",
+    endpoint: "",
+    method: "GET",
+    limit: 100,
+    window: "minute" as const,
+    isActive: true,
+    exemptApiKeys: [] as string[],
+  });
+
   useEffect(() => {
     loadAPIData();
   }, []);
