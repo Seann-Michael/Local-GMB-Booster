@@ -962,7 +962,7 @@ export default function ProjectDetail() {
           </div>
 
           {/* Tabs */}
-          <div key="tabs-section" className="border-b mb-6">
+          <div className="border-b mb-6">
             <div className="flex space-x-1">
               {[
                 { id: "overview", label: "Overview" },
