@@ -918,10 +918,12 @@ export default function ProjectDetail() {
                     <div>
                       <h3 className="font-medium">Project Status</h3>
                       <p className="text-sm text-muted-foreground">
-                        Started:{" "}
-                        {new Date(
-                          project.startDate || project.createdAt,
-                        ).toLocaleDateString()}
+                        <span key="start-date-text">
+                          Started:{" "}
+                          {new Date(
+                            project.startDate || project.createdAt,
+                          ).toLocaleDateString()}
+                        </span>
                         {project.completionDate && (
                           <span key="expected-completion">
                             {" "}
