@@ -894,7 +894,7 @@ export default function SuperAdminSupport() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Assignees</SelectItem>
-                      <SelectItem value="">Unassigned</SelectItem>
+                      <SelectItem value="unassigned">Unassigned</SelectItem>
                       {!isLoading &&
                         (staffMembers || [])
                           .filter((staff) => staff && staff.id && staff.name)
