@@ -535,7 +535,7 @@ export default function SuperAdminAPI() {
         name: "SendGrid Email Service",
         service: "SendGrid",
         category: "email",
-        apiKey: "SG.•••��••••��•���•••••••••••••••••••••••8k7X9p",
+        apiKey: "SG.•••��••••���•���•••••••••••••••••••••••8k7X9p",
         isActive: true,
         isConnected: true,
         lastTested: "2024-01-20T10:30:00Z",
@@ -1049,7 +1049,6 @@ export default function SuperAdminAPI() {
 
     // Default format
     return `•���•••${lastSix}`;
-    return `•••••${lastSix}`;
   };
 
   const getMethodBadge = (method: string) => {
