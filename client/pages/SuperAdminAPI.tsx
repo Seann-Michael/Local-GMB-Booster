@@ -579,7 +579,7 @@ export default function SuperAdminAPI() {
         name: "Google Maps API",
         service: "Google Maps",
         category: "maps",
-        apiKey: "AIza••••••••••••���•••••••••••••••••••••",
+        apiKey: "AIza••••••••••••���•••••••••••••••••��•••",
         isActive: true,
         isConnected: true,
         lastTested: "2024-01-20T08:00:00Z",
@@ -972,9 +972,7 @@ export default function SuperAdminAPI() {
     if (!apiKey || apiKey.length < 6) return apiKey;
     const lastSix = apiKey.slice(-6);
     const prefix = apiKey.split(".")[0] || "";
-    const maskedLength =
-      apiKey.length - lastSix.length - (prefix ? prefix.length + 1 : 0);
-    const masked = "•".repeat(Math.max(0, maskedLength));
+    const masked = "•••••"; // Always show exactly 5 dots
     return prefix ? `${prefix}.${masked}${lastSix}` : `${masked}${lastSix}`;
   };
 
