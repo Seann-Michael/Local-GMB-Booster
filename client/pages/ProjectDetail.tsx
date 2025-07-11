@@ -2220,7 +2220,7 @@ export default function ProjectDetail() {
                 </CardContent>
               </Card>
 
-              <Card key="project-statistics">
+              <Card>
                 <CardHeader>
                   <CardTitle>Statistics</CardTitle>
                 </CardHeader>
