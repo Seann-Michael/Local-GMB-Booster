@@ -971,9 +971,9 @@ export default function ProjectDetail() {
               { id: "tasks", label: "Tasks & Checklists" },
               { id: "documents", label: "Documents" },
               { id: "activity", label: "Activity Log" },
-            ].map((tab, index) => (
+            ].map((tab) => (
               <button
-                key={`${tab.id}-${index}`}
+                key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
                   activeTab === tab.id
