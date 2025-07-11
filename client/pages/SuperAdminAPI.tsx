@@ -558,7 +558,7 @@ export default function SuperAdminAPI() {
         service: "Twilio",
         category: "sms",
         apiKey: "AC••••••••••••••••••••••••••••••••4n2B8q",
-        apiSecret: "•••••••••••���•���••••••••••••••••••7f9K3m",
+        apiSecret: "•••••••••••••���••••••••••••••••••7f9K3m",
         isActive: true,
         isConnected: true,
         lastTested: "2024-01-19T16:45:00Z",
@@ -1048,26 +1048,6 @@ export default function SuperAdminAPI() {
     if (cleanKey.startsWith("AIza")) return `AI•••••${lastSix}`;
 
     // Default format
-    return \`•••••\$\{lastSix\}\`;
-  \};
-
-  const formatApiKeyFixed = (apiKey: string) => \{
-    if (!apiKey || apiKey.length < 6) return "••••••";
-
-    const cleanKey = apiKey.replace(/[^\w.-]/g, "");
-    const lastSix = cleanKey.slice(-6);
-
-    if (cleanKey.startsWith("SG.")) return \`SG.•••••\$\{lastSix\}\`;
-    if (cleanKey.startsWith("AC")) return \`AC•••••\$\{lastSix\}\`;
-    if (cleanKey.startsWith("AIza")) return \`AI•••••\$\{lastSix\}\`;
-
-    return \`•��•••\$\{lastSix\}\`;
-  \};
-
-  // Use the fixed function
-  const formatApiKey = formatApiKeyFixed;
-
-  const temp_comment = "// Default format";
     return `•���•••${lastSix}`;
   };
 
