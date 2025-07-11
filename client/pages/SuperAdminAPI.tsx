@@ -980,7 +980,7 @@ export default function SuperAdminAPI() {
 
   return (
     <SuperAdminLayout>
-      <div className="max-w-full overflow-x-hidden">
+      <div className="max-w-full overflow-x-hidden pb-20 md:pb-0">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
           <div className="min-w-0">
             <h1 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
