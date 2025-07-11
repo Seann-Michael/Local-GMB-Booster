@@ -2252,6 +2252,38 @@ export default function SuperAdminAPI() {
                           <TestTube className="h-3 w-3" />
                           Test
                         </Button>
+                        {integration.service === "Google Maps" && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => {
+                              // Quick setup for Google Maps
+                              const apiKey = prompt(
+                                "Enter your Google Maps API key:",
+                              );
+                              if (apiKey && apiKey.length > 20) {
+                                const updatedIntegrations = integrations.map(
+                                  (int) =>
+                                    int.id === integration.id
+                                      ? {
+                                          ...int,
+                                          apiKey: apiKey,
+                                          updatedAt: new Date().toISOString(),
+                                        }
+                                      : int,
+                                );
+                                setIntegrations(updatedIntegrations);
+                                saveIntegrationsToStorage(updatedIntegrations);
+                                testIntegration({ ...integration, apiKey });
+                                toast.success("Google Maps API key updated");
+                              }
+                            }}
+                            className="gap-1"
+                          >
+                            <Key className="h-3 w-3" />
+                            Setup
+                          </Button>
+                        )}
                         <Button
                           size="sm"
                           variant="outline"
