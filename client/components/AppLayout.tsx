@@ -78,6 +78,71 @@ interface AppLayoutProps {
   children: ReactNode;
 }
 
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+// Function to generate breadcrumbs based on current path
+function getBreadcrumbs(pathname: string): BreadcrumbItem[] {
+  const baseBreadcrumb: BreadcrumbItem = {
+    label: "Dashboard",
+    href: "/admin/projects",
+  };
+
+  switch (pathname) {
+    case "/admin/projects":
+      return [{ label: "Projects" }];
+
+    case "/admin/add-project":
+      return [
+        baseBreadcrumb,
+        { label: "Projects", href: "/admin/projects" },
+        { label: "New Project" },
+      ];
+
+    case "/admin/gallery":
+      return [baseBreadcrumb, { label: "Gallery" }];
+
+    case "/admin/reviews":
+      return [baseBreadcrumb, { label: "Reviews" }];
+
+    case "/admin/settings":
+      return [baseBreadcrumb, { label: "Settings" }];
+
+    case "/admin/automations":
+      return [baseBreadcrumb, { label: "Automations" }];
+
+    case "/admin/reports":
+      return [baseBreadcrumb, { label: "Reports" }];
+
+    case "/admin/profile":
+      return [baseBreadcrumb, { label: "Profile" }];
+
+    case "/admin/help":
+      return [baseBreadcrumb, { label: "Help Center" }];
+
+    default:
+      // Handle dynamic routes like /project/:id
+      if (pathname.startsWith("/project/") && pathname.endsWith("/edit")) {
+        return [
+          baseBreadcrumb,
+          { label: "Projects", href: "/admin/projects" },
+          { label: "Edit Project" },
+        ];
+      } else if (pathname.startsWith("/project/")) {
+        return [
+          baseBreadcrumb,
+          { label: "Projects", href: "/admin/projects" },
+          { label: "Project Details" },
+        ];
+      }
+
+      // For unmatched routes, return empty array (no breadcrumbs)
+      return [];
+  }
+}
+
 export function AppLayout({ children }: AppLayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
