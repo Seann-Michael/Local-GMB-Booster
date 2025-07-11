@@ -97,7 +97,7 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
       onChange(newValue);
     }
 
-    if (newValue.length < 3) {
+    if (newValue.length < 3 || !apiKeyAvailable) {
       clearSuggestions();
       setShowSuggestions(false);
     }
