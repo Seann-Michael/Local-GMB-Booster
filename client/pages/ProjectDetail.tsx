@@ -926,7 +926,7 @@ export default function ProjectDetail() {
                     className="flex items-center justify-between"
                     key="status-active-inner"
                   >
-                    <div>
+                    <div key="status-text">
                       <h3 className="font-medium">Project Status</h3>
                       <p className="text-sm text-muted-foreground">
                         <span key="start-date-text">
