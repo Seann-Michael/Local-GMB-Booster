@@ -39,7 +39,6 @@ import {
   Edit,
   FileText,
   FileImage,
-  File,
   Archive,
   Video,
   Music,
