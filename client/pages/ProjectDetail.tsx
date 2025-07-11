@@ -1245,7 +1245,7 @@ export default function ProjectDetail() {
                             loading="lazy"
                             allowFullScreen
                             referrerPolicy="no-referrer-when-downgrade"
-                            src={`https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d12000!2d${project.gpsLng}!3d${project.gpsLat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus`}
+                            src={`https://maps.google.com/maps?q=${project.gpsLat},${project.gpsLng}&hl=en&z=14&output=embed`}
                             title="Project Location"
                             className="w-full h-full"
                           />
