@@ -857,1098 +857,516 @@ export default function ProjectDetail() {
 
   return (
     <AppLayout>
-      <React.Fragment key="project-detail-fragment">
-        <div className="container px-4 py-6" key="project-detail-container">
-          <div key="project-detail-wrapper">
-            <div className="flex items-center gap-4 mb-6" key="header-section">
-              <Link to="/admin/projects">
-                <Button variant="ghost" size="icon">
-                  <ArrowLeft className="h-5 w-5" />
+      <div className="container px-4 py-6" key="project-detail-container">
+        <div key="project-detail-wrapper">
+          <div className="flex items-center gap-4 mb-6" key="header-section">
+            <Link to="/admin/projects">
+              <Button variant="ghost" size="icon">
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+            </Link>
+            <div className="flex-1">
+              <h1 className="text-2xl font-bold">{project.name}</h1>
+              <div className="flex items-center gap-2 text-muted-foreground mt-1">
+                <MapPin className="h-4 w-4" />
+                <span>{project.address}</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <Link to={`/project/${id}/edit`}>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <Edit className="h-4 w-4" />
                 </Button>
               </Link>
-              <div className="flex-1">
-                <h1 className="text-2xl font-bold">{project.name}</h1>
-                <div className="flex items-center gap-2 text-muted-foreground mt-1">
-                  <MapPin className="h-4 w-4" />
-                  <span>{project.address}</span>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Link to={`/project/${id}/edit`}>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <Edit className="h-4 w-4" />
+                    <MoreVertical className="h-4 w-4" />
                   </Button>
-                </Link>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <MoreVertical className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem key="share-project" onClick={handleShare}>
-                      <Share className="h-4 w-4 mr-2" />
-                      Share Project
-                    </DropdownMenuItem>
-                    <DropdownMenuItem key="upload-website">
-                      <ExternalLink className="h-4 w-4 mr-2" />
-                      Upload to Website
-                    </DropdownMenuItem>
-                    <DropdownMenuItem key="post-google">
-                      <ExternalLink className="h-4 w-4 mr-2" />
-                      Post to Google My Business
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      key="delete-project"
-                      onClick={handleDelete}
-                      className="text-destructive focus:text-destructive"
-                    >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Delete Project
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem key="share-project" onClick={handleShare}>
+                    <Share className="h-4 w-4 mr-2" />
+                    Share Project
+                  </DropdownMenuItem>
+                  <DropdownMenuItem key="upload-website">
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    Upload to Website
+                  </DropdownMenuItem>
+                  <DropdownMenuItem key="post-google">
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    Post to Google My Business
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    key="delete-project"
+                    onClick={handleDelete}
+                    className="text-destructive focus:text-destructive"
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete Project
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
+          </div>
 
-            {/* Project Status and Completion */}
-            <div key="project-status-section">
-              {project.status !== "completed" ? (
-                <Card className="mb-6" key="project-status-active">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-medium">Project Status</h3>
-                        <p className="text-sm text-muted-foreground">
-                          <span key="start-date-text">
-                            Started:{" "}
+          {/* Project Status and Completion */}
+          <div key="project-status-section">
+            {project.status !== "completed" ? (
+              <Card className="mb-6" key="project-status-active">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-medium">Project Status</h3>
+                      <p className="text-sm text-muted-foreground">
+                        <span key="start-date-text">
+                          Started:{" "}
+                          {new Date(
+                            project.startDate || project.createdAt,
+                          ).toLocaleDateString()}
+                        </span>
+                        {project.completionDate && (
+                          <span key="expected-completion">
+                            {" "}
+                            • Expected:{" "}
                             {new Date(
-                              project.startDate || project.createdAt,
+                              project.completionDate,
                             ).toLocaleDateString()}
                           </span>
-                          {project.completionDate && (
-                            <span key="expected-completion">
-                              {" "}
-                              • Expected:{" "}
-                              {new Date(
-                                project.completionDate,
-                              ).toLocaleDateString()}
-                            </span>
-                          )}
-                        </p>
-                      </div>
-                      <Button onClick={markProjectCompleted} className="gap-2">
-                        <CheckCircle className="h-4 w-4" />
-                        Mark Completed
-                      </Button>
+                        )}
+                      </p>
                     </div>
-                  </CardContent>
-                </Card>
-              ) : (
-                <Card
-                  className="mb-6 border-green-200 bg-green-50"
-                  key="project-status-completed"
+                    <Button onClick={markProjectCompleted} className="gap-2">
+                      <CheckCircle className="h-4 w-4" />
+                      Mark Completed
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card
+                className="mb-6 border-green-200 bg-green-50"
+                key="project-status-completed"
+              >
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    <div>
+                      <h3 className="font-medium text-green-800">
+                        Project Completed
+                      </h3>
+                      <p className="text-sm text-green-700">
+                        <span key="completion-date-text">
+                          Completed on{" "}
+                          {project.completedDate
+                            ? new Date(
+                                project.completedDate,
+                              ).toLocaleDateString()
+                            : "Unknown"}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+
+          {/* Tabs */}
+          <div className="border-b mb-6" key="tabs-section">
+            <div className="flex space-x-1">
+              {[
+                { id: "overview", label: "Overview" },
+                { id: "tasks", label: "Tasks & Checklists" },
+                { id: "documents", label: "Documents" },
+                { id: "activity", label: "Activity Log" },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                    activeTab === tab.id
+                      ? "border-primary text-primary"
+                      : "border-transparent text-muted-foreground hover:text-foreground"
+                  }`}
                 >
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="h-5 w-5 text-green-600" />
-                      <div>
-                        <h3 className="font-medium text-green-800">
-                          Project Completed
-                        </h3>
-                        <p className="text-sm text-green-700">
-                          <span key="completion-date-text">
-                            Completed on{" "}
-                            {project.completedDate
-                              ? new Date(
-                                  project.completedDate,
-                                ).toLocaleDateString()
-                              : "Unknown"}
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
+                  {tab.label}
+                </button>
+              ))}
             </div>
+          </div>
 
-            {/* Tabs */}
-            <div className="border-b mb-6" key="tabs-section">
-              <div className="flex space-x-1">
-                {[
-                  { id: "overview", label: "Overview" },
-                  { id: "tasks", label: "Tasks & Checklists" },
-                  { id: "documents", label: "Documents" },
-                  { id: "activity", label: "Activity Log" },
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-                      activeTab === tab.id
-                        ? "border-primary text-primary"
-                        : "border-transparent text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
-            </div>
+          <div className="grid gap-6 lg:grid-cols-3" key="main-content-grid">
+            {/* Main Content */}
+            <div className="lg:col-span-2 space-y-6" key="main-content-area">
+              {/* Overview Tab */}
+              {activeTab === "overview" && (
+                <div className="space-y-6" key="overview-tab-content">
+                  {/* Project Description */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Project Description</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground">
+                        {project.description || "No description provided"}
+                      </p>
+                    </CardContent>
+                  </Card>
 
-            <div className="grid gap-6 lg:grid-cols-3" key="main-content-grid">
-              {/* Main Content */}
-              <div className="lg:col-span-2 space-y-6" key="main-content-area">
-                {/* Overview Tab */}
-                {activeTab === "overview" && (
-                  <div className="space-y-6" key="overview-tab-content">
-                    {/* Project Description */}
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Project Description</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-muted-foreground">
-                          {project.description || "No description provided"}
-                        </p>
-                      </CardContent>
-                    </Card>
-
-                    {/* Project Keywords/Tags */}
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                          <Tag className="h-5 w-5" />
-                          Project Keywords
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex flex-wrap gap-2">
-                          {project.keywords.map((keyword, index) => (
-                            <Badge
-                              key={`keyword-${index}-${keyword.replace(/\s+/g, "-")}`}
-                              variant="secondary"
-                              className="cursor-pointer hover:bg-secondary/80"
-                            >
-                              <span>{keyword}</span>
-                              <button
-                                className="ml-1 hover:text-destructive"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  // Add remove keyword functionality here
-                                  toast.success(
-                                    "Keyword removal functionality coming soon",
-                                  );
-                                }}
-                              >
-                                ×
-                              </button>
-                            </Badge>
-                          ))}
-                          {/* Add keyword button */}
+                  {/* Project Keywords/Tags */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Tag className="h-5 w-5" />
+                        Project Keywords
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-wrap gap-2">
+                        {project.keywords.map((keyword, index) => (
                           <Badge
-                            key="add-keyword-button"
-                            variant="outline"
-                            className="cursor-pointer hover:bg-muted"
-                            onClick={() =>
-                              toast.success(
-                                "Add keyword functionality coming soon",
-                              )
-                            }
+                            key={`keyword-${index}-${keyword.replace(/\s+/g, "-")}`}
+                            variant="secondary"
+                            className="cursor-pointer hover:bg-secondary/80"
                           >
-                            + Add Tag
+                            <span>{keyword}</span>
+                            <button
+                              className="ml-1 hover:text-destructive"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                // Add remove keyword functionality here
+                                toast.success(
+                                  "Keyword removal functionality coming soon",
+                                );
+                              }}
+                            >
+                              ×
+                            </button>
                           </Badge>
-                        </div>
-                      </CardContent>
-                    </Card>
+                        ))}
+                        {/* Add keyword button */}
+                        <Badge
+                          key="add-keyword-button"
+                          variant="outline"
+                          className="cursor-pointer hover:bg-muted"
+                          onClick={() =>
+                            toast.success(
+                              "Add keyword functionality coming soon",
+                            )
+                          }
+                        >
+                          + Add Tag
+                        </Badge>
+                      </div>
+                    </CardContent>
+                  </Card>
 
-                    <Card>
-                      <CardHeader className="flex flex-row items-center justify-between">
-                        <CardTitle className="flex items-center gap-2">
-                          <Images className="h-5 w-5" />
-                          Photos & Video ({project.photos.length})
-                          {selectedPhotos.length > 0 && (
-                            <Badge variant="secondary">
-                              {selectedPhotos.length} selected
-                            </Badge>
-                          )}
-                        </CardTitle>
-                        <div className="flex items-center gap-2">
-                          {selectedPhotos.length > 0 && (
-                            <div className="flex gap-2">
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={downloadSelectedPhotos}
-                                className="gap-2"
-                              >
-                                <Download className="h-4 w-4" />
-                                Download
-                              </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={shareProject}
-                                className="gap-2"
-                              >
-                                <Share className="h-4 w-4" />
-                                Share
-                              </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={selectAllPhotos}
-                              >
-                                {selectedPhotos.length === project.photos.length
-                                  ? "Deselect All"
-                                  : "Select All"}
-                              </Button>
-                            </div>
-                          )}
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="gap-2"
-                            onClick={() => setShowMediaUploader(true)}
-                          >
-                            <Plus className="h-4 w-4" />
-                            Add Media
-                          </Button>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        {project.photos.length > 0 ? (
-                          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                            {project.photos.map((photo, index) => {
-                              const photoUrl = getPhotoUrl(photo);
-                              const photoTags = getPhotoTags(photo);
-                              return (
-                                <div
-                                  key={`photo-${index}-${photoUrl.slice(-10)}`}
-                                  className={`group relative aspect-square cursor-pointer overflow-hidden rounded-lg bg-muted ${
-                                    selectedPhotos.includes(index)
-                                      ? "ring-2 ring-primary"
-                                      : ""
-                                  }`}
-                                  onClick={() => setSelectedPhoto(photoUrl)}
-                                >
-                                  <img
-                                    src={photoUrl}
-                                    alt={`Photo ${index + 1}`}
-                                    className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                                  />
-                                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-
-                                  {/* Selection checkbox */}
-                                  <div className="absolute top-2 left-2">
-                                    <Checkbox
-                                      checked={selectedPhotos.includes(index)}
-                                      onCheckedChange={() =>
-                                        togglePhotoSelection(index)
-                                      }
-                                      className="bg-white/80 border-white"
-                                      onClick={(e) => e.stopPropagation()}
-                                    />
-                                  </div>
-
-                                  {photoTags.length > 0 && (
-                                    <div className="absolute bottom-1 left-1 flex flex-wrap gap-1">
-                                      {photoTags
-                                        .slice(0, 2)
-                                        .map((tag, tagIndex) => (
-                                          <Badge
-                                            key={`photo-${index}-tag-${tagIndex}-${tag.replace(/\s+/g, "-").toLowerCase()}`}
-                                            variant="secondary"
-                                            className="text-xs"
-                                          >
-                                            {tag}
-                                          </Badge>
-                                        ))}
-                                      {photoTags.length > 2 && (
-                                        <Badge
-                                          key={`photo-${index}-more-tags`}
-                                          variant="outline"
-                                          className="text-xs"
-                                        >
-                                          +{photoTags.length - 2}
-                                        </Badge>
-                                      )}
-                                    </div>
-                                  )}
-                                  <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <Button
-                                      variant="secondary"
-                                      size="icon"
-                                      className="h-6 w-6"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        downloadPhoto(photoUrl, index);
-                                      }}
-                                    >
-                                      <Download className="h-3 w-3" />
-                                    </Button>
-                                    <Button
-                                      variant="destructive"
-                                      size="icon"
-                                      className="h-6 w-6"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        removePhoto(index);
-                                      }}
-                                    >
-                                      <Trash2 className="h-3 w-3" />
-                                    </Button>
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        ) : (
-                          <div className="text-center py-12 text-muted-foreground">
-                            <Images className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                            <p>No photos uploaded yet</p>
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between">
+                      <CardTitle className="flex items-center gap-2">
+                        <Images className="h-5 w-5" />
+                        Photos & Video ({project.photos.length})
+                        {selectedPhotos.length > 0 && (
+                          <Badge variant="secondary">
+                            {selectedPhotos.length} selected
+                          </Badge>
+                        )}
+                      </CardTitle>
+                      <div className="flex items-center gap-2">
+                        {selectedPhotos.length > 0 && (
+                          <div className="flex gap-2">
                             <Button
                               variant="outline"
-                              className="mt-4 gap-2"
-                              onClick={() => fileInputRef.current?.click()}
+                              size="sm"
+                              onClick={downloadSelectedPhotos}
+                              className="gap-2"
                             >
-                              <Plus className="h-4 w-4" />
-                              Add First Media
+                              <Download className="h-4 w-4" />
+                              Download
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={shareProject}
+                              className="gap-2"
+                            >
+                              <Share className="h-4 w-4" />
+                              Share
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={selectAllPhotos}
+                            >
+                              {selectedPhotos.length === project.photos.length
+                                ? "Deselect All"
+                                : "Select All"}
                             </Button>
                           </div>
                         )}
-                      </CardContent>
-                    </Card>
-
-                    {/* Google Map Section */}
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                          <MapPin className="h-5 w-5" />
-                          Project Location
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-4">
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <MapPin className="h-4 w-4" />
-                            <a
-                              href={`https://maps.google.com/?q=${encodeURIComponent(project.address)}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-primary hover:underline"
-                            >
-                              {project.address}
-                            </a>
-                          </div>
-                          {project.gpsLat && project.gpsLng && (
-                            <div className="text-sm text-muted-foreground">
-                              <span key="gps-label" className="font-medium">
-                                GPS:
-                              </span>
-                              <span key="gps-coordinates">
-                                {" "}
-                                {project.gpsLat}, {project.gpsLng}
-                              </span>
-                            </div>
-                          )}
-                          <GoogleMapComponent
-                            address={project.address}
-                            lat={project.gpsLat}
-                            lng={project.gpsLng}
-                            height="256px"
-                            zoom={15}
-                            showControls={true}
-                            showDirectionsButton={true}
-                          />
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    {/* Notes Section */}
-                    <Card>
-                      <CardHeader className="flex flex-row items-center justify-between">
-                        <CardTitle>Project Notes</CardTitle>
                         <Button
-                          onClick={() => setShowAddNote(true)}
+                          variant="outline"
                           size="sm"
                           className="gap-2"
+                          onClick={() => setShowMediaUploader(true)}
                         >
                           <Plus className="h-4 w-4" />
-                          Add Note
+                          Add Media
                         </Button>
-                      </CardHeader>
-                      <CardContent>
-                        {showAddNote && (
-                          <div className="border rounded-lg p-4 mb-4 space-y-3">
-                            <div className="relative">
-                              <Textarea
-                                placeholder="Add a note... Use @ to mention users"
-                                value={newNote}
-                                onChange={handleMentionInput}
-                                rows={4}
-                              />
-                              {showMentionDropdown &&
-                                getFilteredUsers().length > 0 && (
-                                  <div className="absolute top-full left-0 right-0 bg-white border rounded-md shadow-lg z-10 max-h-40 overflow-y-auto">
-                                    {getFilteredUsers().map((user) => (
-                                      <div
-                                        key={user.id}
-                                        className="px-3 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
-                                        onClick={() => insertMention(user)}
-                                      >
-                                        <AtSign className="h-4 w-4" />
-                                        <span>{user.name}</span>
-                                        <span className="text-sm text-muted-foreground">
-                                          {user.email}
-                                        </span>
-                                      </div>
-                                    ))}
-                                  </div>
-                                )}
-                            </div>
-                            <div className="flex gap-2">
-                              <Button onClick={addNote} size="sm">
-                                Add Note
-                              </Button>
-                              <Button
-                                onClick={() => {
-                                  setShowAddNote(false);
-                                  setNewNote("");
-                                  setShowMentionDropdown(false);
-                                }}
-                                variant="outline"
-                                size="sm"
-                              >
-                                Cancel
-                              </Button>
-                            </div>
-                          </div>
-                        )}
-                        <div className="space-y-4">
-                          {project.notes &&
-                          Array.isArray(project.notes) &&
-                          project.notes.length > 0 ? (
-                            project.notes.map((note) => (
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      {project.photos.length > 0 ? (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                          {project.photos.map((photo, index) => {
+                            const photoUrl = getPhotoUrl(photo);
+                            const photoTags = getPhotoTags(photo);
+                            return (
                               <div
-                                key={note.id}
-                                className="border rounded-lg p-4"
+                                key={`photo-${index}-${photoUrl.slice(-10)}`}
+                                className={`group relative aspect-square cursor-pointer overflow-hidden rounded-lg bg-muted ${
+                                  selectedPhotos.includes(index)
+                                    ? "ring-2 ring-primary"
+                                    : ""
+                                }`}
+                                onClick={() => setSelectedPhoto(photoUrl)}
                               >
-                                <div className="flex items-start justify-between mb-2">
-                                  <div className="flex items-center gap-2">
-                                    <span className="font-medium text-sm">
-                                      {note.createdBy}
-                                    </span>
-                                    <span className="text-xs text-muted-foreground">
-                                      {formatTimestamp(note.createdAt)}
-                                    </span>
-                                    {note.updatedAt && (
-                                      <span className="text-xs text-muted-foreground">
-                                        (edited)
-                                      </span>
-                                    )}
-                                  </div>
-                                  <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                      <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-6 w-6"
-                                      >
-                                        <MoreVertical className="h-3 w-3" />
-                                      </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
-                                      <DropdownMenuItem
-                                        onClick={() => setEditingNote(note.id)}
-                                      >
-                                        <Edit className="h-4 w-4 mr-2" />
-                                        Edit
-                                      </DropdownMenuItem>
-                                      <DropdownMenuItem
-                                        onClick={() => deleteNote(note.id)}
-                                        className="text-destructive focus:text-destructive"
-                                      >
-                                        <Trash2 className="h-4 w-4 mr-2" />
-                                        Delete
-                                      </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                  </DropdownMenu>
-                                </div>
-                                {editingNote === note.id ? (
-                                  <div className="space-y-2">
-                                    <Textarea
-                                      defaultValue={note.content}
-                                      onKeyDown={(e) => {
-                                        if (e.key === "Enter" && e.ctrlKey) {
-                                          editNote(
-                                            note.id,
-                                            e.currentTarget.value,
-                                          );
-                                        }
-                                      }}
-                                    />
-                                    <div className="flex gap-2">
-                                      <Button
-                                        size="sm"
-                                        onClick={(e) => {
-                                          const textarea = e.currentTarget
-                                            .parentElement
-                                            ?.previousElementSibling as HTMLTextAreaElement;
-                                          editNote(note.id, textarea.value);
-                                        }}
-                                      >
-                                        Save
-                                      </Button>
-                                      <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => setEditingNote(null)}
-                                      >
-                                        Cancel
-                                      </Button>
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <p className="text-sm whitespace-pre-wrap">
-                                    {note.content}
-                                  </p>
-                                )}
-                              </div>
-                            ))
-                          ) : (
-                            <div className="text-center py-8 text-muted-foreground">
-                              <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                              <p>No notes added yet</p>
-                            </div>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                )}
+                                <img
+                                  src={photoUrl}
+                                  alt={`Photo ${index + 1}`}
+                                  className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
 
-                {/* Tasks & Checklists Tab */}
-                {activeTab === "tasks" && (
-                  <div className="space-y-6" key="tasks-tab-content">
-                    <Card>
-                      <CardHeader className="flex flex-row items-center justify-between">
-                        <CardTitle>Tasks</CardTitle>
-                        <Button
-                          onClick={() => setShowAddTask(true)}
-                          size="sm"
-                          className="gap-2"
-                        >
-                          <Plus className="h-4 w-4" />
-                          Add Task
-                        </Button>
-                      </CardHeader>
-                      <CardContent>
-                        {showAddTask && (
-                          <div className="border rounded-lg p-4 mb-4 space-y-3">
-                            <Input
-                              placeholder="Task title"
-                              value={newTask.title}
-                              onChange={(e) =>
-                                setNewTask((prev) => ({
-                                  ...prev,
-                                  title: e.target.value,
-                                }))
-                              }
-                            />
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                              <Select
-                                value={newTask.assignedTo}
-                                onValueChange={(value) =>
-                                  setNewTask((prev) => ({
-                                    ...prev,
-                                    assignedTo: value,
-                                  }))
-                                }
-                              >
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Assign to..." />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {mockUsers.map((user) => (
-                                    <SelectItem key={user.id} value={user.name}>
-                                      {user.name}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                              <Input
-                                type="date"
-                                placeholder="Due date"
-                                value={newTask.dueDate}
-                                onChange={(e) =>
-                                  setNewTask((prev) => ({
-                                    ...prev,
-                                    dueDate: e.target.value,
-                                  }))
-                                }
-                              />
-                              <Input
-                                type="time"
-                                placeholder="Due time"
-                                value={newTask.dueTime}
-                                onChange={(e) =>
-                                  setNewTask((prev) => ({
-                                    ...prev,
-                                    dueTime: e.target.value,
-                                  }))
-                                }
-                              />
-                            </div>
-                            <div className="flex gap-2">
-                              <Button onClick={addTask} size="sm">
-                                Add Task
-                              </Button>
-                              <Button
-                                onClick={() => setShowAddTask(false)}
-                                variant="outline"
-                                size="sm"
-                              >
-                                Cancel
-                              </Button>
-                            </div>
-                          </div>
-                        )}
-                        <div className="space-y-3">
-                          {project.tasks &&
-                          Array.isArray(project.tasks) &&
-                          project.tasks.length > 0 ? (
-                            project.tasks.map((task) => (
-                              <div
-                                key={task.id}
-                                className="flex items-start justify-between p-3 border rounded-lg"
-                              >
-                                <div className="flex items-start gap-3 flex-1">
-                                  <input
-                                    type="checkbox"
-                                    checked={task.completed}
-                                    onChange={() => toggleTask(task.id)}
-                                    className="rounded mt-1"
-                                  />
-                                  <div className="flex-1">
-                                    {editingTask === task.id ? (
-                                      <div className="space-y-2">
-                                        <Input
-                                          defaultValue={task.title}
-                                          placeholder="Task title"
-                                        />
-                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                                          <Select
-                                            defaultValue={task.assignedTo}
-                                          >
-                                            <SelectTrigger>
-                                              <SelectValue placeholder="Assign to..." />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                              {mockUsers.map((user) => (
-                                                <SelectItem
-                                                  key={user.id}
-                                                  value={user.name}
-                                                >
-                                                  {user.name}
-                                                </SelectItem>
-                                              ))}
-                                            </SelectContent>
-                                          </Select>
-                                          <Input
-                                            type="date"
-                                            defaultValue={task.dueDate}
-                                          />
-                                          <Input
-                                            type="time"
-                                            defaultValue={task.dueTime}
-                                          />
-                                        </div>
-                                        <div className="flex gap-2">
-                                          <Button
-                                            size="sm"
-                                            onClick={(e) => {
-                                              const container =
-                                                e.currentTarget.closest(
-                                                  ".space-y-2",
-                                                );
-                                              const titleInput =
-                                                container?.querySelector(
-                                                  'input[placeholder="Task title"]',
-                                                ) as HTMLInputElement;
-                                              const assignSelect =
-                                                container?.querySelector(
-                                                  "select",
-                                                ) as HTMLSelectElement;
-                                              const dateInput =
-                                                container?.querySelector(
-                                                  'input[type="date"]',
-                                                ) as HTMLInputElement;
-                                              const timeInput =
-                                                container?.querySelector(
-                                                  'input[type="time"]',
-                                                ) as HTMLInputElement;
-
-                                              editTask(task.id, {
-                                                title:
-                                                  titleInput?.value ||
-                                                  task.title,
-                                                assignedTo:
-                                                  assignSelect?.value ||
-                                                  task.assignedTo,
-                                                dueDate:
-                                                  dateInput?.value ||
-                                                  task.dueDate,
-                                                dueTime:
-                                                  timeInput?.value ||
-                                                  task.dueTime,
-                                              });
-                                            }}
-                                          >
-                                            Save
-                                          </Button>
-                                          <Button
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() => setEditingTask(null)}
-                                          >
-                                            Cancel
-                                          </Button>
-                                        </div>
-                                      </div>
-                                    ) : (
-                                      <div>
-                                        <p
-                                          className={`font-medium ${task.completed ? "line-through text-muted-foreground" : ""}`}
-                                        >
-                                          {task.title}
-                                        </p>
-                                        {task.assignedTo && (
-                                          <p className="text-sm text-muted-foreground flex items-center gap-1">
-                                            <UserPlus className="h-3 w-3" />
-                                            {task.assignedTo}
-                                          </p>
-                                        )}
-                                        {task.dueDate && (
-                                          <p className="text-sm text-muted-foreground flex items-center gap-1">
-                                            <Calendar className="h-3 w-3" />
-                                            {new Date(
-                                              task.dueDate,
-                                            ).toLocaleDateString()}
-                                            {task.dueTime &&
-                                              ` at ${task.dueTime}`}
-                                          </p>
-                                        )}
-                                        {task.completed && task.completedAt && (
-                                          <p className="text-xs text-green-600 flex items-center gap-1">
-                                            <CheckCircle className="h-3 w-3" />
-                                            Completed by {
-                                              task.completedBy
-                                            } on{" "}
-                                            {formatTimestamp(task.completedAt)}
-                                          </p>
-                                        )}
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                                {editingTask !== task.id && (
-                                  <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                      <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-6 w-6"
-                                      >
-                                        <MoreVertical className="h-3 w-3" />
-                                      </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
-                                      <DropdownMenuItem
-                                        onClick={() => setEditingTask(task.id)}
-                                      >
-                                        <Edit className="h-4 w-4 mr-2" />
-                                        Edit
-                                      </DropdownMenuItem>
-                                      <DropdownMenuItem
-                                        onClick={() => deleteTask(task.id)}
-                                        className="text-destructive focus:text-destructive"
-                                      >
-                                        <Trash2 className="h-4 w-4 mr-2" />
-                                        Delete
-                                      </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                  </DropdownMenu>
-                                )}
-                              </div>
-                            ))
-                          ) : (
-                            <div className="text-center py-8 text-muted-foreground">
-                              <User className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                              <p>No tasks assigned yet</p>
-                            </div>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardHeader className="flex flex-row items-center justify-between">
-                        <CardTitle>Checklists</CardTitle>
-                        <Button
-                          onClick={() => setShowAddChecklist(true)}
-                          size="sm"
-                          className="gap-2"
-                        >
-                          <Plus className="h-4 w-4" />
-                          Add Item
-                        </Button>
-                      </CardHeader>
-                      <CardContent>
-                        {showAddChecklist && (
-                          <div className="border rounded-lg p-4 mb-4 space-y-3">
-                            <Input
-                              placeholder="Checklist item"
-                              value={newChecklistItem}
-                              onChange={(e) =>
-                                setNewChecklistItem(e.target.value)
-                              }
-                            />
-                            <div className="flex gap-2">
-                              <Button onClick={addChecklistItem} size="sm">
-                                Add Item
-                              </Button>
-                              <Button
-                                onClick={() => setShowAddChecklist(false)}
-                                variant="outline"
-                                size="sm"
-                              >
-                                Cancel
-                              </Button>
-                            </div>
-                          </div>
-                        )}
-                        <div className="space-y-3">
-                          {project.checklist &&
-                          Array.isArray(project.checklist) &&
-                          project.checklist.length > 0 ? (
-                            project.checklist.map((item) => (
-                              <div
-                                key={item.id}
-                                className="flex items-start justify-between p-2 border rounded-lg"
-                              >
-                                <div className="flex items-start gap-3 flex-1">
-                                  <input
-                                    type="checkbox"
-                                    checked={item.completed}
-                                    onChange={() =>
-                                      toggleChecklistItem(item.id)
+                                {/* Selection checkbox */}
+                                <div className="absolute top-2 left-2">
+                                  <Checkbox
+                                    checked={selectedPhotos.includes(index)}
+                                    onCheckedChange={() =>
+                                      togglePhotoSelection(index)
                                     }
-                                    className="rounded mt-1"
+                                    className="bg-white/80 border-white"
+                                    onClick={(e) => e.stopPropagation()}
                                   />
-                                  <div className="flex-1">
-                                    {editingChecklistItem === item.id ? (
-                                      <div className="space-y-2">
-                                        <Input
-                                          defaultValue={item.title}
-                                          placeholder="Checklist item"
-                                        />
-                                        <div className="flex gap-2">
-                                          <Button
-                                            size="sm"
-                                            onClick={(e) => {
-                                              const input = e.currentTarget
-                                                .parentElement
-                                                ?.previousElementSibling as HTMLInputElement;
-                                              editChecklistItem(
-                                                item.id,
-                                                input.value,
-                                              );
-                                            }}
-                                          >
-                                            Save
-                                          </Button>
-                                          <Button
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() =>
-                                              setEditingChecklistItem(null)
-                                            }
-                                          >
-                                            Cancel
-                                          </Button>
-                                        </div>
-                                      </div>
-                                    ) : (
-                                      <div>
-                                        <span
-                                          className={
-                                            item.completed
-                                              ? "line-through text-muted-foreground"
-                                              : ""
-                                          }
+                                </div>
+
+                                {photoTags.length > 0 && (
+                                  <div className="absolute bottom-1 left-1 flex flex-wrap gap-1">
+                                    {photoTags
+                                      .slice(0, 2)
+                                      .map((tag, tagIndex) => (
+                                        <Badge
+                                          key={`photo-${index}-tag-${tagIndex}-${tag.replace(/\s+/g, "-").toLowerCase()}`}
+                                          variant="secondary"
+                                          className="text-xs"
                                         >
-                                          {item.title}
-                                        </span>
-                                        {item.completed && item.completedAt && (
-                                          <p className="text-xs text-green-600 flex items-center gap-1 mt-1">
-                                            <CheckCircle className="h-3 w-3" />
-                                            Completed by {
-                                              item.completedBy
-                                            } on{" "}
-                                            {formatTimestamp(item.completedAt)}
-                                          </p>
-                                        )}
-                                      </div>
+                                          {tag}
+                                        </Badge>
+                                      ))}
+                                    {photoTags.length > 2 && (
+                                      <Badge
+                                        key={`photo-${index}-more-tags`}
+                                        variant="outline"
+                                        className="text-xs"
+                                      >
+                                        +{photoTags.length - 2}
+                                      </Badge>
                                     )}
                                   </div>
-                                </div>
-                                {editingChecklistItem !== item.id && (
-                                  <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                      <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-6 w-6"
-                                      >
-                                        <MoreVertical className="h-3 w-3" />
-                                      </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
-                                      <DropdownMenuItem
-                                        onClick={() =>
-                                          setEditingChecklistItem(item.id)
-                                        }
-                                      >
-                                        <Edit className="h-4 w-4 mr-2" />
-                                        Edit
-                                      </DropdownMenuItem>
-                                      <DropdownMenuItem
-                                        onClick={() =>
-                                          deleteChecklistItem(item.id)
-                                        }
-                                        className="text-destructive focus:text-destructive"
-                                      >
-                                        <Trash2 className="h-4 w-4 mr-2" />
-                                        Delete
-                                      </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                  </DropdownMenu>
                                 )}
+                                <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <Button
+                                    variant="secondary"
+                                    size="icon"
+                                    className="h-6 w-6"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      downloadPhoto(photoUrl, index);
+                                    }}
+                                  >
+                                    <Download className="h-3 w-3" />
+                                  </Button>
+                                  <Button
+                                    variant="destructive"
+                                    size="icon"
+                                    className="h-6 w-6"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      removePhoto(index);
+                                    }}
+                                  >
+                                    <Trash2 className="h-3 w-3" />
+                                  </Button>
+                                </div>
                               </div>
-                            ))
-                          ) : (
-                            <div className="text-center py-8 text-muted-foreground">
-                              <CheckCircle className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                              <p>No checklist items yet</p>
-                            </div>
-                          )}
+                            );
+                          })}
                         </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                )}
+                      ) : (
+                        <div className="text-center py-12 text-muted-foreground">
+                          <Images className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                          <p>No photos uploaded yet</p>
+                          <Button
+                            variant="outline"
+                            className="mt-4 gap-2"
+                            onClick={() => fileInputRef.current?.click()}
+                          >
+                            <Plus className="h-4 w-4" />
+                            Add First Media
+                          </Button>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
 
-                {/* Documents Tab */}
-                {activeTab === "documents" && (
-                  <Card key="documents-tab-content">
-                    <CardHeader className="flex flex-row items-center justify-between">
+                  {/* Google Map Section */}
+                  <Card>
+                    <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <FileText className="h-5 w-5" />
-                        Project Documents
+                        <MapPin className="h-5 w-5" />
+                        Project Location
                       </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <MapPin className="h-4 w-4" />
+                          <a
+                            href={`https://maps.google.com/?q=${encodeURIComponent(project.address)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-primary hover:underline"
+                          >
+                            {project.address}
+                          </a>
+                        </div>
+                        {project.gpsLat && project.gpsLng && (
+                          <div className="text-sm text-muted-foreground">
+                            <span key="gps-label" className="font-medium">
+                              GPS:
+                            </span>
+                            <span key="gps-coordinates">
+                              {" "}
+                              {project.gpsLat}, {project.gpsLng}
+                            </span>
+                          </div>
+                        )}
+                        <GoogleMapComponent
+                          address={project.address}
+                          lat={project.gpsLat}
+                          lng={project.gpsLng}
+                          height="256px"
+                          zoom={15}
+                          showControls={true}
+                          showDirectionsButton={true}
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Notes Section */}
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between">
+                      <CardTitle>Project Notes</CardTitle>
                       <Button
-                        onClick={() => documentInputRef.current?.click()}
+                        onClick={() => setShowAddNote(true)}
                         size="sm"
                         className="gap-2"
                       >
                         <Plus className="h-4 w-4" />
-                        Upload Document
+                        Add Note
                       </Button>
-                      <input
-                        ref={documentInputRef}
-                        type="file"
-                        multiple
-                        accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.zip,.xls,.xlsx"
-                        className="hidden"
-                        onChange={(e) => handleDocumentUpload(e.target.files)}
-                      />
                     </CardHeader>
                     <CardContent>
-                      {project.documents && project.documents.length > 0 ? (
-                        <div className="space-y-3">
-                          {project.documents.map((doc) => (
-                            <div
-                              key={doc.id}
-                              className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50"
-                            >
-                              <div className="flex items-center gap-3">
-                                <FileText className="h-8 w-8 text-muted-foreground" />
-                                <div>
-                                  <p className="font-medium">{doc.name}</p>
-                                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                    <span>
-                                      Uploaded on{" "}
-                                      {new Date(
-                                        doc.uploadedAt,
-                                      ).toLocaleDateString()}
-                                    </span>
-                                    <span>���</span>
-                                    <span>by {doc.uploadedBy}</span>
-                                  </div>
+                      {showAddNote && (
+                        <div className="border rounded-lg p-4 mb-4 space-y-3">
+                          <div className="relative">
+                            <Textarea
+                              placeholder="Add a note... Use @ to mention users"
+                              value={newNote}
+                              onChange={handleMentionInput}
+                              rows={4}
+                            />
+                            {showMentionDropdown &&
+                              getFilteredUsers().length > 0 && (
+                                <div className="absolute top-full left-0 right-0 bg-white border rounded-md shadow-lg z-10 max-h-40 overflow-y-auto">
+                                  {getFilteredUsers().map((user) => (
+                                    <div
+                                      key={user.id}
+                                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
+                                      onClick={() => insertMention(user)}
+                                    >
+                                      <AtSign className="h-4 w-4" />
+                                      <span>{user.name}</span>
+                                      <span className="text-sm text-muted-foreground">
+                                        {user.email}
+                                      </span>
+                                    </div>
+                                  ))}
                                 </div>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => window.open(doc.url, "_blank")}
-                                >
-                                  <ExternalLink className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => {
-                                    const a = document.createElement("a");
-                                    a.href = doc.url;
-                                    a.download = doc.name;
-                                    document.body.appendChild(a);
-                                    a.click();
-                                    document.body.removeChild(a);
-                                    toast.success("Document downloaded");
-                                  }}
-                                >
-                                  <Download className="h-4 w-4" />
-                                </Button>
+                              )}
+                          </div>
+                          <div className="flex gap-2">
+                            <Button onClick={addNote} size="sm">
+                              Add Note
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                setShowAddNote(false);
+                                setNewNote("");
+                                setShowMentionDropdown(false);
+                              }}
+                              variant="outline"
+                              size="sm"
+                            >
+                              Cancel
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+                      <div className="space-y-4">
+                        {project.notes &&
+                        Array.isArray(project.notes) &&
+                        project.notes.length > 0 ? (
+                          project.notes.map((note) => (
+                            <div
+                              key={note.id}
+                              className="border rounded-lg p-4"
+                            >
+                              <div className="flex items-start justify-between mb-2">
+                                <div className="flex items-center gap-2">
+                                  <span className="font-medium text-sm">
+                                    {note.createdBy}
+                                  </span>
+                                  <span className="text-xs text-muted-foreground">
+                                    {formatTimestamp(note.createdAt)}
+                                  </span>
+                                  {note.updatedAt && (
+                                    <span className="text-xs text-muted-foreground">
+                                      (edited)
+                                    </span>
+                                  )}
+                                </div>
                                 <DropdownMenu>
                                   <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="sm">
-                                      <MoreVertical className="h-4 w-4" />
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      className="h-6 w-6"
+                                    >
+                                      <MoreVertical className="h-3 w-3" />
                                     </Button>
                                   </DropdownMenuTrigger>
                                   <DropdownMenuContent align="end">
                                     <DropdownMenuItem
-                                      onClick={() =>
-                                        toast.success(
-                                          "Edit document functionality coming soon",
-                                        )
-                                      }
+                                      onClick={() => setEditingNote(note.id)}
                                     >
                                       <Edit className="h-4 w-4 mr-2" />
-                                      Rename
+                                      Edit
                                     </DropdownMenuItem>
                                     <DropdownMenuItem
-                                      onClick={() => {
-                                        if (
-                                          confirm(
-                                            "Are you sure you want to delete this document?",
-                                          )
-                                        ) {
-                                          toast.success("Document deleted");
-                                        }
-                                      }}
+                                      onClick={() => deleteNote(note.id)}
                                       className="text-destructive focus:text-destructive"
                                     >
                                       <Trash2 className="h-4 w-4 mr-2" />
@@ -1957,442 +1375,1011 @@ export default function ProjectDetail() {
                                   </DropdownMenuContent>
                                 </DropdownMenu>
                               </div>
+                              {editingNote === note.id ? (
+                                <div className="space-y-2">
+                                  <Textarea
+                                    defaultValue={note.content}
+                                    onKeyDown={(e) => {
+                                      if (e.key === "Enter" && e.ctrlKey) {
+                                        editNote(
+                                          note.id,
+                                          e.currentTarget.value,
+                                        );
+                                      }
+                                    }}
+                                  />
+                                  <div className="flex gap-2">
+                                    <Button
+                                      size="sm"
+                                      onClick={(e) => {
+                                        const textarea = e.currentTarget
+                                          .parentElement
+                                          ?.previousElementSibling as HTMLTextAreaElement;
+                                        editNote(note.id, textarea.value);
+                                      }}
+                                    >
+                                      Save
+                                    </Button>
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => setEditingNote(null)}
+                                    >
+                                      Cancel
+                                    </Button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <p className="text-sm whitespace-pre-wrap">
+                                  {note.content}
+                                </p>
+                              )}
                             </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div className="text-center py-12 text-muted-foreground">
-                          <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                          <p>No documents uploaded yet</p>
-                          <p className="text-sm mt-1">
-                            Upload project documents, contracts, or files
-                          </p>
-                          <Button
-                            variant="outline"
-                            className="mt-4 gap-2"
-                            onClick={() =>
-                              toast.success(
-                                "Upload document functionality coming soon",
-                              )
-                            }
-                          >
-                            <Plus className="h-4 w-4" />
-                            Upload First Document
-                          </Button>
-                        </div>
-                      )}
+                          ))
+                        ) : (
+                          <div className="text-center py-8 text-muted-foreground">
+                            <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                            <p>No notes added yet</p>
+                          </div>
+                        )}
+                      </div>
                     </CardContent>
                   </Card>
-                )}
+                </div>
+              )}
 
-                {/* Activity Log Tab */}
-                {activeTab === "activity" && (
-                  <Card key="activity-tab-content">
+              {/* Tasks & Checklists Tab */}
+              {activeTab === "tasks" && (
+                <div className="space-y-6" key="tasks-tab-content">
+                  <Card>
                     <CardHeader className="flex flex-row items-center justify-between">
-                      <CardTitle>Activity Log</CardTitle>
-                      <div className="flex items-center gap-2">
-                        <Select defaultValue="10">
-                          <SelectTrigger className="w-20">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="5">5</SelectItem>
-                            <SelectItem value="10">10</SelectItem>
-                            <SelectItem value="25">25</SelectItem>
-                            <SelectItem value="50">50</SelectItem>
-                            <SelectItem value="100">100</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <span className="text-sm text-muted-foreground">
-                          rows
-                        </span>
-                      </div>
+                      <CardTitle>Tasks</CardTitle>
+                      <Button
+                        onClick={() => setShowAddTask(true)}
+                        size="sm"
+                        className="gap-2"
+                      >
+                        <Plus className="h-4 w-4" />
+                        Add Task
+                      </Button>
                     </CardHeader>
                     <CardContent>
-                      {project.activityLog && project.activityLog.length > 0 ? (
-                        <div className="space-y-4">
-                          <div className="overflow-x-auto">
-                            <table className="w-full">
-                              <thead>
-                                <tr className="border-b">
-                                  <th className="text-left p-2 font-medium cursor-pointer hover:bg-muted">
-                                    Platform
-                                  </th>
-                                  <th className="text-left p-2 font-medium cursor-pointer hover:bg-muted">
-                                    Action
-                                  </th>
-                                  <th className="text-left p-2 font-medium cursor-pointer hover:bg-muted">
-                                    User
-                                  </th>
-                                  <th className="text-left p-2 font-medium cursor-pointer hover:bg-muted">
-                                    Date/Time
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {project.activityLog
-                                  .slice(0, 10)
-                                  .map((entry) => (
-                                    <tr
-                                      key={entry.id}
-                                      className="border-b hover:bg-muted/50"
-                                    >
-                                      <td className="p-2">
-                                        <div className="flex items-center gap-2">
-                                          <span>
-                                            {entry.platform === "mobile" ? (
-                                              <Smartphone className="h-4 w-4 text-muted-foreground" />
-                                            ) : (
-                                              <Monitor className="h-4 w-4 text-muted-foreground" />
-                                            )}
-                                          </span>
-                                          <Badge
-                                            variant="outline"
-                                            className="text-xs capitalize"
-                                          >
-                                            {entry.platform}
-                                          </Badge>
-                                        </div>
-                                      </td>
-                                      <td className="p-2">
-                                        <span className="font-medium text-sm">
-                                          {entry.description}
-                                        </span>
-                                      </td>
-                                      <td className="p-2">
-                                        <span className="text-sm text-muted-foreground">
-                                          {entry.userName}
-                                        </span>
-                                      </td>
-                                      <td className="p-2">
-                                        <span className="text-sm text-muted-foreground">
-                                          {formatTimestamp(entry.timestamp)}
-                                        </span>
-                                      </td>
-                                    </tr>
-                                  ))}
-                              </tbody>
-                            </table>
+                      {showAddTask && (
+                        <div className="border rounded-lg p-4 mb-4 space-y-3">
+                          <Input
+                            placeholder="Task title"
+                            value={newTask.title}
+                            onChange={(e) =>
+                              setNewTask((prev) => ({
+                                ...prev,
+                                title: e.target.value,
+                              }))
+                            }
+                          />
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <Select
+                              value={newTask.assignedTo}
+                              onValueChange={(value) =>
+                                setNewTask((prev) => ({
+                                  ...prev,
+                                  assignedTo: value,
+                                }))
+                              }
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Assign to..." />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {mockUsers.map((user) => (
+                                  <SelectItem key={user.id} value={user.name}>
+                                    {user.name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <Input
+                              type="date"
+                              placeholder="Due date"
+                              value={newTask.dueDate}
+                              onChange={(e) =>
+                                setNewTask((prev) => ({
+                                  ...prev,
+                                  dueDate: e.target.value,
+                                }))
+                              }
+                            />
+                            <Input
+                              type="time"
+                              placeholder="Due time"
+                              value={newTask.dueTime}
+                              onChange={(e) =>
+                                setNewTask((prev) => ({
+                                  ...prev,
+                                  dueTime: e.target.value,
+                                }))
+                              }
+                            />
                           </div>
-
-                          {project.activityLog.length > 10 && (
-                            <div className="flex items-center justify-between text-sm text-muted-foreground">
-                              <span>
-                                <span key="pagination-text">
-                                  Showing 1-10 of {project.activityLog.length}{" "}
-                                  entries
-                                </span>
-                              </span>
-                              <div className="flex gap-2">
-                                <Button
-                                  key="pagination-prev"
-                                  variant="outline"
-                                  size="sm"
-                                >
-                                  Previous
-                                </Button>
-                                <Button
-                                  key="pagination-next"
-                                  variant="outline"
-                                  size="sm"
-                                >
-                                  Next
-                                </Button>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      ) : (
-                        <div className="text-center py-8 text-muted-foreground">
-                          <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                          <p>No activity logged yet</p>
-                          <p className="text-sm mt-1">
-                            Activity will appear here as you work on the project
-                          </p>
+                          <div className="flex gap-2">
+                            <Button onClick={addTask} size="sm">
+                              Add Task
+                            </Button>
+                            <Button
+                              onClick={() => setShowAddTask(false)}
+                              variant="outline"
+                              size="sm"
+                            >
+                              Cancel
+                            </Button>
+                          </div>
                         </div>
                       )}
+                      <div className="space-y-3">
+                        {project.tasks &&
+                        Array.isArray(project.tasks) &&
+                        project.tasks.length > 0 ? (
+                          project.tasks.map((task) => (
+                            <div
+                              key={task.id}
+                              className="flex items-start justify-between p-3 border rounded-lg"
+                            >
+                              <div className="flex items-start gap-3 flex-1">
+                                <input
+                                  type="checkbox"
+                                  checked={task.completed}
+                                  onChange={() => toggleTask(task.id)}
+                                  className="rounded mt-1"
+                                />
+                                <div className="flex-1">
+                                  {editingTask === task.id ? (
+                                    <div className="space-y-2">
+                                      <Input
+                                        defaultValue={task.title}
+                                        placeholder="Task title"
+                                      />
+                                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                        <Select defaultValue={task.assignedTo}>
+                                          <SelectTrigger>
+                                            <SelectValue placeholder="Assign to..." />
+                                          </SelectTrigger>
+                                          <SelectContent>
+                                            {mockUsers.map((user) => (
+                                              <SelectItem
+                                                key={user.id}
+                                                value={user.name}
+                                              >
+                                                {user.name}
+                                              </SelectItem>
+                                            ))}
+                                          </SelectContent>
+                                        </Select>
+                                        <Input
+                                          type="date"
+                                          defaultValue={task.dueDate}
+                                        />
+                                        <Input
+                                          type="time"
+                                          defaultValue={task.dueTime}
+                                        />
+                                      </div>
+                                      <div className="flex gap-2">
+                                        <Button
+                                          size="sm"
+                                          onClick={(e) => {
+                                            const container =
+                                              e.currentTarget.closest(
+                                                ".space-y-2",
+                                              );
+                                            const titleInput =
+                                              container?.querySelector(
+                                                'input[placeholder="Task title"]',
+                                              ) as HTMLInputElement;
+                                            const assignSelect =
+                                              container?.querySelector(
+                                                "select",
+                                              ) as HTMLSelectElement;
+                                            const dateInput =
+                                              container?.querySelector(
+                                                'input[type="date"]',
+                                              ) as HTMLInputElement;
+                                            const timeInput =
+                                              container?.querySelector(
+                                                'input[type="time"]',
+                                              ) as HTMLInputElement;
+
+                                            editTask(task.id, {
+                                              title:
+                                                titleInput?.value || task.title,
+                                              assignedTo:
+                                                assignSelect?.value ||
+                                                task.assignedTo,
+                                              dueDate:
+                                                dateInput?.value ||
+                                                task.dueDate,
+                                              dueTime:
+                                                timeInput?.value ||
+                                                task.dueTime,
+                                            });
+                                          }}
+                                        >
+                                          Save
+                                        </Button>
+                                        <Button
+                                          variant="outline"
+                                          size="sm"
+                                          onClick={() => setEditingTask(null)}
+                                        >
+                                          Cancel
+                                        </Button>
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div>
+                                      <p
+                                        className={`font-medium ${task.completed ? "line-through text-muted-foreground" : ""}`}
+                                      >
+                                        {task.title}
+                                      </p>
+                                      {task.assignedTo && (
+                                        <p className="text-sm text-muted-foreground flex items-center gap-1">
+                                          <UserPlus className="h-3 w-3" />
+                                          {task.assignedTo}
+                                        </p>
+                                      )}
+                                      {task.dueDate && (
+                                        <p className="text-sm text-muted-foreground flex items-center gap-1">
+                                          <Calendar className="h-3 w-3" />
+                                          {new Date(
+                                            task.dueDate,
+                                          ).toLocaleDateString()}
+                                          {task.dueTime &&
+                                            ` at ${task.dueTime}`}
+                                        </p>
+                                      )}
+                                      {task.completed && task.completedAt && (
+                                        <p className="text-xs text-green-600 flex items-center gap-1">
+                                          <CheckCircle className="h-3 w-3" />
+                                          Completed by {
+                                            task.completedBy
+                                          } on{" "}
+                                          {formatTimestamp(task.completedAt)}
+                                        </p>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                              {editingTask !== task.id && (
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      className="h-6 w-6"
+                                    >
+                                      <MoreVertical className="h-3 w-3" />
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent align="end">
+                                    <DropdownMenuItem
+                                      onClick={() => setEditingTask(task.id)}
+                                    >
+                                      <Edit className="h-4 w-4 mr-2" />
+                                      Edit
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                      onClick={() => deleteTask(task.id)}
+                                      className="text-destructive focus:text-destructive"
+                                    >
+                                      <Trash2 className="h-4 w-4 mr-2" />
+                                      Delete
+                                    </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              )}
+                            </div>
+                          ))
+                        ) : (
+                          <div className="text-center py-8 text-muted-foreground">
+                            <User className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                            <p>No tasks assigned yet</p>
+                          </div>
+                        )}
+                      </div>
                     </CardContent>
                   </Card>
-                )}
-              </div>
 
-              {/* Sidebar */}
-              <div className="space-y-6" key="sidebar-content">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Project Information</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <h4 className="font-medium mb-2 flex items-center gap-2">
-                        <CalendarDays className="h-4 w-4" />
-                        Created
-                      </h4>
-                      <p className="text-sm text-muted-foreground">
-                        {new Date(project.createdAt).toLocaleDateString()}
-                      </p>
-                    </div>
-
-                    <Separator />
-
-                    {(project.customerName ||
-                      project.mobilePhone ||
-                      project.customerPhone ||
-                      (project.additionalPhones &&
-                        project.additionalPhones.length > 0)) && (
-                      <div>
-                        <Separator />
-                        <div>
-                          <h4 className="font-medium mb-2 flex items-center gap-2">
-                            <Phone className="h-4 w-4" />
-                            Customer Information
-                          </h4>
-
-                          {project.customerName && (
-                            <div className="mb-2">
-                              <p className="text-xs text-muted-foreground">
-                                Name
-                              </p>
-                              <p className="text-sm font-medium">
-                                {project.customerName}
-                              </p>
-                            </div>
-                          )}
-
-                          {(project.mobilePhone || project.customerPhone) && (
-                            <div className="mb-2">
-                              <p className="text-xs text-muted-foreground">
-                                Mobile Phone
-                              </p>
-                              <a
-                                href={`tel:${project.mobilePhone || project.customerPhone}`}
-                                className="text-sm text-primary hover:underline"
-                              >
-                                {project.mobilePhone || project.customerPhone}
-                              </a>
-                            </div>
-                          )}
-
-                          {project.additionalPhones &&
-                            project.additionalPhones.filter((phone) =>
-                              phone.trim(),
-                            ).length > 0 && (
-                              <div className="mb-3">
-                                <p className="text-xs text-muted-foreground">
-                                  Additional Numbers
-                                </p>
-                                {project.additionalPhones
-                                  .filter((phone) => phone.trim())
-                                  .map((phone, index) => (
-                                    <a
-                                      key={`additional-phone-${index}-${phone.replace(/\D/g, "")}`}
-                                      href={`tel:${phone}`}
-                                      className="text-sm text-primary hover:underline block"
-                                    >
-                                      {phone}
-                                    </a>
-                                  ))}
-                              </div>
-                            )}
-
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="gap-2 w-full"
-                            onClick={requestGoogleReview}
-                            disabled={
-                              !project.mobilePhone && !project.customerPhone
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between">
+                      <CardTitle>Checklists</CardTitle>
+                      <Button
+                        onClick={() => setShowAddChecklist(true)}
+                        size="sm"
+                        className="gap-2"
+                      >
+                        <Plus className="h-4 w-4" />
+                        Add Item
+                      </Button>
+                    </CardHeader>
+                    <CardContent>
+                      {showAddChecklist && (
+                        <div className="border rounded-lg p-4 mb-4 space-y-3">
+                          <Input
+                            placeholder="Checklist item"
+                            value={newChecklistItem}
+                            onChange={(e) =>
+                              setNewChecklistItem(e.target.value)
                             }
-                          >
-                            <Star className="h-4 w-4" />
-                            Request Google Review
-                          </Button>
+                          />
+                          <div className="flex gap-2">
+                            <Button onClick={addChecklistItem} size="sm">
+                              Add Item
+                            </Button>
+                            <Button
+                              onClick={() => setShowAddChecklist(false)}
+                              variant="outline"
+                              size="sm"
+                            >
+                              Cancel
+                            </Button>
+                          </div>
                         </div>
+                      )}
+                      <div className="space-y-3">
+                        {project.checklist &&
+                        Array.isArray(project.checklist) &&
+                        project.checklist.length > 0 ? (
+                          project.checklist.map((item) => (
+                            <div
+                              key={item.id}
+                              className="flex items-start justify-between p-2 border rounded-lg"
+                            >
+                              <div className="flex items-start gap-3 flex-1">
+                                <input
+                                  type="checkbox"
+                                  checked={item.completed}
+                                  onChange={() => toggleChecklistItem(item.id)}
+                                  className="rounded mt-1"
+                                />
+                                <div className="flex-1">
+                                  {editingChecklistItem === item.id ? (
+                                    <div className="space-y-2">
+                                      <Input
+                                        defaultValue={item.title}
+                                        placeholder="Checklist item"
+                                      />
+                                      <div className="flex gap-2">
+                                        <Button
+                                          size="sm"
+                                          onClick={(e) => {
+                                            const input = e.currentTarget
+                                              .parentElement
+                                              ?.previousElementSibling as HTMLInputElement;
+                                            editChecklistItem(
+                                              item.id,
+                                              input.value,
+                                            );
+                                          }}
+                                        >
+                                          Save
+                                        </Button>
+                                        <Button
+                                          variant="outline"
+                                          size="sm"
+                                          onClick={() =>
+                                            setEditingChecklistItem(null)
+                                          }
+                                        >
+                                          Cancel
+                                        </Button>
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div>
+                                      <span
+                                        className={
+                                          item.completed
+                                            ? "line-through text-muted-foreground"
+                                            : ""
+                                        }
+                                      >
+                                        {item.title}
+                                      </span>
+                                      {item.completed && item.completedAt && (
+                                        <p className="text-xs text-green-600 flex items-center gap-1 mt-1">
+                                          <CheckCircle className="h-3 w-3" />
+                                          Completed by {
+                                            item.completedBy
+                                          } on{" "}
+                                          {formatTimestamp(item.completedAt)}
+                                        </p>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                              {editingChecklistItem !== item.id && (
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      className="h-6 w-6"
+                                    >
+                                      <MoreVertical className="h-3 w-3" />
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent align="end">
+                                    <DropdownMenuItem
+                                      onClick={() =>
+                                        setEditingChecklistItem(item.id)
+                                      }
+                                    >
+                                      <Edit className="h-4 w-4 mr-2" />
+                                      Edit
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                      onClick={() =>
+                                        deleteChecklistItem(item.id)
+                                      }
+                                      className="text-destructive focus:text-destructive"
+                                    >
+                                      <Trash2 className="h-4 w-4 mr-2" />
+                                      Delete
+                                    </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              )}
+                            </div>
+                          ))
+                        ) : (
+                          <div className="text-center py-8 text-muted-foreground">
+                            <CheckCircle className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                            <p>No checklist items yet</p>
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
+
+              {/* Documents Tab */}
+              {activeTab === "documents" && (
+                <Card key="documents-tab-content">
+                  <CardHeader className="flex flex-row items-center justify-between">
+                    <CardTitle className="flex items-center gap-2">
+                      <FileText className="h-5 w-5" />
+                      Project Documents
+                    </CardTitle>
+                    <Button
+                      onClick={() => documentInputRef.current?.click()}
+                      size="sm"
+                      className="gap-2"
+                    >
+                      <Plus className="h-4 w-4" />
+                      Upload Document
+                    </Button>
+                    <input
+                      ref={documentInputRef}
+                      type="file"
+                      multiple
+                      accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.zip,.xls,.xlsx"
+                      className="hidden"
+                      onChange={(e) => handleDocumentUpload(e.target.files)}
+                    />
+                  </CardHeader>
+                  <CardContent>
+                    {project.documents && project.documents.length > 0 ? (
+                      <div className="space-y-3">
+                        {project.documents.map((doc) => (
+                          <div
+                            key={doc.id}
+                            className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50"
+                          >
+                            <div className="flex items-center gap-3">
+                              <FileText className="h-8 w-8 text-muted-foreground" />
+                              <div>
+                                <p className="font-medium">{doc.name}</p>
+                                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                  <span>
+                                    Uploaded on{" "}
+                                    {new Date(
+                                      doc.uploadedAt,
+                                    ).toLocaleDateString()}
+                                  </span>
+                                  <span>���</span>
+                                  <span>by {doc.uploadedBy}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => window.open(doc.url, "_blank")}
+                              >
+                                <ExternalLink className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  const a = document.createElement("a");
+                                  a.href = doc.url;
+                                  a.download = doc.name;
+                                  document.body.appendChild(a);
+                                  a.click();
+                                  document.body.removeChild(a);
+                                  toast.success("Document downloaded");
+                                }}
+                              >
+                                <Download className="h-4 w-4" />
+                              </Button>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="sm">
+                                    <MoreVertical className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuItem
+                                    onClick={() =>
+                                      toast.success(
+                                        "Edit document functionality coming soon",
+                                      )
+                                    }
+                                  >
+                                    <Edit className="h-4 w-4 mr-2" />
+                                    Rename
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() => {
+                                      if (
+                                        confirm(
+                                          "Are you sure you want to delete this document?",
+                                        )
+                                      ) {
+                                        toast.success("Document deleted");
+                                      }
+                                    }}
+                                    className="text-destructive focus:text-destructive"
+                                  >
+                                    <Trash2 className="h-4 w-4 mr-2" />
+                                    Delete
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-12 text-muted-foreground">
+                        <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <p>No documents uploaded yet</p>
+                        <p className="text-sm mt-1">
+                          Upload project documents, contracts, or files
+                        </p>
+                        <Button
+                          variant="outline"
+                          className="mt-4 gap-2"
+                          onClick={() =>
+                            toast.success(
+                              "Upload document functionality coming soon",
+                            )
+                          }
+                        >
+                          <Plus className="h-4 w-4" />
+                          Upload First Document
+                        </Button>
                       </div>
                     )}
                   </CardContent>
                 </Card>
+              )}
 
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Statistics</CardTitle>
+              {/* Activity Log Tab */}
+              {activeTab === "activity" && (
+                <Card key="activity-tab-content">
+                  <CardHeader className="flex flex-row items-center justify-between">
+                    <CardTitle>Activity Log</CardTitle>
+                    <div className="flex items-center gap-2">
+                      <Select defaultValue="10">
+                        <SelectTrigger className="w-20">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="5">5</SelectItem>
+                          <SelectItem value="10">10</SelectItem>
+                          <SelectItem value="25">25</SelectItem>
+                          <SelectItem value="50">50</SelectItem>
+                          <SelectItem value="100">100</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <span className="text-sm text-muted-foreground">
+                        rows
+                      </span>
+                    </div>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground flex items-center gap-1">
-                        <Images className="h-3 w-3" />
-                        Photos
-                      </span>
-                      <span className="font-medium">
-                        {project.photos.length}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground flex items-center gap-1">
-                        <Video className="h-3 w-3" />
-                        Videos
-                      </span>
-                      <span className="font-medium">
-                        {project.videos?.length || 0}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground flex items-center gap-1">
-                        <FileText className="h-3 w-3" />
-                        Documents
-                      </span>
-                      <span className="font-medium">
-                        {project.documents?.length || 0}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground flex items-center gap-1">
-                        <MessageSquare className="h-3 w-3" />
-                        Notes
-                      </span>
-                      <span className="font-medium">
-                        {project.notes?.length || 0}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground flex items-center gap-1">
-                        <User className="h-3 w-3" />
-                        Tasks
-                      </span>
-                      <span className="font-medium">
-                        {project.tasks?.length || 0}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground flex items-center gap-1">
-                        <CheckCircle className="h-3 w-3" />
-                        Checklist Items
-                      </span>
-                      <span className="font-medium">
-                        {project.checklist?.length || 0}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground flex items-center gap-1">
-                        <HardDrive className="h-3 w-3" />
-                        Media Storage
-                      </span>
-                      <span className="font-medium">
-                        {(
-                          (project.photos.length +
-                            (project.videos?.length || 0)) *
-                          2.5
-                        ).toFixed(1)}{" "}
-                        MB
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground">
-                        Keywords
-                      </span>
-                      <span className="font-medium">
-                        {project.keywords.length}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-muted-foreground">
-                        Project Age
-                      </span>
-                      <span className="font-medium">
-                        {Math.ceil(
-                          (Date.now() - new Date(project.createdAt).getTime()) /
-                            (1000 * 60 * 60 * 24),
-                        )}{" "}
-                        days
-                      </span>
-                    </div>
+                  <CardContent>
+                    {project.activityLog && project.activityLog.length > 0 ? (
+                      <div className="space-y-4">
+                        <div className="overflow-x-auto">
+                          <table className="w-full">
+                            <thead>
+                              <tr className="border-b">
+                                <th className="text-left p-2 font-medium cursor-pointer hover:bg-muted">
+                                  Platform
+                                </th>
+                                <th className="text-left p-2 font-medium cursor-pointer hover:bg-muted">
+                                  Action
+                                </th>
+                                <th className="text-left p-2 font-medium cursor-pointer hover:bg-muted">
+                                  User
+                                </th>
+                                <th className="text-left p-2 font-medium cursor-pointer hover:bg-muted">
+                                  Date/Time
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {project.activityLog.slice(0, 10).map((entry) => (
+                                <tr
+                                  key={entry.id}
+                                  className="border-b hover:bg-muted/50"
+                                >
+                                  <td className="p-2">
+                                    <div className="flex items-center gap-2">
+                                      <span>
+                                        {entry.platform === "mobile" ? (
+                                          <Smartphone className="h-4 w-4 text-muted-foreground" />
+                                        ) : (
+                                          <Monitor className="h-4 w-4 text-muted-foreground" />
+                                        )}
+                                      </span>
+                                      <Badge
+                                        variant="outline"
+                                        className="text-xs capitalize"
+                                      >
+                                        {entry.platform}
+                                      </Badge>
+                                    </div>
+                                  </td>
+                                  <td className="p-2">
+                                    <span className="font-medium text-sm">
+                                      {entry.description}
+                                    </span>
+                                  </td>
+                                  <td className="p-2">
+                                    <span className="text-sm text-muted-foreground">
+                                      {entry.userName}
+                                    </span>
+                                  </td>
+                                  <td className="p-2">
+                                    <span className="text-sm text-muted-foreground">
+                                      {formatTimestamp(entry.timestamp)}
+                                    </span>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+
+                        {project.activityLog.length > 10 && (
+                          <div className="flex items-center justify-between text-sm text-muted-foreground">
+                            <span>
+                              <span key="pagination-text">
+                                Showing 1-10 of {project.activityLog.length}{" "}
+                                entries
+                              </span>
+                            </span>
+                            <div className="flex gap-2">
+                              <Button
+                                key="pagination-prev"
+                                variant="outline"
+                                size="sm"
+                              >
+                                Previous
+                              </Button>
+                              <Button
+                                key="pagination-next"
+                                variant="outline"
+                                size="sm"
+                              >
+                                Next
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <MessageSquare className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                        <p>No activity logged yet</p>
+                        <p className="text-sm mt-1">
+                          Activity will appear here as you work on the project
+                        </p>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
-              </div>
+              )}
+            </div>
+
+            {/* Sidebar */}
+            <div className="space-y-6" key="sidebar-content">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Project Information</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-medium mb-2 flex items-center gap-2">
+                      <CalendarDays className="h-4 w-4" />
+                      Created
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      {new Date(project.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+
+                  <Separator />
+
+                  {(project.customerName ||
+                    project.mobilePhone ||
+                    project.customerPhone ||
+                    (project.additionalPhones &&
+                      project.additionalPhones.length > 0)) && (
+                    <div>
+                      <Separator />
+                      <div>
+                        <h4 className="font-medium mb-2 flex items-center gap-2">
+                          <Phone className="h-4 w-4" />
+                          Customer Information
+                        </h4>
+
+                        {project.customerName && (
+                          <div className="mb-2">
+                            <p className="text-xs text-muted-foreground">
+                              Name
+                            </p>
+                            <p className="text-sm font-medium">
+                              {project.customerName}
+                            </p>
+                          </div>
+                        )}
+
+                        {(project.mobilePhone || project.customerPhone) && (
+                          <div className="mb-2">
+                            <p className="text-xs text-muted-foreground">
+                              Mobile Phone
+                            </p>
+                            <a
+                              href={`tel:${project.mobilePhone || project.customerPhone}`}
+                              className="text-sm text-primary hover:underline"
+                            >
+                              {project.mobilePhone || project.customerPhone}
+                            </a>
+                          </div>
+                        )}
+
+                        {project.additionalPhones &&
+                          project.additionalPhones.filter((phone) =>
+                            phone.trim(),
+                          ).length > 0 && (
+                            <div className="mb-3">
+                              <p className="text-xs text-muted-foreground">
+                                Additional Numbers
+                              </p>
+                              {project.additionalPhones
+                                .filter((phone) => phone.trim())
+                                .map((phone, index) => (
+                                  <a
+                                    key={`additional-phone-${index}-${phone.replace(/\D/g, "")}`}
+                                    href={`tel:${phone}`}
+                                    className="text-sm text-primary hover:underline block"
+                                  >
+                                    {phone}
+                                  </a>
+                                ))}
+                            </div>
+                          )}
+
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="gap-2 w-full"
+                          onClick={requestGoogleReview}
+                          disabled={
+                            !project.mobilePhone && !project.customerPhone
+                          }
+                        >
+                          <Star className="h-4 w-4" />
+                          Request Google Review
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Statistics</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground flex items-center gap-1">
+                      <Images className="h-3 w-3" />
+                      Photos
+                    </span>
+                    <span className="font-medium">{project.photos.length}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground flex items-center gap-1">
+                      <Video className="h-3 w-3" />
+                      Videos
+                    </span>
+                    <span className="font-medium">
+                      {project.videos?.length || 0}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground flex items-center gap-1">
+                      <FileText className="h-3 w-3" />
+                      Documents
+                    </span>
+                    <span className="font-medium">
+                      {project.documents?.length || 0}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground flex items-center gap-1">
+                      <MessageSquare className="h-3 w-3" />
+                      Notes
+                    </span>
+                    <span className="font-medium">
+                      {project.notes?.length || 0}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground flex items-center gap-1">
+                      <User className="h-3 w-3" />
+                      Tasks
+                    </span>
+                    <span className="font-medium">
+                      {project.tasks?.length || 0}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground flex items-center gap-1">
+                      <CheckCircle className="h-3 w-3" />
+                      Checklist Items
+                    </span>
+                    <span className="font-medium">
+                      {project.checklist?.length || 0}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground flex items-center gap-1">
+                      <HardDrive className="h-3 w-3" />
+                      Media Storage
+                    </span>
+                    <span className="font-medium">
+                      {(
+                        (project.photos.length +
+                          (project.videos?.length || 0)) *
+                        2.5
+                      ).toFixed(1)}{" "}
+                      MB
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">
+                      Keywords
+                    </span>
+                    <span className="font-medium">
+                      {project.keywords.length}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">
+                      Project Age
+                    </span>
+                    <span className="font-medium">
+                      {Math.ceil(
+                        (Date.now() - new Date(project.createdAt).getTime()) /
+                          (1000 * 60 * 60 * 24),
+                      )}{" "}
+                      days
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Photo Modal */}
-        {selectedPhoto && (
-          <div
-            key="photo-modal"
-            className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
-            onClick={() => setSelectedPhoto(null)}
-          >
-            <div className="relative max-w-4xl max-h-full">
-              <img
-                src={selectedPhoto}
-                alt="Full size photo"
-                className="max-w-full max-h-full object-contain rounded-lg"
-              />
+      {/* Photo Modal */}
+      {selectedPhoto && (
+        <div
+          key="photo-modal"
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
+          onClick={() => setSelectedPhoto(null)}
+        >
+          <div className="relative max-w-4xl max-h-full">
+            <img
+              src={selectedPhoto}
+              alt="Full size photo"
+              className="max-w-full max-h-full object-contain rounded-lg"
+            />
+            <Button
+              variant="secondary"
+              size="icon"
+              className="absolute top-4 right-4"
+              onClick={() => setSelectedPhoto(null)}
+            >
+              ×
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Project ID Display - Bottom Right */}
+      <div className="fixed bottom-4 right-4 z-40">
+        <div className="bg-muted/90 backdrop-blur-sm border rounded-lg px-3 py-2 shadow-lg">
+          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <span>Project ID:</span>
+            <code className="font-mono text-foreground font-medium">
+              {project?.id}
+            </code>
+          </div>
+        </div>
+      </div>
+
+      {/* Review Request Dialog */}
+      <ReviewRequest
+        key="review-request-dialog"
+        isOpen={showReviewRequest}
+        onClose={() => setShowReviewRequest(false)}
+        customerName={project?.customerName}
+        customerEmail={project?.customerEmail}
+        customerPhone={project?.mobilePhone || project?.customerPhone}
+        projectName={project?.name || ""}
+        onSend={handleSendReviewRequest}
+      />
+
+      {/* Smart Media Uploader */}
+      {showMediaUploader && (
+        <div key="media-uploader-modal" className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">Add Photos & Videos</h3>
               <Button
-                variant="secondary"
-                size="icon"
-                className="absolute top-4 right-4"
-                onClick={() => setSelectedPhoto(null)}
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowMediaUploader(false)}
               >
-                ×
+                ��
               </Button>
             </div>
-          </div>
-        )}
-
-        {/* Project ID Display - Bottom Right */}
-        <div className="fixed bottom-4 right-4 z-40">
-          <div className="bg-muted/90 backdrop-blur-sm border rounded-lg px-3 py-2 shadow-lg">
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span>Project ID:</span>
-              <code className="font-mono text-foreground font-medium">
-                {project?.id}
-              </code>
-            </div>
+            <SmartMediaUploader
+              onFilesReady={handleMediaFilesReady}
+              projectInfo={{
+                name: project?.name || "",
+                keywords: project?.keywords || [],
+                address: project?.address,
+                customerName: project?.customerName,
+              }}
+              maxFiles={20}
+              maxFileSize={100}
+            />
           </div>
         </div>
-
-        {/* Review Request Dialog */}
-        <ReviewRequest
-          key="review-request-dialog"
-          isOpen={showReviewRequest}
-          onClose={() => setShowReviewRequest(false)}
-          customerName={project?.customerName}
-          customerEmail={project?.customerEmail}
-          customerPhone={project?.mobilePhone || project?.customerPhone}
-          projectName={project?.name || ""}
-          onSend={handleSendReviewRequest}
-        />
-
-        {/* Smart Media Uploader */}
-        {showMediaUploader && (
-          <div
-            key="media-uploader-modal"
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-          >
-            <div className="bg-white rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Add Photos & Videos</h3>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowMediaUploader(false)}
-                >
-                  ��
-                </Button>
-              </div>
-              <SmartMediaUploader
-                onFilesReady={handleMediaFilesReady}
-                projectInfo={{
-                  name: project?.name || "",
-                  keywords: project?.keywords || [],
-                  address: project?.address,
-                  customerName: project?.customerName,
-                }}
-                maxFiles={20}
-                maxFileSize={100}
-              />
-            </div>
-          </div>
-        )}
+      )}
       </React.Fragment>
     </AppLayout>
   );
