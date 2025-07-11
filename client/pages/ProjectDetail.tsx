@@ -1434,7 +1434,7 @@ export default function ProjectDetail() {
             {/* Tasks & Checklists Tab */}
             {activeTab === "tasks" && (
               <div className="space-y-6">
-                <Card>
+                <Card key="tasks-card">
                   <CardHeader className="flex flex-row items-center justify-between">
                     <CardTitle>Tasks</CardTitle>
                     <Button
