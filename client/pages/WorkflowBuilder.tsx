@@ -54,26 +54,29 @@ export default function WorkflowBuilder() {
 
   return (
     <AppLayout>
-      <div className="h-full flex flex-col">
+      <div className="h-screen flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="border-b bg-background p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="border-b bg-background p-4 flex-shrink-0">
+          <div className="flex items-center justify-between max-w-full overflow-hidden">
+            <div className="flex items-center gap-4 min-w-0">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => navigate("/admin/automations")}
+                className="flex-shrink-0"
               >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
-              <div>
-                <h1 className="text-2xl font-bold">Workflow Builder</h1>
-                <p className="text-sm text-muted-foreground">
+              <div className="min-w-0">
+                <h1 className="text-2xl font-bold truncate">
+                  Workflow Builder
+                </h1>
+                <p className="text-sm text-muted-foreground truncate">
                   {id ? `Editing workflow ${id}` : "Creating new workflow"}
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-shrink-0">
               <Button variant="outline" size="sm" onClick={handleTest}>
                 <Eye className="h-4 w-4 mr-2" />
                 Test
@@ -95,30 +98,32 @@ export default function WorkflowBuilder() {
         </div>
 
         {/* Workflow Settings Panel */}
-        <div className="border-b bg-muted/30 p-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="space-y-2">
+        <div className="border-b bg-muted/30 p-4 flex-shrink-0">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-full">
+            <div className="space-y-2 min-w-0">
               <Label htmlFor="workflow-name">Workflow Name</Label>
               <Input
                 id="workflow-name"
                 value={workflowName}
                 onChange={(e) => setWorkflowName(e.target.value)}
                 placeholder="Enter workflow name"
+                className="w-full"
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 min-w-0">
               <Label htmlFor="workflow-description">Description</Label>
               <Input
                 id="workflow-description"
                 value={workflowDescription}
                 onChange={(e) => setWorkflowDescription(e.target.value)}
                 placeholder="Enter description"
+                className="w-full"
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 min-w-0">
               <Label htmlFor="workflow-status">Status</Label>
               <Select value={workflowStatus} onValueChange={setWorkflowStatus}>
-                <SelectTrigger>
+                <SelectTrigger className="w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -128,7 +133,7 @@ export default function WorkflowBuilder() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex items-end">
+            <div className="flex items-end min-w-0">
               <Button variant="outline" size="sm" className="w-full">
                 <Settings className="h-4 w-4 mr-2" />
                 Advanced Settings
@@ -138,12 +143,14 @@ export default function WorkflowBuilder() {
         </div>
 
         {/* Workflow Builder Canvas */}
-        <div className="flex-1 bg-background">
-          <WorkflowBuilderComponent
-            workflowId={id}
-            onSave={handleSave}
-            onPublish={handlePublish}
-          />
+        <div className="flex-1 bg-background overflow-hidden relative">
+          <div className="absolute inset-0 w-full h-full">
+            <WorkflowBuilderComponent
+              workflowId={id}
+              onSave={handleSave}
+              onPublish={handlePublish}
+            />
+          </div>
         </div>
       </div>
     </AppLayout>
