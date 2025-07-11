@@ -819,10 +819,13 @@ export default function SuperAdminAPI() {
           onValueChange={setActiveTab}
           className="space-y-6"
         >
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="keys">API Keys</TabsTrigger>
             <TabsTrigger value="webhooks">Webhooks</TabsTrigger>
             <TabsTrigger value="endpoints">Endpoints</TabsTrigger>
+            <TabsTrigger value="integrations">Third-Party APIs</TabsTrigger>
+            <TabsTrigger value="monitoring">Usage & Logs</TabsTrigger>
+            <TabsTrigger value="rate-limits">Rate Limiting</TabsTrigger>
             <TabsTrigger value="docs">Documentation</TabsTrigger>
           </TabsList>
 
