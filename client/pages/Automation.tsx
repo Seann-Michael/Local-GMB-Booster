@@ -1032,6 +1032,214 @@ export default function Automation() {
             </Card>
           </TabsContent>
         </Tabs>
+
+        {/* New Workflow Dialog */}
+        <Dialog open={isNewWorkflowOpen} onOpenChange={setIsNewWorkflowOpen}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Create New Workflow</DialogTitle>
+              <DialogDescription>
+                Choose a workflow template to get started with automation
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-6">
+              {/* Workflow Templates */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card
+                  className="cursor-pointer hover:border-primary transition-colors"
+                  onClick={() => {
+                    setNewWorkflow({ ...newWorkflow, type: "email" });
+                    // Navigate to workflow builder
+                    console.log("Creating Email Automation workflow");
+                  }}
+                >
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100">
+                        <Mail className="h-5 w-5 text-blue-600" />
+                      </div>
+                      <h3 className="font-medium">Email Automation</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Send automated emails based on triggers like project
+                      completion, new leads, or scheduled times
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card
+                  className="cursor-pointer hover:border-primary transition-colors"
+                  onClick={() => {
+                    setNewWorkflow({ ...newWorkflow, type: "review" });
+                    console.log("Creating Review Request workflow");
+                  }}
+                >
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-yellow-100">
+                        <Star className="h-5 w-5 text-yellow-600" />
+                      </div>
+                      <h3 className="font-medium">Review Requests</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Automatically request reviews from clients after project
+                      completion with customizable timing
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card
+                  className="cursor-pointer hover:border-primary transition-colors"
+                  onClick={() => {
+                    setNewWorkflow({ ...newWorkflow, type: "notification" });
+                    console.log("Creating Notification workflow");
+                  }}
+                >
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-100">
+                        <Bell className="h-5 w-5 text-green-600" />
+                      </div>
+                      <h3 className="font-medium">Notifications</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Send SMS or push notifications to team members or clients
+                      based on project updates
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card
+                  className="cursor-pointer hover:border-primary transition-colors"
+                  onClick={() => {
+                    setNewWorkflow({ ...newWorkflow, type: "custom" });
+                    console.log("Creating Custom workflow");
+                  }}
+                >
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100">
+                        <Settings className="h-5 w-5 text-purple-600" />
+                      </div>
+                      <h3 className="font-medium">Custom Workflow</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Build a custom workflow from scratch with multiple
+                      triggers, conditions, and actions
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Quick Start Options */}
+              <div className="border-t pt-4">
+                <h4 className="font-medium mb-3">Quick Start Templates</h4>
+                <div className="space-y-2">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start"
+                    onClick={() => {
+                      const newId = `workflow-${Date.now()}`;
+                      const newWorkflowData: Workflow = {
+                        id: newId,
+                        name: "Lead Nurturing Sequence",
+                        description: "7-day email sequence for new leads",
+                        status: "draft",
+                        nodes: [],
+                        connections: [],
+                        triggers: [],
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                        runCount: 0,
+                      };
+                      setWorkflows([...workflows, newWorkflowData]);
+                      setIsNewWorkflowOpen(false);
+                      console.log("Created Lead Nurturing workflow");
+                    }}
+                  >
+                    <Mail className="mr-2 h-4 w-4" />
+                    Lead Nurturing Sequence
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start"
+                    onClick={() => {
+                      const newId = `workflow-${Date.now()}`;
+                      const newWorkflowData: Workflow = {
+                        id: newId,
+                        name: "Project Completion Follow-up",
+                        description: "Send review requests and project surveys",
+                        status: "draft",
+                        nodes: [],
+                        connections: [],
+                        triggers: [],
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                        runCount: 0,
+                      };
+                      setWorkflows([...workflows, newWorkflowData]);
+                      setIsNewWorkflowOpen(false);
+                      console.log("Created Project Completion workflow");
+                    }}
+                  >
+                    <CheckCircle className="mr-2 h-4 w-4" />
+                    Project Completion Follow-up
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start"
+                    onClick={() => {
+                      const newId = `workflow-${Date.now()}`;
+                      const newWorkflowData: Workflow = {
+                        id: newId,
+                        name: "Client Onboarding",
+                        description:
+                          "Welcome new clients with automated sequence",
+                        status: "draft",
+                        nodes: [],
+                        connections: [],
+                        triggers: [],
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                        runCount: 0,
+                      };
+                      setWorkflows([...workflows, newWorkflowData]);
+                      setIsNewWorkflowOpen(false);
+                      console.log("Created Client Onboarding workflow");
+                    }}
+                  >
+                    <Users className="mr-2 h-4 w-4" />
+                    Client Onboarding
+                  </Button>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-4 border-t">
+                <Button
+                  variant="outline"
+                  onClick={() => setIsNewWorkflowOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => {
+                    console.log("Opening Workflow Builder...");
+                    setIsNewWorkflowOpen(false);
+                    // Here you would navigate to a workflow builder page
+                    // For now, we'll just show a message
+                    alert(
+                      "Workflow Builder would open here. This would navigate to a visual workflow editor.",
+                    );
+                  }}
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  Open Workflow Builder
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </AppLayout>
   );
