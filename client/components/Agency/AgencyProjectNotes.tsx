@@ -249,11 +249,11 @@ export function AgencyProjectNotes({
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex gap-2">
           <Select
-            value={filter.type || ""}
-            onValueChange={(value: "internal" | "client-facing" | "") =>
+            value={filter.type || "all"}
+            onValueChange={(value: "internal" | "client-facing" | "all") =>
               setFilter((prev) => ({
                 ...prev,
-                type: value || undefined,
+                type: value === "all" ? undefined : value,
               }))
             }
           >
@@ -261,7 +261,7 @@ export function AgencyProjectNotes({
               <SelectValue placeholder="All Notes" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Notes</SelectItem>
+              <SelectItem value="all">All Notes</SelectItem>
               <SelectItem value="internal">Internal Only</SelectItem>
               <SelectItem value="client-facing">Client-Facing</SelectItem>
             </SelectContent>
