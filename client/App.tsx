@@ -654,6 +654,10 @@ const App = () => (
 
                 {/* Agency Admin Legacy URL Redirects */}
                 <Route
+                  path="/agency"
+                  element={<Navigate to="/agency/admin/dashboard" replace />}
+                />
+                <Route
                   path="/agency-admin"
                   element={<Navigate to="/agency/admin/dashboard" replace />}
                 />
