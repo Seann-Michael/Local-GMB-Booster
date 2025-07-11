@@ -171,6 +171,21 @@ function getAgencyBreadcrumbs(pathname: string): BreadcrumbItem[] {
           { label: "Admin Users", href: "/agency/admin/admin-users" },
           { label: "User Details" },
         ];
+      } else if (
+        pathname.includes("/agency/admin/projects/") &&
+        pathname.includes("/edit")
+      ) {
+        return [
+          baseBreadcrumb,
+          { label: "Projects", href: "/agency/admin/projects" },
+          { label: "Edit Project" },
+        ];
+      } else if (pathname.includes("/agency/admin/projects/")) {
+        return [
+          baseBreadcrumb,
+          { label: "Projects", href: "/agency/admin/projects" },
+          { label: "Project Details" },
+        ];
       }
 
       return [baseBreadcrumb];
