@@ -459,6 +459,6 @@ export default function AgencyBusinessOwners() {
           </CardContent>
         </Card>
       </div>
-    </AgencyAdminLayout>
+    </AgencyLayout>
   );
 }
