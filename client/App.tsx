@@ -465,6 +465,40 @@ const App = () => (
                     </ProtectedRoute>
                   }
                 />
+
+                {/* Agency Project Management Routes */}
+                <Route
+                  path="/agency/admin/projects"
+                  element={
+                    <ProtectedRoute>
+                      <AgencyProjects />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/projects/create"
+                  element={
+                    <ProtectedRoute>
+                      <AgencyProjectCreate />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/projects/:id"
+                  element={
+                    <ProtectedRoute>
+                      <AgencyProjectDetail />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/agency/admin/projects/:id/edit"
+                  element={
+                    <ProtectedRoute>
+                      <AgencyProjectCreate />
+                    </ProtectedRoute>
+                  }
+                />
                 <Route
                   path="/agency/admin/help"
                   element={
