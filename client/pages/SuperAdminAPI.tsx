@@ -1126,7 +1126,7 @@ export default function SuperAdminAPI() {
               </TabsTrigger>
               <TabsTrigger
                 value="endpoints"
-                className="text-xs px-2 whitespace-nowrap"
+                className="text-xs px-3 py-2 min-w-0 whitespace-nowrap flex-shrink-0"
               >
                 Endpoints
               </TabsTrigger>
