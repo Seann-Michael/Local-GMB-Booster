@@ -528,9 +528,151 @@ export default function SuperAdminAPI() {
       },
     ];
 
+    // Mock integrations data
+    const mockIntegrations: ThirdPartyIntegration[] = [
+      {
+        id: "int-1",
+        name: "SendGrid Email Service",
+        service: "SendGrid",
+        category: "email",
+        apiKey: "SG.••••••••••••••••••••••••••••••••••••",
+        isActive: true,
+        isConnected: true,
+        lastTested: "2024-01-20T10:30:00Z",
+        createdAt: "2024-01-01T00:00:00Z",
+        updatedAt: "2024-01-20T10:30:00Z",
+        additionalConfig: {
+          fromEmail: "noreply@company.com",
+          fromName: "Company Name",
+        },
+        usage: {
+          requestsToday: 245,
+          requestsThisMonth: 8420,
+          lastRequest: "2024-01-20T14:25:00Z",
+          errorRate: 0.2,
+        },
+      },
+      {
+        id: "int-2",
+        name: "Twilio SMS Service",
+        service: "Twilio",
+        category: "sms",
+        apiKey: "AC••••••••••••••••••••••••••••••••••",
+        apiSecret: "••••••••••••••••••••••••••••••••",
+        isActive: true,
+        isConnected: true,
+        lastTested: "2024-01-19T16:45:00Z",
+        createdAt: "2024-01-01T00:00:00Z",
+        updatedAt: "2024-01-19T16:45:00Z",
+        additionalConfig: {
+          fromNumber: "+1234567890",
+        },
+        usage: {
+          requestsToday: 45,
+          requestsThisMonth: 1250,
+          lastRequest: "2024-01-20T13:15:00Z",
+          errorRate: 0.1,
+        },
+      },
+      {
+        id: "int-3",
+        name: "Google Maps API",
+        service: "Google Maps",
+        category: "maps",
+        apiKey: "AIza••••••••••••���•••••••••••••••••••••",
+        isActive: true,
+        isConnected: true,
+        lastTested: "2024-01-20T08:00:00Z",
+        createdAt: "2024-01-01T00:00:00Z",
+        updatedAt: "2024-01-20T08:00:00Z",
+        additionalConfig: {},
+        usage: {
+          requestsToday: 1205,
+          requestsThisMonth: 35600,
+          lastRequest: "2024-01-20T14:30:00Z",
+          errorRate: 0.05,
+        },
+      },
+    ];
+
+    // Mock rate limit rules
+    const mockRateLimits: RateLimitRule[] = [
+      {
+        id: "rl-1",
+        name: "API Key Rate Limit",
+        description: "Standard rate limit for API keys",
+        endpoint: "/api/*",
+        method: "*",
+        limit: 1000,
+        window: "hour",
+        isActive: true,
+        exemptApiKeys: ["api-key-1"],
+        createdAt: "2024-01-01T00:00:00Z",
+      },
+      {
+        id: "rl-2",
+        name: "Public Endpoints",
+        description: "Rate limit for public endpoints",
+        endpoint: "/api/public/*",
+        method: "GET",
+        limit: 100,
+        window: "minute",
+        isActive: true,
+        exemptApiKeys: [],
+        createdAt: "2024-01-01T00:00:00Z",
+      },
+    ];
+
+    // Mock usage logs
+    const mockUsageLogs: APIUsageLog[] = [
+      {
+        id: "log-1",
+        timestamp: "2024-01-20T14:30:00Z",
+        endpoint: "/api/users",
+        method: "GET",
+        apiKey: "ak_live_1234567890abcdef",
+        sourceIP: "192.168.1.100",
+        userAgent: "MyApp/1.0",
+        responseCode: 200,
+        responseTime: 145,
+        requestSize: 0,
+        responseSize: 2048,
+      },
+      {
+        id: "log-2",
+        timestamp: "2024-01-20T14:29:30Z",
+        endpoint: "/api/projects",
+        method: "POST",
+        apiKey: "ak_live_abcdef1234567890",
+        sourceIP: "10.0.0.50",
+        userAgent: "Mobile/2.1",
+        responseCode: 201,
+        responseTime: 234,
+        requestSize: 512,
+        responseSize: 1024,
+      },
+      {
+        id: "log-3",
+        timestamp: "2024-01-20T14:28:15Z",
+        endpoint: "/api/reviews",
+        method: "GET",
+        apiKey: "ak_live_1234567890abcdef",
+        sourceIP: "192.168.1.100",
+        userAgent: "MyApp/1.0",
+        responseCode: 500,
+        responseTime: 2500,
+        requestSize: 0,
+        responseSize: 256,
+        error: "Internal server error",
+      },
+    ];
+
     setApiKeys(mockKeys);
     setWebhooks(mockWebhooks);
     setEndpoints(mockEndpoints);
+    setIntegrations(mockIntegrations);
+    setRateLimitRules(mockRateLimits);
+    setUsageLogs(mockUsageLogs);
 
     // Calculate stats
     const totalRequests = mockKeys.reduce(
