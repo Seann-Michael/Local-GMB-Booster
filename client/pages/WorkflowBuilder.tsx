@@ -46,8 +46,8 @@ const availableApps = [
     actions: [
       {
         id: "receive",
-        name: "Catch Hook",
-        description: "Receive webhook data",
+        name: "Receive Webhook",
+        description: "Trigger when webhook is received",
       },
     ],
   },
@@ -57,38 +57,71 @@ const availableApps = [
     name: "Schedule",
     icon: Calendar,
     color: "bg-purple-500",
-    actions: [{ id: "cron", name: "Every", description: "Run on schedule" }],
+    actions: [
+      { id: "scheduled", name: "Scheduled", description: "Run on schedule" },
+    ],
   },
   {
     type: "trigger",
-    app: "email",
-    name: "Email",
-    icon: Mail,
-    color: "bg-green-500",
+    app: "workflow",
+    name: "Workflow",
+    icon: GitBranch,
+    color: "bg-indigo-500",
     actions: [
-      { id: "received", name: "New Email", description: "When email received" },
+      {
+        id: "add_to_workflow",
+        name: "Add to Workflow",
+        description: "When contact is added to workflow",
+      },
+      {
+        id: "remove_from_workflow",
+        name: "Remove from Workflow",
+        description: "When contact is removed from workflow",
+      },
+    ],
+  },
+  {
+    type: "trigger",
+    app: "tags",
+    name: "Tags",
+    icon: Settings,
+    color: "bg-pink-500",
+    actions: [
+      {
+        id: "tag_added",
+        name: "Tag Added",
+        description: "When tag is added to contact",
+      },
+      {
+        id: "tag_removed",
+        name: "Tag Removed",
+        description: "When tag is removed from contact",
+      },
     ],
   },
 
-  // Actions
+  // Actions - Reviews
   {
     type: "action",
-    app: "email",
-    name: "Email",
+    app: "reviews",
+    name: "Reviews",
     icon: Mail,
     color: "bg-green-500",
-    actions: [{ id: "send", name: "Send Email", description: "Send an email" }],
-  },
-  {
-    type: "action",
-    app: "sms",
-    name: "SMS",
-    icon: MessageSquare,
-    color: "bg-orange-500",
     actions: [
-      { id: "send", name: "Send SMS", description: "Send text message" },
+      {
+        id: "send_review_email",
+        name: "Send Review Email",
+        description: "Send review request via email",
+      },
+      {
+        id: "send_review_sms",
+        name: "Send Review SMS",
+        description: "Send review request via SMS",
+      },
     ],
   },
+
+  // Actions - Communication
   {
     type: "action",
     app: "webhook",
@@ -96,32 +129,117 @@ const availableApps = [
     icon: Webhook,
     color: "bg-blue-500",
     actions: [
-      { id: "post", name: "POST", description: "Send HTTP POST request" },
-    ],
-  },
-  {
-    type: "action",
-    app: "database",
-    name: "Database",
-    icon: Database,
-    color: "bg-gray-500",
-    actions: [
-      { id: "create", name: "Create Record", description: "Insert new record" },
       {
-        id: "update",
-        name: "Update Record",
-        description: "Update existing record",
+        id: "send_webhook",
+        name: "Send Webhook",
+        description: "Send data to external service",
       },
     ],
   },
   {
     type: "action",
+    app: "rss",
+    name: "RSS",
+    icon: Database,
+    color: "bg-orange-600",
+    actions: [
+      { id: "rss", name: "RSS Feed", description: "Add item to RSS feed" },
+    ],
+  },
+
+  // Actions - Social Media
+  {
+    type: "action",
+    app: "gmb",
+    name: "Google My Business",
+    icon: Database,
+    color: "bg-red-500",
+    actions: [
+      {
+        id: "post_to_gmb",
+        name: "Post to Google My Business",
+        description: "Create a post on Google My Business",
+      },
+    ],
+  },
+  {
+    type: "action",
+    app: "facebook",
+    name: "Facebook",
+    icon: MessageSquare,
+    color: "bg-blue-600",
+    actions: [
+      {
+        id: "post_to_facebook",
+        name: "Post to Facebook",
+        description: "Create a post on Facebook",
+      },
+    ],
+  },
+
+  // Actions - Workflow Management
+  {
+    type: "action",
+    app: "workflow",
+    name: "Workflow",
+    icon: GitBranch,
+    color: "bg-indigo-500",
+    actions: [
+      {
+        id: "add_to_workflow",
+        name: "Add to Workflow",
+        description: "Add contact to another workflow",
+      },
+      {
+        id: "remove_from_workflow",
+        name: "Remove from Workflow",
+        description: "Remove contact from workflow",
+      },
+    ],
+  },
+  {
+    type: "action",
+    app: "tags",
+    name: "Tags",
+    icon: Settings,
+    color: "bg-pink-500",
+    actions: [
+      { id: "add_tag", name: "Add Tag", description: "Add tag to contact" },
+      {
+        id: "remove_tag",
+        name: "Remove Tag",
+        description: "Remove tag from contact",
+      },
+    ],
+  },
+
+  // Actions - Utilities
+  {
+    type: "action",
     app: "delay",
-    name: "Delay",
+    name: "Wait",
     icon: Clock,
     color: "bg-yellow-500",
     actions: [
-      { id: "wait", name: "Delay For", description: "Wait for specified time" },
+      {
+        id: "wait",
+        name: "Wait",
+        description: "Wait for specified time before next action",
+      },
+    ],
+  },
+  {
+    type: "action",
+    app: "api",
+    name: "API",
+    icon: Database,
+    color: "bg-gray-500",
+    actions: [
+      {
+        id: "api_call",
+        name: "API Call",
+        description: "Make custom API request",
+      },
     ],
   },
 ];
