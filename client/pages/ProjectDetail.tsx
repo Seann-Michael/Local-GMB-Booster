@@ -990,7 +990,7 @@ export default function ProjectDetail() {
             <div key="main-content" className="lg:col-span-2 space-y-6">
               {/* Overview Tab */}
               {activeTab === "overview" && (
-                <div>
+                <div className="space-y-6">
                   {/* Project Description */}
                   <Card key="project-description">
                     <CardHeader>
