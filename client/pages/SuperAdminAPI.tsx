@@ -2171,7 +2171,7 @@ export default function SuperAdminAPI() {
                         <span className="text-sm text-muted-foreground">
                           API Key:
                         </span>
-                        <span className="text-sm font-mono text-muted-foreground">
+                        <span className="text-sm font-mono text-muted-foreground max-w-[120px] truncate block text-right">
                           {formatApiKey(integration.apiKey)}
                         </span>
                       </div>
