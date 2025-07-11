@@ -861,8 +861,8 @@ export default function ProjectDetail() {
 
   return (
     <AppLayout>
-      <div className="container px-4 py-6">
-        <div>
+      <div className="container px-4 py-6" key={`project-detail-${project.id}`}>
+        <div key="project-detail-content">
           <div className="flex items-center gap-4 mb-6">
             <Link to="/admin/projects">
               <Button variant="ghost" size="icon">
