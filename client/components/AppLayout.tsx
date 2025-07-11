@@ -230,6 +230,14 @@ export function AppLayout({ children }: AppLayoutProps) {
       comingSoon: false,
     },
     {
+      id: "reports",
+      label: "Reports",
+      href: "/admin/reports",
+      icon: BarChart3,
+      active: location.pathname === "/admin/reports",
+      comingSoon: false,
+    },
+    {
       id: "maps",
       label: "Maps",
       href: "/admin/maps",
