@@ -158,6 +158,16 @@ export const useAddressSearch = () => {
     setError(null);
 
     try {
+      // Check if API key is available before attempting to load
+      const { getGoogleMapsApiKey } = await import("@/lib/googleMaps");
+      const apiKey = getGoogleMapsApiKey();
+      if (!apiKey) {
+        setError("Google Maps API key not configured");
+        setSuggestions([]);
+        setIsLoading(false);
+        return;
+      }
+
       await loadGoogleMapsAPI();
 
       const service = new google.maps.places.AutocompleteService();
