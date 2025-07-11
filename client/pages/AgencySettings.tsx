@@ -656,6 +656,6 @@ export default function AgencySettings() {
           </div>
         </div>
       </div>
-    </AgencyAdminLayout>
+    </AgencyLayout>
   );
 }
