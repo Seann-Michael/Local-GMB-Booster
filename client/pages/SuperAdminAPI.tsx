@@ -1110,15 +1110,52 @@ export default function SuperAdminAPI() {
           onValueChange={setActiveTab}
           className="space-y-6"
         >
-          <TabsList className="grid w-full grid-cols-7">
-            <TabsTrigger value="keys">API Keys</TabsTrigger>
-            <TabsTrigger value="webhooks">Webhooks</TabsTrigger>
-            <TabsTrigger value="endpoints">Endpoints</TabsTrigger>
-            <TabsTrigger value="integrations">Third-Party APIs</TabsTrigger>
-            <TabsTrigger value="monitoring">Usage & Logs</TabsTrigger>
-            <TabsTrigger value="rate-limits">Rate Limiting</TabsTrigger>
-            <TabsTrigger value="docs">Documentation</TabsTrigger>
-          </TabsList>
+          <div className="w-full overflow-x-auto">
+            <TabsList className="flex w-max min-w-full">
+              <TabsTrigger
+                value="keys"
+                className="text-xs px-2 whitespace-nowrap"
+              >
+                API Keys
+              </TabsTrigger>
+              <TabsTrigger
+                value="webhooks"
+                className="text-xs px-2 whitespace-nowrap"
+              >
+                Webhooks
+              </TabsTrigger>
+              <TabsTrigger
+                value="endpoints"
+                className="text-xs px-2 whitespace-nowrap"
+              >
+                Endpoints
+              </TabsTrigger>
+              <TabsTrigger
+                value="integrations"
+                className="text-xs px-2 whitespace-nowrap"
+              >
+                Third-Party
+              </TabsTrigger>
+              <TabsTrigger
+                value="monitoring"
+                className="text-xs px-2 whitespace-nowrap"
+              >
+                Usage
+              </TabsTrigger>
+              <TabsTrigger
+                value="rate-limits"
+                className="text-xs px-2 whitespace-nowrap"
+              >
+                Limits
+              </TabsTrigger>
+              <TabsTrigger
+                value="docs"
+                className="text-xs px-2 whitespace-nowrap"
+              >
+                Docs
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="keys" className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between gap-4">
