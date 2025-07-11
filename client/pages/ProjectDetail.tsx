@@ -910,9 +910,9 @@ export default function ProjectDetail() {
           </div>
 
           {/* Project Status and Completion */}
-          <div>
+          <div key="project-status-section">
             {project.status !== "completed" ? (
-              <Card className="mb-6">
+              <Card className="mb-6" key="project-status-active">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div>
@@ -923,7 +923,7 @@ export default function ProjectDetail() {
                           project.startDate || project.createdAt,
                         ).toLocaleDateString()}
                         {project.completionDate && (
-                          <span>
+                          <span key="expected-completion">
                             {" "}
                             • Expected:{" "}
                             {new Date(
@@ -941,7 +941,10 @@ export default function ProjectDetail() {
                 </CardContent>
               </Card>
             ) : (
-              <Card className="mb-6 border-green-200 bg-green-50">
+              <Card
+                className="mb-6 border-green-200 bg-green-50"
+                key="project-status-completed"
+              >
                 <CardContent className="p-4">
                   <div className="flex items-center gap-2">
                     <CheckCircle className="h-5 w-5 text-green-600" />
