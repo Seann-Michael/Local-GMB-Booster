@@ -248,6 +248,12 @@ export default function Automation() {
   const [activeTab, setActiveTab] = useState("executions");
   const [executionHistory, setExecutionHistory] =
     useState<ExecutionHistory[]>(mockExecutions);
+  const [isNewWorkflowOpen, setIsNewWorkflowOpen] = useState(false);
+  const [newWorkflow, setNewWorkflow] = useState({
+    name: "",
+    description: "",
+    type: "email",
+  });
 
   const handleWorkflowAction = (
     workflowId: string,
