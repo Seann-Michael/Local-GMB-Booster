@@ -326,25 +326,28 @@ export default function AddProject() {
               </div>
 
               <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="address">
-                    Address{" "}
-                    <span className="text-muted-foreground">(Optional)</span>
-                  </Label>
-                  <Input
-                    id="address"
-                    placeholder="Start typing address..."
-                    value={formData.address}
-                    onChange={(e) => {
-                      handleInputChange("address", e.target.value);
-                      simulateGooglePlaces(e.target.value);
-                    }}
-                    className="w-full"
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Address will auto-complete using Google Places API
-                  </p>
-                </div>
+                <AddressAutocomplete
+                  label="Address"
+                  placeholder="Start typing address..."
+                  value={formData.address}
+                  onChange={(address, placeResult) => {
+                    handleInputChange("address", address);
+                    if (placeResult) {
+                      setFormData((prev) => ({
+                        ...prev,
+                        gpsLat: placeResult.lat,
+                        gpsLng: placeResult.lng,
+                      }));
+                    }
+                  }}
+                  onCoordinatesChange={(lat, lng) => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      gpsLat: lat,
+                      gpsLng: lng,
+                    }));
+                  }}
+                />
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
