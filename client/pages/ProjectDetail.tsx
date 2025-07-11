@@ -861,8 +861,9 @@ export default function ProjectDetail() {
 
   return (
     <AppLayout>
-      <div className="container px-4 py-6" key={`project-detail-${project.id}`}>
-        <div key="project-detail-content">
+      <React.Fragment key={`project-detail-fragment-${project.id}`}>
+        <div className="container px-4 py-6" key={`project-detail-${project.id}`}>
+          <div key="project-detail-content">
           <div className="flex items-center gap-4 mb-6" key="header-nav">
             <Link to="/admin/projects" key="back-link">
               <Button variant="ghost" size="icon">
@@ -959,10 +960,7 @@ export default function ProjectDetail() {
                 key="project-status-completed"
               >
                 <CardContent className="p-4" key="status-completed-content">
-                  <div
-                    className="flex items-center gap-2"
-                    key="status-completed-inner"
-                  >
+                  <div className="flex items-center gap-2" key="status-completed-inner">
                     <CheckCircle className="h-5 w-5 text-green-600" />
                     <div key="completion-text">
                       <h3 className="font-medium text-green-800">
