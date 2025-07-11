@@ -143,6 +143,12 @@ function getBreadcrumbs(pathname: string): BreadcrumbItem[] {
           { label: "Projects", href: "/admin/projects" },
           { label: "Project Details" },
         ];
+      } else if (pathname.startsWith("/admin/workflow-builder/")) {
+        return [
+          baseBreadcrumb,
+          { label: "Automations", href: "/admin/automations" },
+          { label: "Edit Workflow" },
+        ];
       }
 
       // For unmatched routes, return empty array (no breadcrumbs)
