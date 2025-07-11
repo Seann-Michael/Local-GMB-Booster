@@ -219,11 +219,22 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
             </Badge>
           )}
 
-          {inputValue && !selectedPlace && !error && !isLoading && (
-            <span className="text-xs text-muted-foreground">
-              Select from suggestions or continue typing
-            </span>
+          {!apiKeyAvailable && (
+            <Badge variant="secondary" className="text-xs">
+              <AlertCircle className="h-3 w-3 mr-1" />
+              Autocomplete unavailable - configure Google Maps API
+            </Badge>
           )}
+
+          {inputValue &&
+            !selectedPlace &&
+            !error &&
+            !isLoading &&
+            apiKeyAvailable && (
+              <span className="text-xs text-muted-foreground">
+                Select from suggestions or continue typing
+              </span>
+            )}
         </div>
 
         {/* Suggestions Dropdown */}
