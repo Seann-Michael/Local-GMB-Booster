@@ -1019,9 +1019,8 @@ export default function ProjectDetail() {
                             variant="secondary"
                             className="cursor-pointer hover:bg-secondary/80"
                           >
-                            <span key="keyword-text">{keyword}</span>
+                            <span>{keyword}</span>
                             <button
-                              key="keyword-remove"
                               className="ml-1 hover:text-destructive"
                               onClick={(e) => {
                                 e.stopPropagation();
