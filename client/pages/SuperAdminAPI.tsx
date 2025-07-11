@@ -794,29 +794,43 @@ export default function SuperAdminAPI() {
 
   const testIntegration = async (integration: ThirdPartyIntegration) => {
     try {
-      // Mock API test call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      let testResult = false;
+
+      if (integration.service === "Google Maps") {
+        // Test Google Maps API
+        const { testGoogleMapsConnection } = await import("@/lib/googleMaps");
+        testResult = await testGoogleMapsConnection();
+      } else {
+        // Mock test for other services
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        testResult = true;
+      }
 
       // Update integration with test result
-      setIntegrations((prev) =>
-        prev.map((int) =>
-          int.id === integration.id
-            ? {
-                ...int,
-                lastTested: new Date().toISOString(),
-                isConnected: true,
-              }
-            : int,
-        ),
+      const updatedIntegrations = integrations.map((int) =>
+        int.id === integration.id
+          ? {
+              ...int,
+              lastTested: new Date().toISOString(),
+              isConnected: testResult,
+            }
+          : int,
       );
 
-      toast.success(`${integration.name} connection test successful`);
+      setIntegrations(updatedIntegrations);
+      saveIntegrationsToStorage(updatedIntegrations);
+
+      if (testResult) {
+        toast.success(`${integration.name} connection test successful`);
+      } else {
+        toast.error(`${integration.name} connection test failed`);
+      }
     } catch (error) {
-      setIntegrations((prev) =>
-        prev.map((int) =>
-          int.id === integration.id ? { ...int, isConnected: false } : int,
-        ),
+      const updatedIntegrations = integrations.map((int) =>
+        int.id === integration.id ? { ...int, isConnected: false } : int,
       );
+      setIntegrations(updatedIntegrations);
+      saveIntegrationsToStorage(updatedIntegrations);
       toast.error(`${integration.name} connection test failed`);
     }
   };
