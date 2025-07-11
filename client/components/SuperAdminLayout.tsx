@@ -440,7 +440,7 @@ export function SuperAdminLayout({
         </main>
 
         {/* Mobile Bottom Navigation */}
-        <div className="md:hidden bg-background border-t pb-safe">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-background border-t z-50 pb-safe">
           <div className="flex items-center justify-around px-2 py-3">
             {sidebarItems.slice(0, 4).map((item) => (
               <Link key={item.href} to={item.href} className="flex-1">
