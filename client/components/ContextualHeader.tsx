@@ -214,6 +214,26 @@ function getPageConfig(pathname: string): PageConfig | null {
         ],
       };
 
+    case pathname === "/admin/reports":
+      return {
+        title: "Reports",
+        subtitle: "Generate and analyze business reports",
+        icon: BarChart3,
+        primaryAction: {
+          label: "Schedule Report",
+          icon: Calendar,
+          onClick: () => {},
+        },
+        secondaryActions: [
+          { label: "Export Data", icon: Download, onClick: () => {} },
+          { label: "Report Settings", icon: Settings, onClick: () => {} },
+        ],
+        breadcrumbs: [
+          { label: "Dashboard", href: "/admin/projects" },
+          { label: "Reports" },
+        ],
+      };
+
     case pathname === "/admin/gallery":
       return {
         title: "Gallery",
