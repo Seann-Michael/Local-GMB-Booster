@@ -60,7 +60,7 @@ import {
   Zap,
   Monitor,
 } from "lucide-react";
-import { useState, useEffect, ReactNode } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   getCurrentUser,
