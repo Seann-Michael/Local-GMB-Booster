@@ -176,8 +176,12 @@ export const useAddressSearch = () => {
       console.log("✅ API key available, loading Google Maps API...");
 
       await loadGoogleMapsAPI();
+      console.log("✅ Google Maps API loaded successfully");
 
       const service = new google.maps.places.AutocompleteService();
+      console.log(
+        "🏢 AutocompleteService created, making prediction request...",
+      );
 
       service.getPlacePredictions(
         {
