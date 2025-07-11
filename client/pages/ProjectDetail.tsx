@@ -908,8 +908,9 @@ export default function ProjectDetail() {
             </div>
           </div>
 
-          {/* Project Status and Completion */}
-          {project.status !== "completed" ? (
+        {/* Project Status and Completion */}
+        <div key="project-status">
+        {project.status !== "completed" ? (
             <Card className="mb-6">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
