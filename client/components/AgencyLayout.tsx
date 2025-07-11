@@ -289,6 +289,16 @@ export function AgencyLayout({ children }: AgencyLayoutProps) {
       comingSoon: false,
     },
     {
+      id: "projects",
+      label: "Projects",
+      href: "/agency/admin/projects",
+      icon: FolderKanban,
+      active:
+        location.pathname === "/agency/admin/projects" ||
+        location.pathname.startsWith("/agency/admin/projects/"),
+      comingSoon: false,
+    },
+    {
       id: "business-owners",
       label: "Business Owners",
       href: "/agency/admin/business-owners",
