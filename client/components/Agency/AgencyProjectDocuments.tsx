@@ -588,7 +588,7 @@ export function AgencyProjectDocuments({
                   )}
                 </p>
               </div>
-              <FileArchive className="h-5 w-5 text-yellow-600" />
+              <Archive className="h-5 w-5 text-yellow-600" />
             </div>
           </CardContent>
         </Card>
