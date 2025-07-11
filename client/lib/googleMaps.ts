@@ -118,15 +118,23 @@ export const loadGoogleMapsAPI = (): Promise<typeof google> => {
     script.defer = true;
 
     script.onload = () => {
+      console.log("📡 Google Maps script loaded, checking initialization...");
       if (typeof google !== "undefined" && google.maps) {
+        console.log("✅ Google Maps API initialized successfully");
         resolve(google);
       } else {
-        reject(new Error("Google Maps API failed to initialize"));
+        console.error("❌ Google Maps script loaded but API not available");
+        reject(
+          new Error(
+            "Google Maps API failed to initialize - API object not found",
+          ),
+        );
       }
     };
 
-    script.onerror = () => {
-      reject(new Error("Failed to load Google Maps API script"));
+    script.onerror = (error) => {
+      console.error("💥 Failed to load Google Maps API script:", error);
+      reject(new Error(`Failed to load Google Maps API script: ${error}`));
     };
 
     document.head.appendChild(script);
