@@ -1896,10 +1896,15 @@ export default function SuperAdminAPI() {
                 </DialogTrigger>
                 <DialogContent className="max-w-2xl">
                   <DialogHeader>
-                    <DialogTitle>Add Third-Party Integration</DialogTitle>
+                    <DialogTitle>
+                      {editingIntegration
+                        ? "Edit Integration"
+                        : "Add Third-Party Integration"}
+                    </DialogTitle>
                     <DialogDescription>
-                      Configure a new third-party API integration for
-                      system-wide use
+                      {editingIntegration
+                        ? "Update the third-party API integration settings"
+                        : "Configure a new third-party API integration for system-wide use"}
                     </DialogDescription>
                   </DialogHeader>
                   <div className="space-y-4">
