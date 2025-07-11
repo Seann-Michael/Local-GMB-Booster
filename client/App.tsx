@@ -19,6 +19,7 @@ const EditProject = lazy(() => import("./pages/EditProject"));
 const Gallery = lazy(() => import("./pages/Gallery"));
 const Settings = lazy(() => import("./pages/Settings"));
 const Automation = lazy(() => import("./pages/Automation"));
+const Reports = lazy(() => import("./pages/Reports"));
 
 import SuperAdmin from "./pages/SuperAdmin";
 import BusinessDetail from "./pages/BusinessDetail";
