@@ -968,6 +968,16 @@ export default function SuperAdminAPI() {
     );
   };
 
+  const formatApiKey = (apiKey: string) => {
+    if (!apiKey || apiKey.length < 6) return apiKey;
+    const lastSix = apiKey.slice(-6);
+    const prefix = apiKey.split(".")[0] || "";
+    const maskedLength =
+      apiKey.length - lastSix.length - (prefix ? prefix.length + 1 : 0);
+    const masked = "•".repeat(Math.max(0, maskedLength));
+    return prefix ? `${prefix}.${masked}${lastSix}` : `${masked}${lastSix}`;
+  };
+
   const getMethodBadge = (method: string) => {
     const colors: Record<string, string> = {
       GET: "bg-blue-500",
