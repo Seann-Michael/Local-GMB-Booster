@@ -1211,7 +1211,7 @@ export default function ProjectDetail() {
                   </Card>
 
                   {/* Google Map Section */}
-                  <Card key="project-location">
+                  <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <MapPin className="h-5 w-5" />
