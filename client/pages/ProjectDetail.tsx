@@ -987,7 +987,7 @@ export default function ProjectDetail() {
             {activeTab === "overview" && (
               <div>
                 {/* Project Description */}
-                <Card>
+                <Card key="project-description">
                   <CardHeader>
                     <CardTitle>Project Description</CardTitle>
                   </CardHeader>
@@ -999,7 +999,7 @@ export default function ProjectDetail() {
                 </Card>
 
                 {/* Project Keywords/Tags */}
-                <Card>
+                <Card key="project-keywords">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Tag className="h-5 w-5" />
