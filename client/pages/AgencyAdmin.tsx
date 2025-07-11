@@ -375,6 +375,6 @@ export default function AgencyAdmin() {
           </CardContent>
         </Card>
       </div>
-    </AgencyAdminLayout>
+    </AgencyLayout>
   );
 }
