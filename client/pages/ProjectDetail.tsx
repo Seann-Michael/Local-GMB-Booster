@@ -1333,7 +1333,6 @@ export default function ProjectDetail() {
                         </div>
                       </div>
                     )}
-
                     <div className="space-y-4">
                       {project.notes &&
                       Array.isArray(project.notes) &&
