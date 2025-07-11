@@ -536,16 +536,56 @@ export default function Automation() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Executions</TableHead>
-                  <TableHead>Last Run</TableHead>
-                  <TableHead>Updated</TableHead>
+                  <TableHead
+                    className="cursor-pointer hover:bg-muted/50"
+                    onClick={() => handleSort("name")}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <span>Name</span>
+                      {getSortIcon("name")}
+                    </div>
+                  </TableHead>
+                  <TableHead
+                    className="cursor-pointer hover:bg-muted/50"
+                    onClick={() => handleSort("status")}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <span>Status</span>
+                      {getSortIcon("status")}
+                    </div>
+                  </TableHead>
+                  <TableHead
+                    className="cursor-pointer hover:bg-muted/50"
+                    onClick={() => handleSort("runCount")}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <span>Executions</span>
+                      {getSortIcon("runCount")}
+                    </div>
+                  </TableHead>
+                  <TableHead
+                    className="cursor-pointer hover:bg-muted/50"
+                    onClick={() => handleSort("lastRun")}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <span>Last Run</span>
+                      {getSortIcon("lastRun")}
+                    </div>
+                  </TableHead>
+                  <TableHead
+                    className="cursor-pointer hover:bg-muted/50"
+                    onClick={() => handleSort("updatedAt")}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <span>Updated</span>
+                      {getSortIcon("updatedAt")}
+                    </div>
+                  </TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {workflows.map((workflow) => (
+                {paginatedWorkflows.map((workflow) => (
                   <TableRow key={workflow.id}>
                     <TableCell>
                       <div className="flex items-center gap-3">
