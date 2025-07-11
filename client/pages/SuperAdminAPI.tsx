@@ -1051,6 +1051,17 @@ export default function SuperAdminAPI() {
     return `•���•••${lastSix}`;
   };
 
+  // Override the corrupted formatApiKey function with a clean version
+  const formatApiKey = (apiKey: string) => {
+    if (!apiKey || apiKey.length < 6) return "••••••";
+    const cleanKey = apiKey.replace(/[^\w.-]/g, "");
+    const lastSix = cleanKey.slice(-6);
+    if (cleanKey.startsWith("SG.")) return `SG.•••••${lastSix}`;
+    if (cleanKey.startsWith("AC")) return `AC•••••${lastSix}`;
+    if (cleanKey.startsWith("AIza")) return `AI•••••${lastSix}`;
+    return `•••••${lastSix}`;
+  };
+
   const getMethodBadge = (method: string) => {
     const colors: Record<string, string> = {
       GET: "bg-blue-500",
