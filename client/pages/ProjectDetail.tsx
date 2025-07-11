@@ -989,9 +989,9 @@ export default function ProjectDetail() {
             </div>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-3">
+          <div className="grid gap-6 lg:grid-cols-3" key="main-content-grid">
             {/* Main Content */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-6" key="main-content-area">
               {/* Overview Tab */}
               {activeTab === "overview" && (
                 <div className="space-y-6">
