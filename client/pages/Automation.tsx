@@ -439,7 +439,10 @@ export default function Automation() {
               <Upload className="h-4 w-4 mr-2" />
               Import
             </Button>
-            <Button size="sm" onClick={() => setIsNewWorkflowOpen(true)}>
+            <Button
+              size="sm"
+              onClick={() => navigate("/admin/workflow-builder")}
+            >
               <Plus className="h-4 w-4 mr-2" />
               New Workflow
             </Button>
