@@ -747,6 +747,7 @@ const dataGenerators: { [key: string]: () => ReportData[] } = {
   revenue: generateRevenueData,
   clients: generateClientsData,
   performance: generatePerformanceData,
+  reviews: generateReviewsData,
 };
 
 export default function Reports() {
