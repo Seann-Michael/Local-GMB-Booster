@@ -557,7 +557,7 @@ export default function SuperAdminAPI() {
         name: "Twilio SMS Service",
         service: "Twilio",
         category: "sms",
-        apiKey: "AC••••••••••••••••••••••••••••••••••",
+        apiKey: "AC•••••••••••••••••••••••••••••••••���",
         apiSecret: "••••••••••••••••••••••••••••••••",
         isActive: true,
         isConnected: true,
@@ -749,6 +749,64 @@ export default function SuperAdminAPI() {
       newHeaderValue: "",
     });
     setEditingWebhook(null);
+  };
+
+  const resetIntegrationForm = () => {
+    setIntegrationForm({
+      name: "",
+      service: "",
+      category: "other",
+      apiKey: "",
+      apiSecret: "",
+      additionalConfig: {},
+      newConfigKey: "",
+      newConfigValue: "",
+      isActive: true,
+    });
+    setEditingIntegration(null);
+  };
+
+  const resetRateLimitForm = () => {
+    setRateLimitForm({
+      name: "",
+      description: "",
+      endpoint: "",
+      method: "GET",
+      limit: 100,
+      window: "minute",
+      isActive: true,
+      exemptApiKeys: [],
+    });
+    setEditingRateLimit(null);
+  };
+
+  const testIntegration = async (integration: ThirdPartyIntegration) => {
+    try {
+      // Mock API test call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Update integration with test result
+      setIntegrations((prev) =>
+        prev.map((int) =>
+          int.id === integration.id
+            ? {
+                ...int,
+                lastTested: new Date().toISOString(),
+                isConnected: true,
+              }
+            : int,
+        ),
+      );
+
+      toast.success(`${integration.name} connection test successful`);
+    } catch (error) {
+      setIntegrations((prev) =>
+        prev.map((int) =>
+          int.id === integration.id ? { ...int, isConnected: false } : int,
+        ),
+      );
+      toast.error(`${integration.name} connection test failed`);
+    }
   };
 
   const handleCreateAPIKey = () => {
