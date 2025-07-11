@@ -505,8 +505,15 @@ export default function SuperAdminSupport() {
         return false;
       if (priorityFilter !== "all" && ticket.priority !== priorityFilter)
         return false;
-      if (assigneeFilter !== "all" && ticket.assignedTo !== assigneeFilter)
-        return false;
+      if (assigneeFilter !== "all") {
+        if (assigneeFilter === "unassigned" && ticket.assignedTo !== "")
+          return false;
+        if (
+          assigneeFilter !== "unassigned" &&
+          ticket.assignedTo !== assigneeFilter
+        )
+          return false;
+      }
       if (
         searchTerm &&
         !ticket.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
