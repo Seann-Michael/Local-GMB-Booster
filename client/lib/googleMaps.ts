@@ -302,29 +302,52 @@ export const createMapEmbedUrl = (
 // Test API key connection
 export const testGoogleMapsConnection = async (): Promise<boolean> => {
   try {
+    console.log("🧪 Starting Google Maps API connection test...");
+
     const apiKey = getGoogleMapsApiKey();
     if (!apiKey) {
+      console.error("❌ No API key available for testing");
       toast.error("Google Maps API key not configured");
       return false;
     }
 
-    await loadGoogleMapsAPI();
+    console.log("🔑 API key found, testing API loading...");
+
+    // Test API loading first
+    try {
+      await loadGoogleMapsAPI();
+      console.log("✅ Google Maps API loaded successfully");
+    } catch (loadError) {
+      console.error("💥 Failed to load Google Maps API:", loadError);
+      toast.error(`Google Maps API load failed: ${loadError.message}`);
+      return false;
+    }
+
+    console.log("🌍 Testing geocoding functionality...");
 
     // Test with a simple geocoding request
-    const result = await geocodeAddress(
-      "1600 Amphitheatre Parkway, Mountain View, CA",
-    );
+    try {
+      const result = await geocodeAddress(
+        "1600 Amphitheatre Parkway, Mountain View, CA",
+      );
 
-    if (result) {
-      toast.success("Google Maps API connection successful");
-      return true;
-    } else {
-      toast.error("Google Maps API test failed");
+      if (result) {
+        console.log("✅ Geocoding test successful:", result);
+        toast.success("Google Maps API connection successful");
+        return true;
+      } else {
+        console.error("❌ Geocoding returned no results");
+        toast.error("Google Maps API test failed - no geocoding results");
+        return false;
+      }
+    } catch (geocodeError) {
+      console.error("💥 Geocoding test failed:", geocodeError);
+      toast.error(`Google Maps geocoding failed: ${geocodeError.message}`);
       return false;
     }
   } catch (error) {
-    console.error("Google Maps API test failed:", error);
-    toast.error("Google Maps API connection failed");
+    console.error("💥 Google Maps API test failed:", error);
+    toast.error(`Google Maps API connection failed: ${error.message}`);
     return false;
   }
 };
