@@ -39,11 +39,23 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
   const [inputValue, setInputValue] = useState(value);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState<PlaceResult | null>(null);
+  const [apiKeyAvailable, setApiKeyAvailable] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
   const { suggestions, isLoading, error, searchAddress, clearSuggestions } =
     useAddressSearch();
+
+  // Check if Google Maps API key is available
+  useEffect(() => {
+    const apiKey = getGoogleMapsApiKey();
+    setApiKeyAvailable(!!apiKey);
+    if (!apiKey) {
+      console.warn(
+        "Google Maps API key not configured. Address autocomplete disabled.",
+      );
+    }
+  }, []);
 
   useEffect(() => {
     setInputValue(value);
