@@ -149,7 +149,10 @@ export const useAddressSearch = () => {
   const [error, setError] = useState<string | null>(null);
 
   const searchAddress = useCallback(async (query: string) => {
+    console.log("🔍 Starting address search for:", query);
+
     if (!query || query.length < 3) {
+      console.log("❌ Query too short, clearing suggestions");
       setSuggestions([]);
       return;
     }
@@ -159,14 +162,18 @@ export const useAddressSearch = () => {
 
     try {
       // Check if API key is available before attempting to load
+      console.log("🔑 Checking API key availability...");
       const { getGoogleMapsApiKey } = await import("@/lib/googleMaps");
       const apiKey = getGoogleMapsApiKey();
       if (!apiKey) {
+        console.error("❌ No API key available for address search");
         setError("Google Maps API key not configured");
         setSuggestions([]);
         setIsLoading(false);
         return;
       }
+
+      console.log("✅ API key available, loading Google Maps API...");
 
       await loadGoogleMapsAPI();
 
