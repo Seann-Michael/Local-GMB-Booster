@@ -25,16 +25,21 @@ export interface AddressComponent {
 // Google Maps API Key Management
 export const getGoogleMapsApiKey = (): string => {
   try {
+    console.log("Getting Google Maps API key...");
     const integrations = JSON.parse(
       localStorage.getItem("third_party_integrations") || "[]",
     );
+    console.log("Available integrations:", integrations);
+
     const googleMapsIntegration = integrations.find(
       (int: any) => int.service === "Google Maps" && int.isActive,
     );
+    console.log("Google Maps integration found:", googleMapsIntegration);
 
     if (googleMapsIntegration?.apiKey) {
       // Extract the actual API key (remove masking if present)
       let apiKey = googleMapsIntegration.apiKey;
+      console.log("API key (masked):", apiKey.substring(0, 10) + "...");
 
       // If it's a masked key, warn and return empty (will fall back to iframe)
       if (apiKey.includes("•")) {
@@ -44,6 +49,7 @@ export const getGoogleMapsApiKey = (): string => {
         return "";
       }
 
+      console.log("Using Google Maps API key for interactive maps");
       return apiKey;
     }
   } catch (error) {
