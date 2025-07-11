@@ -535,7 +535,7 @@ export default function SuperAdminAPI() {
         name: "SendGrid Email Service",
         service: "SendGrid",
         category: "email",
-        apiKey: "SG.••••••••••••••••••••••••••••••••••8k7X9p",
+        apiKey: "SG.••••••••••���•••••••••••••••••••••••8k7X9p",
         isActive: true,
         isConnected: true,
         lastTested: "2024-01-20T10:30:00Z",
@@ -969,11 +969,19 @@ export default function SuperAdminAPI() {
   };
 
   const formatApiKey = (apiKey: string) => {
-    if (!apiKey || apiKey.length < 6) return apiKey;
-    const lastSix = apiKey.slice(-6);
-    const prefix = apiKey.split(".")[0] || "";
-    const masked = "•••••"; // Always show exactly 5 dots
-    return prefix ? `${prefix}.${masked}${lastSix}` : `${masked}${lastSix}`;
+    if (!apiKey || apiKey.length < 6) return "••••••";
+
+    // Clean the key first - remove any problematic characters
+    const cleanKey = apiKey.replace(/[^\w.-]/g, "");
+    const lastSix = cleanKey.slice(-6);
+
+    // Check if it has a recognizable prefix
+    if (cleanKey.startsWith("SG.")) return `SG.•••••${lastSix}`;
+    if (cleanKey.startsWith("AC")) return `AC•••••${lastSix}`;
+    if (cleanKey.startsWith("AIza")) return `AI•••••${lastSix}`;
+
+    // Default format
+    return `•••••${lastSix}`;
   };
 
   const getMethodBadge = (method: string) => {
