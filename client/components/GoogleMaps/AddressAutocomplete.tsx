@@ -160,7 +160,11 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
             type="text"
             value={inputValue}
             onChange={handleInputChange}
-            placeholder={placeholder}
+            placeholder={
+              apiKeyAvailable
+                ? placeholder
+                : "Enter address manually (autocomplete disabled)"
+            }
             className="pl-10 pr-24"
             disabled={disabled}
             onFocus={() => {
