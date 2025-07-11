@@ -1874,6 +1874,600 @@ export default function SuperAdminAPI() {
             </Card>
           </TabsContent>
 
+          <TabsContent value="integrations" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <div>
+                <h2 className="text-2xl font-bold">
+                  Third-Party API Management
+                </h2>
+                <p className="text-muted-foreground">
+                  Manage system-wide API integrations and credentials
+                </p>
+              </div>
+              <Dialog
+                open={showIntegrationDialog}
+                onOpenChange={setShowIntegrationDialog}
+              >
+                <DialogTrigger asChild>
+                  <Button onClick={resetIntegrationForm} className="gap-2">
+                    <Plus className="h-4 w-4" />
+                    Add Integration
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>Add Third-Party Integration</DialogTitle>
+                    <DialogDescription>
+                      Configure a new third-party API integration for
+                      system-wide use
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="integration-name">Service Name</Label>
+                        <Input
+                          id="integration-name"
+                          value={integrationForm.name}
+                          onChange={(e) =>
+                            setIntegrationForm((prev) => ({
+                              ...prev,
+                              name: e.target.value,
+                            }))
+                          }
+                          placeholder="e.g., SendGrid Email"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="integration-category">Category</Label>
+                        <Select
+                          value={integrationForm.category}
+                          onValueChange={(value) =>
+                            setIntegrationForm((prev) => ({
+                              ...prev,
+                              category: value as any,
+                            }))
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="email">
+                              Email Services
+                            </SelectItem>
+                            <SelectItem value="sms">
+                              SMS/Communication
+                            </SelectItem>
+                            <SelectItem value="payment">
+                              Payment Processing
+                            </SelectItem>
+                            <SelectItem value="storage">Storage/CDN</SelectItem>
+                            <SelectItem value="analytics">Analytics</SelectItem>
+                            <SelectItem value="social">Social Media</SelectItem>
+                            <SelectItem value="maps">Maps/Location</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="integration-service">
+                        Service Provider
+                      </Label>
+                      <Input
+                        id="integration-service"
+                        value={integrationForm.service}
+                        onChange={(e) =>
+                          setIntegrationForm((prev) => ({
+                            ...prev,
+                            service: e.target.value,
+                          }))
+                        }
+                        placeholder="e.g., SendGrid, Twilio, Stripe"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="integration-api-key">API Key</Label>
+                        <Input
+                          id="integration-api-key"
+                          type="password"
+                          value={integrationForm.apiKey}
+                          onChange={(e) =>
+                            setIntegrationForm((prev) => ({
+                              ...prev,
+                              apiKey: e.target.value,
+                            }))
+                          }
+                          placeholder="Enter API key"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="integration-api-secret">
+                          API Secret (Optional)
+                        </Label>
+                        <Input
+                          id="integration-api-secret"
+                          type="password"
+                          value={integrationForm.apiSecret}
+                          onChange={(e) =>
+                            setIntegrationForm((prev) => ({
+                              ...prev,
+                              apiSecret: e.target.value,
+                            }))
+                          }
+                          placeholder="Enter API secret"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Switch
+                        id="integration-active"
+                        checked={integrationForm.isActive}
+                        onCheckedChange={(checked) =>
+                          setIntegrationForm((prev) => ({
+                            ...prev,
+                            isActive: checked,
+                          }))
+                        }
+                      />
+                      <Label htmlFor="integration-active">
+                        Enable Integration
+                      </Label>
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowIntegrationDialog(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        toast.success("Integration added successfully");
+                        setShowIntegrationDialog(false);
+                        resetIntegrationForm();
+                      }}
+                    >
+                      Add Integration
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {integrations.map((integration) => (
+                <Card key={integration.id}>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">
+                      {integration.name}
+                    </CardTitle>
+                    <Badge
+                      variant={
+                        integration.isConnected ? "default" : "destructive"
+                      }
+                    >
+                      {integration.isConnected ? "Connected" : "Disconnected"}
+                    </Badge>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground">
+                          Service:
+                        </span>
+                        <span className="text-sm font-medium">
+                          {integration.service}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground">
+                          Category:
+                        </span>
+                        <Badge variant="outline">{integration.category}</Badge>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground">
+                          Requests Today:
+                        </span>
+                        <span className="text-sm font-medium">
+                          {integration.usage.requestsToday}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-muted-foreground">
+                          Error Rate:
+                        </span>
+                        <span className="text-sm font-medium">
+                          {integration.usage.errorRate}%
+                        </span>
+                      </div>
+                      <div className="flex gap-2 pt-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => testIntegration(integration)}
+                          className="gap-1"
+                        >
+                          <TestTube className="h-3 w-3" />
+                          Test
+                        </Button>
+                        <Button size="sm" variant="outline" className="gap-1">
+                          <Edit className="h-3 w-3" />
+                          Edit
+                        </Button>
+                        <Button size="sm" variant="outline" className="gap-1">
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="monitoring" className="space-y-6">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Total Requests Today
+                  </CardTitle>
+                  <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">15,420</div>
+                  <p className="text-xs text-muted-foreground">
+                    +12% from yesterday
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Success Rate
+                  </CardTitle>
+                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">98.8%</div>
+                  <p className="text-xs text-muted-foreground">
+                    +0.2% from yesterday
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Avg Response Time
+                  </CardTitle>
+                  <Clock className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">156ms</div>
+                  <p className="text-xs text-muted-foreground">
+                    -8ms from yesterday
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">
+                    Active Integrations
+                  </CardTitle>
+                  <Zap className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {integrations.filter((i) => i.isActive).length}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    of {integrations.length} total
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Recent API Usage Logs</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Timestamp</TableHead>
+                      <TableHead>Endpoint</TableHead>
+                      <TableHead>Method</TableHead>
+                      <TableHead>API Key</TableHead>
+                      <TableHead>Response</TableHead>
+                      <TableHead>Response Time</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {usageLogs.slice(0, 10).map((log) => (
+                      <TableRow key={log.id}>
+                        <TableCell className="font-mono text-xs">
+                          {formatSystemDate(log.timestamp)}
+                        </TableCell>
+                        <TableCell className="font-mono text-sm">
+                          {log.endpoint}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline">{log.method}</Badge>
+                        </TableCell>
+                        <TableCell className="font-mono text-xs">
+                          {log.apiKey.slice(0, 8)}...
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            variant={
+                              log.responseCode < 400 ? "default" : "destructive"
+                            }
+                          >
+                            {log.responseCode}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>{log.responseTime}ms</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="rate-limits" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <div>
+                <h2 className="text-2xl font-bold">Rate Limiting Rules</h2>
+                <p className="text-muted-foreground">
+                  Configure rate limits to protect your API endpoints
+                </p>
+              </div>
+              <Dialog
+                open={showRateLimitDialog}
+                onOpenChange={setShowRateLimitDialog}
+              >
+                <DialogTrigger asChild>
+                  <Button onClick={resetRateLimitForm} className="gap-2">
+                    <Plus className="h-4 w-4" />
+                    Add Rate Limit
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>Create Rate Limit Rule</DialogTitle>
+                    <DialogDescription>
+                      Configure rate limiting for specific endpoints or API keys
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="rate-limit-name">Rule Name</Label>
+                      <Input
+                        id="rate-limit-name"
+                        value={rateLimitForm.name}
+                        onChange={(e) =>
+                          setRateLimitForm((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
+                        }
+                        placeholder="e.g., Public API Rate Limit"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="rate-limit-description">
+                        Description
+                      </Label>
+                      <Textarea
+                        id="rate-limit-description"
+                        value={rateLimitForm.description}
+                        onChange={(e) =>
+                          setRateLimitForm((prev) => ({
+                            ...prev,
+                            description: e.target.value,
+                          }))
+                        }
+                        placeholder="Describe when this rule applies"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="rate-limit-endpoint">
+                          Endpoint Pattern
+                        </Label>
+                        <Input
+                          id="rate-limit-endpoint"
+                          value={rateLimitForm.endpoint}
+                          onChange={(e) =>
+                            setRateLimitForm((prev) => ({
+                              ...prev,
+                              endpoint: e.target.value,
+                            }))
+                          }
+                          placeholder="/api/public/*"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="rate-limit-method">HTTP Method</Label>
+                        <Select
+                          value={rateLimitForm.method}
+                          onValueChange={(value) =>
+                            setRateLimitForm((prev) => ({
+                              ...prev,
+                              method: value,
+                            }))
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="*">All Methods</SelectItem>
+                            <SelectItem value="GET">GET</SelectItem>
+                            <SelectItem value="POST">POST</SelectItem>
+                            <SelectItem value="PUT">PUT</SelectItem>
+                            <SelectItem value="DELETE">DELETE</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="rate-limit-count">Request Limit</Label>
+                        <Input
+                          id="rate-limit-count"
+                          type="number"
+                          value={rateLimitForm.limit}
+                          onChange={(e) =>
+                            setRateLimitForm((prev) => ({
+                              ...prev,
+                              limit: parseInt(e.target.value) || 0,
+                            }))
+                          }
+                          placeholder="100"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="rate-limit-window">Time Window</Label>
+                        <Select
+                          value={rateLimitForm.window}
+                          onValueChange={(value) =>
+                            setRateLimitForm((prev) => ({
+                              ...prev,
+                              window: value as any,
+                            }))
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="minute">Per Minute</SelectItem>
+                            <SelectItem value="hour">Per Hour</SelectItem>
+                            <SelectItem value="day">Per Day</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Switch
+                        id="rate-limit-active"
+                        checked={rateLimitForm.isActive}
+                        onCheckedChange={(checked) =>
+                          setRateLimitForm((prev) => ({
+                            ...prev,
+                            isActive: checked,
+                          }))
+                        }
+                      />
+                      <Label htmlFor="rate-limit-active">
+                        Enable Rate Limit
+                      </Label>
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowRateLimitDialog(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        toast.success("Rate limit rule created successfully");
+                        setShowRateLimitDialog(false);
+                        resetRateLimitForm();
+                      }}
+                    >
+                      Create Rule
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Rate Limit Rules</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Rule Name</TableHead>
+                      <TableHead>Endpoint</TableHead>
+                      <TableHead>Method</TableHead>
+                      <TableHead>Limit</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {rateLimitRules.map((rule) => (
+                      <TableRow key={rule.id}>
+                        <TableCell>
+                          <div className="font-medium">{rule.name}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {rule.description}
+                          </div>
+                        </TableCell>
+                        <TableCell className="font-mono text-sm">
+                          {rule.endpoint}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline">{rule.method}</Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="text-sm">
+                            {rule.limit} per {rule.window}
+                          </div>
+                        </TableCell>
+                        <TableCell>{getStatusBadge(rule.isActive)}</TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem className="gap-2">
+                                <Edit className="h-4 w-4" />
+                                Edit Rule
+                              </DropdownMenuItem>
+                              <DropdownMenuItem className="gap-2">
+                                <Copy className="h-4 w-4" />
+                                Duplicate
+                              </DropdownMenuItem>
+                              <DropdownMenuItem className="gap-2 text-destructive">
+                                <Trash2 className="h-4 w-4" />
+                                Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           <TabsContent value="docs" className="space-y-6">
             <Card>
               <CardHeader>
