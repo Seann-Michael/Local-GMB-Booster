@@ -69,6 +69,10 @@ export const loadGoogleMapsAPI = (): Promise<typeof google> => {
     }
 
     const apiKey = getGoogleMapsApiKey();
+    console.log(
+      "Loading Google Maps API with key:",
+      apiKey ? "KEY_AVAILABLE" : "NO_KEY",
+    );
     if (!apiKey) {
       reject(new Error("Google Maps API key not configured"));
       return;
