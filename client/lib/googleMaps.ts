@@ -98,7 +98,12 @@ export const loadGoogleMapsAPI = (): Promise<typeof google> => {
 
     // Create script element
     const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=${GOOGLE_MAPS_CONFIG.libraries.join(",")}&v=${GOOGLE_MAPS_CONFIG.version}`;
+    const scriptUrl = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=${GOOGLE_MAPS_CONFIG.libraries.join(",")}&v=${GOOGLE_MAPS_CONFIG.version}`;
+    console.log(
+      "Loading Google Maps script:",
+      scriptUrl.replace(apiKey, "***API_KEY***"),
+    );
+    script.src = scriptUrl;
     script.async = true;
     script.defer = true;
 
