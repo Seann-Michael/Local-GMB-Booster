@@ -1257,7 +1257,7 @@ export default function ProjectDetail() {
                             loading="lazy"
                             allowFullScreen
                             referrerPolicy="no-referrer-when-downgrade"
-                            src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000!2d-122.4194!3d37.7749!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM37Csy3igJkxNC4zOCIsIDEyMsKwMjXigJkxMi4zOSJX!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus&q=${encodeURIComponent(project.address)}`}
+                            src={`https://maps.google.com/maps?q=${encodeURIComponent(project.address)}&hl=en&z=14&output=embed`}
                             title="Project Location"
                             className="w-full h-full"
                           />
