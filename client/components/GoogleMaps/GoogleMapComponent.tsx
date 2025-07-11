@@ -207,15 +207,18 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
     );
   }
 
-  if (!isLoaded) {
+  if (!isLoaded && !useIframeFallback) {
     return (
       <Card className={className}>
         <CardContent className="p-6">
           <div className="flex items-center justify-center" style={{ height }}>
-            <div className="flex items-center space-x-2">
+            <div className="flex flex-col items-center space-y-2">
               <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
               <span className="text-sm text-muted-foreground">
-                Loading map...
+                Loading interactive map...
+              </span>
+              <span className="text-xs text-muted-foreground">
+                This may take a few seconds
               </span>
             </div>
           </div>
