@@ -160,7 +160,7 @@ export function SuperAdminLayout({
   ];
 
   return (
-    <div className="min-h-screen bg-background flex max-w-full overflow-x-hidden">
+    <div className="min-h-[100dvh] bg-background flex max-w-full overflow-x-hidden">
       {/* Mobile Sidebar Overlay */}
       {mobileSidebarOpen && (
         <div
