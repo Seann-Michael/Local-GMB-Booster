@@ -1574,19 +1574,19 @@ export default function AgencyTasks() {
                             className="kanban-column flex flex-col"
                           >
                             {/* Column Header */}
-                            <div className="bg-white rounded-lg border border-gray-200 mb-3 p-3">
+                            <div className="bg-white rounded-lg border border-gray-200 mb-4 p-4">
                               <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-3">
                                   <div
                                     className="w-3 h-3 rounded-full"
                                     style={{ backgroundColor: column.color }}
                                   />
-                                  <h3 className="font-medium text-sm text-gray-900">
+                                  <h3 className="font-semibold text-gray-900">
                                     {column.title}
                                   </h3>
                                   <Badge
                                     variant="secondary"
-                                    className="bg-gray-100 text-gray-700 text-xs"
+                                    className="bg-gray-100 text-gray-700"
                                   >
                                     {getTasksByColumn(column.id).length}
                                     {column.limit && `/${column.limit}`}
