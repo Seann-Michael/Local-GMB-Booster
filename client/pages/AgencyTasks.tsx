@@ -1660,23 +1660,21 @@ export default function AgencyTasks() {
                                             }`}
                                           >
                                             {/* Task Header */}
-                                            <div className="flex items-start justify-between mb-2">
-                                              <div className="flex items-center gap-1 flex-wrap">
+                                            <div className="flex items-start justify-between mb-3">
+                                              <div className="flex items-center gap-2">
                                                 <Badge
-                                                  className={`text-xs px-1 py-0.5 ${getPriorityColor(task.priority)}`}
+                                                  className={`text-xs ${getPriorityColor(task.priority)}`}
                                                 >
-                                                  <Flag className="h-2.5 w-2.5 mr-0.5" />
-                                                  {task.priority
-                                                    .charAt(0)
-                                                    .toUpperCase()}
+                                                  <Flag className="h-3 w-3 mr-1" />
+                                                  {task.priority.toUpperCase()}
                                                 </Badge>
                                                 {task.sprintName && (
                                                   <Badge
                                                     variant="outline"
-                                                    className="text-xs px-1 py-0.5"
+                                                    className="text-xs"
                                                   >
-                                                    <Rocket className="h-2.5 w-2.5 mr-0.5" />
-                                                    S
+                                                    <Rocket className="h-3 w-3 mr-1" />
+                                                    Sprint
                                                   </Badge>
                                                 )}
                                               </div>
@@ -1686,9 +1684,9 @@ export default function AgencyTasks() {
                                                   <Button
                                                     variant="ghost"
                                                     size="sm"
-                                                    className="h-5 w-5 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                    className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
                                                   >
-                                                    <MoreHorizontal className="h-3 w-3" />
+                                                    <MoreHorizontal className="h-4 w-4" />
                                                   </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
@@ -1719,7 +1717,7 @@ export default function AgencyTasks() {
                                             </div>
 
                                             {/* Task Title */}
-                                            <h4 className="font-medium text-sm text-gray-900 mb-2 line-clamp-2">
+                                            <h4 className="font-medium text-gray-900 mb-2 line-clamp-2">
                                               {task.title}
                                             </h4>
 
