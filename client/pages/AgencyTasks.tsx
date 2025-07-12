@@ -2144,7 +2144,7 @@ export default function AgencyTasks() {
                                 {/* Priority */}
                                 <div className="col-span-1 flex items-center">
                                   <Badge
-                                    className={`text-xs ${getPriorityColor(task.priority)}`}
+                                    className={`text-xs px-1 py-0.5 ${getPriorityColor(task.priority)}`}
                                   >
                                     {task.priority === "urgent" && "🔴"}
                                     {task.priority === "high" && "🟡"}
@@ -2157,7 +2157,7 @@ export default function AgencyTasks() {
                                 <div className="col-span-2 flex items-center">
                                   <Badge
                                     variant="outline"
-                                    className="text-xs"
+                                    className="text-xs px-1 py-0.5"
                                     style={{
                                       backgroundColor: `${column.color}15`,
                                       borderColor: column.color,
