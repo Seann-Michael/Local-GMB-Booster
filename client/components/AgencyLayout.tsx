@@ -704,8 +704,8 @@ export function AgencyLayout({ children }: AgencyLayoutProps) {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-hidden">
-          <div className="h-full mobile-bottom-safe">{children}</div>
+        <main className="flex-1 overflow-auto">
+          <div className="min-h-full w-full mobile-bottom-safe">{children}</div>
         </main>
 
         {/* Mobile Bottom Navigation */}
