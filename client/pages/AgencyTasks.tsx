@@ -669,9 +669,6 @@ export default function AgencyTasks() {
       estimatedHours: newTask.estimatedHours
         ? parseInt(newTask.estimatedHours)
         : undefined,
-      storyPoints: newTask.storyPoints
-        ? parseInt(newTask.storyPoints)
-        : undefined,
       category: newTask.category,
       tags: newTask.tags,
       updatedAt: new Date().toISOString(),
