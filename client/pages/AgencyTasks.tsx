@@ -1574,9 +1574,9 @@ export default function AgencyTasks() {
                             className="kanban-column flex flex-col"
                           >
                             {/* Column Header */}
-                            <div className="bg-white rounded-lg border border-gray-200 mb-4 p-4">
+                            <div className="bg-white rounded-lg border border-gray-200 mb-3 p-3">
                               <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-2">
                                   <div
                                     className="w-3 h-3 rounded-full"
                                     style={{ backgroundColor: column.color }}
