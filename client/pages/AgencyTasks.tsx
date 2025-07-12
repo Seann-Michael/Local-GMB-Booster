@@ -1866,7 +1866,7 @@ export default function AgencyTasks() {
 
         {/* List View - ClickUp Style */}
         {view === "list" && (
-          <div className="flex-1 overflow-auto p-6">
+          <div className="flex-1 min-h-0 overflow-auto p-6">
             <div className="bg-white rounded-lg border border-gray-200">
               {/* Table Header */}
               <div className="border-b border-gray-200 bg-gray-50">
