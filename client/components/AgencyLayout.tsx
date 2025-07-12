@@ -477,93 +477,94 @@ export function AgencyLayout({ children }: AgencyLayoutProps) {
         )}
       >
         <div className="flex flex-col h-full">
-        {/* Desktop Sidebar Header */}
-        <div
-          className={cn(
-            "p-4 border-b bg-primary/5 flex items-center",
-            sidebarCollapsed ? "justify-center" : "justify-between",
-          )}
-        >
-          {!sidebarCollapsed && (
-            <div className="flex items-center space-x-3">
+          {/* Desktop Sidebar Header */}
+          <div
+            className={cn(
+              "p-4 border-b bg-primary/5 flex items-center",
+              sidebarCollapsed ? "justify-center" : "justify-between",
+            )}
+          >
+            {!sidebarCollapsed && (
+              <div className="flex items-center space-x-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary shadow-sm">
+                  <Briefcase className="h-5 w-5 text-primary-foreground" />
+                </div>
+                <div>
+                  <span className="font-bold text-base text-foreground">
+                    Agency Portal
+                  </span>
+                </div>
+              </div>
+            )}
+            {sidebarCollapsed && (
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary shadow-sm">
                 <Briefcase className="h-5 w-5 text-primary-foreground" />
               </div>
-              <div>
-                <span className="font-bold text-base text-foreground">
-                  Agency Portal
-                </span>
-              </div>
-            </div>
-          )}
-          {sidebarCollapsed && (
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary shadow-sm">
-              <Briefcase className="h-5 w-5 text-primary-foreground" />
-            </div>
-          )}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="h-8 w-8 hover:bg-muted"
-          >
-            {sidebarCollapsed ? (
-              <ChevronRight className="h-4 w-4" />
-            ) : (
-              <ChevronLeft className="h-4 w-4" />
             )}
-          </Button>
-        </div>
-
-        {/* Desktop Sidebar Items */}
-        <div className="flex-1 p-4 space-y-2 overflow-y-auto">
-          {sidebarItems.map((item) => (
-            <Link
-              key={item.id}
-              to={item.href}
-              title={sidebarCollapsed ? item.label : undefined}
-              className={cn(
-                "flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                sidebarCollapsed ? "justify-center" : "",
-                item.active
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted",
-              )}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+              className="h-8 w-8 hover:bg-muted"
             >
-              <item.icon className="h-5 w-5 flex-shrink-0" />
-              {!sidebarCollapsed && (
-                <>
-                  <span>{item.label}</span>
-                  {item.comingSoon && (
-                    <Badge variant="secondary" className="ml-auto text-xs">
-                      Soon
-                    </Badge>
-                  )}
-                </>
+              {sidebarCollapsed ? (
+                <ChevronRight className="h-4 w-4" />
+              ) : (
+                <ChevronLeft className="h-4 w-4" />
               )}
-            </Link>
-          ))}
-        </div>
+            </Button>
+          </div>
 
-        {/* Desktop Sidebar Bottom Items */}
-        <div className="p-4 border-t space-y-2">
-          {bottomSidebarItems.map((item) => (
-            <Link
-              key={item.id}
-              to={item.href}
-              title={sidebarCollapsed ? item.label : undefined}
-              className={cn(
-                "flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                sidebarCollapsed ? "justify-center" : "",
-                item.active
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted",
-              )}
-            >
-              <item.icon className="h-5 w-5 flex-shrink-0" />
-              {!sidebarCollapsed && <span>{item.label}</span>}
-            </Link>
-          ))}
+          {/* Desktop Sidebar Items */}
+          <div className="flex-1 p-4 space-y-2 overflow-y-auto">
+            {sidebarItems.map((item) => (
+              <Link
+                key={item.id}
+                to={item.href}
+                title={sidebarCollapsed ? item.label : undefined}
+                className={cn(
+                  "flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                  sidebarCollapsed ? "justify-center" : "",
+                  item.active
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted",
+                )}
+              >
+                <item.icon className="h-5 w-5 flex-shrink-0" />
+                {!sidebarCollapsed && (
+                  <>
+                    <span>{item.label}</span>
+                    {item.comingSoon && (
+                      <Badge variant="secondary" className="ml-auto text-xs">
+                        Soon
+                      </Badge>
+                    )}
+                  </>
+                )}
+              </Link>
+            ))}
+          </div>
+
+          {/* Desktop Sidebar Bottom Items */}
+          <div className="p-4 border-t space-y-2">
+            {bottomSidebarItems.map((item) => (
+              <Link
+                key={item.id}
+                to={item.href}
+                title={sidebarCollapsed ? item.label : undefined}
+                className={cn(
+                  "flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                  sidebarCollapsed ? "justify-center" : "",
+                  item.active
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted",
+                )}
+              >
+                <item.icon className="h-5 w-5 flex-shrink-0" />
+                {!sidebarCollapsed && <span>{item.label}</span>}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
 
