@@ -639,7 +639,6 @@ export default function AgencyTasks() {
       sprintId: task.sprintId || "",
       dueDate: task.dueDate || "",
       estimatedHours: task.estimatedHours?.toString() || "",
-      storyPoints: task.storyPoints?.toString() || "",
       category: task.category || "",
       tags: task.tags || [],
       newTag: "",
