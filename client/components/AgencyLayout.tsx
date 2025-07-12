@@ -571,7 +571,7 @@ export function AgencyLayout({ children }: AgencyLayoutProps) {
       {/* Main Content */}
       <div
         className={cn(
-          "flex-1 flex flex-col transition-all duration-300",
+          "flex-1 flex flex-col transition-all duration-300 min-w-0",
           sidebarCollapsed ? "md:ml-16" : "md:ml-60",
         )}
       >
