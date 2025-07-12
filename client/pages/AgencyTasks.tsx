@@ -1571,7 +1571,7 @@ export default function AgencyTasks() {
                         .map((column, index) => (
                           <div
                             key={column.id}
-                            className="w-80 flex-shrink-0 flex flex-col"
+                            className="kanban-column flex flex-col"
                           >
                             {/* Column Header */}
                             <div className="bg-white rounded-lg border border-gray-200 mb-4 p-4">
