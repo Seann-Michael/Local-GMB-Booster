@@ -1365,9 +1365,9 @@ export default function AgencyTasks() {
             </div>
           </div>
 
-          {/* Filters and Search */}
-          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-            <div className="flex items-center gap-4">
+          {/* Controls Row */}
+          <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
               {/* Pipeline Selector */}
               <Select
                 value={currentPipelineId}
@@ -1398,6 +1398,28 @@ export default function AgencyTasks() {
                 <Filter className="h-4 w-4 mr-2" />
                 Filters
               </Button>
+
+              {/* View Toggle - Prominent position */}
+              <div className="flex items-center bg-gray-100 rounded-lg p-1 shadow-sm border">
+                <Button
+                  variant={view === "kanban" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setView("kanban")}
+                  className="px-4 py-2 font-medium"
+                >
+                  <Kanban className="h-4 w-4 mr-2" />
+                  Board
+                </Button>
+                <Button
+                  variant={view === "list" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setView("list")}
+                  className="px-4 py-2 font-medium"
+                >
+                  <List className="h-4 w-4 mr-2" />
+                  List
+                </Button>
+              </div>
             </div>
 
             {/* Search */}
