@@ -2120,13 +2120,13 @@ export default function AgencyTasks() {
                                 <div className="col-span-2 flex items-center">
                                   {task.dueDate ? (
                                     <div
-                                      className={`flex items-center gap-1 text-sm ${
+                                      className={`flex items-center gap-1 text-xs ${
                                         isTaskOverdue(task)
                                           ? "text-red-600"
                                           : "text-gray-600"
                                       }`}
                                     >
-                                      <Calendar className="h-4 w-4" />
+                                      <Calendar className="h-3 w-3" />
                                       {new Date(
                                         task.dueDate,
                                       ).toLocaleDateString("en-US", {
@@ -2135,7 +2135,7 @@ export default function AgencyTasks() {
                                       })}
                                     </div>
                                   ) : (
-                                    <span className="text-gray-400 text-sm">
+                                    <span className="text-gray-400 text-xs">
                                       -
                                     </span>
                                   )}
