@@ -280,3 +280,80 @@ export const TASK_PRIORITIES = [
   { value: "high", label: "High", color: "yellow" },
   { value: "urgent", label: "Urgent", color: "red" },
 ] as const;
+
+// Sprint Management Types
+export interface AgencySprint {
+  id: string;
+  name: string;
+  description?: string;
+  goal: string;
+  status: "planning" | "active" | "completed" | "cancelled";
+
+  // Timeline
+  startDate: string;
+  endDate: string;
+  plannedHours: number;
+  actualHours?: number;
+
+  // Team and capacity
+  teamMembers: string[]; // user IDs
+  capacity: number; // team capacity in hours
+
+  // Sprint metrics
+  plannedPoints?: number;
+  completedPoints?: number;
+
+  // Associations
+  projectId?: string;
+  projectName?: string;
+
+  // Tasks
+  taskIds: string[];
+
+  // Metadata
+  createdAt: string;
+  updatedAt: string;
+  createdBy: string;
+
+  // Sprint retrospective
+  retrospective?: {
+    whatWentWell: string[];
+    whatCouldImprove: string[];
+    actionItems: string[];
+    completedAt: string;
+  };
+}
+
+export interface SprintTask {
+  id: string;
+  sprintId: string;
+  originalTaskId: string; // reference to AgencyTask
+  storyPoints?: number;
+  sprintOrder: number;
+  addedAt: string;
+  removedAt?: string;
+
+  // Sprint-specific status
+  sprintStatus:
+    | "planned"
+    | "in-progress"
+    | "blocked"
+    | "completed"
+    | "carried-over";
+  blockedReason?: string;
+}
+
+export interface SprintBurndownData {
+  date: string;
+  idealRemaining: number;
+  actualRemaining: number;
+  completedPoints: number;
+  addedPoints: number;
+}
+
+export const SPRINT_STATUSES = [
+  { value: "planning", label: "Planning", color: "blue" },
+  { value: "active", label: "Active", color: "green" },
+  { value: "completed", label: "Completed", color: "gray" },
+  { value: "cancelled", label: "Cancelled", color: "red" },
+] as const;
