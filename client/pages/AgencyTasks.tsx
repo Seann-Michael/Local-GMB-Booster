@@ -898,6 +898,52 @@ export default function AgencyTasks() {
     return new Date(task.dueDate) < new Date() && task.columnId !== "completed";
   };
 
+  const handleSort = (column: string) => {
+    if (sortBy === column) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(column);
+      setSortOrder("asc");
+    }
+  };
+
+  const sortTasks = (tasks: AgencyTask[]) => {
+    return [...tasks].sort((a, b) => {
+      let aValue: any = "";
+      let bValue: any = "";
+
+      switch (sortBy) {
+        case "name":
+          aValue = a.title.toLowerCase();
+          bValue = b.title.toLowerCase();
+          break;
+        case "assignee":
+          aValue = a.assignedToName.toLowerCase();
+          bValue = b.assignedToName.toLowerCase();
+          break;
+        case "dueDate":
+          aValue = a.dueDate ? new Date(a.dueDate).getTime() : 0;
+          bValue = b.dueDate ? new Date(b.dueDate).getTime() : 0;
+          break;
+        case "priority":
+          const priorityOrder = { urgent: 4, high: 3, medium: 2, low: 1 };
+          aValue = priorityOrder[a.priority as keyof typeof priorityOrder];
+          bValue = priorityOrder[b.priority as keyof typeof priorityOrder];
+          break;
+        case "status":
+          aValue = a.columnId;
+          bValue = b.columnId;
+          break;
+        default:
+          return 0;
+      }
+
+      if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
+      return 0;
+    });
+  };
+
   if (isLoading) {
     return (
       <AgencyLayout>
