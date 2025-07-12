@@ -932,7 +932,7 @@ export default function AgencyTasks() {
           </div>
 
           {/* Controls Row - Visible on both Board and List */}
-          <div className="flex flex-col xl:flex-row gap-4 items-start xl:items-center justify-between">
+          <div className="flex flex-col xl:flex-row gap-4 items-start xl:items-center justify-between w-full overflow-x-auto">
             <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
               {/* Pipeline Selector */}
               <Select
