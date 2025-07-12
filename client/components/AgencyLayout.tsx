@@ -383,7 +383,7 @@ export function AgencyLayout({ children }: AgencyLayoutProps) {
   ];
 
   return (
-    <div className="min-h-[100dvh] bg-background flex max-w-full overflow-x-hidden">
+    <div className="min-h-[100dvh] bg-background flex w-full">
       {/* Mobile Sidebar Overlay */}
       {mobileSidebarOpen && (
         <div
