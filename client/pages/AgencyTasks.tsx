@@ -1563,7 +1563,7 @@ export default function AgencyTasks() {
                     <div
                       ref={provided.innerRef}
                       {...provided.droppableProps}
-                      className="flex gap-6 h-full min-w-max"
+                      className="flex gap-6 min-h-[calc(100vh-300px)] min-w-max"
                     >
                       {currentPipeline.columns
                         .sort((a, b) => a.order - b.order)
