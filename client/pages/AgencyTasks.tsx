@@ -1724,9 +1724,9 @@ export default function AgencyTasks() {
                                             </h4>
 
                                             {/* Task Meta */}
-                                            <div className="space-y-2">
+                                            <div className="space-y-1.5">
                                               {task.description && (
-                                                <p className="text-sm text-gray-600 line-clamp-2">
+                                                <p className="text-xs text-gray-600 line-clamp-1">
                                                   {task.description}
                                                 </p>
                                               )}
@@ -1734,25 +1734,24 @@ export default function AgencyTasks() {
                                               {/* Tags */}
                                               {task.tags &&
                                                 task.tags.length > 0 && (
-                                                  <div className="flex flex-wrap gap-1">
+                                                  <div className="flex flex-wrap gap-0.5">
                                                     {task.tags
-                                                      .slice(0, 3)
+                                                      .slice(0, 2)
                                                       .map((tag) => (
                                                         <Badge
                                                           key={tag}
                                                           variant="outline"
-                                                          className="text-xs bg-gray-50"
+                                                          className="text-xs px-1 py-0 bg-gray-50"
                                                         >
-                                                          <Tag className="h-3 w-3 mr-1" />
-                                                          {tag}
+                                                          {tag.slice(0, 8)}
                                                         </Badge>
                                                       ))}
-                                                    {task.tags.length > 3 && (
+                                                    {task.tags.length > 2 && (
                                                       <Badge
                                                         variant="outline"
-                                                        className="text-xs"
+                                                        className="text-xs px-1 py-0"
                                                       >
-                                                        +{task.tags.length - 3}
+                                                        +{task.tags.length - 2}
                                                       </Badge>
                                                     )}
                                                   </div>
@@ -1760,9 +1759,9 @@ export default function AgencyTasks() {
 
                                               {/* Progress */}
                                               {task.subtasks.length > 0 && (
-                                                <div className="space-y-1">
+                                                <div className="space-y-0.5">
                                                   <div className="flex items-center justify-between text-xs text-gray-500">
-                                                    <span>Subtasks</span>
+                                                    <span>Tasks</span>
                                                     <span>
                                                       {
                                                         task.subtasks.filter(
