@@ -906,7 +906,7 @@ export default function AgencyTasks() {
 
   return (
     <AgencyLayout>
-      <div className="h-full flex flex-col">
+      <div className="min-h-full w-full flex flex-col">
         {/* Header */}
         <div className="flex-none bg-white border-b border-gray-200 px-6 py-4">
           <div className="flex items-center justify-between mb-4">
