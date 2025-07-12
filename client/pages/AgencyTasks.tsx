@@ -1635,7 +1635,7 @@ export default function AgencyTasks() {
                                 <div
                                   ref={provided.innerRef}
                                   {...provided.droppableProps}
-                                  className={`flex-1 space-y-3 transition-colors rounded-lg p-2 ${
+                                  className={`flex-1 space-y-2 transition-colors rounded-lg p-1 ${
                                     snapshot.isDraggingOver
                                       ? "bg-purple-50 border-2 border-dashed border-purple-300"
                                       : ""
@@ -1653,7 +1653,7 @@ export default function AgencyTasks() {
                                             ref={provided.innerRef}
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
-                                            className={`bg-white rounded-lg border border-gray-200 p-4 transition-all hover:shadow-md cursor-pointer group ${
+                                            className={`bg-white rounded-lg border border-gray-200 p-3 transition-all hover:shadow-md cursor-pointer group ${
                                               snapshot.isDragging
                                                 ? "shadow-lg rotate-2 scale-105"
                                                 : ""
