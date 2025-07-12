@@ -733,8 +733,7 @@ export default function AgencyTasks() {
                     variant="outline"
                     className="bg-white border-green-300"
                   >
-                    {activeSprint.completedPoints || 0}/
-                    {activeSprint.plannedPoints || 0} pts
+                    Active Sprint
                   </Badge>
                 </div>
               )}
