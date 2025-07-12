@@ -757,25 +757,28 @@ export default function AgencyTasks() {
   };
 
   // Get unique values for filters
-  const uniqueAssignees = [
-    ...new Set(
-      tasks.map((t) => ({ id: t.assignedTo, name: t.assignedToName })),
-    ),
+  const uniqueAssigneeIds = [...new Set(tasks.map((t) => t.assignedTo))];
+  const uniqueAssignees = uniqueAssigneeIds.map((id) => {
+    const task = tasks.find((t) => t.assignedTo === id);
+    return { id, name: task?.assignedToName || "" };
+  });
+
+  const uniqueClientIds = [
+    ...new Set(tasks.filter((t) => t.clientId).map((t) => t.clientId!)),
   ];
-  const uniqueClients = [
-    ...new Set(
-      tasks
-        .filter((t) => t.clientId)
-        .map((t) => ({ id: t.clientId!, name: t.clientName! })),
-    ),
+  const uniqueClients = uniqueClientIds.map((id) => {
+    const task = tasks.find((t) => t.clientId === id);
+    return { id, name: task?.clientName || "" };
+  });
+
+  const uniqueProjectIds = [
+    ...new Set(tasks.filter((t) => t.projectId).map((t) => t.projectId!)),
   ];
-  const uniqueProjects = [
-    ...new Set(
-      tasks
-        .filter((t) => t.projectId)
-        .map((t) => ({ id: t.projectId!, name: t.projectName! })),
-    ),
-  ];
+  const uniqueProjects = uniqueProjectIds.map((id) => {
+    const task = tasks.find((t) => t.projectId === id);
+    return { id, name: task?.projectName || "" };
+  });
+
   const uniqueCategories = [
     ...new Set(tasks.map((t) => t.category).filter(Boolean)),
   ];
