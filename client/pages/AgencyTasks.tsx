@@ -2098,8 +2098,8 @@ export default function AgencyTasks() {
 
                                 {/* Assignee */}
                                 <div className="col-span-2 flex items-center">
-                                  <div className="flex items-center gap-2">
-                                    <Avatar className="h-6 w-6">
+                                  <div className="flex items-center gap-1.5">
+                                    <Avatar className="h-5 w-5">
                                       <AvatarImage
                                         src={task.assignedToAvatar}
                                       />
@@ -2110,7 +2110,7 @@ export default function AgencyTasks() {
                                           .join("")}
                                       </AvatarFallback>
                                     </Avatar>
-                                    <span className="text-sm text-gray-700 truncate">
+                                    <span className="text-xs text-gray-700 truncate">
                                       {task.assignedToName}
                                     </span>
                                   </div>
