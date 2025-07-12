@@ -230,12 +230,9 @@ export default function AgencyTasks() {
   const [editingSprint, setEditingSprint] = useState<AgencySprint | null>(null);
   const [isEditTaskDialogOpen, setIsEditTaskDialogOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
-  const [isEditPipelineDialogOpen, setIsEditPipelineDialogOpen] =
-    useState(false);
+  const [isEditPipelineDialogOpen, setIsEditPipelineDialogOpen] = useState(false);
   const [isEditColumnDialogOpen, setIsEditColumnDialogOpen] = useState(false);
-  const [editingPipeline, setEditingPipeline] = useState<TaskPipeline | null>(
-    null,
-  );
+  const [editingPipeline, setEditingPipeline] = useState<TaskPipeline | null>(null);
   const [editingColumn, setEditingColumn] = useState<TaskColumn | null>(null);
   const [pipelineToDelete, setPipelineToDelete] = useState<string | null>(null);
   const [columnToDelete, setColumnToDelete] = useState<string | null>(null);
@@ -732,7 +729,7 @@ export default function AgencyTasks() {
       description: newPipeline.description,
       isDefault: false,
       createdAt: new Date().toISOString(),
-      columns: DEFAULT_PIPELINES[0].columns.map((col) => ({
+      columns: DEFAULT_PIPELINES[0].columns.map(col => ({
         ...col,
         id: `${Date.now()}-${col.id}`,
       })),
@@ -781,19 +778,13 @@ export default function AgencyTasks() {
     }
 
     // Move tasks to the first remaining pipeline
-    const remainingPipeline = pipelines.find((p) => p.id !== pipelineId);
+    const remainingPipeline = pipelines.find(p => p.id !== pipelineId);
     if (remainingPipeline) {
-      setTasks((prev) =>
-        prev.map((task) =>
-          task.pipelineId === pipelineId
-            ? {
-                ...task,
-                pipelineId: remainingPipeline.id,
-                columnId: remainingPipeline.columns[0].id,
-              }
-            : task,
-        ),
-      );
+      setTasks(prev => prev.map(task =>
+        task.pipelineId === pipelineId
+          ? { ...task, pipelineId: remainingPipeline.id, columnId: remainingPipeline.columns[0].id }
+          : task
+      ));
     }
 
     setPipelines((prev) => prev.filter((p) => p.id !== pipelineId));
@@ -877,17 +868,13 @@ export default function AgencyTasks() {
     }
 
     // Move tasks to the first column
-    const firstColumn = currentPipeline.columns.find(
-      (col) => col.id !== columnId,
-    );
+    const firstColumn = currentPipeline.columns.find(col => col.id !== columnId);
     if (firstColumn) {
-      setTasks((prev) =>
-        prev.map((task) =>
-          task.columnId === columnId
-            ? { ...task, columnId: firstColumn.id }
-            : task,
-        ),
-      );
+      setTasks(prev => prev.map(task =>
+        task.columnId === columnId
+          ? { ...task, columnId: firstColumn.id }
+          : task
+      ));
     }
 
     const updatedPipeline = {
@@ -939,17 +926,6 @@ export default function AgencyTasks() {
             </div>
 
             <div className="flex items-center gap-3">
-              {/* Actions */}
-              <Dialog
-                open={isCreateSprintDialogOpen}
-                onOpenChange={setIsCreateSprintDialogOpen}
-              >
-                <DialogTrigger asChild>
-                  <Button variant="outline" size="sm">
-                    <Rocket className="h-4 w-4 mr-2" />
-                    New Sprint
-                  </Button>
-                </DialogTrigger>
                 <DialogContent className="sm:max-w-lg">
                   <DialogHeader>
                     <DialogTitle>Create New Sprint</DialogTitle>
@@ -2009,6 +1985,8 @@ export default function AgencyTasks() {
                                                       {task.comments}
                                                     </div>
                                                   )}
+
+
                                               </div>
                                             </div>
                                           </div>
