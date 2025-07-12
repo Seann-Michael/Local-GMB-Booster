@@ -1049,20 +1049,6 @@ export default function AgencyTasks() {
                           placeholder="8"
                         />
                       </div>
-                      <div>
-                        <Label>Story Points</Label>
-                        <Input
-                          type="number"
-                          value={newTask.storyPoints}
-                          onChange={(e) =>
-                            setNewTask((prev) => ({
-                              ...prev,
-                              storyPoints: e.target.value,
-                            }))
-                          }
-                          placeholder="5"
-                        />
-                      </div>
                     </div>
                     <div className="flex justify-end gap-2">
                       <Button
