@@ -629,6 +629,94 @@ export default function AgencyTasks() {
     return [...new Set(values)];
   };
 
+  const handleEditTask = (task: AgencyTask) => {
+    setEditingTask(task);
+    setNewTask({
+      title: task.title,
+      description: task.description || "",
+      priority: task.priority,
+      assignedTo: task.assignedTo,
+      assignedToName: task.assignedToName,
+      assignedToEmail: task.assignedToEmail,
+      clientId: task.clientId || "",
+      clientName: task.clientName || "",
+      projectId: task.projectId || "",
+      projectName: task.projectName || "",
+      sprintId: task.sprintId || "",
+      dueDate: task.dueDate || "",
+      estimatedHours: task.estimatedHours?.toString() || "",
+      storyPoints: task.storyPoints?.toString() || "",
+      category: task.category || "",
+      tags: task.tags || [],
+      newTag: "",
+    });
+    setIsEditTaskDialogOpen(true);
+  };
+
+  const handleUpdateTask = () => {
+    if (!editingTask || !newTask.title.trim()) {
+      toast.error("Task title is required");
+      return;
+    }
+
+    const updatedTask: AgencyTask = {
+      ...editingTask,
+      title: newTask.title,
+      description: newTask.description,
+      priority: newTask.priority,
+      assignedTo: newTask.assignedTo,
+      assignedToName: newTask.assignedToName,
+      assignedToEmail: newTask.assignedToEmail,
+      clientId: newTask.clientId,
+      clientName: newTask.clientName,
+      projectId: newTask.projectId,
+      projectName: newTask.projectName,
+      sprintId: newTask.sprintId,
+      dueDate: newTask.dueDate,
+      estimatedHours: newTask.estimatedHours
+        ? parseInt(newTask.estimatedHours)
+        : undefined,
+      storyPoints: newTask.storyPoints
+        ? parseInt(newTask.storyPoints)
+        : undefined,
+      category: newTask.category,
+      tags: newTask.tags,
+      updatedAt: new Date().toISOString(),
+    };
+
+    setTasks((prev) =>
+      prev.map((task) => (task.id === editingTask.id ? updatedTask : task)),
+    );
+    setEditingTask(null);
+    setNewTask({
+      title: "",
+      description: "",
+      priority: "medium",
+      assignedTo: "",
+      assignedToName: "",
+      assignedToEmail: "",
+      clientId: "",
+      clientName: "",
+      projectId: "",
+      projectName: "",
+      sprintId: "",
+      dueDate: "",
+      estimatedHours: "",
+      storyPoints: "",
+      category: "",
+      tags: [],
+      newTag: "",
+    });
+    setIsEditTaskDialogOpen(false);
+    toast.success("Task updated successfully");
+  };
+
+  const handleDeleteTask = (taskId: string) => {
+    setTasks((prev) => prev.filter((task) => task.id !== taskId));
+    setTaskToDelete(null);
+    toast.success("Task deleted successfully");
+  };
+
   if (isLoading) {
     return (
       <AgencyLayout>
