@@ -1931,12 +1931,62 @@ export default function AgencyTasks() {
             >
               {/* Table Header */}
               <div className="border-b border-gray-200 bg-gray-50">
-                <div className="grid grid-cols-12 gap-4 p-4 text-sm font-medium text-gray-700">
-                  <div className="col-span-4">Name</div>
-                  <div className="col-span-2">Assignee</div>
-                  <div className="col-span-2">Due date</div>
-                  <div className="col-span-1">Priority</div>
-                  <div className="col-span-2">Status</div>
+                <div className="grid grid-cols-12 gap-4 p-3 text-sm font-medium text-gray-700">
+                  <button
+                    className="col-span-4 flex items-center gap-1 hover:text-gray-900 text-left"
+                    onClick={() => handleSort("name")}
+                  >
+                    Name
+                    {sortBy === "name" && (
+                      <ChevronDown
+                        className={`h-4 w-4 transition-transform ${sortOrder === "desc" ? "rotate-180" : ""}`}
+                      />
+                    )}
+                  </button>
+                  <button
+                    className="col-span-2 flex items-center gap-1 hover:text-gray-900 text-left"
+                    onClick={() => handleSort("assignee")}
+                  >
+                    Assignee
+                    {sortBy === "assignee" && (
+                      <ChevronDown
+                        className={`h-4 w-4 transition-transform ${sortOrder === "desc" ? "rotate-180" : ""}`}
+                      />
+                    )}
+                  </button>
+                  <button
+                    className="col-span-2 flex items-center gap-1 hover:text-gray-900 text-left"
+                    onClick={() => handleSort("dueDate")}
+                  >
+                    Due date
+                    {sortBy === "dueDate" && (
+                      <ChevronDown
+                        className={`h-4 w-4 transition-transform ${sortOrder === "desc" ? "rotate-180" : ""}`}
+                      />
+                    )}
+                  </button>
+                  <button
+                    className="col-span-1 flex items-center gap-1 hover:text-gray-900 text-left"
+                    onClick={() => handleSort("priority")}
+                  >
+                    Priority
+                    {sortBy === "priority" && (
+                      <ChevronDown
+                        className={`h-4 w-4 transition-transform ${sortOrder === "desc" ? "rotate-180" : ""}`}
+                      />
+                    )}
+                  </button>
+                  <button
+                    className="col-span-2 flex items-center gap-1 hover:text-gray-900 text-left"
+                    onClick={() => handleSort("status")}
+                  >
+                    Status
+                    {sortBy === "status" && (
+                      <ChevronDown
+                        className={`h-4 w-4 transition-transform ${sortOrder === "desc" ? "rotate-180" : ""}`}
+                      />
+                    )}
+                  </button>
                   <div className="col-span-1">Actions</div>
                 </div>
               </div>
