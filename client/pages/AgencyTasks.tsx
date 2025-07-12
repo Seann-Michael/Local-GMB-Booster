@@ -1112,6 +1112,256 @@ export default function AgencyTasks() {
                   </div>
                 </DialogContent>
               </Dialog>
+
+              {/* Edit Task Dialog */}
+              <Dialog
+                open={isEditTaskDialogOpen}
+                onOpenChange={setIsEditTaskDialogOpen}
+              >
+                <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Edit Task</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div>
+                      <Label>Task Title</Label>
+                      <Input
+                        value={newTask.title}
+                        onChange={(e) =>
+                          setNewTask((prev) => ({
+                            ...prev,
+                            title: e.target.value,
+                          }))
+                        }
+                        placeholder="Enter task title..."
+                      />
+                    </div>
+                    <div>
+                      <Label>Description</Label>
+                      <Textarea
+                        value={newTask.description}
+                        onChange={(e) =>
+                          setNewTask((prev) => ({
+                            ...prev,
+                            description: e.target.value,
+                          }))
+                        }
+                        placeholder="Task description..."
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label>Priority</Label>
+                        <Select
+                          value={newTask.priority}
+                          onValueChange={(
+                            value: "low" | "medium" | "high" | "urgent",
+                          ) =>
+                            setNewTask((prev) => ({ ...prev, priority: value }))
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {TASK_PRIORITIES.map((priority) => (
+                              <SelectItem
+                                key={priority.value}
+                                value={priority.value}
+                              >
+                                <div className="flex items-center gap-2">
+                                  <priority.icon className="h-4 w-4" />
+                                  {priority.label}
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label>Assignee</Label>
+                        <Select
+                          value={newTask.assignedTo}
+                          onValueChange={(value) => {
+                            const users = [
+                              {
+                                id: "user-1",
+                                name: "Sarah Johnson",
+                                email: "sarah@agency.com",
+                              },
+                              {
+                                id: "user-2",
+                                name: "Mike Chen",
+                                email: "mike@agency.com",
+                              },
+                              {
+                                id: "user-3",
+                                name: "Emma Davis",
+                                email: "emma@agency.com",
+                              },
+                            ];
+                            const user = users.find((u) => u.id === value);
+                            setNewTask((prev) => ({
+                              ...prev,
+                              assignedTo: value,
+                              assignedToName: user?.name || "",
+                              assignedToEmail: user?.email || "",
+                            }));
+                          }}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select assignee" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="user-1">
+                              Sarah Johnson
+                            </SelectItem>
+                            <SelectItem value="user-2">Mike Chen</SelectItem>
+                            <SelectItem value="user-3">Emma Davis</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label>Client</Label>
+                        <Select
+                          value={newTask.clientId}
+                          onValueChange={(value) => {
+                            const clients = [
+                              { id: "client-1", name: "TechCorp" },
+                              { id: "client-2", name: "StartupXYZ" },
+                            ];
+                            const client = clients.find((c) => c.id === value);
+                            setNewTask((prev) => ({
+                              ...prev,
+                              clientId: value,
+                              clientName: client?.name || "",
+                            }));
+                          }}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select client" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="client-1">TechCorp</SelectItem>
+                            <SelectItem value="client-2">StartupXYZ</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label>Sprint</Label>
+                        <Select
+                          value={newTask.sprintId}
+                          onValueChange={(value) =>
+                            setNewTask((prev) => ({ ...prev, sprintId: value }))
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select sprint (optional)" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {sprints.map((sprint) => (
+                              <SelectItem key={sprint.id} value={sprint.id}>
+                                {sprint.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-3 gap-4">
+                      <div>
+                        <Label>Due Date</Label>
+                        <Input
+                          type="date"
+                          value={newTask.dueDate}
+                          onChange={(e) =>
+                            setNewTask((prev) => ({
+                              ...prev,
+                              dueDate: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+                      <div>
+                        <Label>Estimated Hours</Label>
+                        <Input
+                          type="number"
+                          value={newTask.estimatedHours}
+                          onChange={(e) =>
+                            setNewTask((prev) => ({
+                              ...prev,
+                              estimatedHours: e.target.value,
+                            }))
+                          }
+                          placeholder="8"
+                        />
+                      </div>
+                      <div>
+                        <Label>Story Points</Label>
+                        <Input
+                          type="number"
+                          value={newTask.storyPoints}
+                          onChange={(e) =>
+                            setNewTask((prev) => ({
+                              ...prev,
+                              storyPoints: e.target.value,
+                            }))
+                          }
+                          placeholder="5"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setIsEditTaskDialogOpen(false);
+                          setEditingTask(null);
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                      <Button onClick={handleUpdateTask}>Update Task</Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+
+              {/* Delete Task Confirmation */}
+              <Dialog
+                open={!!taskToDelete}
+                onOpenChange={() => setTaskToDelete(null)}
+              >
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>Delete Task</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <p className="text-gray-600">
+                      Are you sure you want to delete this task? This action
+                      cannot be undone.
+                    </p>
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        variant="outline"
+                        onClick={() => setTaskToDelete(null)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        onClick={() =>
+                          taskToDelete && handleDeleteTask(taskToDelete)
+                        }
+                      >
+                        Delete Task
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
 
