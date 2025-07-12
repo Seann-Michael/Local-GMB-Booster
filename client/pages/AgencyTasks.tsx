@@ -2082,14 +2082,14 @@ export default function AgencyTasks() {
                                 className="grid grid-cols-12 gap-4 p-2 hover:bg-gray-50 border-b border-gray-50 last:border-b-0"
                               >
                                 {/* Name */}
-                                <div className="col-span-4 flex items-center gap-3">
-                                  <div className="w-4 h-4 border border-gray-300 rounded"></div>
+                                <div className="col-span-4 flex items-center gap-2">
+                                  <div className="w-3 h-3 border border-gray-300 rounded"></div>
                                   <div className="flex-1 min-w-0">
-                                    <h4 className="font-medium text-gray-900 truncate">
+                                    <h4 className="font-medium text-sm text-gray-900 truncate">
                                       {task.title}
                                     </h4>
                                     {task.description && (
-                                      <p className="text-sm text-gray-500 truncate">
+                                      <p className="text-xs text-gray-500 truncate">
                                         {task.description}
                                       </p>
                                     )}
