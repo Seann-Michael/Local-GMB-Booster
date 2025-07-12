@@ -226,24 +226,21 @@ export default function AgencyTasks() {
     useState(false);
   const [isCreatePipelineDialogOpen, setIsCreatePipelineDialogOpen] =
     useState(false);
-  const [editingTask, setEditingTask] = useState<AgencyTask | null>(null);
-  const [editingSprint, setEditingSprint] = useState<AgencySprint | null>(null);
+  const [isCreateColumnDialogOpen, setIsCreateColumnDialogOpen] =
+    useState(false);
   const [isEditTaskDialogOpen, setIsEditTaskDialogOpen] = useState(false);
-  const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
-  const [isEditPipelineDialogOpen, setIsEditPipelineDialogOpen] = useState(false);
+  const [isEditPipelineDialogOpen, setIsEditPipelineDialogOpen] =
+    useState(false);
   const [isEditColumnDialogOpen, setIsEditColumnDialogOpen] = useState(false);
-  const [editingPipeline, setEditingPipeline] = useState<TaskPipeline | null>(null);
+
+  const [editingTask, setEditingTask] = useState<AgencyTask | null>(null);
+  const [editingPipeline, setEditingPipeline] = useState<TaskPipeline | null>(
+    null,
+  );
   const [editingColumn, setEditingColumn] = useState<TaskColumn | null>(null);
+  const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
   const [pipelineToDelete, setPipelineToDelete] = useState<string | null>(null);
   const [columnToDelete, setColumnToDelete] = useState<string | null>(null);
-  const [newPipeline, setNewPipeline] = useState({
-    name: "",
-    description: "",
-  });
-  const [newColumn, setNewColumn] = useState({
-    title: "",
-    color: "#3B82F6",
-  });
 
   // Form state
   const [newTask, setNewTask] = useState({
@@ -275,6 +272,16 @@ export default function AgencyTasks() {
     capacity: "",
     projectId: "",
     teamMembers: [] as string[],
+  });
+
+  const [newPipeline, setNewPipeline] = useState({
+    name: "",
+    description: "",
+  });
+
+  const [newColumn, setNewColumn] = useState({
+    title: "",
+    color: "#3B82F6",
   });
 
   // Mock data
@@ -401,8 +408,6 @@ export default function AgencyTasks() {
       actualHours: 35,
       teamMembers: ["user-1", "user-2", "user-3"],
       capacity: 120,
-      plannedPoints: 16,
-      completedPoints: 5,
       projectId: "project-1",
       projectName: "Website Redesign",
       taskIds: ["task-1", "task-2"],
@@ -572,68 +577,6 @@ export default function AgencyTasks() {
     toast.success("Task created successfully");
   };
 
-  const handleCreateSprint = () => {
-    if (!newSprint.name.trim() || !newSprint.goal.trim()) {
-      toast.error("Sprint name and goal are required");
-      return;
-    }
-
-    const sprint: AgencySprint = {
-      id: `sprint-${Date.now()}`,
-      name: newSprint.name,
-      description: newSprint.description,
-      goal: newSprint.goal,
-      status: "planning",
-      startDate: newSprint.startDate,
-      endDate: newSprint.endDate,
-      plannedHours: newSprint.plannedHours
-        ? parseInt(newSprint.plannedHours)
-        : 0,
-      capacity: newSprint.capacity ? parseInt(newSprint.capacity) : 0,
-      teamMembers: newSprint.teamMembers,
-      projectId: newSprint.projectId,
-      taskIds: [],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      createdBy: "current-user",
-    };
-
-    setSprints((prev) => [...prev, sprint]);
-    setNewSprint({
-      name: "",
-      description: "",
-      goal: "",
-      startDate: "",
-      endDate: "",
-      plannedHours: "",
-      capacity: "",
-      projectId: "",
-      teamMembers: [],
-    });
-    setIsCreateSprintDialogOpen(false);
-    toast.success("Sprint created successfully");
-  };
-
-  const getPriorityIcon = (priority: string) => {
-    const priorityConfig = TASK_PRIORITIES.find((p) => p.value === priority);
-    return priorityConfig?.icon || Flag;
-  };
-
-  const getPriorityColor = (priority: string) => {
-    const priorityConfig = TASK_PRIORITIES.find((p) => p.value === priority);
-    return priorityConfig?.color || "bg-gray-100 text-gray-700";
-  };
-
-  const isTaskOverdue = (task: AgencyTask) => {
-    if (!task.dueDate) return false;
-    return new Date(task.dueDate) < new Date() && task.columnId !== "completed";
-  };
-
-  const getUniqueValues = (key: keyof AgencyTask) => {
-    const values = tasks.map((task) => task[key]).filter(Boolean);
-    return [...new Set(values)];
-  };
-
   const handleEditTask = (task: AgencyTask) => {
     setEditingTask(task);
     setNewTask({
@@ -717,6 +660,48 @@ export default function AgencyTasks() {
     toast.success("Task deleted successfully");
   };
 
+  const handleCreateSprint = () => {
+    if (!newSprint.name.trim() || !newSprint.goal.trim()) {
+      toast.error("Sprint name and goal are required");
+      return;
+    }
+
+    const sprint: AgencySprint = {
+      id: `sprint-${Date.now()}`,
+      name: newSprint.name,
+      description: newSprint.description,
+      goal: newSprint.goal,
+      status: "planning",
+      startDate: newSprint.startDate,
+      endDate: newSprint.endDate,
+      plannedHours: newSprint.plannedHours
+        ? parseInt(newSprint.plannedHours)
+        : 0,
+      capacity: newSprint.capacity ? parseInt(newSprint.capacity) : 0,
+      teamMembers: newSprint.teamMembers,
+      projectId: newSprint.projectId,
+      taskIds: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      createdBy: "current-user",
+    };
+
+    setSprints((prev) => [...prev, sprint]);
+    setNewSprint({
+      name: "",
+      description: "",
+      goal: "",
+      startDate: "",
+      endDate: "",
+      plannedHours: "",
+      capacity: "",
+      projectId: "",
+      teamMembers: [],
+    });
+    setIsCreateSprintDialogOpen(false);
+    toast.success("Sprint created successfully");
+  };
+
   const handleCreatePipeline = () => {
     if (!newPipeline.name.trim()) {
       toast.error("Pipeline name is required");
@@ -729,7 +714,7 @@ export default function AgencyTasks() {
       description: newPipeline.description,
       isDefault: false,
       createdAt: new Date().toISOString(),
-      columns: DEFAULT_PIPELINES[0].columns.map(col => ({
+      columns: DEFAULT_PIPELINES[0].columns.map((col) => ({
         ...col,
         id: `${Date.now()}-${col.id}`,
       })),
@@ -778,13 +763,19 @@ export default function AgencyTasks() {
     }
 
     // Move tasks to the first remaining pipeline
-    const remainingPipeline = pipelines.find(p => p.id !== pipelineId);
+    const remainingPipeline = pipelines.find((p) => p.id !== pipelineId);
     if (remainingPipeline) {
-      setTasks(prev => prev.map(task =>
-        task.pipelineId === pipelineId
-          ? { ...task, pipelineId: remainingPipeline.id, columnId: remainingPipeline.columns[0].id }
-          : task
-      ));
+      setTasks((prev) =>
+        prev.map((task) =>
+          task.pipelineId === pipelineId
+            ? {
+                ...task,
+                pipelineId: remainingPipeline.id,
+                columnId: remainingPipeline.columns[0].id,
+              }
+            : task,
+        ),
+      );
     }
 
     setPipelines((prev) => prev.filter((p) => p.id !== pipelineId));
@@ -868,13 +859,17 @@ export default function AgencyTasks() {
     }
 
     // Move tasks to the first column
-    const firstColumn = currentPipeline.columns.find(col => col.id !== columnId);
+    const firstColumn = currentPipeline.columns.find(
+      (col) => col.id !== columnId,
+    );
     if (firstColumn) {
-      setTasks(prev => prev.map(task =>
-        task.columnId === columnId
-          ? { ...task, columnId: firstColumn.id }
-          : task
-      ));
+      setTasks((prev) =>
+        prev.map((task) =>
+          task.columnId === columnId
+            ? { ...task, columnId: firstColumn.id }
+            : task,
+        ),
+      );
     }
 
     const updatedPipeline = {
@@ -887,6 +882,16 @@ export default function AgencyTasks() {
     );
     setColumnToDelete(null);
     toast.success("Column deleted successfully");
+  };
+
+  const getPriorityColor = (priority: string) => {
+    const priorityConfig = TASK_PRIORITIES.find((p) => p.value === priority);
+    return priorityConfig?.color || "bg-gray-100 text-gray-700";
+  };
+
+  const isTaskOverdue = (task: AgencyTask) => {
+    if (!task.dueDate) return false;
+    return new Date(task.dueDate) < new Date() && task.columnId !== "completed";
   };
 
   if (isLoading) {
@@ -924,13 +929,10 @@ export default function AgencyTasks() {
                 </div>
               )}
             </div>
-
-            <div className="flex items-center gap-3">
-            </div>
           </div>
 
-          {/* Controls Row with Actions - Visible on both Board and List */}
-          <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+          {/* Controls Row - Visible on both Board and List */}
+          <div className="flex flex-col xl:flex-row gap-4 items-start xl:items-center justify-between">
             <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
               {/* Pipeline Selector */}
               <Select
@@ -961,24 +963,32 @@ export default function AgencyTasks() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuItem onClick={() => setIsCreatePipelineDialogOpen(true)}>
+                  <DropdownMenuItem
+                    onClick={() => setIsCreatePipelineDialogOpen(true)}
+                  >
                     <Plus className="h-4 w-4 mr-2" />
                     New Board
                   </DropdownMenuItem>
                   {currentPipeline && (
                     <>
-                      <DropdownMenuItem onClick={() => handleEditPipeline(currentPipeline)}>
+                      <DropdownMenuItem
+                        onClick={() => handleEditPipeline(currentPipeline)}
+                      >
                         <Edit className="h-4 w-4 mr-2" />
                         Edit Board
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => setIsCreateColumnDialogOpen(true)}>
+                      <DropdownMenuItem
+                        onClick={() => setIsCreateColumnDialogOpen(true)}
+                      >
                         <Plus className="h-4 w-4 mr-2" />
                         Add Column
                       </DropdownMenuItem>
                       {!currentPipeline.isDefault && (
                         <DropdownMenuItem
                           className="text-red-600"
-                          onClick={() => setPipelineToDelete(currentPipeline.id)}
+                          onClick={() =>
+                            setPipelineToDelete(currentPipeline.id)
+                          }
                         >
                           <Trash className="h-4 w-4 mr-2" />
                           Delete Board
@@ -1000,7 +1010,7 @@ export default function AgencyTasks() {
                 Filters
               </Button>
 
-              {/* View Toggle - Prominent position */}
+              {/* View Toggle */}
               <div className="flex items-center bg-gray-100 rounded-lg p-1 shadow-sm border">
                 <Button
                   variant={view === "kanban" ? "default" : "ghost"}
@@ -1049,620 +1059,326 @@ export default function AgencyTasks() {
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-lg">
-                  <DialogHeader>
-                    <DialogTitle>Create New Sprint</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-4">
-                    <div>
-                      <Label>Sprint Name</Label>
-                      <Input
-                        value={newSprint.name}
-                        onChange={(e) =>
-                          setNewSprint((prev) => ({
-                            ...prev,
-                            name: e.target.value,
-                          }))
-                        }
-                        placeholder="Sprint 1 - Feature Development"
-                      />
-                    </div>
-                    <div>
-                      <Label>Sprint Goal</Label>
-                      <Textarea
-                        value={newSprint.goal}
-                        onChange={(e) =>
-                          setNewSprint((prev) => ({
-                            ...prev,
-                            goal: e.target.value,
-                          }))
-                        }
-                        placeholder="What should be accomplished in this sprint?"
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
+                    <DialogHeader>
+                      <DialogTitle>Create New Sprint</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
                       <div>
-                        <Label>Start Date</Label>
+                        <Label>Sprint Name</Label>
                         <Input
-                          type="date"
-                          value={newSprint.startDate}
+                          value={newSprint.name}
                           onChange={(e) =>
                             setNewSprint((prev) => ({
                               ...prev,
-                              startDate: e.target.value,
+                              name: e.target.value,
                             }))
                           }
+                          placeholder="Sprint 1 - Feature Development"
                         />
                       </div>
                       <div>
-                        <Label>End Date</Label>
-                        <Input
-                          type="date"
-                          value={newSprint.endDate}
+                        <Label>Sprint Goal</Label>
+                        <Textarea
+                          value={newSprint.goal}
                           onChange={(e) =>
                             setNewSprint((prev) => ({
                               ...prev,
-                              endDate: e.target.value,
+                              goal: e.target.value,
                             }))
                           }
+                          placeholder="What should be accomplished in this sprint?"
                         />
                       </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label>Planned Hours</Label>
-                        <Input
-                          type="number"
-                          value={newSprint.plannedHours}
-                          onChange={(e) =>
-                            setNewSprint((prev) => ({
-                              ...prev,
-                              plannedHours: e.target.value,
-                            }))
-                          }
-                          placeholder="80"
-                        />
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label>Start Date</Label>
+                          <Input
+                            type="date"
+                            value={newSprint.startDate}
+                            onChange={(e) =>
+                              setNewSprint((prev) => ({
+                                ...prev,
+                                startDate: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
+                        <div>
+                          <Label>End Date</Label>
+                          <Input
+                            type="date"
+                            value={newSprint.endDate}
+                            onChange={(e) =>
+                              setNewSprint((prev) => ({
+                                ...prev,
+                                endDate: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
                       </div>
-                      <div>
-                        <Label>Team Capacity</Label>
-                        <Input
-                          type="number"
-                          value={newSprint.capacity}
-                          onChange={(e) =>
-                            setNewSprint((prev) => ({
-                              ...prev,
-                              capacity: e.target.value,
-                            }))
-                          }
-                          placeholder="120"
-                        />
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label>Planned Hours</Label>
+                          <Input
+                            type="number"
+                            value={newSprint.plannedHours}
+                            onChange={(e) =>
+                              setNewSprint((prev) => ({
+                                ...prev,
+                                plannedHours: e.target.value,
+                              }))
+                            }
+                            placeholder="80"
+                          />
+                        </div>
+                        <div>
+                          <Label>Team Capacity</Label>
+                          <Input
+                            type="number"
+                            value={newSprint.capacity}
+                            onChange={(e) =>
+                              setNewSprint((prev) => ({
+                                ...prev,
+                                capacity: e.target.value,
+                              }))
+                            }
+                            placeholder="120"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          variant="outline"
+                          onClick={() => setIsCreateSprintDialogOpen(false)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button onClick={handleCreateSprint}>
+                          Create Sprint
+                        </Button>
                       </div>
                     </div>
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="outline"
-                        onClick={() => setIsCreateSprintDialogOpen(false)}
-                      >
-                        Cancel
-                      </Button>
-                      <Button onClick={handleCreateSprint}>
-                        Create Sprint
-                      </Button>
-                    </div>
-                  </div>
-                </DialogContent>
-              </Dialog>
+                  </DialogContent>
+                </Dialog>
 
-              <Dialog
-                open={isCreateTaskDialogOpen}
-                onOpenChange={setIsCreateTaskDialogOpen}
-              >
-                <DialogTrigger asChild>
-                  <Button
-                    size="sm"
-                    className="bg-purple-600 hover:bg-purple-700"
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    New Task
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
-                  <DialogHeader>
-                    <DialogTitle>Create New Task</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-4">
-                    <div>
-                      <Label>Task Title</Label>
-                      <Input
-                        value={newTask.title}
-                        onChange={(e) =>
-                          setNewTask((prev) => ({
-                            ...prev,
-                            title: e.target.value,
-                          }))
-                        }
-                        placeholder="Enter task title..."
-                      />
-                    </div>
-                    <div>
-                      <Label>Description</Label>
-                      <Textarea
-                        value={newTask.description}
-                        onChange={(e) =>
-                          setNewTask((prev) => ({
-                            ...prev,
-                            description: e.target.value,
-                          }))
-                        }
-                        placeholder="Task description..."
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label>Priority</Label>
-                        <Select
-                          value={newTask.priority}
-                          onValueChange={(
-                            value: "low" | "medium" | "high" | "urgent",
-                          ) =>
-                            setNewTask((prev) => ({ ...prev, priority: value }))
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {TASK_PRIORITIES.map((priority) => (
-                              <SelectItem
-                                key={priority.value}
-                                value={priority.value}
-                              >
-                                <div className="flex items-center gap-2">
-                                  <priority.icon className="h-4 w-4" />
-                                  {priority.label}
-                                </div>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div>
-                        <Label>Assignee</Label>
-                        <Select
-                          value={newTask.assignedTo}
-                          onValueChange={(value) => {
-                            const users = [
-                              {
-                                id: "user-1",
-                                name: "Sarah Johnson",
-                                email: "sarah@agency.com",
-                              },
-                              {
-                                id: "user-2",
-                                name: "Mike Chen",
-                                email: "mike@agency.com",
-                              },
-                              {
-                                id: "user-3",
-                                name: "Emma Davis",
-                                email: "emma@agency.com",
-                              },
-                            ];
-                            const user = users.find((u) => u.id === value);
-                            setNewTask((prev) => ({
-                              ...prev,
-                              assignedTo: value,
-                              assignedToName: user?.name || "",
-                              assignedToEmail: user?.email || "",
-                            }));
-                          }}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select assignee" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="user-1">
-                              Sarah Johnson
-                            </SelectItem>
-                            <SelectItem value="user-2">Mike Chen</SelectItem>
-                            <SelectItem value="user-3">Emma Davis</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label>Client</Label>
-                        <Select
-                          value={newTask.clientId}
-                          onValueChange={(value) => {
-                            const clients = [
-                              { id: "client-1", name: "TechCorp" },
-                              { id: "client-2", name: "StartupXYZ" },
-                            ];
-                            const client = clients.find((c) => c.id === value);
-                            setNewTask((prev) => ({
-                              ...prev,
-                              clientId: value,
-                              clientName: client?.name || "",
-                            }));
-                          }}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select client" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="client-1">TechCorp</SelectItem>
-                            <SelectItem value="client-2">StartupXYZ</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div>
-                        <Label>Sprint</Label>
-                        <Select
-                          value={newTask.sprintId}
-                          onValueChange={(value) =>
-                            setNewTask((prev) => ({ ...prev, sprintId: value }))
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select sprint (optional)" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {sprints.map((sprint) => (
-                              <SelectItem key={sprint.id} value={sprint.id}>
-                                {sprint.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-4">
-                      <div>
-                        <Label>Due Date</Label>
-                        <Input
-                          type="date"
-                          value={newTask.dueDate}
-                          onChange={(e) =>
-                            setNewTask((prev) => ({
-                              ...prev,
-                              dueDate: e.target.value,
-                            }))
-                          }
-                        />
-                      </div>
-                      <div>
-                        <Label>Estimated Hours</Label>
-                        <Input
-                          type="number"
-                          value={newTask.estimatedHours}
-                          onChange={(e) =>
-                            setNewTask((prev) => ({
-                              ...prev,
-                              estimatedHours: e.target.value,
-                            }))
-                          }
-                          placeholder="8"
-                        />
-                      </div>
-                    </div>
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="outline"
-                        onClick={() => setIsCreateTaskDialogOpen(false)}
-                      >
-                        Cancel
-                      </Button>
-                      <Button onClick={handleCreateTask}>Create Task</Button>
-                    </div>
-                  </div>
-                </DialogContent>
-              </Dialog>
-
-              {/* Edit Task Dialog */}
-              <Dialog
-                open={isEditTaskDialogOpen}
-                onOpenChange={setIsEditTaskDialogOpen}
-              >
-                <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
-                  <DialogHeader>
-                    <DialogTitle>Edit Task</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-4">
-                    <div>
-                      <Label>Task Title</Label>
-                      <Input
-                        value={newTask.title}
-                        onChange={(e) =>
-                          setNewTask((prev) => ({
-                            ...prev,
-                            title: e.target.value,
-                          }))
-                        }
-                        placeholder="Enter task title..."
-                      />
-                    </div>
-                    <div>
-                      <Label>Description</Label>
-                      <Textarea
-                        value={newTask.description}
-                        onChange={(e) =>
-                          setNewTask((prev) => ({
-                            ...prev,
-                            description: e.target.value,
-                          }))
-                        }
-                        placeholder="Task description..."
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label>Priority</Label>
-                        <Select
-                          value={newTask.priority}
-                          onValueChange={(
-                            value: "low" | "medium" | "high" | "urgent",
-                          ) =>
-                            setNewTask((prev) => ({ ...prev, priority: value }))
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {TASK_PRIORITIES.map((priority) => (
-                              <SelectItem
-                                key={priority.value}
-                                value={priority.value}
-                              >
-                                <div className="flex items-center gap-2">
-                                  <priority.icon className="h-4 w-4" />
-                                  {priority.label}
-                                </div>
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div>
-                        <Label>Assignee</Label>
-                        <Select
-                          value={newTask.assignedTo}
-                          onValueChange={(value) => {
-                            const users = [
-                              {
-                                id: "user-1",
-                                name: "Sarah Johnson",
-                                email: "sarah@agency.com",
-                              },
-                              {
-                                id: "user-2",
-                                name: "Mike Chen",
-                                email: "mike@agency.com",
-                              },
-                              {
-                                id: "user-3",
-                                name: "Emma Davis",
-                                email: "emma@agency.com",
-                              },
-                            ];
-                            const user = users.find((u) => u.id === value);
-                            setNewTask((prev) => ({
-                              ...prev,
-                              assignedTo: value,
-                              assignedToName: user?.name || "",
-                              assignedToEmail: user?.email || "",
-                            }));
-                          }}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select assignee" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="user-1">
-                              Sarah Johnson
-                            </SelectItem>
-                            <SelectItem value="user-2">Mike Chen</SelectItem>
-                            <SelectItem value="user-3">Emma Davis</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label>Client</Label>
-                        <Select
-                          value={newTask.clientId}
-                          onValueChange={(value) => {
-                            const clients = [
-                              { id: "client-1", name: "TechCorp" },
-                              { id: "client-2", name: "StartupXYZ" },
-                            ];
-                            const client = clients.find((c) => c.id === value);
-                            setNewTask((prev) => ({
-                              ...prev,
-                              clientId: value,
-                              clientName: client?.name || "",
-                            }));
-                          }}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select client" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="client-1">TechCorp</SelectItem>
-                            <SelectItem value="client-2">StartupXYZ</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div>
-                        <Label>Sprint</Label>
-                        <Select
-                          value={newTask.sprintId}
-                          onValueChange={(value) =>
-                            setNewTask((prev) => ({ ...prev, sprintId: value }))
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select sprint (optional)" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {sprints.map((sprint) => (
-                              <SelectItem key={sprint.id} value={sprint.id}>
-                                {sprint.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-4">
-                      <div>
-                        <Label>Due Date</Label>
-                        <Input
-                          type="date"
-                          value={newTask.dueDate}
-                          onChange={(e) =>
-                            setNewTask((prev) => ({
-                              ...prev,
-                              dueDate: e.target.value,
-                            }))
-                          }
-                        />
-                      </div>
-                      <div>
-                        <Label>Estimated Hours</Label>
-                        <Input
-                          type="number"
-                          value={newTask.estimatedHours}
-                          onChange={(e) =>
-                            setNewTask((prev) => ({
-                              ...prev,
-                              estimatedHours: e.target.value,
-                            }))
-                          }
-                          placeholder="8"
-                        />
-                      </div>
-                    </div>
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="outline"
-                        onClick={() => {
-                          setIsEditTaskDialogOpen(false);
-                          setEditingTask(null);
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                      <Button onClick={handleUpdateTask}>Update Task</Button>
-                    </div>
-                  </div>
-                </DialogContent>
-              </Dialog>
-
-              {/* Delete Task Confirmation */}
-              <Dialog
-                open={!!taskToDelete}
-                onOpenChange={() => setTaskToDelete(null)}
-              >
-                <DialogContent className="sm:max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>Delete Task</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-4">
-                    <p className="text-gray-600">
-                      Are you sure you want to delete this task? This action
-                      cannot be undone.
-                    </p>
-                    <div className="flex justify-end gap-2">
-                      <Button
-                        variant="outline"
-                        onClick={() => setTaskToDelete(null)}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        onClick={() =>
-                          taskToDelete && handleDeleteTask(taskToDelete)
-                        }
-                      >
-                        Delete Task
-                      </Button>
-                    </div>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </div>
-          </div>
-
-          {/* Controls Row */}
-          <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
-            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-              {/* Pipeline Selector */}
-              <Select
-                value={currentPipelineId}
-                onValueChange={setCurrentPipelineId}
-              >
-                <SelectTrigger className="w-48">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {pipelines.map((pipeline) => (
-                    <SelectItem key={pipeline.id} value={pipeline.id}>
-                      <div className="flex items-center gap-2">
-                        <FolderKanban className="h-4 w-4" />
-                        {pipeline.name}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              {/* Filter Toggle */}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowFilters(!showFilters)}
-                className={showFilters ? "bg-gray-100" : ""}
-              >
-                <Filter className="h-4 w-4 mr-2" />
-                Filters
-              </Button>
-
-              {/* View Toggle - Prominent position */}
-              <div className="flex items-center bg-gray-100 rounded-lg p-1 shadow-sm border">
-                <Button
-                  variant={view === "kanban" ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setView("kanban")}
-                  className="px-4 py-2 font-medium"
+                <Dialog
+                  open={isCreateTaskDialogOpen}
+                  onOpenChange={setIsCreateTaskDialogOpen}
                 >
-                  <Kanban className="h-4 w-4 mr-2" />
-                  Board
-                </Button>
-                <Button
-                  variant={view === "list" ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setView("list")}
-                  className="px-4 py-2 font-medium"
-                >
-                  <List className="h-4 w-4 mr-2" />
-                  List
-                </Button>
+                  <DialogTrigger asChild>
+                    <Button
+                      size="sm"
+                      className="bg-purple-600 hover:bg-purple-700"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      New Task
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>Create New Task</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div>
+                        <Label>Task Title</Label>
+                        <Input
+                          value={newTask.title}
+                          onChange={(e) =>
+                            setNewTask((prev) => ({
+                              ...prev,
+                              title: e.target.value,
+                            }))
+                          }
+                          placeholder="Enter task title..."
+                        />
+                      </div>
+                      <div>
+                        <Label>Description</Label>
+                        <Textarea
+                          value={newTask.description}
+                          onChange={(e) =>
+                            setNewTask((prev) => ({
+                              ...prev,
+                              description: e.target.value,
+                            }))
+                          }
+                          placeholder="Task description..."
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label>Priority</Label>
+                          <Select
+                            value={newTask.priority}
+                            onValueChange={(
+                              value: "low" | "medium" | "high" | "urgent",
+                            ) =>
+                              setNewTask((prev) => ({
+                                ...prev,
+                                priority: value,
+                              }))
+                            }
+                          >
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {TASK_PRIORITIES.map((priority) => (
+                                <SelectItem
+                                  key={priority.value}
+                                  value={priority.value}
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <priority.icon className="h-4 w-4" />
+                                    {priority.label}
+                                  </div>
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <Label>Assignee</Label>
+                          <Select
+                            value={newTask.assignedTo}
+                            onValueChange={(value) => {
+                              const users = [
+                                {
+                                  id: "user-1",
+                                  name: "Sarah Johnson",
+                                  email: "sarah@agency.com",
+                                },
+                                {
+                                  id: "user-2",
+                                  name: "Mike Chen",
+                                  email: "mike@agency.com",
+                                },
+                                {
+                                  id: "user-3",
+                                  name: "Emma Davis",
+                                  email: "emma@agency.com",
+                                },
+                              ];
+                              const user = users.find((u) => u.id === value);
+                              setNewTask((prev) => ({
+                                ...prev,
+                                assignedTo: value,
+                                assignedToName: user?.name || "",
+                                assignedToEmail: user?.email || "",
+                              }));
+                            }}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select assignee" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="user-1">
+                                Sarah Johnson
+                              </SelectItem>
+                              <SelectItem value="user-2">Mike Chen</SelectItem>
+                              <SelectItem value="user-3">Emma Davis</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label>Client</Label>
+                          <Select
+                            value={newTask.clientId}
+                            onValueChange={(value) => {
+                              const clients = [
+                                { id: "client-1", name: "TechCorp" },
+                                { id: "client-2", name: "StartupXYZ" },
+                              ];
+                              const client = clients.find(
+                                (c) => c.id === value,
+                              );
+                              setNewTask((prev) => ({
+                                ...prev,
+                                clientId: value,
+                                clientName: client?.name || "",
+                              }));
+                            }}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select client" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="client-1">TechCorp</SelectItem>
+                              <SelectItem value="client-2">
+                                StartupXYZ
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <Label>Sprint</Label>
+                          <Select
+                            value={newTask.sprintId}
+                            onValueChange={(value) =>
+                              setNewTask((prev) => ({
+                                ...prev,
+                                sprintId: value,
+                              }))
+                            }
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select sprint (optional)" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {sprints.map((sprint) => (
+                                <SelectItem key={sprint.id} value={sprint.id}>
+                                  {sprint.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label>Due Date</Label>
+                          <Input
+                            type="date"
+                            value={newTask.dueDate}
+                            onChange={(e) =>
+                              setNewTask((prev) => ({
+                                ...prev,
+                                dueDate: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
+                        <div>
+                          <Label>Estimated Hours</Label>
+                          <Input
+                            type="number"
+                            value={newTask.estimatedHours}
+                            onChange={(e) =>
+                              setNewTask((prev) => ({
+                                ...prev,
+                                estimatedHours: e.target.value,
+                              }))
+                            }
+                            placeholder="8"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          variant="outline"
+                          onClick={() => setIsCreateTaskDialogOpen(false)}
+                        >
+                          Cancel
+                        </Button>
+                        <Button onClick={handleCreateTask}>Create Task</Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
               </div>
-            </div>
-
-            {/* Search */}
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <Input
-                placeholder="Search tasks..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 w-80"
-              />
             </div>
           </div>
 
@@ -1892,11 +1608,18 @@ export default function AgencyTasks() {
                                       Add Task
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem>
+                                    <DropdownMenuItem
+                                      onClick={() => handleEditColumn(column)}
+                                    >
                                       <Edit className="h-4 w-4 mr-2" />
                                       Edit Column
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem className="text-red-600">
+                                    <DropdownMenuItem
+                                      className="text-red-600"
+                                      onClick={() =>
+                                        setColumnToDelete(column.id)
+                                      }
+                                    >
                                       <Trash className="h-4 w-4 mr-2" />
                                       Delete Column
                                     </DropdownMenuItem>
@@ -2107,8 +1830,6 @@ export default function AgencyTasks() {
                                                       {task.comments}
                                                     </div>
                                                   )}
-
-
                                               </div>
                                             </div>
                                           </div>
@@ -2169,6 +1890,7 @@ export default function AgencyTasks() {
                                 backgroundColor: currentPipeline?.columns.find(
                                   (c) => c.id === task.columnId,
                                 )?.color,
+                                color: "white",
                               }}
                             >
                               {
@@ -2202,6 +1924,33 @@ export default function AgencyTasks() {
                               {new Date(task.dueDate).toLocaleDateString()}
                             </div>
                           )}
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem>
+                                <Eye className="h-4 w-4 mr-2" />
+                                View Details
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => handleEditTask(task)}
+                              >
+                                <Edit className="h-4 w-4 mr-2" />
+                                Edit Task
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                className="text-red-600"
+                                onClick={() => setTaskToDelete(task.id)}
+                              >
+                                <Trash className="h-4 w-4 mr-2" />
+                                Delete Task
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </div>
                       </div>
                     </div>
@@ -2210,6 +1959,500 @@ export default function AgencyTasks() {
             </div>
           </div>
         )}
+
+        {/* Management Dialogs */}
+
+        {/* Edit Task Dialog */}
+        <Dialog
+          open={isEditTaskDialogOpen}
+          onOpenChange={setIsEditTaskDialogOpen}
+        >
+          <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Edit Task</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label>Task Title</Label>
+                <Input
+                  value={newTask.title}
+                  onChange={(e) =>
+                    setNewTask((prev) => ({
+                      ...prev,
+                      title: e.target.value,
+                    }))
+                  }
+                  placeholder="Enter task title..."
+                />
+              </div>
+              <div>
+                <Label>Description</Label>
+                <Textarea
+                  value={newTask.description}
+                  onChange={(e) =>
+                    setNewTask((prev) => ({
+                      ...prev,
+                      description: e.target.value,
+                    }))
+                  }
+                  placeholder="Task description..."
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label>Priority</Label>
+                  <Select
+                    value={newTask.priority}
+                    onValueChange={(
+                      value: "low" | "medium" | "high" | "urgent",
+                    ) => setNewTask((prev) => ({ ...prev, priority: value }))}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {TASK_PRIORITIES.map((priority) => (
+                        <SelectItem key={priority.value} value={priority.value}>
+                          <div className="flex items-center gap-2">
+                            <priority.icon className="h-4 w-4" />
+                            {priority.label}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label>Assignee</Label>
+                  <Select
+                    value={newTask.assignedTo}
+                    onValueChange={(value) => {
+                      const users = [
+                        {
+                          id: "user-1",
+                          name: "Sarah Johnson",
+                          email: "sarah@agency.com",
+                        },
+                        {
+                          id: "user-2",
+                          name: "Mike Chen",
+                          email: "mike@agency.com",
+                        },
+                        {
+                          id: "user-3",
+                          name: "Emma Davis",
+                          email: "emma@agency.com",
+                        },
+                      ];
+                      const user = users.find((u) => u.id === value);
+                      setNewTask((prev) => ({
+                        ...prev,
+                        assignedTo: value,
+                        assignedToName: user?.name || "",
+                        assignedToEmail: user?.email || "",
+                      }));
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select assignee" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="user-1">Sarah Johnson</SelectItem>
+                      <SelectItem value="user-2">Mike Chen</SelectItem>
+                      <SelectItem value="user-3">Emma Davis</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label>Client</Label>
+                  <Select
+                    value={newTask.clientId}
+                    onValueChange={(value) => {
+                      const clients = [
+                        { id: "client-1", name: "TechCorp" },
+                        { id: "client-2", name: "StartupXYZ" },
+                      ];
+                      const client = clients.find((c) => c.id === value);
+                      setNewTask((prev) => ({
+                        ...prev,
+                        clientId: value,
+                        clientName: client?.name || "",
+                      }));
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select client" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="client-1">TechCorp</SelectItem>
+                      <SelectItem value="client-2">StartupXYZ</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label>Sprint</Label>
+                  <Select
+                    value={newTask.sprintId}
+                    onValueChange={(value) =>
+                      setNewTask((prev) => ({ ...prev, sprintId: value }))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select sprint (optional)" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {sprints.map((sprint) => (
+                        <SelectItem key={sprint.id} value={sprint.id}>
+                          {sprint.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label>Due Date</Label>
+                  <Input
+                    type="date"
+                    value={newTask.dueDate}
+                    onChange={(e) =>
+                      setNewTask((prev) => ({
+                        ...prev,
+                        dueDate: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
+                <div>
+                  <Label>Estimated Hours</Label>
+                  <Input
+                    type="number"
+                    value={newTask.estimatedHours}
+                    onChange={(e) =>
+                      setNewTask((prev) => ({
+                        ...prev,
+                        estimatedHours: e.target.value,
+                      }))
+                    }
+                    placeholder="8"
+                  />
+                </div>
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setIsEditTaskDialogOpen(false);
+                    setEditingTask(null);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button onClick={handleUpdateTask}>Update Task</Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Create Pipeline Dialog */}
+        <Dialog
+          open={isCreatePipelineDialogOpen}
+          onOpenChange={setIsCreatePipelineDialogOpen}
+        >
+          <DialogContent className="sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Create New Board</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label>Board Name</Label>
+                <Input
+                  value={newPipeline.name}
+                  onChange={(e) =>
+                    setNewPipeline((prev) => ({
+                      ...prev,
+                      name: e.target.value,
+                    }))
+                  }
+                  placeholder="Development Board"
+                />
+              </div>
+              <div>
+                <Label>Description</Label>
+                <Textarea
+                  value={newPipeline.description}
+                  onChange={(e) =>
+                    setNewPipeline((prev) => ({
+                      ...prev,
+                      description: e.target.value,
+                    }))
+                  }
+                  placeholder="Board description..."
+                />
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setIsCreatePipelineDialogOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button onClick={handleCreatePipeline}>Create Board</Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Edit Pipeline Dialog */}
+        <Dialog
+          open={isEditPipelineDialogOpen}
+          onOpenChange={setIsEditPipelineDialogOpen}
+        >
+          <DialogContent className="sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Edit Board</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label>Board Name</Label>
+                <Input
+                  value={newPipeline.name}
+                  onChange={(e) =>
+                    setNewPipeline((prev) => ({
+                      ...prev,
+                      name: e.target.value,
+                    }))
+                  }
+                  placeholder="Development Board"
+                />
+              </div>
+              <div>
+                <Label>Description</Label>
+                <Textarea
+                  value={newPipeline.description}
+                  onChange={(e) =>
+                    setNewPipeline((prev) => ({
+                      ...prev,
+                      description: e.target.value,
+                    }))
+                  }
+                  placeholder="Board description..."
+                />
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setIsEditPipelineDialogOpen(false);
+                    setEditingPipeline(null);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button onClick={handleUpdatePipeline}>Update Board</Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Create Column Dialog */}
+        <Dialog
+          open={isCreateColumnDialogOpen}
+          onOpenChange={setIsCreateColumnDialogOpen}
+        >
+          <DialogContent className="sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Add Column</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label>Column Title</Label>
+                <Input
+                  value={newColumn.title}
+                  onChange={(e) =>
+                    setNewColumn((prev) => ({
+                      ...prev,
+                      title: e.target.value,
+                    }))
+                  }
+                  placeholder="In Testing"
+                />
+              </div>
+              <div>
+                <Label>Color</Label>
+                <Input
+                  type="color"
+                  value={newColumn.color}
+                  onChange={(e) =>
+                    setNewColumn((prev) => ({
+                      ...prev,
+                      color: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setIsCreateColumnDialogOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button onClick={handleCreateColumn}>Add Column</Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Edit Column Dialog */}
+        <Dialog
+          open={isEditColumnDialogOpen}
+          onOpenChange={setIsEditColumnDialogOpen}
+        >
+          <DialogContent className="sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Edit Column</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label>Column Title</Label>
+                <Input
+                  value={newColumn.title}
+                  onChange={(e) =>
+                    setNewColumn((prev) => ({
+                      ...prev,
+                      title: e.target.value,
+                    }))
+                  }
+                  placeholder="In Testing"
+                />
+              </div>
+              <div>
+                <Label>Color</Label>
+                <Input
+                  type="color"
+                  value={newColumn.color}
+                  onChange={(e) =>
+                    setNewColumn((prev) => ({
+                      ...prev,
+                      color: e.target.value,
+                    }))
+                  }
+                />
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setIsEditColumnDialogOpen(false);
+                    setEditingColumn(null);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button onClick={handleUpdateColumn}>Update Column</Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Delete Confirmations */}
+        <Dialog
+          open={!!taskToDelete}
+          onOpenChange={() => setTaskToDelete(null)}
+        >
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Delete Task</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <p className="text-gray-600">
+                Are you sure you want to delete this task? This action cannot be
+                undone.
+              </p>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setTaskToDelete(null)}>
+                  Cancel
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() => taskToDelete && handleDeleteTask(taskToDelete)}
+                >
+                  Delete Task
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog
+          open={!!pipelineToDelete}
+          onOpenChange={() => setPipelineToDelete(null)}
+        >
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Delete Board</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <p className="text-gray-600">
+                Are you sure you want to delete this board? All tasks will be
+                moved to another board.
+              </p>
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setPipelineToDelete(null)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() =>
+                    pipelineToDelete && handleDeletePipeline(pipelineToDelete)
+                  }
+                >
+                  Delete Board
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog
+          open={!!columnToDelete}
+          onOpenChange={() => setColumnToDelete(null)}
+        >
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Delete Column</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <p className="text-gray-600">
+                Are you sure you want to delete this column? All tasks will be
+                moved to the first column.
+              </p>
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setColumnToDelete(null)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() =>
+                    columnToDelete && handleDeleteColumn(columnToDelete)
+                  }
+                >
+                  Delete Column
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </AgencyLayout>
   );
