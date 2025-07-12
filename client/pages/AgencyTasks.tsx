@@ -720,6 +720,188 @@ export default function AgencyTasks() {
     toast.success("Task deleted successfully");
   };
 
+  const handleCreatePipeline = () => {
+    if (!newPipeline.name.trim()) {
+      toast.error("Pipeline name is required");
+      return;
+    }
+
+    const pipeline: TaskPipeline = {
+      id: `pipeline-${Date.now()}`,
+      name: newPipeline.name,
+      description: newPipeline.description,
+      isDefault: false,
+      createdAt: new Date().toISOString(),
+      columns: DEFAULT_PIPELINES[0].columns.map((col) => ({
+        ...col,
+        id: `${Date.now()}-${col.id}`,
+      })),
+    };
+
+    setPipelines((prev) => [...prev, pipeline]);
+    setNewPipeline({ name: "", description: "" });
+    setIsCreatePipelineDialogOpen(false);
+    toast.success("Pipeline created successfully");
+  };
+
+  const handleEditPipeline = (pipeline: TaskPipeline) => {
+    setEditingPipeline(pipeline);
+    setNewPipeline({
+      name: pipeline.name,
+      description: pipeline.description || "",
+    });
+    setIsEditPipelineDialogOpen(true);
+  };
+
+  const handleUpdatePipeline = () => {
+    if (!editingPipeline || !newPipeline.name.trim()) {
+      toast.error("Pipeline name is required");
+      return;
+    }
+
+    const updatedPipeline = {
+      ...editingPipeline,
+      name: newPipeline.name,
+      description: newPipeline.description,
+    };
+
+    setPipelines((prev) =>
+      prev.map((p) => (p.id === editingPipeline.id ? updatedPipeline : p)),
+    );
+    setEditingPipeline(null);
+    setNewPipeline({ name: "", description: "" });
+    setIsEditPipelineDialogOpen(false);
+    toast.success("Pipeline updated successfully");
+  };
+
+  const handleDeletePipeline = (pipelineId: string) => {
+    if (pipelines.length <= 1) {
+      toast.error("Cannot delete the last pipeline");
+      return;
+    }
+
+    // Move tasks to the first remaining pipeline
+    const remainingPipeline = pipelines.find((p) => p.id !== pipelineId);
+    if (remainingPipeline) {
+      setTasks((prev) =>
+        prev.map((task) =>
+          task.pipelineId === pipelineId
+            ? {
+                ...task,
+                pipelineId: remainingPipeline.id,
+                columnId: remainingPipeline.columns[0].id,
+              }
+            : task,
+        ),
+      );
+    }
+
+    setPipelines((prev) => prev.filter((p) => p.id !== pipelineId));
+
+    // Switch to remaining pipeline if deleting current one
+    if (currentPipelineId === pipelineId && remainingPipeline) {
+      setCurrentPipelineId(remainingPipeline.id);
+    }
+
+    setPipelineToDelete(null);
+    toast.success("Pipeline deleted successfully");
+  };
+
+  const handleCreateColumn = () => {
+    if (!newColumn.title.trim() || !currentPipeline) {
+      toast.error("Column title is required");
+      return;
+    }
+
+    const column: TaskColumn = {
+      id: `column-${Date.now()}`,
+      title: newColumn.title,
+      color: newColumn.color,
+      order: currentPipeline.columns.length + 1,
+    };
+
+    const updatedPipeline = {
+      ...currentPipeline,
+      columns: [...currentPipeline.columns, column],
+    };
+
+    setPipelines((prev) =>
+      prev.map((p) => (p.id === currentPipeline.id ? updatedPipeline : p)),
+    );
+    setNewColumn({ title: "", color: "#3B82F6" });
+    setIsCreateColumnDialogOpen(false);
+    toast.success("Column created successfully");
+  };
+
+  const handleEditColumn = (column: TaskColumn) => {
+    setEditingColumn(column);
+    setNewColumn({
+      title: column.title,
+      color: column.color,
+    });
+    setIsEditColumnDialogOpen(true);
+  };
+
+  const handleUpdateColumn = () => {
+    if (!editingColumn || !newColumn.title.trim() || !currentPipeline) {
+      toast.error("Column title is required");
+      return;
+    }
+
+    const updatedColumn = {
+      ...editingColumn,
+      title: newColumn.title,
+      color: newColumn.color,
+    };
+
+    const updatedPipeline = {
+      ...currentPipeline,
+      columns: currentPipeline.columns.map((col) =>
+        col.id === editingColumn.id ? updatedColumn : col,
+      ),
+    };
+
+    setPipelines((prev) =>
+      prev.map((p) => (p.id === currentPipeline.id ? updatedPipeline : p)),
+    );
+    setEditingColumn(null);
+    setNewColumn({ title: "", color: "#3B82F6" });
+    setIsEditColumnDialogOpen(false);
+    toast.success("Column updated successfully");
+  };
+
+  const handleDeleteColumn = (columnId: string) => {
+    if (!currentPipeline || currentPipeline.columns.length <= 2) {
+      toast.error("Pipeline must have at least 2 columns");
+      return;
+    }
+
+    // Move tasks to the first column
+    const firstColumn = currentPipeline.columns.find(
+      (col) => col.id !== columnId,
+    );
+    if (firstColumn) {
+      setTasks((prev) =>
+        prev.map((task) =>
+          task.columnId === columnId
+            ? { ...task, columnId: firstColumn.id }
+            : task,
+        ),
+      );
+    }
+
+    const updatedPipeline = {
+      ...currentPipeline,
+      columns: currentPipeline.columns.filter((col) => col.id !== columnId),
+    };
+
+    setPipelines((prev) =>
+      prev.map((p) => (p.id === currentPipeline.id ? updatedPipeline : p)),
+    );
+    setColumnToDelete(null);
+    toast.success("Column deleted successfully");
+  };
+
   if (isLoading) {
     return (
       <AgencyLayout>
