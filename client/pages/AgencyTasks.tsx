@@ -229,6 +229,8 @@ export default function AgencyTasks() {
     useState(false);
   const [editingTask, setEditingTask] = useState<AgencyTask | null>(null);
   const [editingSprint, setEditingSprint] = useState<AgencySprint | null>(null);
+  const [isEditTaskDialogOpen, setIsEditTaskDialogOpen] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
 
   // Form state
   const [newTask, setNewTask] = useState({
