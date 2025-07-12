@@ -553,7 +553,6 @@ export default function AgencyTasks() {
       sprintId: "",
       dueDate: "",
       estimatedHours: "",
-      storyPoints: "",
       category: "",
       tags: [],
       newTag: "",
