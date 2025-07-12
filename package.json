@@ -21,9 +21,8 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@types/react-beautiful-dnd": "^13.1.8",
+    "@hello-pangea/dnd": "^18.0.1",
     "express": "^4.18.2",
-    "react-beautiful-dnd": "^13.1.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {
