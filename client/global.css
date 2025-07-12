@@ -48,6 +48,45 @@ html {
   background: hsl(var(--background));
 }
 
+/* System-wide scrolling improvements */
+body {
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+/* Ensure containers don't constrain content */
+#root {
+  min-height: 100vh;
+  width: 100%;
+  overflow: visible;
+}
+
+/* Prevent content cutoff on small screens */
+.overflow-x-auto {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted-foreground) / 0.3) hsl(var(--muted));
+}
+
+/* Smooth scrolling for horizontal content */
+.overflow-x-auto {
+  scroll-behavior: smooth;
+}
+
+/* Mobile safe areas */
+.mobile-bottom-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Ensure kanban boards don't get cut off */
+.kanban-container {
+  min-width: max-content;
+}
+
+/* List view responsive table */
+.responsive-table {
+  min-width: 800px;
+}
+
 /* Mobile viewport and safe area support */
 @supports (height: 100dvh) {
   .min-h-screen {
