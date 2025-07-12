@@ -2076,10 +2076,10 @@ export default function AgencyTasks() {
                             </div>
 
                             {/* Tasks in Column */}
-                            {columnTasks.map((task) => (
+                            {sortTasks(columnTasks).map((task) => (
                               <div
                                 key={task.id}
-                                className="grid grid-cols-12 gap-4 p-3 hover:bg-gray-50 border-b border-gray-50 last:border-b-0"
+                                className="grid grid-cols-12 gap-4 p-2 hover:bg-gray-50 border-b border-gray-50 last:border-b-0"
                               >
                                 {/* Name */}
                                 <div className="col-span-4 flex items-center gap-3">
