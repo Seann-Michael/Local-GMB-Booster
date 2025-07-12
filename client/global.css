@@ -85,8 +85,8 @@ body {
 
 /* Kanban columns should maintain their width */
 .kanban-column {
-  min-width: 320px;
-  width: 320px;
+  min-width: 240px;
+  width: 240px;
   flex-shrink: 0;
 }
 
