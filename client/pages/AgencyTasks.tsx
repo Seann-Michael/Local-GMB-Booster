@@ -1466,12 +1466,21 @@ export default function AgencyTasks() {
                                                     <Eye className="h-4 w-4 mr-2" />
                                                     View Details
                                                   </DropdownMenuItem>
-                                                  <DropdownMenuItem>
+                                                  <DropdownMenuItem
+                                                    onClick={() =>
+                                                      handleEditTask(task)
+                                                    }
+                                                  >
                                                     <Edit className="h-4 w-4 mr-2" />
                                                     Edit Task
                                                   </DropdownMenuItem>
                                                   <DropdownMenuSeparator />
-                                                  <DropdownMenuItem className="text-red-600">
+                                                  <DropdownMenuItem
+                                                    className="text-red-600"
+                                                    onClick={() =>
+                                                      setTaskToDelete(task.id)
+                                                    }
+                                                  >
                                                     <Trash className="h-4 w-4 mr-2" />
                                                     Delete Task
                                                   </DropdownMenuItem>
