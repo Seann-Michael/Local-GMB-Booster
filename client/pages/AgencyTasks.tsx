@@ -1785,9 +1785,9 @@ export default function AgencyTasks() {
                                             </div>
 
                                             {/* Task Footer */}
-                                            <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
-                                              <div className="flex items-center gap-1">
-                                                <Avatar className="h-5 w-5">
+                                            <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
+                                              <div className="flex items-center gap-2">
+                                                <Avatar className="h-6 w-6">
                                                   <AvatarImage
                                                     src={task.assignedToAvatar}
                                                   />
@@ -1801,13 +1801,13 @@ export default function AgencyTasks() {
 
                                                 {task.dueDate && (
                                                   <div
-                                                    className={`flex items-center gap-0.5 text-xs ${
+                                                    className={`flex items-center gap-1 text-xs ${
                                                       isTaskOverdue(task)
                                                         ? "text-red-600"
                                                         : "text-gray-500"
                                                     }`}
                                                   >
-                                                    <Calendar className="h-2.5 w-2.5" />
+                                                    <Calendar className="h-3 w-3" />
                                                     {new Date(
                                                       task.dueDate,
                                                     ).toLocaleDateString(
@@ -1821,19 +1821,19 @@ export default function AgencyTasks() {
                                                 )}
                                               </div>
 
-                                              <div className="flex items-center gap-1">
+                                              <div className="flex items-center gap-2">
                                                 {task.attachments &&
                                                   task.attachments > 0 && (
-                                                    <div className="flex items-center gap-0.5 text-xs text-gray-500">
-                                                      <Paperclip className="h-2.5 w-2.5" />
+                                                    <div className="flex items-center gap-1 text-xs text-gray-500">
+                                                      <Paperclip className="h-3 w-3" />
                                                       {task.attachments}
                                                     </div>
                                                   )}
 
                                                 {task.comments &&
                                                   task.comments > 0 && (
-                                                    <div className="flex items-center gap-0.5 text-xs text-gray-500">
-                                                      <MessageSquare className="h-2.5 w-2.5" />
+                                                    <div className="flex items-center gap-1 text-xs text-gray-500">
+                                                      <MessageSquare className="h-3 w-3" />
                                                       {task.comments}
                                                     </div>
                                                   )}
