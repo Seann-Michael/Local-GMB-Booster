@@ -1864,98 +1864,281 @@ export default function AgencyTasks() {
           </div>
         )}
 
-        {/* List View */}
+        {/* List View - ClickUp Style */}
         {view === "list" && (
           <div className="flex-1 overflow-auto p-6">
             <div className="bg-white rounded-lg border border-gray-200">
-              <div className="p-4 border-b border-gray-200">
-                <h3 className="font-semibold text-gray-900">Task List</h3>
+              {/* Table Header */}
+              <div className="border-b border-gray-200 bg-gray-50">
+                <div className="grid grid-cols-12 gap-4 p-4 text-sm font-medium text-gray-700">
+                  <div className="col-span-4">Name</div>
+                  <div className="col-span-2">Assignee</div>
+                  <div className="col-span-2">Due date</div>
+                  <div className="col-span-1">Priority</div>
+                  <div className="col-span-2">Status</div>
+                  <div className="col-span-1">Actions</div>
+                </div>
               </div>
+
+              {/* Pipeline Groups */}
               <div className="divide-y divide-gray-100">
-                {tasks
-                  .filter((task) => task.pipelineId === currentPipelineId)
-                  .map((task) => (
-                    <div key={task.id} className="p-4 hover:bg-gray-50">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-2">
-                            <Badge
-                              className={`text-xs ${getPriorityColor(task.priority)}`}
-                            >
-                              {task.priority.toUpperCase()}
-                            </Badge>
-                            <Badge
-                              variant="outline"
-                              style={{
-                                backgroundColor: currentPipeline?.columns.find(
-                                  (c) => c.id === task.columnId,
-                                )?.color,
-                                color: "white",
-                              }}
-                            >
-                              {
-                                currentPipeline?.columns.find(
-                                  (c) => c.id === task.columnId,
-                                )?.title
-                              }
-                            </Badge>
-                          </div>
-                          <div>
-                            <h4 className="font-medium text-gray-900">
-                              {task.title}
-                            </h4>
-                            <p className="text-sm text-gray-600">
-                              {task.description}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-4">
-                          <Avatar className="h-8 w-8">
-                            <AvatarImage src={task.assignedToAvatar} />
-                            <AvatarFallback>
-                              {task.assignedToName
-                                .split(" ")
-                                .map((n) => n[0])
-                                .join("")}
-                            </AvatarFallback>
-                          </Avatar>
-                          {task.dueDate && (
-                            <div className="text-sm text-gray-500">
-                              {new Date(task.dueDate).toLocaleDateString()}
-                            </div>
-                          )}
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="sm">
-                                <MoreHorizontal className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuItem>
-                                <Eye className="h-4 w-4 mr-2" />
-                                View Details
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                onClick={() => handleEditTask(task)}
-                              >
-                                <Edit className="h-4 w-4 mr-2" />
-                                Edit Task
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem
-                                className="text-red-600"
-                                onClick={() => setTaskToDelete(task.id)}
-                              >
-                                <Trash className="h-4 w-4 mr-2" />
-                                Delete Task
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+                {pipelines.map((pipeline) => {
+                  const pipelineTasks = tasks.filter(
+                    (task) => task.pipelineId === pipeline.id,
+                  );
+
+                  if (pipelineTasks.length === 0) return null;
+
+                  return (
+                    <div key={pipeline.id} className="bg-white">
+                      {/* Pipeline Header */}
+                      <div className="bg-gray-50 border-b border-gray-100 p-3">
+                        <div className="flex items-center gap-3">
+                          <FolderKanban className="h-4 w-4 text-gray-600" />
+                          <span className="font-semibold text-gray-900">
+                            {pipeline.name}
+                          </span>
+                          <Badge variant="outline" className="text-xs">
+                            {pipelineTasks.length} tasks
+                          </Badge>
                         </div>
                       </div>
+
+                      {/* Column Groups within Pipeline */}
+                      {pipeline.columns.map((column) => {
+                        const columnTasks = pipelineTasks.filter(
+                          (task) =>
+                            task.columnId === column.id &&
+                            (filters.sprint === "all" ||
+                              task.sprintId === filters.sprint ||
+                              (filters.sprint === "no-sprint" &&
+                                !task.sprintId)) &&
+                            (filters.priority === "all" ||
+                              task.priority === filters.priority) &&
+                            (filters.assignedTo === "all" ||
+                              task.assignedTo === filters.assignedTo) &&
+                            (filters.client === "all" ||
+                              task.clientId === filters.client) &&
+                            (filters.project === "all" ||
+                              task.projectId === filters.project) &&
+                            (searchQuery === "" ||
+                              task.title
+                                .toLowerCase()
+                                .includes(searchQuery.toLowerCase()) ||
+                              task.description
+                                ?.toLowerCase()
+                                .includes(searchQuery.toLowerCase()) ||
+                              task.tags?.some((tag) =>
+                                tag
+                                  .toLowerCase()
+                                  .includes(searchQuery.toLowerCase()),
+                              )),
+                        );
+
+                        if (columnTasks.length === 0) return null;
+
+                        return (
+                          <div
+                            key={column.id}
+                            className="border-l-4"
+                            style={{ borderLeftColor: column.color }}
+                          >
+                            {/* Column Header */}
+                            <div className="bg-gray-25 p-3 border-b border-gray-50">
+                              <div className="flex items-center gap-3">
+                                <ChevronDown className="h-4 w-4 text-gray-500" />
+                                <div
+                                  className="w-3 h-3 rounded-full"
+                                  style={{ backgroundColor: column.color }}
+                                />
+                                <span className="font-medium text-gray-700 uppercase text-xs tracking-wide">
+                                  {column.title}
+                                </span>
+                                <Badge
+                                  variant="secondary"
+                                  className="text-xs bg-gray-100"
+                                  style={{ color: column.color }}
+                                >
+                                  {columnTasks.length}
+                                </Badge>
+                              </div>
+                            </div>
+
+                            {/* Tasks in Column */}
+                            {columnTasks.map((task) => (
+                              <div
+                                key={task.id}
+                                className="grid grid-cols-12 gap-4 p-3 hover:bg-gray-50 border-b border-gray-50 last:border-b-0"
+                              >
+                                {/* Name */}
+                                <div className="col-span-4 flex items-center gap-3">
+                                  <div className="w-4 h-4 border border-gray-300 rounded"></div>
+                                  <div className="flex-1 min-w-0">
+                                    <h4 className="font-medium text-gray-900 truncate">
+                                      {task.title}
+                                    </h4>
+                                    {task.description && (
+                                      <p className="text-sm text-gray-500 truncate">
+                                        {task.description}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+
+                                {/* Assignee */}
+                                <div className="col-span-2 flex items-center">
+                                  <div className="flex items-center gap-2">
+                                    <Avatar className="h-6 w-6">
+                                      <AvatarImage
+                                        src={task.assignedToAvatar}
+                                      />
+                                      <AvatarFallback className="text-xs">
+                                        {task.assignedToName
+                                          .split(" ")
+                                          .map((n) => n[0])
+                                          .join("")}
+                                      </AvatarFallback>
+                                    </Avatar>
+                                    <span className="text-sm text-gray-700 truncate">
+                                      {task.assignedToName}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                {/* Due Date */}
+                                <div className="col-span-2 flex items-center">
+                                  {task.dueDate ? (
+                                    <div
+                                      className={`flex items-center gap-1 text-sm ${
+                                        isTaskOverdue(task)
+                                          ? "text-red-600"
+                                          : "text-gray-600"
+                                      }`}
+                                    >
+                                      <Calendar className="h-4 w-4" />
+                                      {new Date(
+                                        task.dueDate,
+                                      ).toLocaleDateString("en-US", {
+                                        month: "short",
+                                        day: "numeric",
+                                      })}
+                                    </div>
+                                  ) : (
+                                    <span className="text-gray-400 text-sm">
+                                      -
+                                    </span>
+                                  )}
+                                </div>
+
+                                {/* Priority */}
+                                <div className="col-span-1 flex items-center">
+                                  <Badge
+                                    className={`text-xs ${getPriorityColor(task.priority)}`}
+                                  >
+                                    {task.priority === "urgent" && "🔴"}
+                                    {task.priority === "high" && "🟡"}
+                                    {task.priority === "medium" && "🔵"}
+                                    {task.priority === "low" && "⚪"}
+                                  </Badge>
+                                </div>
+
+                                {/* Status */}
+                                <div className="col-span-2 flex items-center">
+                                  <Badge
+                                    variant="outline"
+                                    className="text-xs"
+                                    style={{
+                                      backgroundColor: `${column.color}15`,
+                                      borderColor: column.color,
+                                      color: column.color,
+                                    }}
+                                  >
+                                    {column.title}
+                                  </Badge>
+                                </div>
+
+                                {/* Actions */}
+                                <div className="col-span-1 flex items-center justify-end">
+                                  <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        className="h-6 w-6 p-0"
+                                      >
+                                        <MoreHorizontal className="h-4 w-4" />
+                                      </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                      <DropdownMenuItem>
+                                        <Eye className="h-4 w-4 mr-2" />
+                                        View Details
+                                      </DropdownMenuItem>
+                                      <DropdownMenuItem
+                                        onClick={() => handleEditTask(task)}
+                                      >
+                                        <Edit className="h-4 w-4 mr-2" />
+                                        Edit Task
+                                      </DropdownMenuItem>
+                                      <DropdownMenuSeparator />
+                                      <DropdownMenuItem
+                                        className="text-red-600"
+                                        onClick={() => setTaskToDelete(task.id)}
+                                      >
+                                        <Trash className="h-4 w-4 mr-2" />
+                                        Delete Task
+                                      </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                  </DropdownMenu>
+                                </div>
+                              </div>
+                            ))}
+
+                            {/* Add Task Button for Column */}
+                            <div className="p-3 border-b border-gray-50 last:border-b-0">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="w-full justify-start text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                                onClick={() => setIsCreateTaskDialogOpen(true)}
+                              >
+                                <Plus className="h-4 w-4 mr-2" />
+                                Add Task
+                              </Button>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
-                  ))}
+                  );
+                })}
               </div>
+
+              {/* Empty State */}
+              {tasks.length === 0 && (
+                <div className="p-12 text-center">
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+                      <CheckCircle className="h-8 w-8 text-gray-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-medium text-gray-900 mb-2">
+                        No tasks yet
+                      </h3>
+                      <p className="text-gray-500 mb-4">
+                        Get started by creating your first task
+                      </p>
+                      <Button
+                        onClick={() => setIsCreateTaskDialogOpen(true)}
+                        className="bg-purple-600 hover:bg-purple-700"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Create Task
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
