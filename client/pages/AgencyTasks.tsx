@@ -1660,13 +1660,15 @@ export default function AgencyTasks() {
                                             }`}
                                           >
                                             {/* Task Header */}
-                                            <div className="flex items-start justify-between mb-3">
-                                              <div className="flex items-center gap-2">
+                                            <div className="flex items-start justify-between mb-2">
+                                              <div className="flex items-center gap-1 flex-wrap">
                                                 <Badge
-                                                  className={`text-xs ${getPriorityColor(task.priority)}`}
+                                                  className={`text-xs px-1 py-0.5 ${getPriorityColor(task.priority)}`}
                                                 >
-                                                  <Flag className="h-3 w-3 mr-1" />
-                                                  {task.priority.toUpperCase()}
+                                                  <Flag className="h-2.5 w-2.5 mr-0.5" />
+                                                  {task.priority
+                                                    .charAt(0)
+                                                    .toUpperCase()}
                                                 </Badge>
                                                 {task.sprintName && (
                                                   <Badge
