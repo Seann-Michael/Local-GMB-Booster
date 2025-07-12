@@ -452,7 +452,7 @@ export default function AgencyProjects() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={(e) => e.preventDefault()}
+                        onClick={(e) => e.stopPropagation()}
                       >
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
