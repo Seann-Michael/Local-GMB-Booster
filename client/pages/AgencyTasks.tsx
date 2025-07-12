@@ -1553,7 +1553,7 @@ export default function AgencyTasks() {
         {view === "kanban" && currentPipeline && (
           <div className="w-full">
             <DragDropContext onDragEnd={handleDragEnd}>
-              <div className="overflow-x-auto overflow-y-auto p-6 w-full">
+              <div className="overflow-x-auto overflow-y-auto p-4 w-full">
                 <Droppable
                   droppableId="board"
                   type="column"
@@ -1563,7 +1563,7 @@ export default function AgencyTasks() {
                     <div
                       ref={provided.innerRef}
                       {...provided.droppableProps}
-                      className="flex gap-6 min-h-[600px]"
+                      className="flex gap-4 min-h-[600px]"
                       style={{ width: "max-content", minWidth: "100%" }}
                     >
                       {currentPipeline.columns
