@@ -120,7 +120,6 @@ interface AgencyTask {
   completedDate?: string;
   estimatedHours?: number;
   actualHours?: number;
-  storyPoints?: number;
   createdBy: string;
   category?: string;
   tags?: string[];
