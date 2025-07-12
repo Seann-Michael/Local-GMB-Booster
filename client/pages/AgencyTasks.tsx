@@ -1811,15 +1811,6 @@ export default function AgencyTasks() {
                                                       {task.comments}
                                                     </div>
                                                   )}
-
-                                                {task.storyPoints && (
-                                                  <Badge
-                                                    variant="secondary"
-                                                    className="text-xs"
-                                                  >
-                                                    {task.storyPoints}sp
-                                                  </Badge>
-                                                )}
                                               </div>
                                             </div>
                                           </div>
