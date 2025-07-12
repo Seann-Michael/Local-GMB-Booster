@@ -80,11 +80,35 @@ body {
 /* Ensure kanban boards don't get cut off */
 .kanban-container {
   min-width: max-content;
+  width: max-content;
+}
+
+/* Kanban columns should maintain their width */
+.kanban-column {
+  min-width: 320px;
+  width: 320px;
+  flex-shrink: 0;
 }
 
 /* List view responsive table */
 .responsive-table {
-  min-width: 800px;
+  min-width: 1200px;
+  width: max-content;
+}
+
+/* Ensure content can scroll horizontally */
+.horizontal-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+/* Force full width for main containers */
+.full-width-container {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  padding-left: calc(50vw - 50%);
+  padding-right: calc(50vw - 50%);
 }
 
 /* Mobile viewport and safe area support */
