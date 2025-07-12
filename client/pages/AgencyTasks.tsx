@@ -220,6 +220,10 @@ export default function AgencyTasks() {
   });
   const [showFilters, setShowFilters] = useState(false);
 
+  // Sorting for list view
+  const [sortBy, setSortBy] = useState<string>("name");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+
   // Dialog states
   const [isCreateTaskDialogOpen, setIsCreateTaskDialogOpen] = useState(false);
   const [isCreateSprintDialogOpen, setIsCreateSprintDialogOpen] =
