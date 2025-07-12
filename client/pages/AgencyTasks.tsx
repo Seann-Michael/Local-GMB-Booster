@@ -364,7 +364,6 @@ export default function AgencyTasks() {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         estimatedHours: 6,
-        storyPoints: 3,
         createdBy: "admin",
         category: "content",
         tags: ["strategy", "content", "marketing"],
