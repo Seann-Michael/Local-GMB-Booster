@@ -755,24 +755,24 @@ export default function AgencyTasks() {
             </div>
 
             <div className="flex items-center gap-3">
-              {/* View Toggle */}
-              <div className="flex items-center bg-gray-100 rounded-lg p-1">
+              {/* View Toggle - Always visible */}
+              <div className="flex items-center bg-gray-100 rounded-lg p-1 shadow-sm">
                 <Button
                   variant={view === "kanban" ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setView("kanban")}
-                  className="px-3"
+                  className="px-4 py-2 font-medium"
                 >
-                  <Kanban className="h-4 w-4 mr-1" />
+                  <Kanban className="h-4 w-4 mr-2" />
                   Board
                 </Button>
                 <Button
                   variant={view === "list" ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setView("list")}
-                  className="px-3"
+                  className="px-4 py-2 font-medium"
                 >
-                  <List className="h-4 w-4 mr-1" />
+                  <List className="h-4 w-4 mr-2" />
                   List
                 </Button>
               </div>
