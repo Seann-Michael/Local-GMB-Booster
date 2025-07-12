@@ -230,6 +230,23 @@ export default function AgencyTasks() {
   const [editingSprint, setEditingSprint] = useState<AgencySprint | null>(null);
   const [isEditTaskDialogOpen, setIsEditTaskDialogOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
+  const [isEditPipelineDialogOpen, setIsEditPipelineDialogOpen] =
+    useState(false);
+  const [isEditColumnDialogOpen, setIsEditColumnDialogOpen] = useState(false);
+  const [editingPipeline, setEditingPipeline] = useState<TaskPipeline | null>(
+    null,
+  );
+  const [editingColumn, setEditingColumn] = useState<TaskColumn | null>(null);
+  const [pipelineToDelete, setPipelineToDelete] = useState<string | null>(null);
+  const [columnToDelete, setColumnToDelete] = useState<string | null>(null);
+  const [newPipeline, setNewPipeline] = useState({
+    name: "",
+    description: "",
+  });
+  const [newColumn, setNewColumn] = useState({
+    title: "",
+    color: "#3B82F6",
+  });
 
   // Form state
   const [newTask, setNewTask] = useState({
