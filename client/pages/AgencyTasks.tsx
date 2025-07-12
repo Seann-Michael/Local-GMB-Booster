@@ -926,7 +926,129 @@ export default function AgencyTasks() {
             </div>
 
             <div className="flex items-center gap-3">
-                <DialogContent className="sm:max-w-lg">
+            </div>
+          </div>
+
+          {/* Controls Row with Actions - Visible on both Board and List */}
+          <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+              {/* Pipeline Selector */}
+              <Select
+                value={currentPipelineId}
+                onValueChange={setCurrentPipelineId}
+              >
+                <SelectTrigger className="w-48">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {pipelines.map((pipeline) => (
+                    <SelectItem key={pipeline.id} value={pipeline.id}>
+                      <div className="flex items-center gap-2">
+                        <FolderKanban className="h-4 w-4" />
+                        {pipeline.name}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* Pipeline Management */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Settings className="h-4 w-4 mr-2" />
+                    Manage Boards
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem onClick={() => setIsCreatePipelineDialogOpen(true)}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    New Board
+                  </DropdownMenuItem>
+                  {currentPipeline && (
+                    <>
+                      <DropdownMenuItem onClick={() => handleEditPipeline(currentPipeline)}>
+                        <Edit className="h-4 w-4 mr-2" />
+                        Edit Board
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => setIsCreateColumnDialogOpen(true)}>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Column
+                      </DropdownMenuItem>
+                      {!currentPipeline.isDefault && (
+                        <DropdownMenuItem
+                          className="text-red-600"
+                          onClick={() => setPipelineToDelete(currentPipeline.id)}
+                        >
+                          <Trash className="h-4 w-4 mr-2" />
+                          Delete Board
+                        </DropdownMenuItem>
+                      )}
+                    </>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Filter Toggle */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowFilters(!showFilters)}
+                className={showFilters ? "bg-gray-100" : ""}
+              >
+                <Filter className="h-4 w-4 mr-2" />
+                Filters
+              </Button>
+
+              {/* View Toggle - Prominent position */}
+              <div className="flex items-center bg-gray-100 rounded-lg p-1 shadow-sm border">
+                <Button
+                  variant={view === "kanban" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setView("kanban")}
+                  className="px-4 py-2 font-medium"
+                >
+                  <Kanban className="h-4 w-4 mr-2" />
+                  Board
+                </Button>
+                <Button
+                  variant={view === "list" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setView("list")}
+                  className="px-4 py-2 font-medium"
+                >
+                  <List className="h-4 w-4 mr-2" />
+                  List
+                </Button>
+              </div>
+            </div>
+
+            {/* Right side actions and search */}
+            <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+              {/* Search */}
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  placeholder="Search tasks..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 w-80"
+                />
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-2">
+                <Dialog
+                  open={isCreateSprintDialogOpen}
+                  onOpenChange={setIsCreateSprintDialogOpen}
+                >
+                  <DialogTrigger asChild>
+                    <Button variant="outline" size="sm">
+                      <Rocket className="h-4 w-4 mr-2" />
+                      New Sprint
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-lg">
                   <DialogHeader>
                     <DialogTitle>Create New Sprint</DialogTitle>
                   </DialogHeader>
