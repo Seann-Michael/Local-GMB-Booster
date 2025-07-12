@@ -704,8 +704,13 @@ export function AgencyLayout({ children }: AgencyLayoutProps) {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-auto">
-          <div className="min-h-full w-full mobile-bottom-safe">{children}</div>
+        <main className="flex-1 overflow-auto w-full">
+          <div
+            className="w-full mobile-bottom-safe"
+            style={{ minWidth: "max-content" }}
+          >
+            {children}
+          </div>
         </main>
 
         {/* Mobile Bottom Navigation */}
