@@ -1563,7 +1563,7 @@ export default function AgencyTasks() {
                     <div
                       ref={provided.innerRef}
                       {...provided.droppableProps}
-                      className="flex gap-4 min-h-[600px]"
+                      className="flex gap-6 min-h-[600px]"
                       style={{ width: "max-content", minWidth: "100%" }}
                     >
                       {currentPipeline.columns
