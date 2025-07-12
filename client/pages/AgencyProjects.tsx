@@ -432,12 +432,11 @@ export default function AgencyProjects() {
         {/* Projects Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {filteredProjects.map((project) => (
-            <Link
+            <Card
               key={project.id}
-              to={`/agency/admin/projects/${project.id}`}
-              className="block"
+              className="hover:shadow-md transition-shadow cursor-pointer"
+              onClick={() => navigate(`/agency/admin/projects/${project.id}`)}
             >
-              <Card className="hover:shadow-md transition-shadow cursor-pointer">
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
