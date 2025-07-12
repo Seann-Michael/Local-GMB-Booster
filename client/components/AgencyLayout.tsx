@@ -472,10 +472,11 @@ export function AgencyLayout({ children }: AgencyLayoutProps) {
       {/* Desktop Sidebar */}
       <div
         className={cn(
-          "hidden md:flex md:flex-col md:fixed md:inset-y-0 md:left-0 bg-card border-r shadow-sm transition-all duration-300 z-30",
+          "hidden md:block md:fixed md:inset-y-0 md:left-0 bg-card border-r shadow-sm transition-all duration-300 z-30",
           sidebarCollapsed ? "md:w-16" : "md:w-60",
         )}
       >
+        <div className="flex flex-col h-full">
         {/* Desktop Sidebar Header */}
         <div
           className={cn(
