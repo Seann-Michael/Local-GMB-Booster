@@ -2175,9 +2175,9 @@ export default function AgencyTasks() {
                                       <Button
                                         variant="ghost"
                                         size="sm"
-                                        className="h-6 w-6 p-0"
+                                        className="h-5 w-5 p-0"
                                       >
-                                        <MoreHorizontal className="h-4 w-4" />
+                                        <MoreHorizontal className="h-3 w-3" />
                                       </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="end">
