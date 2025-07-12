@@ -1581,12 +1581,12 @@ export default function AgencyTasks() {
                                     className="w-3 h-3 rounded-full"
                                     style={{ backgroundColor: column.color }}
                                   />
-                                  <h3 className="font-semibold text-gray-900">
+                                  <h3 className="font-medium text-sm text-gray-900">
                                     {column.title}
                                   </h3>
                                   <Badge
                                     variant="secondary"
-                                    className="bg-gray-100 text-gray-700"
+                                    className="bg-gray-100 text-gray-700 text-xs"
                                   >
                                     {getTasksByColumn(column.id).length}
                                     {column.limit && `/${column.limit}`}
