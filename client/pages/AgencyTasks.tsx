@@ -1551,9 +1551,9 @@ export default function AgencyTasks() {
 
         {/* Kanban Board */}
         {view === "kanban" && currentPipeline && (
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 min-h-0">
             <DragDropContext onDragEnd={handleDragEnd}>
-              <div className="h-full overflow-x-auto overflow-y-hidden p-6">
+              <div className="h-full overflow-x-auto overflow-y-auto p-6">
                 <Droppable
                   droppableId="board"
                   type="column"
