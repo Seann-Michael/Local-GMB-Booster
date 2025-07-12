@@ -326,7 +326,6 @@ export default function AgencyTasks() {
         updatedAt: new Date().toISOString(),
         dueDate: "2024-12-20",
         estimatedHours: 12,
-        storyPoints: 8,
         createdBy: "admin",
         category: "development",
         tags: ["auth", "backend", "security"],
