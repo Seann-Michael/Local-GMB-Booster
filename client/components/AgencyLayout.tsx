@@ -251,6 +251,19 @@ export function AgencyLayout({ children }: AgencyLayoutProps) {
     };
   }, []);
 
+  // Lock body scroll when mobile sidebar is open
+  useEffect(() => {
+    if (mobileSidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileSidebarOpen]);
+
   const handleBusinessSwitch = (businessId: string) => {
     if (switchToBusiness(businessId)) {
       toast.success(
