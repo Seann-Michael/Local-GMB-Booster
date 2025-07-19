@@ -576,7 +576,7 @@ export function AgencyLayout({ children }: AgencyLayoutProps) {
         )}
       >
         {/* Header */}
-        <header className="sticky top-0 z-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
+        <header className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
           <div className="flex h-16 items-center gap-4 px-4">
             {/* Mobile Menu Button */}
             <Button
