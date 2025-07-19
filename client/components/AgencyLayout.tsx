@@ -387,7 +387,7 @@ export function AgencyLayout({ children }: AgencyLayoutProps) {
       {/* Mobile Sidebar Overlay */}
       {mobileSidebarOpen && (
         <div
-          className="md:hidden fixed inset-0 bg-black/50 z-40"
+          className="md:hidden fixed inset-0 bg-black/50 z-[60] backdrop-blur-sm"
           onClick={() => setMobileSidebarOpen(false)}
         />
       )}
@@ -395,7 +395,7 @@ export function AgencyLayout({ children }: AgencyLayoutProps) {
       {/* Mobile Sidebar */}
       <div
         className={cn(
-          "md:hidden fixed inset-y-0 left-0 z-50 w-60 bg-card border-r shadow-lg transform transition-transform duration-300 flex flex-col",
+          "md:hidden fixed inset-y-0 left-0 z-[70] w-60 bg-card border-r shadow-lg transform transition-transform duration-300 flex flex-col",
           mobileSidebarOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
