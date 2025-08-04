@@ -266,17 +266,17 @@ export default function AddProject() {
 
   return (
     <AppLayout>
-      <div className="container px-4 py-6">
+      <div className="container px-4 py-6 max-w-full overflow-x-hidden">
         <div className="flex items-center gap-4 mb-6">
           <Link to="/admin/projects">
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="min-h-[44px] min-w-[44px]">
               <ArrowLeft className="h-5 w-5" />
             </Button>
           </Link>
-          <h1 className="text-2xl font-bold">Add New Project</h1>
+          <h1 className="text-xl sm:text-2xl font-bold">Add New Project</h1>
         </div>
 
-        <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
+        <form onSubmit={handleSubmit} className="max-w-full sm:max-w-2xl mx-auto space-y-6">
           <Card>
             <CardHeader>
               <CardTitle>Project Details</CardTitle>
