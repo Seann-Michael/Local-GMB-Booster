@@ -535,8 +535,8 @@ export default function AdminReviews() {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="responsive-table">
-              <Table>
+            <div className="overflow-x-auto scrollbar-hide">
+              <Table className="min-w-[800px]">
                 <TableHeader>
                   <TableRow>
                     <TableHead
