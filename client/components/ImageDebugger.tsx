@@ -85,7 +85,7 @@ export function ImageDebugger({ projectId = "project-1" }: ImageDebuggerProps) {
   if (!debugInfo) return <div>Loading debug info...</div>;
 
   return (
-    <div className="fixed top-4 right-4 bg-white p-4 border rounded shadow-lg text-xs max-w-sm z-50">
+    <div className="fixed top-4 right-4 bg-white p-4 border rounded shadow-lg text-xs max-w-sm z-50 max-h-96 overflow-y-auto">
       <h3 className="font-bold mb-2">Image Debug Info</h3>
       <div className="space-y-1">
         <div>Project ID: {debugInfo.projectId}</div>
@@ -94,20 +94,27 @@ export function ImageDebugger({ projectId = "project-1" }: ImageDebuggerProps) {
         <div>Photos Count: {debugInfo.photosCount}</div>
         <div>Mock Service Project: {debugInfo.mockServiceProject ? 'Yes' : 'No'}</div>
         <div>Mock Service Photos: {debugInfo.mockServicePhotos}</div>
-        
-        {debugInfo.firstPhotoTest && (
+        <div>Mock Data Initialized: {debugInfo.mockDataInitialized ? 'Yes' : 'No'}</div>
+
+        {imageTests.length > 0 && (
           <>
             <hr className="my-2" />
-            <div>First Photo URL: {debugInfo.firstPhotoTest.url}</div>
-            <div>Is String: {debugInfo.firstPhotoTest.isString ? 'Yes' : 'No'}</div>
-            <div>Image Load: {
-              debugInfo.imageLoadSuccess === null ? 'Testing...' :
-              debugInfo.imageLoadSuccess ? 'Success' : 'Failed'
-            }</div>
-            {debugInfo.imageError && <div className="text-red-500">Error: {debugInfo.imageError}</div>}
+            <div className="font-semibold">Image Load Tests:</div>
+            {imageTests.map((test, i) => (
+              <div key={i} className="border-l-2 pl-2 ml-2 mb-2">
+                <div>Photo {test.index + 1}</div>
+                <div className="text-xs text-gray-600 break-all">{test.url}</div>
+                <div>Type: {test.isString ? 'String' : 'Object'}</div>
+                <div>Status: {
+                  test.loadSuccess === null ? 'Testing...' :
+                  test.loadSuccess ? '✅ Success' : '❌ Failed'
+                }</div>
+                {test.error && <div className="text-red-500">{test.error}</div>}
+              </div>
+            ))}
           </>
         )}
-        
+
         {debugInfo.storageProject && (
           <>
             <hr className="my-2" />
