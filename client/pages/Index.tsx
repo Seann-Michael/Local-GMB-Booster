@@ -428,6 +428,12 @@ export default function Index() {
           <>
             {/* Mobile horizontal scroll layout */}
             <div className="block md:hidden">
+              {/* Scroll hint for users */}
+              {filteredProjects.length > 1 && (
+                <div className="text-xs text-muted-foreground mb-2 text-center">
+                  ← Swipe to browse projects →
+                </div>
+              )}
               <div
                 className="overflow-x-auto mobile-projects-scroll mobile-hide-scrollbar pb-4 -mx-4"
                 style={{
