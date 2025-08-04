@@ -224,21 +224,23 @@ class AnalyticsService {
               for (const entry of list.getEntries()) {
                 if (entry.entryType === "resource") {
                   const resource = entry as PerformanceResourceTiming;
-                  this.trackPerformance(
-                  `resource_${resource.initiatorType}`,
-                  resource.duration,
-                );
+                    `resource_${resource.initiatorType}`,
+                    resource.duration,
+                  );
+                }
               }
+            } catch (error) {
+              // Silently fail resource tracking
             }
-          } catch (error) {
-            console.error("Resource tracking error:", error);
-          }
-        });
+          });
 
-        observer.observe({ entryTypes: ["resource"] });
+          observer.observe({ entryTypes: ["resource"] });
+        } catch (error) {
+          // PerformanceObserver not supported, skip
+        }
       }
     } catch (error) {
-      console.error("Performance monitoring setup failed:", error);
+      // Silently fail performance monitoring setup
     }
   }
 
