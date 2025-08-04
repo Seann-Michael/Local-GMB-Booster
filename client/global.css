@@ -97,6 +97,38 @@ body {
 }
 
 /* Ensure content can scroll horizontally */
+
+/* Mobile project cards horizontal scrolling */
+.mobile-projects-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+}
+
+.mobile-projects-scroll > * {
+  scroll-snap-align: start;
+}
+
+/* Improve mobile touch scrolling */
+@media (max-width: 768px) {
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    /* Add momentum scrolling for iOS */
+    -webkit-overflow-scrolling: touch;
+    /* Prevent bounce on horizontal scroll */
+    overscroll-behavior-x: contain;
+  }
+
+  /* Hide scrollbar on mobile for cleaner look */
+  .mobile-hide-scrollbar {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+
+  .mobile-hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+}
 .horizontal-scroll {
   overflow-x: auto;
   overflow-y: hidden;
