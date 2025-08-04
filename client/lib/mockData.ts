@@ -463,7 +463,7 @@ class MockDataService {
     return MockDataService.instance;
   }
 
-  private initialize() {
+  public initialize() {
     if (this.initialized) return;
     
     // Check if data already exists in localStorage
