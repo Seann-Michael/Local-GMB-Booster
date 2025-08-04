@@ -439,7 +439,7 @@ export default function Index() {
                 <div
                   className="flex gap-3 pl-4 pr-4"
                   style={{
-                    width: `${Math.max(filteredProjects.length * 336, window.innerWidth + 100)}px`,
+                    width: `${Math.max(filteredProjects.length * 336, (typeof window !== 'undefined' ? window.innerWidth : 400) + 100)}px`,
                     minWidth: 'max-content'
                   }}
                 >
