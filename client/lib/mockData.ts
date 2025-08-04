@@ -232,7 +232,8 @@ const generateMockProjects = (): MockProject[] => {
           fileSize: Math.floor(Math.random() * 5000000) + 500000, // 500KB - 5MB
           fileType: "image/jpeg",
           category: categories[Math.floor(Math.random() * categories.length)],
-          altText: `${photoTypes[Math.floor(Math.random() * photoTypes.length)]} photo of ${projectNames[i]}`
+          altText: `${photoTypes[Math.floor(Math.random() * photoTypes.length)]} photo of ${projectNames[i]}`,
+          fallbackUrls: imageUrls.slice(1) // Store fallback URLs
         }
       });
     }
