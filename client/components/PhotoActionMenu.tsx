@@ -77,7 +77,7 @@ export function PhotoActionMenu({
         <Button
           variant="ghost"
           size="icon"
-          className={`h-8 w-8 bg-black/60 hover:bg-black/80 text-white border-0 ${className}`}
+          className={`h-8 w-8 bg-black/60 hover:bg-black/80 text-white border-0 z-10 ${className}`}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
