@@ -843,6 +843,91 @@ export default function ProjectDetail() {
     toast.success("Public project link copied to clipboard");
   };
 
+  const handlePhotoEdit = (photo: any) => {
+    toast.info("Edit functionality coming soon!");
+  };
+
+  const handlePhotoDelete = (photo: any) => {
+    if (!project || confirm("Are you sure you want to delete this photo?")) {
+      try {
+        const photoUrl = typeof photo === 'string' ? photo : photo.url;
+        const updatedPhotos = project.photos.filter(
+          (p: any) => (typeof p === 'string' ? p : p.url) !== photoUrl
+        );
+
+        const updatedProject = {
+          ...project,
+          photos: updatedPhotos
+        };
+
+        updateProject(updatedProject);
+        addActivityLogEntry("photo_deleted", "Photo deleted from project");
+        toast.success("Photo deleted successfully");
+      } catch (error) {
+        console.error("Error deleting photo:", error);
+        toast.error("Failed to delete photo");
+      }
+    }
+  };
+
+  const handlePhotoToggleFavorite = (photo: any) => {
+    if (!project) return;
+
+    try {
+      const photoUrl = typeof photo === 'string' ? photo : photo.url;
+      const updatedPhotos = project.photos.map((p: any) => {
+        if ((typeof p === 'string' ? p : p.url) === photoUrl) {
+          if (typeof p === 'object') {
+            return { ...p, isPrimary: !p.isPrimary };
+          }
+          // Convert string to object with isPrimary
+          return {
+            url: p,
+            isPrimary: true,
+            uploadedAt: new Date().toISOString(),
+            uploadedBy: "Current User",
+            tags: []
+          };
+        }
+        return p;
+      });
+
+      const updatedProject = {
+        ...project,
+        photos: updatedPhotos
+      };
+
+      updateProject(updatedProject);
+
+      const photoObj = updatedPhotos.find((p: any) =>
+        (typeof p === 'string' ? p : p.url) === photoUrl
+      );
+      const isFavorite = typeof photoObj === 'object' ? photoObj.isPrimary : false;
+
+      addActivityLogEntry(
+        isFavorite ? "photo_favorited" : "photo_unfavorited",
+        `Photo ${isFavorite ? "added to" : "removed from"} favorites`
+      );
+      toast.success(isFavorite ? "Added to favorites" : "Removed from favorites");
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+      toast.error("Failed to update favorite status");
+    }
+  };
+
+  const handlePhotoDownload = (photo: any) => {
+    const photoUrl = typeof photo === 'string' ? photo : photo.url;
+    const a = document.createElement("a");
+    a.href = photoUrl;
+    a.download = `${project?.name || 'project'}-photo.jpg`;
+    a.click();
+  };
+
+  const handlePhotoViewDetails = (photo: any) => {
+    const photoUrl = typeof photo === 'string' ? photo : photo.url;
+    setSelectedPhoto(photoUrl);
+  };
+
   const formatTimestamp = (timestamp: string) => {
     return new Date(timestamp).toLocaleString();
   };
