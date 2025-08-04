@@ -967,7 +967,7 @@ export default function ProjectDetail() {
     <AppLayout>
       <React.Fragment key={`project-detail-fragment-${project.id}`}>
         <div
-          className="container px-4 py-6 max-w-full overflow-x-hidden"
+          className="w-full px-3 sm:px-4 py-6 max-w-full overflow-x-hidden min-w-0"
           key={`project-detail-${project.id}`}
         >
           <div key="project-detail-content">
