@@ -19,32 +19,10 @@ import {
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "sonner";
+import { MockProject } from "@/lib/mockData";
 
-interface TaggedPhoto {
-  url: string;
-  tags: string[];
-  uploadedAt: string;
-  uploadedBy: string;
-  isPrimary?: boolean;
-}
-
-interface Project {
-  id: string;
-  name: string;
-  description: string;
-  address: string;
-  customerPhone: string;
-  keywords: string[];
-  photos: TaggedPhoto[] | string[];
-  documents?: any[];
-  tasks?: any[];
-  checklist?: any[];
-  primaryPhotoId?: string;
-  createdAt: string;
-  updatedAt?: string;
-  status?: string;
-  completedDate?: string;
-}
+// Use MockProject interface for consistency
+type Project = MockProject;
 
 interface ProjectCardProps {
   project: Project;
