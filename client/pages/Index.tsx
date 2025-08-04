@@ -204,7 +204,6 @@ export default function Index() {
 
   return (
     <AppLayout>
-      <ImageDebugger />
       <div className="container px-4 py-6 max-w-full overflow-x-hidden">
         {/* Broadcast Messages */}
         <EnhancedBroadcastAlert />
