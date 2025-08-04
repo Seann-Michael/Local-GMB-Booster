@@ -498,7 +498,7 @@ const analyticsProxy = {
   },
 };
 
-export { analytics };
+export { analyticsProxy as analytics };
 
 // React hook for easy usage
 export function useAnalytics() {
