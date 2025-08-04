@@ -547,7 +547,7 @@ export default function Settings() {
 
   return (
     <AppLayout>
-      <div className="p-4 sm:p-6 space-y-6 max-w-full overflow-x-hidden">
+      <div className="w-full px-3 sm:px-6 py-4 sm:py-6 space-y-6 max-w-full overflow-x-hidden min-w-0">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
