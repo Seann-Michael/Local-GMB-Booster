@@ -85,21 +85,8 @@ export default function Index() {
       // Fallback to empty array
       setProjects([]);
       setFilteredProjects([]);
-          activityLog: [],
-          createdAt: new Date(Date.now() - 172800000).toISOString(),
-          updatedAt: new Date(Date.now() - 172800000).toISOString(),
-          status: "completed",
-          completedDate: new Date(Date.now() - 86400000).toISOString(),
-          assignedUsers: ["2"],
-          starred: false,
-          archived: false,
-          createdBy: "2",
-        },
-      ];
-      setProjects(demoProjects);
-      setFilteredProjects(demoProjects);
-      localStorage.setItem("projects", JSON.stringify(demoProjects));
     }
+    setIsLoading(false);
   }, []);
 
   const applyFilters = () => {
