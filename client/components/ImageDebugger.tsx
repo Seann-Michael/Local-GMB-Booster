@@ -14,7 +14,7 @@ export function ImageDebugger({ projectId = "project-1" }: ImageDebuggerProps) {
     localStorage.removeItem('projects');
     localStorage.removeItem('users');
     localStorage.removeItem('clients');
-    mockDataService.initialize();
+    mockDataService.forceReinitialize();
     window.location.reload(); // Reload to see fresh data
   };
 
