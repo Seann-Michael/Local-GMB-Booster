@@ -448,7 +448,6 @@ export default function Gallery() {
 
   return (
     <AppLayout>
-      <PhotoActionMenuDebug />
       <div className="container px-4 py-6 max-w-full overflow-x-hidden">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
           <div className="flex-1 min-w-0">
