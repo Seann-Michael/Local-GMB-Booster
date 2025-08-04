@@ -884,23 +884,25 @@ export default function ProjectDetail() {
           key={`project-detail-${project.id}`}
         >
           <div key="project-detail-content">
-            <div className="flex items-center gap-4 mb-6" key="header-nav">
-              <Link to="/admin/projects" key="back-link">
-                <Button variant="ghost" size="icon">
-                  <ArrowLeft className="h-5 w-5" />
-                </Button>
-              </Link>
-              <div className="flex-1" key="title-section">
-                <h1 className="text-2xl font-bold">{project.name}</h1>
-                <div
-                  className="flex items-center gap-2 text-muted-foreground mt-1"
-                  key="address-display"
-                >
-                  <MapPin className="h-4 w-4" />
-                  <span>{project.address}</span>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6" key="header-nav">
+              <div className="flex items-center gap-4 flex-1">
+                <Link to="/admin/projects" key="back-link">
+                  <Button variant="ghost" size="icon">
+                    <ArrowLeft className="h-5 w-5" />
+                  </Button>
+                </Link>
+                <div className="flex-1 min-w-0" key="title-section">
+                  <h1 className="text-xl sm:text-2xl font-bold truncate">{project.name}</h1>
+                  <div
+                    className="flex items-center gap-2 text-muted-foreground mt-1"
+                    key="address-display"
+                  >
+                    <MapPin className="h-4 w-4 flex-shrink-0" />
+                    <span className="truncate text-sm">{project.address}</span>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-center gap-2" key="action-buttons">
+              <div className="flex items-center gap-2 flex-shrink-0" key="action-buttons">
                 <Link to={`/project/${id}/edit`} key="edit-link">
                   <Button variant="ghost" size="icon" className="h-8 w-8">
                     <Edit className="h-4 w-4" />
