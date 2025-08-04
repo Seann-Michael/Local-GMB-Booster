@@ -824,9 +824,9 @@ export function AppLayout({ children }: AppLayoutProps) {
                 variant="ghost"
                 size="icon"
                 className="md:hidden text-foreground hover:bg-muted h-8 w-8"
-                onClick={() => setMobileSidebarOpen(true)}
+                onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
               >
-                <Menu className="h-4 w-4" />
+                {mobileSidebarOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
               </Button>
 
               {/* GMB Booster branding - responsive */}
