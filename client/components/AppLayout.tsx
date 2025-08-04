@@ -1012,10 +1012,10 @@ export function AppLayout({ children }: AppLayoutProps) {
         </header>
 
         {/* Mobile second header row with Add Project button */}
-        <div className="md:hidden bg-background border-b p-4">
+        <div className="md:hidden bg-background border-b px-4 py-2">
           <div className="flex justify-center">
             <Link to="/admin/add-project">
-              <Button className="gap-2">
+              <Button size="sm" className="gap-2">
                 <Plus className="h-4 w-4" />
                 <span>Add Project</span>
               </Button>
