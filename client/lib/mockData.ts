@@ -207,8 +207,16 @@ const generateMockProjects = (): MockProject[] => {
       const photoTypes = ['before', 'during', 'after', 'detail', 'progress'];
       const categories = ['interior', 'exterior', 'structural', 'electrical', 'plumbing', 'finishing'];
       
+      // Use multiple reliable image sources with fallbacks
+      const imageId = i * 100 + j;
+      const imageUrls = [
+        `https://picsum.photos/800/600?random=${imageId}`,
+        `https://via.placeholder.com/800x600/666666/ffffff?text=Photo+${j + 1}`,
+        `https://dummyimage.com/800x600/cccccc/666666&text=Project+Photo+${j + 1}`
+      ];
+
       photos.push({
-        url: `https://picsum.photos/800/600?random=${i * 100 + j}`,
+        url: imageUrls[0], // Primary URL (Picsum)
         title: `${photoTypes[Math.floor(Math.random() * photoTypes.length)]} - Photo ${j + 1}`,
         description: `Progress photo showing ${categories[Math.floor(Math.random() * categories.length)]} work`,
         tags: [
