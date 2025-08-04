@@ -542,14 +542,14 @@ export default function AddProject() {
             </CardContent>
           </Card>
 
-          <div className="flex justify-end gap-4">
-            <Link to="/admin/projects">
-              <Button variant="outline">Cancel</Button>
+          <div className="flex flex-col sm:flex-row justify-end gap-4">
+            <Link to="/admin/projects" className="w-full sm:w-auto">
+              <Button variant="outline" className="w-full sm:w-auto min-h-[44px]">Cancel</Button>
             </Link>
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="gap-2 min-w-32"
+              className="gap-2 min-w-32 w-full sm:w-auto min-h-[44px]"
             >
               {isSubmitting ? (
                 <>
