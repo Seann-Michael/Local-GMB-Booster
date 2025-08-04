@@ -503,12 +503,12 @@ export { analyticsProxy as analytics };
 // React hook for easy usage
 export function useAnalytics() {
   return {
-    track: analytics.track.bind(analytics),
-    trackPageView: analytics.trackPageView.bind(analytics),
-    trackFileUpload: analytics.trackFileUpload.bind(analytics),
-    trackProjectAction: analytics.trackProjectAction.bind(analytics),
-    trackFeatureUsage: analytics.trackFeatureUsage.bind(analytics),
-    trackError: analytics.trackError.bind(analytics),
+    track: analyticsProxy.track,
+    trackPageView: analyticsProxy.trackPageView,
+    trackFileUpload: analyticsProxy.trackFileUpload,
+    trackProjectAction: analyticsProxy.trackProjectAction,
+    trackFeatureUsage: analyticsProxy.trackFeatureUsage,
+    trackError: analyticsProxy.trackError,
   };
 }
 
