@@ -887,22 +887,23 @@ export function AppLayout({ children }: AppLayoutProps) {
               )}
             </div>
 
-            <div className="flex items-center gap-1 md:gap-2">
-              {/* Functional Search */}
-              <div className="hidden sm:block">
+            <div className="flex items-center gap-1">
+              {/* Functional Search - hidden on very small screens */}
+              <div className="hidden md:block max-w-32 lg:max-w-none">
                 <HeaderSearch />
               </div>
 
-              {/* Zoom Controls */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="relative">
-                    <Monitor className="h-4 w-4 md:h-5 md:w-5" />
-                    <span className="absolute -bottom-1 -right-1 text-xs bg-primary text-primary-foreground rounded px-1">
-                      {zoomLevel}%
-                    </span>
-                  </Button>
-                </DropdownMenuTrigger>
+              {/* Zoom Controls - hidden on mobile */}
+              <div className="hidden lg:block">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="relative">
+                      <Monitor className="h-4 w-4 md:h-5 md:w-5" />
+                      <span className="absolute -bottom-1 -right-1 text-xs bg-primary text-primary-foreground rounded px-1">
+                        {zoomLevel}%
+                      </span>
+                    </Button>
+                  </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
                   <DropdownMenuLabel>System Zoom</DropdownMenuLabel>
                   <DropdownMenuSeparator />
