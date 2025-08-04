@@ -1304,7 +1304,7 @@ export default function ProjectDetail() {
                                       )}
                                     </div>
                                   )}
-                                  <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <div className="absolute top-2 right-2 opacity-90 group-hover:opacity-100 transition-opacity">
                                     <PhotoActionMenu
                                       photo={photo}
                                       index={index}
