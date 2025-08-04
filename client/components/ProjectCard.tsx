@@ -122,9 +122,8 @@ export function ProjectCard({
             </div>
           )}
 
-          {/* Star and Actions */}
-          <div className="absolute top-2 right-2 flex items-center gap-1">
-            {/* Star Icon */}
+          {/* Star Icon */}
+          <div className="absolute top-2 right-2">
             <Button
               variant="ghost"
               size="sm"
@@ -135,38 +134,6 @@ export function ProjectCard({
                 className={`h-4 w-4 ${isStarred ? "fill-yellow-400 text-yellow-400" : ""}`}
               />
             </Button>
-
-            {/* Actions Menu */}
-            {(onDelete || onMarkIncomplete) && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-9 w-9 sm:h-8 sm:w-8 p-0 bg-black/50 hover:bg-black/70 text-white min-h-[36px] min-w-[36px] sm:min-h-[32px] sm:min-w-[32px]"
-                    onClick={(e) => e.preventDefault()}
-                  >
-                    <MoreVertical className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  {onMarkIncomplete && (
-                    <DropdownMenuItem onClick={onMarkIncomplete}>
-                      <RotateCcw className="mr-2 h-4 w-4" />
-                      Mark Incomplete
-                    </DropdownMenuItem>
-                  )}
-                  {onDelete && (
-                    <DropdownMenuItem
-                      onClick={onDelete}
-                      className="text-destructive"
-                    >
-                      Delete Project
-                    </DropdownMenuItem>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
           </div>
         </div>
 
