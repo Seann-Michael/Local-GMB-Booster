@@ -896,21 +896,21 @@ export default function Reports() {
 
   return (
     <AppLayout>
-      <div className="p-6 space-y-6">
+      <div className="p-4 sm:p-6 space-y-6 max-w-full overflow-x-hidden">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Reports</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Reports</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">
               Generate and analyze business reports with customizable data views
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm">
+          <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
+            <Button variant="outline" size="sm" className="w-full sm:w-auto min-h-[44px]">
               <Calendar className="h-4 w-4 mr-2" />
               Schedule
             </Button>
-            <Button variant="outline" size="sm" disabled={!reportData.length}>
+            <Button variant="outline" size="sm" disabled={!reportData.length} className="w-full sm:w-auto min-h-[44px]">
               <Download className="h-4 w-4 mr-2" />
               Export
             </Button>
