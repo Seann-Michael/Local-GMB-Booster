@@ -495,6 +495,14 @@ class MockDataService {
     this.initialized = true;
   }
 
+  public forceReinitialize() {
+    this.initialized = false;
+    this.projects = [];
+    this.users = [];
+    this.clients = [];
+    this.initialize();
+  }
+
   // Project methods
   getProjects(): MockProject[] {
     this.initialize();
