@@ -1052,26 +1052,26 @@ export default function Reports() {
         {reportData.length > 0 && (
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <CardTitle>Report Results</CardTitle>
                   <CardDescription>
                     {filteredData.length} of {reportData.length} records
                   </CardDescription>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="relative">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+                  <div className="relative flex-1 sm:flex-initial">
                     <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
                       placeholder="Search records..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-8 w-64"
+                      className="pl-8 w-full sm:w-64 min-h-[44px]"
                     />
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" className="w-full sm:w-auto min-h-[44px]">
                         <Settings className="h-4 w-4 mr-2" />
                         Columns
                       </Button>
