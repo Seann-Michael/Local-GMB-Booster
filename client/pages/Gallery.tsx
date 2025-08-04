@@ -23,7 +23,7 @@ import { MediaViewer } from "@/components/MediaViewer";
 import { SmartMediaUploader } from "@/components/SmartMediaUploader";
 import { PhotoActionMenu } from "@/components/PhotoActionMenu";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
-import { PhotoActionMenuDebug } from "@/components/PhotoActionMenuDebug";
+import { TestMockData } from "@/components/TestMockData";
 import {
   ArrowLeft,
   Images,
