@@ -428,10 +428,10 @@ export default function Index() {
           <>
             {/* Mobile horizontal scroll layout */}
             <div className="block md:hidden">
-              <div className="overflow-x-auto mobile-projects-scroll mobile-hide-scrollbar pb-4 -mx-4 px-4">
-                <div className="flex gap-4 w-max">
+              <div className="overflow-x-auto mobile-projects-scroll mobile-hide-scrollbar pb-4 -mx-4">
+                <div className="flex gap-4 w-max pl-4 pr-4">
                   {filteredProjects.map((project) => (
-                    <div key={project.id} className="w-80 flex-shrink-0">
+                    <div key={project.id} className="w-72 flex-shrink-0">
                       <ProjectCard
                         project={project}
                         onDelete={() => {
