@@ -1602,6 +1602,10 @@ export default function AgencyTasks() {
         {/* Kanban Board */}
         {view === "kanban" && currentPipeline && (
           <div className="w-full">
+            {/* Mobile scroll hint */}
+            <div className="md:hidden text-center text-xs text-muted-foreground mb-2">
+              ← Swipe left and right to view all columns →
+            </div>
             <DragDropContext onDragEnd={handleDragEnd}>
               <div className="overflow-x-auto overflow-y-auto p-4 w-full mobile-projects-scroll mobile-hide-scrollbar">
                 <Droppable
