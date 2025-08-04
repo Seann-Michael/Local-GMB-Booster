@@ -821,8 +821,8 @@ export default function Gallery() {
                             }`}
                             onClick={() => setSelectedPhoto(photo.url)}
                           >
-                            <img
-                              src={photo.url}
+                            <ImageWithFallback
+                              photo={photo}
                               alt={`${photo.type} from ${photo.projectName}`}
                               className="h-full w-full object-cover transition-transform group-hover:scale-105"
                             />
