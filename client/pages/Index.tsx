@@ -209,47 +209,49 @@ export default function Index() {
         <EnhancedBroadcastAlert />
 
         <div className="mb-6">
-          <h1 className="text-3xl font-bold mb-4">Projects</h1>
-          <div className="flex items-center justify-between">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-4">Projects</h1>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             {/* Project Sort Buttons */}
-            <div className="flex items-center gap-1 border rounded-lg p-1">
-              <Button
-                variant={projectSort === "all" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setProjectSort("all")}
-                className="text-xs"
-              >
-                All
-              </Button>
-              <Button
-                variant={projectSort === "starred" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setProjectSort("starred")}
-                className="text-xs"
-              >
-                Starred
-              </Button>
-              <Button
-                variant={projectSort === "my-projects" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setProjectSort("my-projects")}
-                className="text-xs"
-              >
-                My Projects
-              </Button>
-              <Button
-                variant={projectSort === "archived" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setProjectSort("archived")}
-                className="text-xs"
-              >
-                Archived
-              </Button>
+            <div className="overflow-x-auto scrollbar-hide">
+              <div className="flex items-center gap-1 border rounded-lg p-1 min-w-max">
+                <Button
+                  variant={projectSort === "all" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setProjectSort("all")}
+                  className="text-xs whitespace-nowrap"
+                >
+                  All
+                </Button>
+                <Button
+                  variant={projectSort === "starred" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setProjectSort("starred")}
+                  className="text-xs whitespace-nowrap"
+                >
+                  Starred
+                </Button>
+                <Button
+                  variant={projectSort === "my-projects" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setProjectSort("my-projects")}
+                  className="text-xs whitespace-nowrap"
+                >
+                  My Projects
+                </Button>
+                <Button
+                  variant={projectSort === "archived" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setProjectSort("archived")}
+                  className="text-xs whitespace-nowrap"
+                >
+                  Archived
+                </Button>
+              </div>
             </div>
 
-            <div className="flex gap-2">
-              {/* Card Size Controls */}
-              <div className="flex border rounded-lg p-1 bg-muted/30">
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+              {/* Card Size Controls - Hidden on mobile */}
+              <div className="hidden sm:flex border rounded-lg p-1 bg-muted/30">
                 <Button
                   variant={cardSize === "small" ? "default" : "ghost"}
                   size="sm"
@@ -279,10 +281,11 @@ export default function Index() {
               <Button
                 variant="outline"
                 onClick={() => setShowFilters(!showFilters)}
-                className="gap-2"
+                className="gap-2 w-full sm:w-auto"
               >
                 <Filter className="h-4 w-4" />
-                Filters
+                <span className="sm:hidden">Show Filters</span>
+                <span className="hidden sm:inline">Filters</span>
               </Button>
             </div>
           </div>
