@@ -358,26 +358,26 @@ export default function Gallery() {
 
   return (
     <AppLayout>
-      <div className="container px-4 py-6">
-        <div className="flex items-center gap-4 mb-6">
-          <div className="flex-1">
-            <h1 className="text-2xl font-bold">Gallery</h1>
-            <p className="text-muted-foreground">
+      <div className="container px-4 py-6 max-w-full overflow-x-hidden">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
+          <div className="flex-1 min-w-0">
+            <h1 className="text-xl sm:text-2xl font-bold">Gallery</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">
               {filteredPhotos.length} of {photos.length} items
             </p>
           </div>
 
           {/* Sort and Thumbnail Size Controls */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Label className="text-sm text-muted-foreground">Sort:</Label>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 w-full sm:w-auto">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <Label className="text-sm text-muted-foreground whitespace-nowrap">Sort:</Label>
               <Select
                 value={filters.sortOrder}
                 onValueChange={(value: "newest" | "oldest") =>
                   updateFilter("sortOrder", value)
                 }
               >
-                <SelectTrigger className="w-40">
+                <SelectTrigger className="w-full sm:w-40">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -387,15 +387,15 @@ export default function Gallery() {
               </Select>
             </div>
 
-            <div className="flex items-center gap-2">
-              <Label className="text-sm text-muted-foreground">Size:</Label>
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <Label className="text-sm text-muted-foreground whitespace-nowrap">Size:</Label>
               <Select
                 value={filters.thumbnailSize}
                 onValueChange={(value: "small" | "medium" | "large") =>
                   updateFilter("thumbnailSize", value)
                 }
               >
-                <SelectTrigger className="w-32">
+                <SelectTrigger className="w-full sm:w-32">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -407,19 +407,23 @@ export default function Gallery() {
             </div>
           </div>
 
-          <Button onClick={() => setShowUploader(true)} className="gap-2">
-            <Upload className="h-4 w-4" />
-            Upload Files
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <Button onClick={() => setShowUploader(true)} className="gap-2 w-full sm:w-auto">
+              <Upload className="h-4 w-4" />
+              <span className="hidden sm:inline">Upload Files</span>
+              <span className="sm:hidden">Upload</span>
+            </Button>
 
-          <Button
-            variant="outline"
-            onClick={() => setShowFilters(!showFilters)}
-            className="gap-2"
-          >
-            <SlidersHorizontal className="h-4 w-4" />
-            {showFilters ? "Hide Filters" : "Show Filters"}
-          </Button>
+            <Button
+              variant="outline"
+              onClick={() => setShowFilters(!showFilters)}
+              className="gap-2 w-full sm:w-auto"
+            >
+              <SlidersHorizontal className="h-4 w-4" />
+              <span className="hidden sm:inline">{showFilters ? "Hide Filters" : "Show Filters"}</span>
+              <span className="sm:hidden">Filters</span>
+            </Button>
+          </div>
         </div>
 
         {/* Filter Controls */}
