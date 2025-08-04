@@ -853,7 +853,7 @@ export default function Gallery() {
                               </Badge>
                             </div>
 
-                            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="absolute top-2 right-2 opacity-70 group-hover:opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100">
                               <PhotoActionMenu
                                 photo={photo}
                                 index={index}
