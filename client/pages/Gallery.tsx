@@ -477,15 +477,15 @@ export default function Gallery() {
               </Select>
             </div>
 
-            <div className="flex items-center gap-2 w-full sm:w-auto">
-              <Label className="text-sm text-muted-foreground whitespace-nowrap">Size:</Label>
+            <div className="flex items-center gap-2 w-full sm:w-auto min-w-0">
+              <Label className="text-sm text-muted-foreground whitespace-nowrap shrink-0">Size:</Label>
               <Select
                 value={filters.thumbnailSize}
                 onValueChange={(value: "small" | "medium" | "large") =>
                   updateFilter("thumbnailSize", value)
                 }
               >
-                <SelectTrigger className="w-full sm:w-32">
+                <SelectTrigger className="w-full sm:w-32 min-w-0">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
