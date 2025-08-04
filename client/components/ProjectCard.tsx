@@ -184,16 +184,16 @@ export function ProjectCard({
           </div>
         </div>
 
-        <CardContent className="p-3 flex-1 flex flex-col">
+        <CardContent className="p-3 sm:p-4 flex-1 flex flex-col">
           <div className="flex-1 flex flex-col">
-            <h3 className="font-medium text-base mb-2 line-clamp-2 leading-tight">
+            <h3 className="font-medium text-sm sm:text-base mb-2 line-clamp-2 leading-tight">
               {project.name}
             </h3>
-            <p className="text-xs text-muted-foreground mb-2 line-clamp-2 min-h-[2rem] leading-tight">
+            <p className="text-xs sm:text-sm text-muted-foreground mb-2 line-clamp-2 min-h-[2rem] leading-tight">
               {project.description || "No description available"}
             </p>
 
-            <div className="flex items-center gap-1 text-xs text-muted-foreground mb-2">
+            <div className="flex items-center gap-1 text-xs text-muted-foreground mb-1 sm:mb-2">
               <MapPin className="h-3 w-3 flex-shrink-0" />
               <span className="line-clamp-1 leading-tight">
                 {project.address || "No address provided"}
