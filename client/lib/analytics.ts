@@ -42,9 +42,14 @@ class AnalyticsService {
 
   private init() {
     try {
+      // Check if we're in a browser environment
+      if (typeof window === "undefined" || typeof document === "undefined") {
+        this.isEnabled = false;
+        return;
+      }
+
       // Check if analytics is enabled (GDPR compliance)
       this.isEnabled =
-        typeof window !== "undefined" &&
         localStorage.getItem("analytics-enabled") !== "false";
 
       if (!this.isEnabled) return;
