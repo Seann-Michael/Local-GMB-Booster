@@ -107,7 +107,6 @@ export default function Gallery() {
     }
 
     const projectsData = JSON.parse(localStorage.getItem("projects") || "[]");
-    console.log("Gallery: Projects data loaded:", projectsData.length, "projects");
     const allPhotos: PhotoWithMetadata[] = [];
     const projectOptions: Array<{ id: string; name: string }> = [];
     const userSet = new Set<string>();
