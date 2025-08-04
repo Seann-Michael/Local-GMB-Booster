@@ -7,41 +7,65 @@ interface ImageDebuggerProps {
 
 export function ImageDebugger({ projectId = "project-1" }: ImageDebuggerProps) {
   const [debugInfo, setDebugInfo] = useState<any>(null);
+  const [imageTests, setImageTests] = useState<any[]>([]);
 
   useEffect(() => {
+    // Force initialize mock data service
+    try {
+      mockDataService.initialize();
+    } catch (error) {
+      console.error('Error initializing mock data:', error);
+    }
+
     // Check localStorage directly
     const projectsFromStorage = localStorage.getItem('projects');
     const projectsArray = projectsFromStorage ? JSON.parse(projectsFromStorage) : [];
-    
+
     // Check specific project
     const project = projectsArray.find((p: any) => p.id === projectId);
-    
+
     // Get project from mock service
     const mockProject = mockDataService.getProject(projectId);
-    
-    // Test first image URL
-    let imageLoadTest = null;
+
+    // Test multiple image URLs
+    const imageTests: any[] = [];
     if (project?.photos?.length > 0) {
-      const firstPhoto = project.photos[0];
-      const photoUrl = typeof firstPhoto === 'string' ? firstPhoto : firstPhoto.url;
-      
-      // Create test image to check if URL loads
-      const testImg = new Image();
-      testImg.onload = () => {
-        setDebugInfo(prev => ({ ...prev, imageLoadSuccess: true }));
-      };
-      testImg.onerror = () => {
-        setDebugInfo(prev => ({ ...prev, imageLoadSuccess: false, imageError: 'Failed to load image' }));
-      };
-      testImg.src = photoUrl;
-      
-      imageLoadTest = {
-        url: photoUrl,
-        isString: typeof firstPhoto === 'string',
-        photoObject: firstPhoto
-      };
+      const photosToTest = project.photos.slice(0, 3); // Test first 3 photos
+
+      photosToTest.forEach((photo: any, index: number) => {
+        const photoUrl = typeof photo === 'string' ? photo : photo.url;
+        const testResult = {
+          index,
+          url: photoUrl,
+          isString: typeof photo === 'string',
+          loadSuccess: null as boolean | null,
+          error: null as string | null
+        };
+
+        imageTests.push(testResult);
+
+        // Create test image to check if URL loads
+        const testImg = new Image();
+        testImg.onload = () => {
+          setImageTests(prev => prev.map(test =>
+            test.index === index ? { ...test, loadSuccess: true } : test
+          ));
+        };
+        testImg.onerror = (e) => {
+          setImageTests(prev => prev.map(test =>
+            test.index === index ? {
+              ...test,
+              loadSuccess: false,
+              error: 'Network error or invalid URL'
+            } : test
+          ));
+        };
+        testImg.src = photoUrl;
+      });
     }
-    
+
+    setImageTests(imageTests);
+
     setDebugInfo({
       projectId,
       projectsInStorage: projectsArray.length,
@@ -49,7 +73,7 @@ export function ImageDebugger({ projectId = "project-1" }: ImageDebuggerProps) {
       photosCount: project?.photos?.length || 0,
       mockServiceProject: !!mockProject,
       mockServicePhotos: mockProject?.photos?.length || 0,
-      firstPhotoTest: imageLoadTest,
+      mockDataInitialized: localStorage.getItem('projects') !== null,
       storageProject: project ? {
         id: project.id,
         name: project.name,
