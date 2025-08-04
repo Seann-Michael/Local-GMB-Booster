@@ -99,6 +99,14 @@ export default function Gallery() {
   });
 
   useEffect(() => {
+    // Force initialize mock data service to ensure we have projects
+    try {
+      const { mockDataService } = require("@/lib/mockData");
+      mockDataService.initialize();
+    } catch (error) {
+      console.error("Error initializing mock data:", error);
+    }
+
     const projectsData = JSON.parse(localStorage.getItem("projects") || "[]");
     console.log("Gallery: Projects data loaded:", projectsData.length, "projects");
     const allPhotos: PhotoWithMetadata[] = [];
