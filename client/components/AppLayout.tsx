@@ -935,7 +935,8 @@ export function AppLayout({ children }: AppLayoutProps) {
                     </Button>
                   </div>
                 </DropdownMenuContent>
-              </DropdownMenu>
+                </DropdownMenu>
+              </div>
 
               {/* Theme Toggle - Now visible on mobile too */}
               <ThemeToggle />
