@@ -547,24 +547,49 @@ export default function Settings() {
 
   return (
     <AppLayout>
-      <div className="p-6 space-y-6">
+      <div className="p-4 sm:p-6 space-y-6 max-w-full overflow-x-hidden">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Settings</h1>
+            <p className="text-sm sm:text-base text-muted-foreground">
               Manage your business settings and preferences
             </p>
           </div>
-          <Button onClick={handleSave} disabled={isLoading} className="gap-2">
+          <Button onClick={handleSave} disabled={isLoading} className="gap-2 w-full sm:w-auto min-h-[44px]">
             <Save className="h-4 w-4" />
             {isLoading ? "Saving..." : "Save Changes"}
           </Button>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6">
-          {/* Sidebar Navigation */}
-          <div className="lg:w-[215px] space-y-1">
+          {/* Mobile horizontal scroll navigation */}
+          <div className="lg:hidden">
+            <div className="overflow-x-auto scrollbar-hide pb-2">
+              <nav className="flex gap-2 min-w-max">
+                {navigationTabs.map((tab) => {
+                  const Icon = tab.icon;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`whitespace-nowrap px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 min-h-[44px] ${
+                        activeTab === tab.id
+                          ? "bg-primary text-primary-foreground"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                      }`}
+                    >
+                      <Icon className="h-4 w-4" />
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </nav>
+            </div>
+          </div>
+
+          {/* Desktop Sidebar Navigation */}
+          <div className="hidden lg:block lg:w-[215px] space-y-1">
             <nav className="space-y-1">
               {navigationTabs.map((tab) => {
                 const Icon = tab.icon;
