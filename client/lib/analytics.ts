@@ -248,54 +248,100 @@ class AnalyticsService {
   }
 
   private trackCoreWebVitals() {
-    // First Contentful Paint
-    const observer = new PerformanceObserver((list) => {
-      for (const entry of list.getEntries()) {
-        if (entry.name === "first-contentful-paint") {
-          this.trackPerformance("first_contentful_paint", entry.startTime);
-        }
+    try {
+      // Check if PerformanceObserver is supported
+      if (typeof PerformanceObserver === "undefined") {
+        console.log("PerformanceObserver not supported, skipping core web vitals tracking");
+        return;
       }
-    });
 
-    observer.observe({ entryTypes: ["paint"] });
+      // First Contentful Paint
+      try {
+        const observer = new PerformanceObserver((list) => {
+          try {
+            for (const entry of list.getEntries()) {
+              if (entry.name === "first-contentful-paint") {
+                this.trackPerformance("first_contentful_paint", entry.startTime);
+              }
+            }
+          } catch (error) {
+            console.error("FCP tracking error:", error);
+          }
+        });
 
-    // Largest Contentful Paint
-    const lcpObserver = new PerformanceObserver((list) => {
-      const entries = list.getEntries();
-      const lastEntry = entries[entries.length - 1];
-      this.trackPerformance("largest_contentful_paint", lastEntry.startTime);
-    });
-
-    lcpObserver.observe({ entryTypes: ["largest-contentful-paint"] });
-
-    // Cumulative Layout Shift
-    let clsValue = 0;
-    const clsObserver = new PerformanceObserver((list) => {
-      for (const entry of list.getEntries()) {
-        if (!(entry as any).hadRecentInput) {
-          clsValue += (entry as any).value;
-        }
+        observer.observe({ entryTypes: ["paint"] });
+      } catch (error) {
+        console.error("FCP observer setup failed:", error);
       }
-    });
 
-    clsObserver.observe({ entryTypes: ["layout-shift"] });
+      // Largest Contentful Paint
+      try {
+        const lcpObserver = new PerformanceObserver((list) => {
+          try {
+            const entries = list.getEntries();
+            const lastEntry = entries[entries.length - 1];
+            this.trackPerformance("largest_contentful_paint", lastEntry.startTime);
+          } catch (error) {
+            console.error("LCP tracking error:", error);
+          }
+        });
 
-    // Track CLS on page unload
-    window.addEventListener("beforeunload", () => {
-      this.trackPerformance("cumulative_layout_shift", clsValue);
-    });
-
-    // First Input Delay
-    const fidObserver = new PerformanceObserver((list) => {
-      for (const entry of list.getEntries()) {
-        this.trackPerformance(
-          "first_input_delay",
-          (entry as any).processingStart - entry.startTime,
-        );
+        lcpObserver.observe({ entryTypes: ["largest-contentful-paint"] });
+      } catch (error) {
+        console.error("LCP observer setup failed:", error);
       }
-    });
 
-    fidObserver.observe({ entryTypes: ["first-input"] });
+      // Cumulative Layout Shift
+      try {
+        let clsValue = 0;
+        const clsObserver = new PerformanceObserver((list) => {
+          try {
+            for (const entry of list.getEntries()) {
+              if (!(entry as any).hadRecentInput) {
+                clsValue += (entry as any).value;
+              }
+            }
+          } catch (error) {
+            console.error("CLS tracking error:", error);
+          }
+        });
+
+        clsObserver.observe({ entryTypes: ["layout-shift"] });
+
+        // Track CLS on page unload
+        window.addEventListener("beforeunload", () => {
+          try {
+            this.trackPerformance("cumulative_layout_shift", clsValue);
+          } catch (error) {
+            console.error("CLS final tracking error:", error);
+          }
+        });
+      } catch (error) {
+        console.error("CLS observer setup failed:", error);
+      }
+
+      // First Input Delay
+      try {
+        const fidObserver = new PerformanceObserver((list) => {
+          try {
+            for (const entry of list.getEntries()) {
+              this.trackPerformance(
+                "first_input_delay",
+                (entry as any).processingStart - entry.startTime,
+              );
+            }
+          } catch (error) {
+            console.error("FID tracking error:", error);
+          }
+        });
+
+        fidObserver.observe({ entryTypes: ["first-input"] });
+      } catch (error) {
+        console.error("FID observer setup failed:", error);
+      }
+    } catch (error) {
+      console.error("Core web vitals tracking setup failed:", error);
+    }
   }
 
   // Data flushing
