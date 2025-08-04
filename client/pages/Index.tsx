@@ -24,37 +24,8 @@ import { useAnalytics } from "@/lib/analytics";
 import { ThemeToggle } from "@/components/ThemeProvider";
 import { mockDataService, MockProject } from "@/lib/mockData";
 
-interface TaggedPhoto {
-  url: string;
-  tags: string[];
-  uploadedAt: string;
-  uploadedBy: string;
-  isPrimary?: boolean;
-}
-
-interface Project {
-  id: string;
-  name: string;
-  description: string;
-  address: string;
-  customerPhone: string;
-  keywords: string[];
-  photos: TaggedPhoto[] | string[];
-  documents?: any[];
-  tasks?: any[];
-  checklist?: any[];
-  primaryPhotoId?: string;
-  createdAt: string;
-  updatedAt?: string;
-  status?: string;
-  completedDate?: string;
-  startDate?: string;
-  completionDate?: string;
-  assignedUsers?: string[];
-  starred?: boolean;
-  archived?: boolean;
-  createdBy?: string;
-}
+// Use MockProject interface from mockData
+type Project = MockProject;
 
 export default function Index() {
   const navigate = useNavigate();
