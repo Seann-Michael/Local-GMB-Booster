@@ -20,6 +20,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "sonner";
 import { MockProject } from "@/lib/mockData";
+import { ImageWithFallback } from "@/components/ImageWithFallback";
 
 // Use MockProject interface for consistency
 type Project = MockProject;
