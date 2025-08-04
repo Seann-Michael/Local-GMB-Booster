@@ -425,48 +425,75 @@ export default function Index() {
             </CardContent>
           </Card>
         ) : (
-          <div
-            className={`grid gap-4 auto-rows-fr ${
-              cardSize === "small"
-                ? "grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-                : cardSize === "medium"
-                  ? "md:grid-cols-2 lg:grid-cols-3"
-                  : "md:grid-cols-1 lg:grid-cols-2"
-            }`}
-          >
-            {filteredProjects.map((project) => (
-              <div key={project.id} className="flex">
-                <ProjectCard
-                  project={project}
-                  onDelete={() => {
-                    const updatedProjects = projects.filter(
-                      (p) => p.id !== project.id,
-                    );
-                    setProjects(updatedProjects);
-                    localStorage.setItem(
-                      "projects",
-                      JSON.stringify(updatedProjects),
-                    );
-                  }}
-                  onMarkIncomplete={
-                    project.status === "completed"
-                      ? () => markProjectIncomplete(project.id)
-                      : undefined
-                  }
-                  onToggleStar={(starred) => {
-                    const updatedProjects = projects.map((p) =>
-                      p.id === project.id ? { ...p, starred } : p,
-                    );
-                    setProjects(updatedProjects);
-                    localStorage.setItem(
-                      "projects",
-                      JSON.stringify(updatedProjects),
-                    );
-                  }}
-                />
+          <>
+            {/* Mobile horizontal scroll layout */}
+            <div className="block md:hidden">
+              <div className="overflow-x-auto pb-4 -mx-4 px-4">
+                <div className="flex gap-4 w-max">
+                  {filteredProjects.map((project) => (
+                    <div key={project.id} className="w-80 flex-shrink-0">
+                      <ProjectCard
+                        project={project}
+                        onDelete={() => {
+                          mockDataService.deleteProject(project.id);
+                          const updatedProjects = mockDataService.getProjects();
+                          setProjects(updatedProjects);
+                          setFilteredProjects(updatedProjects.filter(p => !p.archived));
+                        }}
+                        onMarkIncomplete={
+                          project.status === "completed"
+                            ? () => markProjectIncomplete(project.id)
+                            : undefined
+                        }
+                        onToggleStar={(starred) => {
+                          mockDataService.updateProject(project.id, { starred });
+                          const updatedProjects = mockDataService.getProjects();
+                          setProjects(updatedProjects);
+                          setFilteredProjects(updatedProjects.filter(p => !p.archived));
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
-          </div>
+            </div>
+
+            {/* Desktop grid layout */}
+            <div
+              className={`hidden md:grid gap-4 auto-rows-fr ${
+                cardSize === "small"
+                  ? "md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+                  : cardSize === "medium"
+                    ? "md:grid-cols-2 lg:grid-cols-3"
+                    : "md:grid-cols-1 lg:grid-cols-2"
+              }`}
+            >
+              {filteredProjects.map((project) => (
+                <div key={project.id} className="flex">
+                  <ProjectCard
+                    project={project}
+                    onDelete={() => {
+                      mockDataService.deleteProject(project.id);
+                      const updatedProjects = mockDataService.getProjects();
+                      setProjects(updatedProjects);
+                      setFilteredProjects(updatedProjects.filter(p => !p.archived));
+                    }}
+                    onMarkIncomplete={
+                      project.status === "completed"
+                        ? () => markProjectIncomplete(project.id)
+                        : undefined
+                    }
+                    onToggleStar={(starred) => {
+                      mockDataService.updateProject(project.id, { starred });
+                      const updatedProjects = mockDataService.getProjects();
+                      setProjects(updatedProjects);
+                      setFilteredProjects(updatedProjects.filter(p => !p.archived));
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </AppLayout>
