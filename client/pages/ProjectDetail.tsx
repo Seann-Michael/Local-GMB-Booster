@@ -879,6 +879,7 @@ export default function ProjectDetail() {
 
   return (
     <AppLayout>
+      <ImageDebugger projectId={id} />
       <React.Fragment key={`project-detail-fragment-${project.id}`}>
         <div
           className="container px-4 py-6 max-w-full overflow-x-hidden"
