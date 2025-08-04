@@ -83,8 +83,8 @@ export function ProjectCard({
         <div className="aspect-video relative overflow-hidden bg-muted">
           {primaryPhoto ? (
             <>
-              <img
-                src={getPhotoUrl(primaryPhoto)}
+              <ImageWithFallback
+                photo={primaryPhoto}
                 alt={project.name}
                 className="h-full w-full object-cover transition-transform group-hover:scale-105"
               />
