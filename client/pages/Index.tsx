@@ -427,9 +427,22 @@ export default function Index() {
         ) : (
           <>
             {/* Mobile horizontal scroll layout */}
-            <div className="block md:hidden -mx-4">
-              <div className="overflow-x-auto mobile-projects-scroll mobile-hide-scrollbar pb-4">
-                <div className="flex gap-3 w-max pl-4 pr-4">
+            <div className="block md:hidden">
+              <div
+                className="overflow-x-auto mobile-projects-scroll mobile-hide-scrollbar pb-4 -mx-4"
+                style={{
+                  overflowX: 'scroll',
+                  WebkitOverflowScrolling: 'touch',
+                  scrollBehavior: 'smooth'
+                }}
+              >
+                <div
+                  className="flex gap-3 pl-4 pr-4"
+                  style={{
+                    width: `${Math.max(filteredProjects.length * 336, window.innerWidth + 100)}px`,
+                    minWidth: 'max-content'
+                  }}
+                >
                   {filteredProjects.map((project) => (
                     <div key={project.id} className="w-80 flex-shrink-0">
                       <ProjectCard
