@@ -172,6 +172,54 @@ body {
     padding: 0.5rem 0.75rem;
     font-size: 0.875rem;
   }
+
+  /* Prevent text selection on buttons for better mobile UX */
+  button, [role="button"] {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Better mobile card layouts */
+  .card {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  }
+
+  /* Improve mobile modals and dropdowns */
+  .dropdown-content, .modal-content {
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  /* Better mobile image loading */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Prevent iOS zoom on double tap */
+  * {
+    touch-action: manipulation;
+  }
+
+  /* Better mobile table scrolling */
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Mobile-friendly focus states */
+  :focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+
+  /* Prevent overscroll on main content */
+  body {
+    overscroll-behavior: contain;
+  }
 }
 
 /* Tablet responsiveness */
