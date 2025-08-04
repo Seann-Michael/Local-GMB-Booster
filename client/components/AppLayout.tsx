@@ -893,15 +893,18 @@ export function AppLayout({ children }: AppLayoutProps) {
                 <HeaderSearch />
               </div>
 
+              {/* Notifications Dropdown */}
+              <NotificationDropdown />
+
+              {/* Theme Toggle - Now visible on mobile too */}
+              <ThemeToggle />
+
               {/* Zoom Controls - now visible on mobile */}
               <div className="block">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="relative h-8 w-8">
+                    <Button variant="ghost" size="icon" className="h-8 w-8">
                       <Monitor className="h-4 w-4" />
-                      <span className="absolute -bottom-1 -right-1 text-xs bg-primary text-primary-foreground rounded px-1">
-                        {zoomLevel}%
-                      </span>
                     </Button>
                   </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
@@ -937,12 +940,6 @@ export function AppLayout({ children }: AppLayoutProps) {
                 </DropdownMenuContent>
                 </DropdownMenu>
               </div>
-
-              {/* Theme Toggle - Now visible on mobile too */}
-              <ThemeToggle />
-
-              {/* Notifications Dropdown */}
-              <NotificationDropdown />
 
               {/* User Profile Dropdown */}
               <DropdownMenu>
