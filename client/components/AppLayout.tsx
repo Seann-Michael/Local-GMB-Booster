@@ -826,7 +826,11 @@ export function AppLayout({ children }: AppLayoutProps) {
                 className="md:hidden text-foreground hover:bg-muted h-8 w-8"
                 onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
               >
-                {mobileSidebarOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+                {mobileSidebarOpen ? (
+                  <X className="h-4 w-4" />
+                ) : (
+                  <Menu className="h-4 w-4" />
+                )}
               </Button>
 
               {/* GMB Booster branding - responsive */}
@@ -834,7 +838,9 @@ export function AppLayout({ children }: AppLayoutProps) {
                 <div className="flex h-6 w-6 md:h-8 md:w-8 items-center justify-center rounded-lg bg-primary shadow-sm">
                   <Building2 className="h-3 w-3 md:h-4 md:w-4 text-primary-foreground" />
                 </div>
-                <span className="font-bold text-sm md:text-lg truncate">GMB Booster</span>
+                <span className="font-bold text-sm md:text-lg truncate">
+                  GMB Booster
+                </span>
               </div>
 
               {/* Breadcrumbs */}
@@ -907,37 +913,39 @@ export function AppLayout({ children }: AppLayoutProps) {
                       <Monitor className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuLabel>System Zoom</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <div className="p-2 space-y-2">
-                    <div className="flex items-center justify-between">
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuLabel>System Zoom</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <div className="p-2 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={handleZoomOut}
+                        >
+                          <span className="text-lg">-</span>
+                        </Button>
+                        <span className="text-sm font-medium">
+                          {zoomLevel}%
+                        </span>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={handleZoomIn}
+                        >
+                          <span className="text-lg">+</span>
+                        </Button>
+                      </div>
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={handleZoomOut}
+                        onClick={resetZoom}
+                        className="w-full"
                       >
-                        <span className="text-lg">-</span>
-                      </Button>
-                      <span className="text-sm font-medium">{zoomLevel}%</span>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handleZoomIn}
-                      >
-                        <span className="text-lg">+</span>
+                        Reset to 100%
                       </Button>
                     </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={resetZoom}
-                      className="w-full"
-                    >
-                      Reset to 100%
-                    </Button>
-                  </div>
-                </DropdownMenuContent>
+                  </DropdownMenuContent>
                 </DropdownMenu>
               </div>
 
