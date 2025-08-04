@@ -816,25 +816,25 @@ export function AppLayout({ children }: AppLayoutProps) {
       {/* Main Content */}
       <div className="flex-1 flex flex-col pt-[73px]">
         {/* Top Header */}
-        <header className="bg-background border-b p-4 fixed top-0 left-0 right-0 z-50">
+        <header className="bg-background border-b px-2 md:px-4 py-3 fixed top-0 left-0 right-0 z-50">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 md:gap-4 min-w-0 flex-1">
               {/* Mobile hamburger menu */}
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden text-foreground hover:bg-muted"
+                className="md:hidden text-foreground hover:bg-muted h-8 w-8"
                 onClick={() => setMobileSidebarOpen(true)}
               >
-                <Menu className="h-5 w-5" />
+                <Menu className="h-4 w-4" />
               </Button>
 
-              {/* GMB Booster branding - show on all screen sizes */}
-              <div className="flex items-center space-x-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary shadow-sm">
-                  <Building2 className="h-4 w-4 text-primary-foreground" />
+              {/* GMB Booster branding - responsive */}
+              <div className="flex items-center space-x-2 min-w-0">
+                <div className="flex h-6 w-6 md:h-8 md:w-8 items-center justify-center rounded-lg bg-primary shadow-sm">
+                  <Building2 className="h-3 w-3 md:h-4 md:w-4 text-primary-foreground" />
                 </div>
-                <span className="font-bold text-lg">GMB Booster</span>
+                <span className="font-bold text-sm md:text-lg truncate">GMB Booster</span>
               </div>
 
               {/* Breadcrumbs */}
