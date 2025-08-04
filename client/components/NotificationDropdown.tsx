@@ -190,7 +190,7 @@ export function NotificationDropdown() {
         <Button variant="ghost" size="icon" className="relative">
           <Bell className="h-4 w-4 md:h-5 md:w-5" />
           {unreadCount > 0 && (
-            <Badge className="absolute -top-1 -left-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs z-10">
+            <Badge className="absolute -top-2 left-0 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs z-20 bg-red-500 text-white border-2 border-white">
               {unreadCount > 9 ? "9+" : unreadCount}
             </Badge>
           )}
