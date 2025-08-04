@@ -25,7 +25,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AppLayout } from "@/components/AppLayout";
 import { GoogleMapComponent } from "@/components/GoogleMaps";
-import { ImageDebugger } from "@/components/ImageDebugger";
 import { ImageWithFallback } from "@/components/ImageWithFallback";
 import {
   ArrowLeft,
