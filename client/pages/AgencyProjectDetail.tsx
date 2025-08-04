@@ -518,18 +518,20 @@ export default function AgencyProjectDetail() {
           {/* Project Details */}
           <div className="lg:col-span-2">
             <Tabs defaultValue="overview" className="space-y-4">
-              <TabsList>
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="tasks">
-                  Tasks ({project.tasks.length})
-                </TabsTrigger>
-                <TabsTrigger value="notes">
-                  Notes ({project.notes.length})
-                </TabsTrigger>
-                <TabsTrigger value="files">
-                  Files ({project.documents.length + project.images.length})
-                </TabsTrigger>
-              </TabsList>
+              <div className="overflow-x-auto scrollbar-hide">
+                <TabsList className="min-w-max">
+                  <TabsTrigger value="overview" className="whitespace-nowrap">Overview</TabsTrigger>
+                  <TabsTrigger value="tasks" className="whitespace-nowrap">
+                    Tasks ({project.tasks.length})
+                  </TabsTrigger>
+                  <TabsTrigger value="notes" className="whitespace-nowrap">
+                    Notes ({project.notes.length})
+                  </TabsTrigger>
+                  <TabsTrigger value="files" className="whitespace-nowrap">
+                    Files ({project.documents.length + project.images.length})
+                  </TabsTrigger>
+                </TabsList>
+              </div>
 
               <TabsContent value="overview" className="space-y-4">
                 <Card>
