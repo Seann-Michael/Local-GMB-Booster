@@ -49,8 +49,7 @@ class AnalyticsService {
       }
 
       // Check if analytics is enabled (GDPR compliance)
-      this.isEnabled =
-        localStorage.getItem("analytics-enabled") !== "false";
+      this.isEnabled = localStorage.getItem("analytics-enabled") !== "false";
 
       if (!this.isEnabled) return;
 
@@ -60,14 +59,14 @@ class AnalyticsService {
       // Track page views automatically
       this.trackPageView();
 
-      // Set up performance monitoring
-      this.setupPerformanceMonitoring();
+      // Temporarily disable performance monitoring to fix errors
+      // this.setupPerformanceMonitoring();
 
-      // Set up error tracking
+      // Set up basic error tracking
       this.setupErrorTracking();
 
-      // Track core web vitals
-      this.trackCoreWebVitals();
+      // Temporarily disable core web vitals
+      // this.trackCoreWebVitals();
 
       // Flush on page unload
       window.addEventListener("beforeunload", () => this.flush());
