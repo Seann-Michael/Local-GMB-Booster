@@ -675,7 +675,7 @@ export default function Settings() {
                       </div>
                     </div>
 
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-4 sm:grid-cols-2">
                       <div>
                         <Label htmlFor="businessName">Business Name</Label>
                         <Input
@@ -1391,7 +1391,7 @@ export default function Settings() {
                           <div>
                             <Label>Select Events</Label>
                             <div className="mt-2 space-y-3">
-                              <div className="grid gap-3 md:grid-cols-2">
+                              <div className="grid gap-3 sm:grid-cols-2">
                                 {[
                                   {
                                     id: "project.created",
@@ -1717,7 +1717,7 @@ export default function Settings() {
                       <Label className="text-base font-medium">
                         Supported File Types
                       </Label>
-                      <div className="mt-3 grid gap-3 md:grid-cols-2">
+                      <div className="mt-3 grid gap-3 sm:grid-cols-2">
                         {[
                           { ext: ".jpg", desc: "JPEG Image", platform: "all" },
                           { ext: ".jpeg", desc: "JPEG Image", platform: "all" },
@@ -1802,7 +1802,7 @@ export default function Settings() {
                       <Label className="text-base font-medium">
                         Supported File Types
                       </Label>
-                      <div className="mt-3 grid gap-3 md:grid-cols-2">
+                      <div className="mt-3 grid gap-3 sm:grid-cols-2">
                         {[
                           { ext: ".mp4", desc: "MP4 Video", platform: "all" },
                           {
@@ -1951,7 +1951,7 @@ export default function Settings() {
                       />
                     </div>
 
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-4 sm:grid-cols-2">
                       <div>
                         <Label
                           htmlFor="compressionLevel"
@@ -2545,7 +2545,7 @@ export default function Settings() {
                         for metadata fields
                       </p>
 
-                      <div className="grid gap-4 md:grid-cols-2">
+                      <div className="grid gap-4 sm:grid-cols-2">
                         <Card className="p-4">
                           <h4 className="font-semibold mb-3 flex items-center gap-2">
                             <Bot className="h-4 w-4 text-blue-600" />
@@ -2679,7 +2679,7 @@ export default function Settings() {
                             <SettingsIcon className="h-4 w-4" />
                             AI Service Configuration
                           </h4>
-                          <div className="grid gap-4 md:grid-cols-2">
+                          <div className="grid gap-4 sm:grid-cols-2">
                             <div>
                               <Label htmlFor="aiProvider">
                                 AI Vision Provider
@@ -2727,7 +2727,7 @@ export default function Settings() {
                     </div>
 
                     {/* Schema Validation & Preview */}
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-4 sm:grid-cols-2">
                       <div>
                         <Label className="text-base font-medium">
                           Schema Validation
@@ -2946,7 +2946,7 @@ export default function Settings() {
                     </div>
 
                     {settings.reviewReminderEnabled && (
-                      <div className="grid gap-4 md:grid-cols-2">
+                      <div className="grid gap-4 sm:grid-cols-2">
                         <div>
                           <Label htmlFor="reviewReminderDays">
                             Reminder Frequency (days)
@@ -3327,7 +3327,7 @@ export default function Settings() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-4 sm:grid-cols-2">
                       <div className="space-y-3">
                         <h4 className="font-medium text-sm">Message Types</h4>
                         <div className="space-y-3">
@@ -3432,7 +3432,7 @@ export default function Settings() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-4 sm:grid-cols-2">
                       {Object.entries(settings.deliveryMethods || {}).map(
                         ([method, enabled]) => (
                           <div
@@ -3498,7 +3498,7 @@ export default function Settings() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-4 sm:grid-cols-2">
                       <div className="space-y-3">
                         <Label>Notification Frequency</Label>
                         <Select
@@ -3562,7 +3562,7 @@ export default function Settings() {
                       </div>
 
                       {settings.doNotDisturb?.enabled && (
-                        <div className="grid gap-4 md:grid-cols-2 pl-6">
+                        <div className="grid gap-4 sm:grid-cols-2 pl-6">
                           <div>
                             <Label>Start Time</Label>
                             <Input
@@ -3667,7 +3667,7 @@ export default function Settings() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-4 sm:grid-cols-2">
                       <div>
                         <Label htmlFor="contactEmail">Email Address</Label>
                         <Input
@@ -4078,7 +4078,7 @@ export default function Settings() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-4 sm:grid-cols-2">
                       <div className="space-y-4">
                         <div>
                           <h4 className="font-medium mb-2">Payment Method</h4>
@@ -4222,7 +4222,7 @@ export default function Settings() {
                             </td>
                             <td className="p-3">2023-12-15</td>
                             <td className="p-3 font-medium">$49.00</td>
-                            <td className="p-3">Visa •••��� 4242</td>
+                            <td className="p-3">Visa •��•��� 4242</td>
                             <td className="p-3">
                               <Badge variant="secondary">Refunded</Badge>
                             </td>
@@ -4269,7 +4269,7 @@ export default function Settings() {
                       </div>
                     </div>
 
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-4 sm:grid-cols-2">
                       <div className="p-3 border rounded-lg">
                         <div className="flex items-center gap-2 mb-2">
                           <RefreshCw className="h-4 w-4 text-blue-600" />
