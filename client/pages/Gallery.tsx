@@ -102,7 +102,6 @@ export default function Gallery() {
   useEffect(() => {
     // Force initialize mock data service to ensure we have projects
     try {
-      const { mockDataService } = require("@/lib/mockData");
       mockDataService.initialize();
     } catch (error) {
       console.error("Error initializing mock data:", error);
