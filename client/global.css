@@ -101,21 +101,20 @@ body {
 /* Mobile project cards horizontal scrolling */
 .mobile-projects-scroll {
   -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
+  scroll-snap-type: x proximity;
+  scroll-behavior: smooth;
 }
 
-.mobile-projects-scroll > * {
+.mobile-projects-scroll > div > div {
   scroll-snap-align: start;
 }
 
-/* Improve mobile touch scrolling */
+/* System-wide mobile responsiveness improvements */
 @media (max-width: 768px) {
+  /* Improve all horizontal scrolling */
   .overflow-x-auto {
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
-    /* Add momentum scrolling for iOS */
-    -webkit-overflow-scrolling: touch;
-    /* Prevent bounce on horizontal scroll */
     overscroll-behavior-x: contain;
   }
 
@@ -127,6 +126,54 @@ body {
 
   .mobile-hide-scrollbar::-webkit-scrollbar {
     display: none; /* Chrome, Safari */
+  }
+
+  /* Ensure touch targets are large enough */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Improve form field sizes on mobile */
+  input, textarea, select {
+    font-size: 16px; /* Prevent zoom on iOS */
+    min-height: 44px;
+  }
+
+  /* Better spacing for mobile */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Responsive text scaling */
+  h1 { font-size: 1.875rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+
+  /* Improve card layouts on mobile */
+  .grid {
+    gap: 0.75rem;
+  }
+
+  /* Better button sizing */
+  .btn-sm {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Tablet responsiveness */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  /* Optimize for tablet touch */
+  button, a, [role="button"] {
+    min-height: 40px;
+    min-width: 40px;
   }
 }
 .horizontal-scroll {
