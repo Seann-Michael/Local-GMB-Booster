@@ -986,6 +986,8 @@ export default function Gallery() {
         )}
       </div>
 
+      <TestMockData />
+
       {/* Photo Modal */}
       {selectedPhoto && (
         <div
