@@ -514,28 +514,38 @@ export function useAnalytics() {
 
 // Performance utilities
 export function measurePerformance<T>(fn: () => T, name: string): T {
-  const start = performance.now();
-  const result = fn();
-  const end = performance.now();
-  analytics.trackPerformance(name, end - start);
-  return result;
+  try {
+    const start = performance.now();
+    const result = fn();
+    const end = performance.now();
+    analyticsProxy.trackPerformance(name, end - start);
+    return result;
+  } catch (error) {
+    console.error("Performance measurement error:", error);
+    return fn();
+  }
 }
 
 export function measureAsyncPerformance<T>(
   fn: () => Promise<T>,
   name: string,
 ): Promise<T> {
-  const start = performance.now();
-  return fn().then(
-    (result) => {
-      const end = performance.now();
-      analytics.trackPerformance(name, end - start);
-      return result;
-    },
-    (error) => {
-      const end = performance.now();
-      analytics.trackPerformance(`${name}_error`, end - start);
-      throw error;
-    },
-  );
+  try {
+    const start = performance.now();
+    return fn().then(
+      (result) => {
+        const end = performance.now();
+        analyticsProxy.trackPerformance(name, end - start);
+        return result;
+      },
+      (error) => {
+        const end = performance.now();
+        analyticsProxy.trackPerformance(`${name}_error`, end - start);
+        throw error;
+      },
+    );
+  } catch (error) {
+    console.error("Async performance measurement error:", error);
+    return fn();
+  }
 }
