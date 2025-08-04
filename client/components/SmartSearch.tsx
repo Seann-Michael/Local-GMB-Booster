@@ -380,7 +380,7 @@ export function SmartSearch({
 // Compact version for header
 export function HeaderSearch() {
   return (
-    <SmartSearch className="w-64" placeholder="Search projects, leads..." />
+    <SmartSearch className="w-32 md:w-40 lg:w-64" placeholder="Search..." />
   );
 }
 
