@@ -1177,10 +1177,11 @@ export default function ProjectDetail() {
                                   }`}
                                   onClick={() => setSelectedPhoto(photoUrl)}
                                 >
-                                  <img
-                                    src={photoUrl}
+                                  <ImageWithFallback
+                                    photo={photo}
                                     alt={`Photo ${index + 1}`}
                                     className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                                    onClick={() => setSelectedPhoto(photoUrl)}
                                   />
                                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
 
