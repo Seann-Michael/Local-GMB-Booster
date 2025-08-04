@@ -75,50 +75,16 @@ export default function Index() {
   }, [currentUser, navigate, trackPageView, track, projects.length]);
 
   useEffect(() => {
-    // Load projects from localStorage
-    const storedProjects = localStorage.getItem("projects");
-    if (storedProjects) {
-      const parsedProjects = JSON.parse(storedProjects);
-      setProjects(parsedProjects);
-      setFilteredProjects(parsedProjects);
-    } else {
-      // Add some demo projects for first time users
-      const demoProjects: Project[] = [
-        {
-          id: "demo-1",
-          name: "Kitchen Renovation",
-          description:
-            "Complete kitchen remodel with new cabinets, countertops, and appliances",
-          address: "123 Main Street, Anytown, USA",
-          customerPhone: "(555) 123-4567",
-          keywords: ["kitchen", "renovation", "cabinets", "countertops"],
-          photos: ["/placeholder.svg"],
-          documents: [],
-          tasks: [],
-          checklist: [],
-          notes: [],
-          activityLog: [],
-          createdAt: new Date(Date.now() - 86400000).toISOString(),
-          updatedAt: new Date(Date.now() - 86400000).toISOString(),
-          status: "active",
-          assignedUsers: ["1"],
-          starred: true,
-          archived: false,
-          createdBy: currentUser?.id || "1",
-        },
-        {
-          id: "demo-2",
-          name: "Bathroom Upgrade",
-          description:
-            "Modern bathroom renovation with walk-in shower and new fixtures",
-          address: "456 Oak Avenue, Somewhere, USA",
-          customerPhone: "(555) 987-6543",
-          keywords: ["bathroom", "shower", "fixtures", "modern"],
-          photos: ["/placeholder.svg"],
-          documents: [],
-          tasks: [],
-          checklist: [],
-          notes: [],
+    // Load projects from mock data service
+    try {
+      const mockProjects = mockDataService.getProjects();
+      setProjects(mockProjects);
+      setFilteredProjects(mockProjects);
+    } catch (error) {
+      console.error('Error loading projects:', error);
+      // Fallback to empty array
+      setProjects([]);
+      setFilteredProjects([]);
           activityLog: [],
           createdAt: new Date(Date.now() - 172800000).toISOString(),
           updatedAt: new Date(Date.now() - 172800000).toISOString(),
