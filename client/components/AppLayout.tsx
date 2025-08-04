@@ -893,12 +893,12 @@ export function AppLayout({ children }: AppLayoutProps) {
                 <HeaderSearch />
               </div>
 
-              {/* Zoom Controls - hidden on mobile */}
-              <div className="hidden lg:block">
+              {/* Zoom Controls - now visible on mobile */}
+              <div className="block">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="relative">
-                      <Monitor className="h-4 w-4 md:h-5 md:w-5" />
+                    <Button variant="ghost" size="icon" className="relative h-8 w-8">
+                      <Monitor className="h-4 w-4" />
                       <span className="absolute -bottom-1 -right-1 text-xs bg-primary text-primary-foreground rounded px-1">
                         {zoomLevel}%
                       </span>
