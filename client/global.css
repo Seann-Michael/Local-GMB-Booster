@@ -253,6 +253,36 @@ body {
     max-width: 100%;
     height: auto;
   }
+
+  /* Utility classes for mobile responsiveness */
+  .mobile-no-scroll {
+    overflow: hidden;
+  }
+
+  .mobile-text-wrap {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .mobile-flex-nowrap {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
+  /* Responsive text utilities */
+  .responsive-text {
+    font-size: clamp(0.875rem, 2vw, 1rem);
+  }
+
+  .responsive-title {
+    font-size: clamp(1.125rem, 4vw, 1.5rem);
+  }
+
+  /* Better mobile card spacing */
+  .mobile-card {
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+  }
 }
 
 /* Tablet responsiveness */
