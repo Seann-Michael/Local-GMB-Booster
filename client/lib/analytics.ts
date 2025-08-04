@@ -181,42 +181,50 @@ class AnalyticsService {
   // Performance monitoring
   private setupPerformanceMonitoring() {
     try {
+      // Check if performance APIs are available
+      if (typeof window === "undefined" || !window.performance || !performance.getEntriesByType) {
+        return;
+      }
+
       // Track navigation timing
       window.addEventListener("load", () => {
         setTimeout(() => {
           try {
-            const navigation = performance.getEntriesByType(
-              "navigation",
-            )[0] as PerformanceNavigationTiming;
+            const navigation = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
 
-            if (navigation) {
+            if (navigation && navigation.loadEventEnd && navigation.fetchStart) {
               this.trackPerformance(
                 "page_load_time",
                 navigation.loadEventEnd - navigation.fetchStart,
               );
-              this.trackPerformance(
-                "dom_content_loaded",
-                navigation.domContentLoadedEventEnd - navigation.fetchStart,
-              );
-              this.trackPerformance(
-                "first_byte",
-                navigation.responseStart - navigation.fetchStart,
-              );
+              if (navigation.domContentLoadedEventEnd) {
+                this.trackPerformance(
+                  "dom_content_loaded",
+                  navigation.domContentLoadedEventEnd - navigation.fetchStart,
+                );
+              }
+              if (navigation.responseStart) {
+                this.trackPerformance(
+                  "first_byte",
+                  navigation.responseStart - navigation.fetchStart,
+                );
+              }
             }
           } catch (error) {
-            console.error("Performance tracking error:", error);
+            // Silently fail - don't log to prevent error loops
           }
         }, 0);
       });
 
-      // Track resource loading
-      if (typeof PerformanceObserver !== "undefined") {
-        const observer = new PerformanceObserver((list) => {
-          try {
-            for (const entry of list.getEntries()) {
-              if (entry.entryType === "resource") {
-                const resource = entry as PerformanceResourceTiming;
-                this.trackPerformance(
+      // Track resource loading only if PerformanceObserver is supported
+      if (typeof PerformanceObserver !== "undefined" && typeof window !== "undefined") {
+        try {
+          const observer = new PerformanceObserver((list) => {
+            try {
+              for (const entry of list.getEntries()) {
+                if (entry.entryType === "resource") {
+                  const resource = entry as PerformanceResourceTiming;
+                  this.trackPerformance(
                   `resource_${resource.initiatorType}`,
                   resource.duration,
                 );
