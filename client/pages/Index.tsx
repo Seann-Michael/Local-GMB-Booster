@@ -22,6 +22,7 @@ import { VirtualProjectList } from "@/components/VirtualScroll";
 import { ProjectGridSkeleton } from "@/components/SkeletonLoader";
 import { useAnalytics } from "@/lib/analytics";
 import { ThemeToggle } from "@/components/ThemeProvider";
+import { mockDataService, MockProject } from "@/lib/mockData";
 
 interface TaggedPhoto {
   url: string;
