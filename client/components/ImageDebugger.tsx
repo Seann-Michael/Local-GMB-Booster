@@ -36,8 +36,47 @@ export function ImageDebugger({ projectId = "project-1" }: ImageDebuggerProps) {
     // Get project from mock service
     const mockProject = mockDataService.getProject(projectId);
 
-    // Test multiple image URLs
+    // Test multiple image URLs including control URLs
     const imageTests: any[] = [];
+
+    // Add control test URLs that should definitely work
+    const controlUrls = [
+      'https://picsum.photos/800/600?random=1',
+      'https://picsum.photos/300/200?random=2',
+      'https://via.placeholder.com/300x200.jpg'
+    ];
+
+    controlUrls.forEach((url, index) => {
+      const testResult = {
+        index: -index - 1, // Negative indices for control tests
+        url,
+        isString: true,
+        loadSuccess: null as boolean | null,
+        error: null as string | null,
+        isControl: true
+      };
+
+      imageTests.push(testResult);
+
+      const testImg = new Image();
+      testImg.onload = () => {
+        setImageTests(prev => prev.map(test =>
+          test.index === testResult.index ? { ...test, loadSuccess: true } : test
+        ));
+      };
+      testImg.onerror = (e) => {
+        setImageTests(prev => prev.map(test =>
+          test.index === testResult.index ? {
+            ...test,
+            loadSuccess: false,
+            error: 'Network error or invalid URL'
+          } : test
+        ));
+      };
+      testImg.src = url;
+    });
+
+    // Test project photos
     if (project?.photos?.length > 0) {
       const photosToTest = project.photos.slice(0, 3); // Test first 3 photos
 
@@ -48,7 +87,8 @@ export function ImageDebugger({ projectId = "project-1" }: ImageDebuggerProps) {
           url: photoUrl,
           isString: typeof photo === 'string',
           loadSuccess: null as boolean | null,
-          error: null as string | null
+          error: null as string | null,
+          isControl: false
         };
 
         imageTests.push(testResult);
