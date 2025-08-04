@@ -220,6 +220,40 @@ body {
   body {
     overscroll-behavior: contain;
   }
+
+  /* Prevent horizontal overflow globally */
+  * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Ensure text wraps properly */
+  h1, h2, h3, h4, h5, h6, p, span {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Prevent buttons from causing overflow */
+  button {
+    flex-shrink: 0;
+  }
+
+  /* Better responsive behavior for flex containers */
+  .flex {
+    min-width: 0;
+  }
+
+  /* Ensure containers don't overflow */
+  .container {
+    overflow-x: hidden;
+  }
+
+  /* Make images responsive by default */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
 }
 
 /* Tablet responsiveness */
