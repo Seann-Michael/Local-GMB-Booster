@@ -357,6 +357,81 @@ export default function Gallery() {
     }
   };
 
+  const handlePhotoEdit = (photo: PhotoWithMetadata) => {
+    toast.info("Edit functionality coming soon!");
+  };
+
+  const handlePhotoDelete = (photo: PhotoWithMetadata) => {
+    if (confirm("Are you sure you want to delete this photo?")) {
+      try {
+        // Get projects from localStorage
+        const projectsData = JSON.parse(localStorage.getItem("projects") || "[]");
+
+        // Find and update the project that contains this photo
+        const projectIndex = projectsData.findIndex((p: any) => p.id === photo.projectId);
+        if (projectIndex !== -1) {
+          // Remove photo from project
+          projectsData[projectIndex].photos = projectsData[projectIndex].photos.filter(
+            (p: any) => (typeof p === 'string' ? p : p.url) !== photo.url
+          );
+
+          // Save updated projects
+          localStorage.setItem("projects", JSON.stringify(projectsData));
+
+          // Refresh the gallery
+          window.location.reload();
+
+          toast.success("Photo deleted successfully");
+        }
+      } catch (error) {
+        console.error("Error deleting photo:", error);
+        toast.error("Failed to delete photo");
+      }
+    }
+  };
+
+  const handlePhotoToggleFavorite = (photo: PhotoWithMetadata) => {
+    try {
+      // Get projects from localStorage
+      const projectsData = JSON.parse(localStorage.getItem("projects") || "[]");
+
+      // Find and update the project that contains this photo
+      const projectIndex = projectsData.findIndex((p: any) => p.id === photo.projectId);
+      if (projectIndex !== -1) {
+        // Find the photo and toggle isPrimary (using as favorite)
+        const photoIndex = projectsData[projectIndex].photos.findIndex(
+          (p: any) => (typeof p === 'string' ? p : p.url) === photo.url
+        );
+
+        if (photoIndex !== -1) {
+          const currentPhoto = projectsData[projectIndex].photos[photoIndex];
+          if (typeof currentPhoto === 'object') {
+            currentPhoto.isPrimary = !currentPhoto.isPrimary;
+          }
+
+          // Save updated projects
+          localStorage.setItem("projects", JSON.stringify(projectsData));
+
+          // Refresh the gallery
+          window.location.reload();
+
+          toast.success(currentPhoto.isPrimary ? "Added to favorites" : "Removed from favorites");
+        }
+      }
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+      toast.error("Failed to update favorite status");
+    }
+  };
+
+  const handlePhotoDownload = (photo: PhotoWithMetadata) => {
+    downloadPhoto(photo.url, photo.projectName, 0);
+  };
+
+  const handlePhotoViewDetails = (photo: PhotoWithMetadata) => {
+    setSelectedPhoto(photo.url);
+  };
+
   return (
     <AppLayout>
       <div className="container px-4 py-6 max-w-full overflow-x-hidden">
