@@ -1557,26 +1557,24 @@ export default function ProjectDetail() {
                           </div>
                         )}
                         {/* Mobile scroll hint for tasks */}
-                        {project.tasks && project.tasks.length > 3 && (
+                        {project.tasks && project.tasks.length > 2 && (
                           <div className="md:hidden text-center text-xs text-muted-foreground mb-2">
-                            ← Swipe to view all tasks →
+                            ← Swipe to view tasks →
                           </div>
                         )}
 
-                        {/* Task list - mobile scrollable */}
-                        <div className="space-y-3 md:space-y-3">
-                          {/* Mobile horizontal scroll container */}
-                          <div className="block md:hidden -mx-4">
-                            <div className="overflow-x-auto mobile-projects-scroll mobile-hide-scrollbar pb-2">
-                              <div className="flex gap-3 px-4 min-w-max">
-                                {project.tasks &&
-                                Array.isArray(project.tasks) &&
-                                project.tasks.length > 0 ? (
-                                  project.tasks.map((task) => (
-                                    <div
-                                      key={task.id}
-                                      className="flex flex-col justify-between p-3 border rounded-lg min-w-80 max-w-80 flex-shrink-0"
-                                    >
+                        {/* Task list container with mobile scrolling */}
+                        <div className="overflow-x-auto mobile-projects-scroll mobile-hide-scrollbar -mx-4 px-4 md:mx-0 md:px-0">
+                          <div className="space-y-3 md:space-y-3" style={{ minWidth: 'max-content' }}>
+                            {project.tasks &&
+                            Array.isArray(project.tasks) &&
+                            project.tasks.length > 0 ? (
+                              <div className="flex gap-3 md:flex-col md:gap-3">
+                                {project.tasks.map((task) => (
+                                  <div
+                                    key={task.id}
+                                    className="flex items-start justify-between p-3 border rounded-lg min-w-80 md:min-w-0 flex-shrink-0"
+                                  >
                                 <div className="flex items-start gap-3 flex-1">
                                   <input
                                     type="checkbox"
