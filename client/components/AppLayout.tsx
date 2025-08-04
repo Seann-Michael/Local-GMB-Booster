@@ -839,7 +839,7 @@ export function AppLayout({ children }: AppLayoutProps) {
 
               {/* Breadcrumbs */}
               {getBreadcrumbs(location.pathname).length > 0 && (
-                <div className="hidden sm:flex items-center ml-6 pl-6 border-l border-border">
+                <div className="hidden lg:flex items-center ml-4 pl-4 border-l border-border">
                   <Breadcrumb>
                     <BreadcrumbList>
                       {getBreadcrumbs(location.pathname).map((crumb, index) => (
@@ -872,24 +872,24 @@ export function AppLayout({ children }: AppLayoutProps) {
               )}
 
               {isImpersonated && (
-                <div className="flex items-center gap-2 px-3 py-1 bg-yellow-100 text-yellow-800 rounded-lg text-sm">
-                  <Shield className="h-4 w-4" />
-                  <span className="hidden sm:inline">Impersonating User</span>
+                <div className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1 bg-yellow-100 text-yellow-800 rounded-lg text-xs md:text-sm">
+                  <Shield className="h-3 w-3 md:h-4 md:w-4" />
+                  <span className="hidden sm:inline">Impersonating</span>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={returnToSuperAdmin}
-                    className="h-auto p-1 text-yellow-800 hover:text-yellow-900"
+                    className="h-auto p-1 text-yellow-800 hover:text-yellow-900 text-xs"
                   >
-                    Return to Super Admin
+                    Return
                   </Button>
                 </div>
               )}
             </div>
 
-            <div className="flex items-center gap-1">
-              {/* Functional Search - hidden on very small screens */}
-              <div className="hidden md:block max-w-32 lg:max-w-none">
+            <div className="flex items-center gap-1 flex-shrink-0">
+              {/* Functional Search - responsive */}
+              <div className="hidden md:block">
                 <HeaderSearch />
               </div>
 
