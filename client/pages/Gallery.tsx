@@ -459,15 +459,15 @@ export default function Gallery() {
 
           {/* Sort and Thumbnail Size Controls */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4 w-full sm:w-auto min-w-0">
-            <div className="flex items-center gap-2 w-full sm:w-auto">
-              <Label className="text-sm text-muted-foreground whitespace-nowrap">Sort:</Label>
+            <div className="flex items-center gap-2 w-full sm:w-auto min-w-0">
+              <Label className="text-sm text-muted-foreground whitespace-nowrap shrink-0">Sort:</Label>
               <Select
                 value={filters.sortOrder}
                 onValueChange={(value: "newest" | "oldest") =>
                   updateFilter("sortOrder", value)
                 }
               >
-                <SelectTrigger className="w-full sm:w-40">
+                <SelectTrigger className="w-full sm:w-40 min-w-0">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
