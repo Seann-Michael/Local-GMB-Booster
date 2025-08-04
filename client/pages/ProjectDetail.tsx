@@ -1175,7 +1175,6 @@ export default function ProjectDetail() {
                                       ? "ring-2 ring-primary"
                                       : ""
                                   }`}
-                                  onClick={() => setSelectedPhoto(photoUrl)}
                                 >
                                   <ImageWithFallback
                                     photo={photo}
