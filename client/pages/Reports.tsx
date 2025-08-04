@@ -1096,8 +1096,9 @@ export default function Reports() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="rounded-md border">
-                <Table>
+              <div className="overflow-x-auto scrollbar-hide">
+                <div className="rounded-md border min-w-[600px]">
+                  <Table>
                   <TableHeader>
                     <TableRow>
                       {visibleColumns.map((column) => (
@@ -1131,7 +1132,8 @@ export default function Reports() {
                       </TableRow>
                     ))}
                   </TableBody>
-                </Table>
+                  </Table>
+                </div>
               </div>
             </CardContent>
           </Card>
