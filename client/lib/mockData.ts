@@ -476,7 +476,7 @@ class MockDataService {
     if (this.initialized) return;
 
     // TEMPORARY: Force reinitialization to update photo structure with fallback URLs
-    const forceReinit = true; // Change to false after first load
+    const forceReinit = false; // Changed to false after first load
     if (forceReinit) {
       localStorage.removeItem('projects');
       localStorage.removeItem('users');
