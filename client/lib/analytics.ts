@@ -379,33 +379,124 @@ class AnalyticsService {
   }
 }
 
-// Create singleton instance with error handling
-let analytics: AnalyticsService;
-try {
-  analytics = new AnalyticsService();
-} catch (error) {
-  console.error("Analytics service initialization failed:", error);
-  // Create a dummy analytics service that does nothing
-  analytics = {
-    track: () => {},
-    trackPageView: () => {},
-    trackFileUpload: () => {},
-    trackProjectAction: () => {},
-    trackFeatureUsage: () => {},
-    trackError: () => {},
-    trackPerformance: () => {},
-    enableAnalytics: () => {},
-    disableAnalytics: () => {},
-    getDebugInfo: () => ({
-      sessionId: "error",
-      userId: undefined,
-      isEnabled: false,
-      queuedEvents: 0,
-      queuedPerformance: 0,
-      queuedErrors: 0,
-    }),
-  } as any;
+// Create singleton instance with better error handling and lazy loading
+let analytics: AnalyticsService | null = null;
+
+// Dummy analytics service that does nothing
+const dummyAnalytics = {
+  track: () => {},
+  trackPageView: () => {},
+  trackFileUpload: () => {},
+  trackProjectAction: () => {},
+  trackFeatureUsage: () => {},
+  trackError: () => {},
+  trackPerformance: () => {},
+  enableAnalytics: () => {},
+  disableAnalytics: () => {},
+  getDebugInfo: () => ({
+    sessionId: "disabled",
+    userId: undefined,
+    isEnabled: false,
+    queuedEvents: 0,
+    queuedPerformance: 0,
+    queuedErrors: 0,
+  }),
+} as any;
+
+// Lazy initialization function
+function getAnalytics(): AnalyticsService {
+  if (analytics) {
+    return analytics;
+  }
+
+  try {
+    // Only initialize if we're in a browser environment
+    if (typeof window === "undefined") {
+      return dummyAnalytics;
+    }
+
+    analytics = new AnalyticsService();
+    return analytics;
+  } catch (error) {
+    console.error("Analytics service initialization failed:", error);
+    return dummyAnalytics;
+  }
 }
+
+// Export a proxy object that lazily initializes analytics
+const analyticsProxy = {
+  track: (...args: any[]) => {
+    try {
+      return getAnalytics().track(...args);
+    } catch (error) {
+      console.error("Analytics track error:", error);
+    }
+  },
+  trackPageView: (...args: any[]) => {
+    try {
+      return getAnalytics().trackPageView(...args);
+    } catch (error) {
+      console.error("Analytics trackPageView error:", error);
+    }
+  },
+  trackFileUpload: (...args: any[]) => {
+    try {
+      return getAnalytics().trackFileUpload(...args);
+    } catch (error) {
+      console.error("Analytics trackFileUpload error:", error);
+    }
+  },
+  trackProjectAction: (...args: any[]) => {
+    try {
+      return getAnalytics().trackProjectAction(...args);
+    } catch (error) {
+      console.error("Analytics trackProjectAction error:", error);
+    }
+  },
+  trackFeatureUsage: (...args: any[]) => {
+    try {
+      return getAnalytics().trackFeatureUsage(...args);
+    } catch (error) {
+      console.error("Analytics trackFeatureUsage error:", error);
+    }
+  },
+  trackError: (...args: any[]) => {
+    try {
+      return getAnalytics().trackError(...args);
+    } catch (error) {
+      console.error("Analytics trackError error:", error);
+    }
+  },
+  trackPerformance: (...args: any[]) => {
+    try {
+      return getAnalytics().trackPerformance(...args);
+    } catch (error) {
+      console.error("Analytics trackPerformance error:", error);
+    }
+  },
+  enableAnalytics: (...args: any[]) => {
+    try {
+      return getAnalytics().enableAnalytics(...args);
+    } catch (error) {
+      console.error("Analytics enableAnalytics error:", error);
+    }
+  },
+  disableAnalytics: (...args: any[]) => {
+    try {
+      return getAnalytics().disableAnalytics(...args);
+    } catch (error) {
+      console.error("Analytics disableAnalytics error:", error);
+    }
+  },
+  getDebugInfo: (...args: any[]) => {
+    try {
+      return getAnalytics().getDebugInfo(...args);
+    } catch (error) {
+      console.error("Analytics getDebugInfo error:", error);
+      return dummyAnalytics.getDebugInfo();
+    }
+  },
+};
 
 export { analytics };
 
