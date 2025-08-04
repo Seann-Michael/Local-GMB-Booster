@@ -44,6 +44,7 @@ import {
   PROJECT_STATUSES,
   AGENCY_SERVICES,
 } from "@/types/agency";
+import { mockDataService, MockProject } from "@/lib/mockData";
 
 export default function AgencyProjects() {
   const navigate = useNavigate();
