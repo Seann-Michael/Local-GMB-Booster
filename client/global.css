@@ -19,6 +19,50 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Prevent horizontal overflow system-wide */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Ensure containers don't overflow horizontally */
+.container {
+  max-width: 100% !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+/* Mobile-first responsive fixes */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  /* Prevent cards and components from overflowing */
+  .card, [class*="grid"], [class*="flex"] {
+    max-width: 100% !important;
+    overflow-x: auto;
+  }
+
+  /* Ensure text doesn't cause overflow */
+  h1, h2, h3, h4, h5, h6, p, div {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Fix tables on mobile */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
 /* Focus styles for accessibility */
 :focus-visible {
   outline: 2px solid hsl(var(--ring));
