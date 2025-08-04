@@ -435,14 +435,14 @@ export default function AddProject() {
                 </div>
 
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <Label>Additional Phone Numbers</Label>
                     <Button
                       type="button"
                       variant="outline"
                       size="sm"
                       onClick={addPhoneField}
-                      className="gap-2"
+                      className="gap-2 w-full sm:w-auto min-h-[44px]"
                     >
                       <Plus className="h-4 w-4" />
                       Add Phone
@@ -456,6 +456,7 @@ export default function AddProject() {
                         onChange={(e) =>
                           handleAdditionalPhoneChange(index, e.target.value)
                         }
+                        className="min-h-[44px]"
                       />
                       {formData.additionalPhones.length > 1 && (
                         <Button
@@ -463,6 +464,7 @@ export default function AddProject() {
                           variant="outline"
                           size="icon"
                           onClick={() => removePhoneField(index)}
+                          className="min-h-[44px] min-w-[44px] flex-shrink-0"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
