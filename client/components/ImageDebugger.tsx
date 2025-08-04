@@ -95,7 +95,15 @@ export function ImageDebugger({ projectId = "project-1" }: ImageDebuggerProps) {
 
   return (
     <div className="fixed top-4 right-4 bg-white p-4 border rounded shadow-lg text-xs max-w-sm z-50 max-h-96 overflow-y-auto">
-      <h3 className="font-bold mb-2">Image Debug Info</h3>
+      <div className="flex justify-between items-center mb-2">
+        <h3 className="font-bold">Image Debug Info</h3>
+        <button
+          onClick={forceReinitialize}
+          className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
+        >
+          Reinit
+        </button>
+      </div>
       <div className="space-y-1">
         <div>Project ID: {debugInfo.projectId}</div>
         <div>Projects in Storage: {debugInfo.projectsInStorage}</div>
