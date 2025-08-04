@@ -795,10 +795,10 @@ export default function Gallery() {
                           <CardContent
                             className={`${
                               filters.thumbnailSize === "small"
-                                ? "p-2"
+                                ? "p-2 sm:p-2"
                                 : filters.thumbnailSize === "large"
-                                  ? "p-6"
-                                  : "p-4"
+                                  ? "p-3 sm:p-4 lg:p-6"
+                                  : "p-2 sm:p-3 lg:p-4"
                             }`}
                           >
                             <Link
