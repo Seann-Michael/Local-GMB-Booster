@@ -1304,29 +1304,19 @@ export default function ProjectDetail() {
                                       )}
                                     </div>
                                   )}
-                                  <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <Button
-                                      variant="secondary"
-                                      size="icon"
+                                  <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <PhotoActionMenu
+                                      photo={photo}
+                                      index={index}
+                                      projectName={project.name}
+                                      onEdit={handlePhotoEdit}
+                                      onDelete={handlePhotoDelete}
+                                      onToggleFavorite={handlePhotoToggleFavorite}
+                                      onDownload={handlePhotoDownload}
+                                      onViewDetails={handlePhotoViewDetails}
+                                      isFavorite={typeof photo === 'object' ? photo.isPrimary : false}
                                       className="h-6 w-6"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        downloadPhoto(photoUrl, index);
-                                      }}
-                                    >
-                                      <Download className="h-3 w-3" />
-                                    </Button>
-                                    <Button
-                                      variant="destructive"
-                                      size="icon"
-                                      className="h-6 w-6"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        removePhoto(index);
-                                      }}
-                                    >
-                                      <Trash2 className="h-3 w-3" />
-                                    </Button>
+                                    />
                                   </div>
                                 </div>
                               );
