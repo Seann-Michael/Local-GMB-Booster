@@ -158,8 +158,8 @@ export function ImageDebugger({ projectId = "project-1" }: ImageDebuggerProps) {
             <hr className="my-2" />
             <div className="font-semibold">Image Load Tests:</div>
             {imageTests.map((test, i) => (
-              <div key={i} className="border-l-2 pl-2 ml-2 mb-2">
-                <div>Photo {test.index + 1}</div>
+              <div key={i} className={`border-l-2 pl-2 ml-2 mb-2 ${test.isControl ? 'border-blue-300' : 'border-gray-300'}`}>
+                <div>{test.isControl ? `Control ${Math.abs(test.index)}` : `Photo ${test.index + 1}`}</div>
                 <div className="text-xs text-gray-600 break-all">{test.url}</div>
                 <div>Type: {test.isString ? 'String' : 'Object'}</div>
                 <div>Status: {
