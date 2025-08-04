@@ -283,6 +283,41 @@ body {
     margin: 0.5rem 0;
     padding: 0.75rem;
   }
+
+  /* Make all tables mobile responsive */
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 600px;
+    width: 100%;
+  }
+
+  /* Responsive table wrapper */
+  [role="table"], .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Better mobile spacing for cards and content */
+  .card {
+    margin: 0.5rem 0;
+  }
+
+  /* Ensure code blocks don't overflow */
+  pre, code {
+    max-width: 100%;
+    overflow-x: auto;
+    word-break: break-all;
+  }
+
+  /* Fix dropdown and modal positioning on mobile */
+  [role="dialog"], [role="menu"] {
+    max-width: calc(100vw - 2rem);
+    max-height: calc(100vh - 2rem);
+  }
 }
 
 /* Tablet responsiveness */
