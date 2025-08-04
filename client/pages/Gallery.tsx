@@ -428,10 +428,10 @@ export default function Gallery() {
 
         {/* Filter Controls */}
         {showFilters && (
-          <Card className="p-6 mb-6">
-            <div className="space-y-6">
+          <Card className="p-4 sm:p-6 mb-6">
+            <div className="space-y-4 sm:space-y-6">
               {/* Top Row - Date and Basic Filters */}
-              <div className="flex flex-wrap gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="startDate">Start Date</Label>
                   <Input
