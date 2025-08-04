@@ -429,54 +429,37 @@ export default function Index() {
           </Card>
         ) : (
           <>
-            {/* Mobile horizontal scroll layout */}
+            {/* Mobile single column layout */}
             <div className="block md:hidden">
-              {/* Scroll hint for users */}
-              {filteredProjects.length > 1 && (
-                <div className="text-xs text-muted-foreground mb-2 text-center">
-                  ← Swipe to browse projects →
+              {filteredProjects.length > 3 && (
+                <div className="text-xs text-muted-foreground mb-3 text-center">
+                  {filteredProjects.length} projects found
                 </div>
               )}
-              <div
-                className="overflow-x-auto mobile-projects-scroll mobile-hide-scrollbar pb-4 -mx-4"
-                style={{
-                  overflowX: 'scroll',
-                  WebkitOverflowScrolling: 'touch',
-                  scrollBehavior: 'smooth'
-                }}
-              >
-                <div
-                  className="flex gap-3 pl-4 pr-4"
-                  style={{
-                    width: `${Math.max(filteredProjects.length * 336, (typeof window !== 'undefined' ? window.innerWidth : 400) + 100)}px`,
-                    minWidth: 'max-content'
-                  }}
-                >
-                  {filteredProjects.map((project) => (
-                    <div key={project.id} className="w-80 flex-shrink-0">
-                      <ProjectCard
-                        project={project}
-                        onDelete={() => {
-                          mockDataService.deleteProject(project.id);
-                          const updatedProjects = mockDataService.getProjects();
-                          setProjects(updatedProjects);
-                          setFilteredProjects(updatedProjects.filter(p => !p.archived));
-                        }}
-                        onMarkIncomplete={
-                          project.status === "completed"
-                            ? () => markProjectIncomplete(project.id)
-                            : undefined
-                        }
-                        onToggleStar={(starred) => {
-                          mockDataService.updateProject(project.id, { starred });
-                          const updatedProjects = mockDataService.getProjects();
-                          setProjects(updatedProjects);
-                          setFilteredProjects(updatedProjects.filter(p => !p.archived));
-                        }}
-                      />
-                    </div>
-                  ))}
-                </div>
+              <div className="space-y-4">
+                {filteredProjects.map((project) => (
+                  <ProjectCard
+                    key={project.id}
+                    project={project}
+                    onDelete={() => {
+                      mockDataService.deleteProject(project.id);
+                      const updatedProjects = mockDataService.getProjects();
+                      setProjects(updatedProjects);
+                      setFilteredProjects(updatedProjects.filter(p => !p.archived));
+                    }}
+                    onMarkIncomplete={
+                      project.status === "completed"
+                        ? () => markProjectIncomplete(project.id)
+                        : undefined
+                    }
+                    onToggleStar={(starred) => {
+                      mockDataService.updateProject(project.id, { starred });
+                      const updatedProjects = mockDataService.getProjects();
+                      setProjects(updatedProjects);
+                      setFilteredProjects(updatedProjects.filter(p => !p.archived));
+                    }}
+                  />
+                ))}
               </div>
             </div>
 
