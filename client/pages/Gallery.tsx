@@ -448,7 +448,7 @@ export default function Gallery() {
 
   return (
     <AppLayout>
-      <div className="container px-4 py-6 max-w-full overflow-x-hidden">
+      <div className="w-full px-3 sm:px-4 py-6 max-w-full overflow-x-hidden min-w-0">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
           <div className="flex-1 min-w-0">
             <h1 className="text-xl sm:text-2xl font-bold">Gallery</h1>
