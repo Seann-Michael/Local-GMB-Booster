@@ -88,21 +88,6 @@ export function ProjectCard({
                 alt={project.name}
                 className="h-full w-full object-cover transition-transform group-hover:scale-105"
               />
-              {/* Photo metadata overlay */}
-              <div className="absolute bottom-2 left-2 flex flex-col gap-1">
-                {typeof primaryPhoto === "object" &&
-                  primaryPhoto.uploadedAt && (
-                    <div className="rounded-full bg-black/70 px-2 py-1 text-xs text-white">
-                      {new Date(primaryPhoto.uploadedAt).toLocaleDateString()}
-                    </div>
-                  )}
-                {typeof primaryPhoto === "object" &&
-                  primaryPhoto.uploadedBy && (
-                    <div className="rounded-full bg-black/70 px-2 py-1 text-xs text-white">
-                      By {primaryPhoto.uploadedBy}
-                    </div>
-                  )}
-              </div>
             </>
           ) : (
             <div className="flex h-full w-full items-center justify-center">
