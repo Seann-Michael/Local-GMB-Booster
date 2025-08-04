@@ -192,13 +192,13 @@ export default function Index() {
   };
 
   const markProjectIncomplete = (projectId: string) => {
-    const updatedProjects = projects.map((project) =>
-      project.id === projectId
-        ? { ...project, status: "active", completedDate: undefined }
-        : project,
-    );
+    mockDataService.updateProject(projectId, {
+      status: "active",
+      completedDate: undefined
+    });
+    const updatedProjects = mockDataService.getProjects();
     setProjects(updatedProjects);
-    localStorage.setItem("projects", JSON.stringify(updatedProjects));
+    setFilteredProjects(updatedProjects.filter(p => !p.archived));
     toast.success("Project marked as incomplete");
   };
 
