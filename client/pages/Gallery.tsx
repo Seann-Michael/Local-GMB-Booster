@@ -21,6 +21,7 @@ import {
 import { AppLayout } from "@/components/AppLayout";
 import { MediaViewer } from "@/components/MediaViewer";
 import { SmartMediaUploader } from "@/components/SmartMediaUploader";
+import { PhotoActionMenu } from "@/components/PhotoActionMenu";
 import {
   ArrowLeft,
   Images,
