@@ -23,6 +23,7 @@ import { ProjectGridSkeleton } from "@/components/SkeletonLoader";
 import { useAnalytics } from "@/lib/analytics";
 import { ThemeToggle } from "@/components/ThemeProvider";
 import { mockDataService, MockProject } from "@/lib/mockData";
+import { ImageDebugger } from "@/components/ImageDebugger";
 
 // Use MockProject interface from mockData
 type Project = MockProject;
