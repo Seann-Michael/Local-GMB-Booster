@@ -63,6 +63,40 @@ html, body {
   }
 }
 
+/* Utility classes for mobile responsiveness */
+.mobile-safe {
+  max-width: 100vw;
+  overflow-x: hidden;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.mobile-container {
+  width: 100%;
+  max-width: 100vw;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  overflow-x: hidden;
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .mobile-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Hide scrollbars but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Focus styles for accessibility */
 :focus-visible {
   outline: 2px solid hsl(var(--ring));
