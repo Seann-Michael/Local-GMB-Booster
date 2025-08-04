@@ -428,7 +428,7 @@ export default function Index() {
           <>
             {/* Mobile horizontal scroll layout */}
             <div className="block md:hidden">
-              <div className="overflow-x-auto pb-4 -mx-4 px-4">
+              <div className="overflow-x-auto mobile-projects-scroll mobile-hide-scrollbar pb-4 -mx-4 px-4">
                 <div className="flex gap-4 w-max">
                   {filteredProjects.map((project) => (
                     <div key={project.id} className="w-80 flex-shrink-0">
