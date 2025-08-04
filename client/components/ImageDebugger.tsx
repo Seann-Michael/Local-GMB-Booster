@@ -9,6 +9,15 @@ export function ImageDebugger({ projectId = "project-1" }: ImageDebuggerProps) {
   const [debugInfo, setDebugInfo] = useState<any>(null);
   const [imageTests, setImageTests] = useState<any[]>([]);
 
+  const forceReinitialize = () => {
+    // Clear localStorage and reinitialize
+    localStorage.removeItem('projects');
+    localStorage.removeItem('users');
+    localStorage.removeItem('clients');
+    mockDataService.initialize();
+    window.location.reload(); // Reload to see fresh data
+  };
+
   useEffect(() => {
     // Force initialize mock data service
     try {
