@@ -149,6 +149,9 @@ export default function Gallery() {
       }
     });
 
+    console.log("Gallery: Processed photos:", allPhotos.length);
+    console.log("Gallery: Sample photo:", allPhotos[0]);
+
     setProjects(projectOptions);
     setUsers(Array.from(userSet));
     setAllTags(Array.from(tagSet));
