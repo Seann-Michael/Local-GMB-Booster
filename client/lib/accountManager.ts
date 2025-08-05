@@ -1,0 +1,159 @@
+export interface AdminAccount {
+  id: string;
+  accountNumber: string;
+  name: string;
+  email: string;
+  phone: string;
+  password: string; // In production, this would be hashed
+  emailVerified: boolean;
+  phoneVerified: boolean;
+  createdAt: string;
+  role: "admin";
+  businessName: string;
+}
+
+export class AccountManager {
+  private static readonly STORAGE_KEY = "admin_accounts";
+
+  // Generate unique 9-digit account number in format 123-123-1234
+  static generateAccountNumber(): string {
+    const existingAccounts = this.getAllAccounts();
+    let accountNumber: string;
+    
+    do {
+      const part1 = Math.floor(Math.random() * 900) + 100; // 100-999
+      const part2 = Math.floor(Math.random() * 900) + 100; // 100-999
+      const part3 = Math.floor(Math.random() * 9000) + 1000; // 1000-9999
+      accountNumber = `${part1}-${part2}-${part3}`;
+    } while (existingAccounts.some(acc => acc.accountNumber === accountNumber));
+    
+    return accountNumber;
+  }
+
+  // Get all admin accounts
+  static getAllAccounts(): AdminAccount[] {
+    try {
+      const accounts = localStorage.getItem(this.STORAGE_KEY);
+      return accounts ? JSON.parse(accounts) : [];
+    } catch (error) {
+      console.error("Error loading admin accounts:", error);
+      return [];
+    }
+  }
+
+  // Get account by email
+  static getAccountByEmail(email: string): AdminAccount | null {
+    const accounts = this.getAllAccounts();
+    return accounts.find(acc => acc.email === email) || null;
+  }
+
+  // Get account by account number
+  static getAccountByNumber(accountNumber: string): AdminAccount | null {
+    const accounts = this.getAllAccounts();
+    return accounts.find(acc => acc.accountNumber === accountNumber) || null;
+  }
+
+  // Create new admin account
+  static createAccount(accountData: Omit<AdminAccount, "id" | "accountNumber" | "createdAt">): AdminAccount {
+    const accounts = this.getAllAccounts();
+    
+    // Check if email already exists
+    if (accounts.some(acc => acc.email === accountData.email)) {
+      throw new Error("An account with this email already exists");
+    }
+    
+    // Check if phone already exists
+    if (accounts.some(acc => acc.phone === accountData.phone)) {
+      throw new Error("An account with this phone number already exists");
+    }
+
+    const newAccount: AdminAccount = {
+      id: Date.now().toString(),
+      accountNumber: this.generateAccountNumber(),
+      createdAt: new Date().toISOString(),
+      ...accountData,
+    };
+
+    accounts.push(newAccount);
+    this.saveAccounts(accounts);
+    
+    return newAccount;
+  }
+
+  // Update account
+  static updateAccount(accountId: string, updates: Partial<AdminAccount>): AdminAccount | null {
+    const accounts = this.getAllAccounts();
+    const accountIndex = accounts.findIndex(acc => acc.id === accountId);
+    
+    if (accountIndex === -1) {
+      return null;
+    }
+
+    accounts[accountIndex] = { ...accounts[accountIndex], ...updates };
+    this.saveAccounts(accounts);
+    
+    return accounts[accountIndex];
+  }
+
+  // Verify email
+  static verifyEmail(accountId: string): boolean {
+    const account = this.updateAccount(accountId, { emailVerified: true });
+    return account !== null;
+  }
+
+  // Verify phone
+  static verifyPhone(accountId: string): boolean {
+    const account = this.updateAccount(accountId, { phoneVerified: true });
+    return account !== null;
+  }
+
+  // Authenticate account
+  static authenticateAccount(email: string, password: string): AdminAccount | null {
+    const accounts = this.getAllAccounts();
+    const account = accounts.find(acc => acc.email === email && acc.password === password);
+    return account || null;
+  }
+
+  // Save accounts to localStorage
+  private static saveAccounts(accounts: AdminAccount[]): void {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(accounts));
+    } catch (error) {
+      console.error("Error saving admin accounts:", error);
+      throw new Error("Failed to save account data");
+    }
+  }
+
+  // Get account statistics
+  static getAccountStats(): {
+    totalAccounts: number;
+    verifiedEmails: number;
+    verifiedPhones: number;
+    accountsToday: number;
+  } {
+    const accounts = this.getAllAccounts();
+    const today = new Date().toDateString();
+    
+    return {
+      totalAccounts: accounts.length,
+      verifiedEmails: accounts.filter(acc => acc.emailVerified).length,
+      verifiedPhones: accounts.filter(acc => acc.phoneVerified).length,
+      accountsToday: accounts.filter(acc => 
+        new Date(acc.createdAt).toDateString() === today
+      ).length,
+    };
+  }
+
+  // Search accounts (for admin purposes)
+  static searchAccounts(query: string): AdminAccount[] {
+    const accounts = this.getAllAccounts();
+    const lowerQuery = query.toLowerCase();
+    
+    return accounts.filter(acc => 
+      acc.name.toLowerCase().includes(lowerQuery) ||
+      acc.email.toLowerCase().includes(lowerQuery) ||
+      acc.businessName.toLowerCase().includes(lowerQuery) ||
+      acc.accountNumber.includes(query)
+    );
+  }
+}
