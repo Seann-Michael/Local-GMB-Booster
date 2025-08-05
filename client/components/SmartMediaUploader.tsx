@@ -939,7 +939,7 @@ export function SmartMediaUploader({
                         <div className="space-y-4 md:space-y-3">
                           {/* Title (Always visible) */}
                           <div>
-                            <Label className="text-xs font-medium">Title</Label>
+                            <Label className="text-sm md:text-xs font-medium">Title</Label>
                             <Input
                               value={file.title}
                               onChange={(e) =>
