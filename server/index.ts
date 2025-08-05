@@ -1,6 +1,13 @@
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import {
+  handleSecureMedia,
+  handlePublicMedia,
+  handleThumbnails,
+  handleMediaUpload,
+  handleMediaMetadata
+} from "./routes/media";
 
 export function createServer() {
   const app = express();
