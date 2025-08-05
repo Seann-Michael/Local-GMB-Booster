@@ -955,7 +955,7 @@ export function SmartMediaUploader({
                             <div className="space-y-3">
                               {/* Caption */}
                               <div>
-                                <Label className="text-xs font-medium">
+                                <Label className="text-sm md:text-xs font-medium">
                                   Caption
                                 </Label>
                                 <Input
@@ -973,7 +973,7 @@ export function SmartMediaUploader({
                               {/* Tags and Category Grid */}
                               <div className="grid grid-cols-1 gap-3">
                                 <div>
-                                  <Label className="text-xs font-medium">
+                                  <Label className="text-sm md:text-xs font-medium">
                                     Tags
                                   </Label>
                                   <SmartDropdownInput
@@ -989,7 +989,7 @@ export function SmartMediaUploader({
                                   />
                                 </div>
                                 <div>
-                                  <Label className="text-xs font-medium">
+                                  <Label className="text-sm md:text-xs font-medium">
                                     Category
                                   </Label>
                                   <Select
@@ -1027,7 +1027,7 @@ export function SmartMediaUploader({
 
                               {/* Alt Text */}
                               <div>
-                                <Label className="text-xs font-medium">
+                                <Label className="text-sm md:text-xs font-medium">
                                   Alt Text
                                 </Label>
                                 <Input
@@ -1049,7 +1049,7 @@ export function SmartMediaUploader({
                             <div className="space-y-4">
                               {/* File Name */}
                               <div>
-                                <Label className="text-xs font-medium">
+                                <Label className="text-sm md:text-xs font-medium">
                                   File Name
                                 </Label>
                                 <Input
@@ -1066,7 +1066,7 @@ export function SmartMediaUploader({
 
                               {/* Description */}
                               <div>
-                                <Label className="text-xs font-medium">
+                                <Label className="text-sm md:text-xs font-medium">
                                   Description
                                 </Label>
                                 <Textarea
@@ -1084,7 +1084,7 @@ export function SmartMediaUploader({
 
                               {/* Caption */}
                               <div>
-                                <Label className="text-xs font-medium">
+                                <Label className="text-sm md:text-xs font-medium">
                                   Caption
                                 </Label>
                                 <Input
@@ -1102,7 +1102,7 @@ export function SmartMediaUploader({
                               {/* Core Metadata Grid */}
                               <div className="grid grid-cols-1 gap-3">
                                 <div>
-                                  <Label className="text-xs font-medium">
+                                  <Label className="text-sm md:text-xs font-medium">
                                     Tags
                                   </Label>
                                   <SmartDropdownInput
@@ -1118,7 +1118,7 @@ export function SmartMediaUploader({
                                   />
                                 </div>
                                 <div>
-                                  <Label className="text-xs font-medium">
+                                  <Label className="text-sm md:text-xs font-medium">
                                     Keywords
                                   </Label>
                                   <Input
@@ -1133,7 +1133,7 @@ export function SmartMediaUploader({
                                   />
                                 </div>
                                 <div>
-                                  <Label className="text-xs font-medium">
+                                  <Label className="text-sm md:text-xs font-medium">
                                     Alt Text
                                   </Label>
                                   <Input
@@ -1151,7 +1151,7 @@ export function SmartMediaUploader({
 
                               {/* Attribution */}
                               <div>
-                                <Label className="text-xs font-medium">
+                                <Label className="text-sm md:text-xs font-medium">
                                   Attribution
                                 </Label>
                                 <Input
@@ -1304,7 +1304,7 @@ export function SmartMediaUploader({
                                 </h4>
                                 <div className="grid grid-cols-1 gap-3">
                                   <div>
-                                    <Label className="text-xs font-medium">
+                                    <Label className="text-sm md:text-xs font-medium">
                                       Original File Name
                                     </Label>
                                     <Input
@@ -1318,7 +1318,7 @@ export function SmartMediaUploader({
                                     />
                                   </div>
                                   <div>
-                                    <Label className="text-xs font-medium">
+                                    <Label className="text-sm md:text-xs font-medium">
                                       Display Title
                                     </Label>
                                     <Input
@@ -1341,7 +1341,7 @@ export function SmartMediaUploader({
                                 </h4>
                                 <div className="space-y-2">
                                   <div>
-                                    <Label className="text-xs font-medium">
+                                    <Label className="text-sm md:text-xs font-medium">
                                       Caption
                                     </Label>
                                     <Input
@@ -1356,7 +1356,7 @@ export function SmartMediaUploader({
                                     />
                                   </div>
                                   <div>
-                                    <Label className="text-xs font-medium">
+                                    <Label className="text-sm md:text-xs font-medium">
                                       Description
                                     </Label>
                                     <Textarea
@@ -1372,7 +1372,7 @@ export function SmartMediaUploader({
                                     />
                                   </div>
                                   <div>
-                                    <Label className="text-xs font-medium">
+                                    <Label className="text-sm md:text-xs font-medium">
                                       Alt Text (Accessibility)
                                     </Label>
                                     <Input
@@ -1396,7 +1396,7 @@ export function SmartMediaUploader({
                                 </h4>
                                 <div className="grid grid-cols-1 gap-3">
                                   <div>
-                                    <Label className="text-xs font-medium">
+                                    <Label className="text-sm md:text-xs font-medium">
                                       Category
                                     </Label>
                                     <Select
@@ -1437,7 +1437,7 @@ export function SmartMediaUploader({
                                     </Select>
                                   </div>
                                   <div>
-                                    <Label className="text-xs font-medium">
+                                    <Label className="text-sm md:text-xs font-medium">
                                       Tags
                                     </Label>
                                     <SmartDropdownInput
@@ -1455,7 +1455,7 @@ export function SmartMediaUploader({
                                   </div>
                                 </div>
                                 <div className="mt-2">
-                                  <Label className="text-xs font-medium">
+                                  <Label className="text-sm md:text-xs font-medium">
                                     SEO Keywords
                                   </Label>
                                   <Input
@@ -1477,7 +1477,7 @@ export function SmartMediaUploader({
                                   Attribution & Rights
                                 </h4>
                                 <div>
-                                  <Label className="text-xs font-medium">
+                                  <Label className="text-sm md:text-xs font-medium">
                                     Attribution
                                   </Label>
                                   <Input
