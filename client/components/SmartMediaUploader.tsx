@@ -971,7 +971,7 @@ export function SmartMediaUploader({
                               </div>
 
                               {/* Tags and Category Grid */}
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                              <div className="grid grid-cols-1 gap-3">
                                 <div>
                                   <Label className="text-xs font-medium">
                                     Tags
@@ -1723,7 +1723,7 @@ export function SmartMediaUploader({
                                     />
                                   </div>
                                   <div className="text-xs text-indigo-600 bg-indigo-100 p-2 rounded">
-                                    ���� This structured data will be embedded as
+                                    💡 This structured data will be embedded as
                                     JSON-LD for enhanced SEO, rich snippets, and
                                     better search engine understanding.
                                   </div>
