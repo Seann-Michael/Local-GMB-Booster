@@ -364,8 +364,8 @@ export function AppLayout({ children }: AppLayoutProps) {
       {/* Mobile Sidebar */}
       <div
         className={cn(
-          "md:hidden fixed inset-y-0 left-0 z-50 w-60 bg-card border-r shadow-lg transform transition-transform duration-300 flex flex-col",
-          mobileSidebarOpen ? "translate-x-0" : "-translate-x-full",
+          "md:hidden fixed inset-y-0 left-0 w-60 bg-card border-r shadow-lg transform transition-transform duration-300 flex flex-col",
+          mobileSidebarOpen ? "translate-x-0 z-50" : "-translate-x-full z-0",
         )}
       >
         {/* Mobile Sidebar Header */}
