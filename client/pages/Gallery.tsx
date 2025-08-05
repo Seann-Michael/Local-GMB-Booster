@@ -1017,7 +1017,7 @@ export default function Gallery() {
 
       {/* Upload Modal */}
       <Dialog open={showUploader} onOpenChange={setShowUploader}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-4xl w-[95vw] max-h-[85vh] md:max-h-[90vh] overflow-y-auto mobile-safe">
           <DialogHeader>
             <div className="flex items-center justify-between">
               <DialogTitle className="flex items-center gap-2">
