@@ -404,6 +404,14 @@ const App = () => (
                   }
                 />
                 <Route
+                  path="/agency/admin/audits"
+                  element={
+                    <ProtectedRoute>
+                      <AgencyAudits />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
                   path="/agency/admin/billing"
                   element={
                     <ProtectedRoute>
