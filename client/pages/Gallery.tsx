@@ -55,6 +55,14 @@ interface PhotoWithMetadata {
   isPrimary?: boolean;
   type: "photo" | "video";
   size: "small" | "medium" | "large";
+  metadata?: {
+    originalFileName: string;
+    fileSize: number;
+    fileType: string;
+    category: string;
+    altText: string;
+    fallbackUrls?: string[];
+  };
 }
 
 interface FilterState {
