@@ -210,9 +210,9 @@ const generateMockProjects = (): MockProject[] => {
       // Use multiple reliable image sources with fallbacks
       const imageId = i * 100 + j;
       const imageUrls = [
-        `https://picsum.photos/800/600?random=${imageId}`,
         `https://via.placeholder.com/800x600/666666/ffffff?text=Photo+${j + 1}`,
-        `https://dummyimage.com/800x600/cccccc/666666&text=Project+Photo+${j + 1}`
+        `https://dummyimage.com/800x600/cccccc/666666&text=Project+Photo+${j + 1}`,
+        `https://picsum.photos/800/600?random=${imageId}`
       ];
 
       photos.push({
