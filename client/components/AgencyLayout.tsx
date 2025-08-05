@@ -370,6 +370,14 @@ export function AgencyLayout({ children }: AgencyLayoutProps) {
       comingSoon: false,
     },
     {
+      id: "audits",
+      label: "Audits",
+      href: "/agency/admin/audits",
+      icon: ClipboardCheck,
+      active: location.pathname === "/agency/admin/audits",
+      comingSoon: true,
+    },
+    {
       id: "billing",
       label: "Billing",
       href: "/agency/admin/billing",
