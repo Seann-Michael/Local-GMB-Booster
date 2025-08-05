@@ -881,7 +881,7 @@ export function SmartMediaUploader({
                             />
                           </div>
                         ) : (
-                          <div className="w-16 h-16 rounded-lg flex items-center justify-center bg-muted">
+                          <div className="w-20 h-20 md:w-16 md:h-16 rounded-lg flex items-center justify-center bg-muted">
                             {getFileIcon(file.file)}
                           </div>
                         )}
