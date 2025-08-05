@@ -138,6 +138,8 @@ export function SmartMediaUploader({
     category: "",
     tags: "",
     keywords: "",
+    attribution: "",
+    caption: "",
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dragCounterRef = useRef(0);
