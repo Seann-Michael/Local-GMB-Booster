@@ -888,57 +888,90 @@ export function SmartMediaUploader({
 
                           {/* Simple Mode - Essential Fields */}
                           {editMode === "simple" && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div className="space-y-3">
+                              {/* Caption */}
                               <div>
                                 <Label className="text-xs font-medium">
-                                  Tags
+                                  Caption
                                 </Label>
-                                <SmartDropdownInput
-                                  fieldName={DROPDOWN_FIELDS.PROJECT_KEYWORDS}
-                                  value={file.tags}
-                                  onChange={(value) =>
-                                    updateFile(file.id, { tags: value })
+                                <Input
+                                  value={file.caption}
+                                  onChange={(e) =>
+                                    updateFile(file.id, { caption: e.target.value })
                                   }
-                                  placeholder="kitchen, before, progress"
-                                  allowMultiple={true}
-                                  separator=","
+                                  placeholder="Short caption for this media..."
                                   className="h-8 text-sm"
                                 />
                               </div>
+
+                              {/* Tags and Category Grid */}
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div>
+                                  <Label className="text-xs font-medium">
+                                    Tags
+                                  </Label>
+                                  <SmartDropdownInput
+                                    fieldName={DROPDOWN_FIELDS.PROJECT_KEYWORDS}
+                                    value={file.tags}
+                                    onChange={(value) =>
+                                      updateFile(file.id, { tags: value })
+                                    }
+                                    placeholder="kitchen, before, progress"
+                                    allowMultiple={true}
+                                    separator=","
+                                    className="h-8 text-sm"
+                                  />
+                                </div>
+                                <div>
+                                  <Label className="text-xs font-medium">
+                                    Category
+                                  </Label>
+                                  <Select
+                                    value={file.category}
+                                    onValueChange={(value) =>
+                                      updateFile(file.id, { category: value })
+                                    }
+                                  >
+                                    <SelectTrigger className="h-8 text-sm">
+                                      <SelectValue placeholder="Select category" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value="before">
+                                        Before Photos
+                                      </SelectItem>
+                                      <SelectItem value="progress">
+                                        Progress Photos
+                                      </SelectItem>
+                                      <SelectItem value="after">
+                                        After Photos
+                                      </SelectItem>
+                                      <SelectItem value="detail">
+                                        Detail Shots
+                                      </SelectItem>
+                                      <SelectItem value="overview">
+                                        Overview
+                                      </SelectItem>
+                                      <SelectItem value="walkthrough">
+                                        Walkthrough
+                                      </SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                </div>
+                              </div>
+
+                              {/* Alt Text */}
                               <div>
                                 <Label className="text-xs font-medium">
-                                  Category
+                                  Alt Text
                                 </Label>
-                                <Select
-                                  value={file.category}
-                                  onValueChange={(value) =>
-                                    updateFile(file.id, { category: value })
+                                <Input
+                                  value={file.altText}
+                                  onChange={(e) =>
+                                    updateFile(file.id, { altText: e.target.value })
                                   }
-                                >
-                                  <SelectTrigger className="h-8 text-sm">
-                                    <SelectValue placeholder="Select category" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem value="before">
-                                      Before Photos
-                                    </SelectItem>
-                                    <SelectItem value="progress">
-                                      Progress Photos
-                                    </SelectItem>
-                                    <SelectItem value="after">
-                                      After Photos
-                                    </SelectItem>
-                                    <SelectItem value="detail">
-                                      Detail Shots
-                                    </SelectItem>
-                                    <SelectItem value="overview">
-                                      Overview
-                                    </SelectItem>
-                                    <SelectItem value="walkthrough">
-                                      Walkthrough
-                                    </SelectItem>
-                                  </SelectContent>
-                                </Select>
+                                  placeholder="Accessibility description for screen readers..."
+                                  className="h-8 text-sm"
+                                />
                               </div>
                             </div>
                           )}
