@@ -100,6 +100,7 @@ export function SmartMediaUploader({
   enableAIFeatures = true,
   autoApplyDefaults = true,
   className,
+  context = { type: 'project', isPublic: true },
 }: SmartMediaUploaderProps) {
   const [files, setFiles] = useState<FileWithMetadata[]>([]);
   const [isDragging, setIsDragging] = useState(false);
