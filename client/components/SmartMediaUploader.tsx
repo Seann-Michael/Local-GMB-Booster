@@ -868,8 +868,8 @@ export function SmartMediaUploader({
                     file.status === "processing" && "border-l-yellow-500",
                   )}
                 >
-                  <CardContent className="p-4">
-                    <div className="flex gap-3">
+                  <CardContent className="p-4 md:p-3">
+                    <div className="flex gap-4 md:gap-3">
                       {/* Preview */}
                       <div className="flex-shrink-0">
                         {file.preview ? (
