@@ -35,7 +35,9 @@ export class AccountManager {
         const part3 = Math.floor(Math.random() * 9000) + 1000; // 1000-9999
         accountNumber = `${part1}-${part2}-${part3}`;
       }
-    } while (existingAccounts.some(acc => acc.accountNumber === accountNumber));
+    } while (
+      existingAccounts.some((acc) => acc.accountNumber === accountNumber)
+    );
 
     return accountNumber;
   }
@@ -54,19 +56,19 @@ export class AccountManager {
   // Get account by email
   static getAccountByEmail(email: string): AdminAccount | null {
     const accounts = this.getAllAccounts();
-    return accounts.find(acc => acc.email === email) || null;
+    return accounts.find((acc) => acc.email === email) || null;
   }
 
   // Get account by account number
   static getAccountByNumber(accountNumber: string): AdminAccount | null {
     const accounts = this.getAllAccounts();
-    return accounts.find(acc => acc.accountNumber === accountNumber) || null;
+    return accounts.find((acc) => acc.accountNumber === accountNumber) || null;
   }
 
   // Get accounts by role
   static getAccountsByRole(role: "admin" | "agency"): AdminAccount[] {
     const accounts = this.getAllAccounts();
-    return accounts.filter(acc => acc.role === role);
+    return accounts.filter((acc) => acc.role === role);
   }
 
   // Get admin accounts only
@@ -80,16 +82,18 @@ export class AccountManager {
   }
 
   // Create new admin or agency account
-  static createAccount(accountData: Omit<AdminAccount, "id" | "accountNumber" | "createdAt">): AdminAccount {
+  static createAccount(
+    accountData: Omit<AdminAccount, "id" | "accountNumber" | "createdAt">,
+  ): AdminAccount {
     const accounts = this.getAllAccounts();
 
     // Check if email already exists
-    if (accounts.some(acc => acc.email === accountData.email)) {
+    if (accounts.some((acc) => acc.email === accountData.email)) {
       throw new Error("An account with this email already exists");
     }
 
     // Check if phone already exists
-    if (accounts.some(acc => acc.phone === accountData.phone)) {
+    if (accounts.some((acc) => acc.phone === accountData.phone)) {
       throw new Error("An account with this phone number already exists");
     }
 
@@ -107,17 +111,20 @@ export class AccountManager {
   }
 
   // Update account
-  static updateAccount(accountId: string, updates: Partial<AdminAccount>): AdminAccount | null {
+  static updateAccount(
+    accountId: string,
+    updates: Partial<AdminAccount>,
+  ): AdminAccount | null {
     const accounts = this.getAllAccounts();
-    const accountIndex = accounts.findIndex(acc => acc.id === accountId);
-    
+    const accountIndex = accounts.findIndex((acc) => acc.id === accountId);
+
     if (accountIndex === -1) {
       return null;
     }
 
     accounts[accountIndex] = { ...accounts[accountIndex], ...updates };
     this.saveAccounts(accounts);
-    
+
     return accounts[accountIndex];
   }
 
@@ -134,9 +141,14 @@ export class AccountManager {
   }
 
   // Authenticate account
-  static authenticateAccount(email: string, password: string): AdminAccount | null {
+  static authenticateAccount(
+    email: string,
+    password: string,
+  ): AdminAccount | null {
     const accounts = this.getAllAccounts();
-    const account = accounts.find(acc => acc.email === email && acc.password === password);
+    const account = accounts.find(
+      (acc) => acc.email === email && acc.password === password,
+    );
     return account || null;
   }
 
@@ -164,12 +176,12 @@ export class AccountManager {
 
     return {
       totalAccounts: accounts.length,
-      adminAccounts: accounts.filter(acc => acc.role === "admin").length,
-      agencyAccounts: accounts.filter(acc => acc.role === "agency").length,
-      verifiedEmails: accounts.filter(acc => acc.emailVerified).length,
-      verifiedPhones: accounts.filter(acc => acc.phoneVerified).length,
-      accountsToday: accounts.filter(acc =>
-        new Date(acc.createdAt).toDateString() === today
+      adminAccounts: accounts.filter((acc) => acc.role === "admin").length,
+      agencyAccounts: accounts.filter((acc) => acc.role === "agency").length,
+      verifiedEmails: accounts.filter((acc) => acc.emailVerified).length,
+      verifiedPhones: accounts.filter((acc) => acc.phoneVerified).length,
+      accountsToday: accounts.filter(
+        (acc) => new Date(acc.createdAt).toDateString() === today,
       ).length,
     };
   }
@@ -178,12 +190,13 @@ export class AccountManager {
   static searchAccounts(query: string): AdminAccount[] {
     const accounts = this.getAllAccounts();
     const lowerQuery = query.toLowerCase();
-    
-    return accounts.filter(acc => 
-      acc.name.toLowerCase().includes(lowerQuery) ||
-      acc.email.toLowerCase().includes(lowerQuery) ||
-      acc.businessName.toLowerCase().includes(lowerQuery) ||
-      acc.accountNumber.includes(query)
+
+    return accounts.filter(
+      (acc) =>
+        acc.name.toLowerCase().includes(lowerQuery) ||
+        acc.email.toLowerCase().includes(lowerQuery) ||
+        acc.businessName.toLowerCase().includes(lowerQuery) ||
+        acc.accountNumber.includes(query),
     );
   }
 }

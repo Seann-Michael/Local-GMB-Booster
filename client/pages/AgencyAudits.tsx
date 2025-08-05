@@ -21,32 +21,38 @@ export default function AgencyAudits() {
     {
       icon: Building2,
       title: "Client Business Audits",
-      description: "Comprehensive audits of all client businesses, their projects, and performance metrics."
+      description:
+        "Comprehensive audits of all client businesses, their projects, and performance metrics.",
     },
     {
       icon: FileSearch,
       title: "Multi-Client Project Audits",
-      description: "Cross-client project analysis and quality assessments across your entire portfolio."
+      description:
+        "Cross-client project analysis and quality assessments across your entire portfolio.",
     },
     {
       icon: Users,
       title: "Agency Team Performance",
-      description: "Evaluate your agency team's productivity and effectiveness across all client accounts."
+      description:
+        "Evaluate your agency team's productivity and effectiveness across all client accounts.",
     },
     {
       icon: CheckCircle,
       title: "Client Compliance Tracking",
-      description: "Monitor compliance and quality standards across all managed client businesses."
+      description:
+        "Monitor compliance and quality standards across all managed client businesses.",
     },
     {
       icon: BarChart3,
       title: "Agency Performance Analytics",
-      description: "Detailed reports on agency performance, client satisfaction, and growth metrics."
+      description:
+        "Detailed reports on agency performance, client satisfaction, and growth metrics.",
     },
     {
       icon: Shield,
       title: "Security & Access Audits",
-      description: "Regular security assessments for agency access to client data and systems."
+      description:
+        "Regular security assessments for agency access to client data and systems.",
     },
   ];
 
@@ -66,7 +72,7 @@ export default function AgencyAudits() {
               </p>
             </div>
           </div>
-          
+
           <Badge variant="secondary" className="gap-2">
             <Clock className="h-4 w-4" />
             Coming Soon
@@ -79,15 +85,19 @@ export default function AgencyAudits() {
             <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
               <Clock className="h-8 w-8 text-primary" />
             </div>
-            <CardTitle className="text-xl">Advanced Agency Auditing Tools Coming Soon</CardTitle>
+            <CardTitle className="text-xl">
+              Advanced Agency Auditing Tools Coming Soon
+            </CardTitle>
           </CardHeader>
           <CardContent className="text-center">
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              We're developing specialized auditing capabilities designed specifically for agencies 
-              managing multiple client businesses. These tools will help you maintain quality standards 
-              across your entire client portfolio, track compliance, and optimize your agency operations.
+              We're developing specialized auditing capabilities designed
+              specifically for agencies managing multiple client businesses.
+              These tools will help you maintain quality standards across your
+              entire client portfolio, track compliance, and optimize your
+              agency operations.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="outline" asChild>
                 <Link to="/agency/admin/reports">
@@ -113,7 +123,9 @@ export default function AgencyAudits() {
 
         {/* Upcoming Features */}
         <div>
-          <h2 className="text-xl font-semibold mb-4">What's Coming for Agencies</h2>
+          <h2 className="text-xl font-semibold mb-4">
+            What's Coming for Agencies
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {upcomingFeatures.map((feature, index) => (
               <Card key={index} className="h-full">
@@ -145,9 +157,10 @@ export default function AgencyAudits() {
               <div>
                 <h3 className="font-semibold mb-2">Agency-First Design</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Our auditing tools are being designed specifically for agencies managing multiple 
-                  client businesses. You'll be able to audit across your entire client portfolio, 
-                  compare performance metrics, and ensure consistent quality standards.
+                  Our auditing tools are being designed specifically for
+                  agencies managing multiple client businesses. You'll be able
+                  to audit across your entire client portfolio, compare
+                  performance metrics, and ensure consistent quality standards.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-2">
                   <Badge variant="outline" className="w-fit">

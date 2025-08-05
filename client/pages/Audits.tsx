@@ -20,27 +20,32 @@ export default function Audits() {
     {
       icon: FileSearch,
       title: "Project Audits",
-      description: "Comprehensive audits of project completion, quality standards, and documentation."
+      description:
+        "Comprehensive audits of project completion, quality standards, and documentation.",
     },
     {
       icon: Users,
       title: "Team Performance Audits",
-      description: "Evaluate team productivity, task completion rates, and collaboration effectiveness."
+      description:
+        "Evaluate team productivity, task completion rates, and collaboration effectiveness.",
     },
     {
       icon: CheckCircle,
       title: "Quality Control Checks",
-      description: "Automated quality assessments and compliance verification for all projects."
+      description:
+        "Automated quality assessments and compliance verification for all projects.",
     },
     {
       icon: BarChart3,
       title: "Performance Analytics",
-      description: "Detailed audit reports with insights and recommendations for improvement."
+      description:
+        "Detailed audit reports with insights and recommendations for improvement.",
     },
     {
       icon: Shield,
       title: "Security Audits",
-      description: "Regular security assessments and vulnerability scans for your business data."
+      description:
+        "Regular security assessments and vulnerability scans for your business data.",
     },
   ];
 
@@ -60,7 +65,7 @@ export default function Audits() {
               </p>
             </div>
           </div>
-          
+
           <Badge variant="secondary" className="gap-2">
             <Clock className="h-4 w-4" />
             Coming Soon
@@ -73,15 +78,18 @@ export default function Audits() {
             <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
               <Clock className="h-8 w-8 text-primary" />
             </div>
-            <CardTitle className="text-xl">Powerful Auditing Tools Coming Soon</CardTitle>
+            <CardTitle className="text-xl">
+              Powerful Auditing Tools Coming Soon
+            </CardTitle>
           </CardHeader>
           <CardContent className="text-center">
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              We're building comprehensive auditing capabilities to help you maintain quality standards, 
-              track compliance, and optimize your business operations. These tools will provide detailed 
-              insights into project completion, team performance, and business metrics.
+              We're building comprehensive auditing capabilities to help you
+              maintain quality standards, track compliance, and optimize your
+              business operations. These tools will provide detailed insights
+              into project completion, team performance, and business metrics.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="outline" asChild>
                 <Link to="/admin/reports">
@@ -133,9 +141,9 @@ export default function Audits() {
               <div>
                 <h3 className="font-semibold mb-2">Stay Updated</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  We'll notify you as soon as the Audits feature becomes available. 
-                  In the meantime, you can use our existing Reports section to track 
-                  project progress and business metrics.
+                  We'll notify you as soon as the Audits feature becomes
+                  available. In the meantime, you can use our existing Reports
+                  section to track project progress and business metrics.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-2">
                   <Badge variant="outline" className="w-fit">

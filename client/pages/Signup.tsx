@@ -45,7 +45,9 @@ interface FormErrors {
 
 export default function Signup() {
   const navigate = useNavigate();
-  const [step, setStep] = useState<"form" | "phone-verification" | "success">("form");
+  const [step, setStep] = useState<"form" | "phone-verification" | "success">(
+    "form",
+  );
   const [formData, setFormData] = useState<SignupFormData>({
     name: "",
     email: "",
@@ -87,7 +89,9 @@ export default function Signup() {
 
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone number is required";
-    } else if (!/^\+?[\d\s\-\(\)]{10,}$/.test(formData.phone.replace(/\s/g, ""))) {
+    } else if (
+      !/^\+?[\d\s\-\(\)]{10,}$/.test(formData.phone.replace(/\s/g, ""))
+    ) {
       newErrors.phone = "Please enter a valid phone number";
     }
 
@@ -96,7 +100,8 @@ export default function Signup() {
     } else if (formData.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters";
     } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password = "Password must contain uppercase, lowercase, and numbers";
+      newErrors.password =
+        "Password must contain uppercase, lowercase, and numbers";
     }
 
     if (!formData.confirmPassword) {
@@ -112,7 +117,7 @@ export default function Signup() {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -122,8 +127,8 @@ export default function Signup() {
 
     try {
       // Simulate API call to check if email/phone already exists
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Check for existing accounts using AccountManager
       const emailExists = AccountManager.getAccountByEmail(formData.email);
       if (emailExists) {
@@ -134,11 +139,10 @@ export default function Signup() {
       // Generate unique account number
       const newAccountNumber = AccountManager.generateAccountNumber();
       setAccountNumber(newAccountNumber);
-      
+
       // Move to phone verification step
       setStep("phone-verification");
       toast.success("Verification code sent to your phone!");
-      
     } catch (error) {
       setErrors({ general: "Something went wrong. Please try again." });
     } finally {
@@ -157,8 +161,8 @@ export default function Signup() {
 
     try {
       // Simulate OTP verification (in real app, this would verify with SMS service)
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
       // For demo purposes, accept any 6-digit code
       if (otpCode === "123456" || otpCode.length === 6) {
         // Create account using AccountManager
@@ -188,16 +192,16 @@ export default function Signup() {
   // Resend OTP
   const handleResendOTP = async () => {
     if (resendCooldown > 0) return;
-    
+
     setIsLoading(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       toast.success("New verification code sent!");
       setResendCooldown(60);
-      
+
       // Countdown timer
       const timer = setInterval(() => {
-        setResendCooldown(prev => {
+        setResendCooldown((prev) => {
           if (prev <= 1) {
             clearInterval(timer);
             return 0;
@@ -214,10 +218,10 @@ export default function Signup() {
 
   // Handle form input changes
   const handleInputChange = (field: keyof SignupFormData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: undefined }));
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
   };
 
@@ -233,31 +237,35 @@ export default function Signup() {
           </CardHeader>
           <CardContent className="space-y-4 text-center">
             <div className="p-4 bg-muted rounded-lg">
-              <p className="text-sm text-muted-foreground mb-2">Your Account Number</p>
+              <p className="text-sm text-muted-foreground mb-2">
+                Your Account Number
+              </p>
               <p className="text-xl font-mono font-bold">{accountNumber}</p>
               <p className="text-xs text-muted-foreground mt-1">
                 Keep this number safe - you'll need it for support
               </p>
             </div>
-            
+
             <Alert>
               <Mail className="h-4 w-4" />
               <AlertDescription>
-                We've sent an email verification link to <strong>{formData.email}</strong>. 
-                Please check your inbox to complete your account setup.
+                We've sent an email verification link to{" "}
+                <strong>{formData.email}</strong>. Please check your inbox to
+                complete your account setup.
               </AlertDescription>
             </Alert>
 
             <div className="space-y-3 pt-4">
-              <Button 
-                onClick={() => navigate("/login")} 
+              <Button
+                onClick={() => navigate("/login")}
                 className="w-full"
                 size="lg"
               >
                 Continue to Login
               </Button>
               <p className="text-xs text-muted-foreground">
-                You can start using your account immediately, but some features may be limited until you verify your email.
+                You can start using your account immediately, but some features
+                may be limited until you verify your email.
               </p>
             </div>
           </CardContent>
@@ -283,11 +291,7 @@ export default function Signup() {
           <CardContent className="space-y-6">
             <div className="space-y-4">
               <div className="flex justify-center">
-                <InputOTP
-                  maxLength={6}
-                  value={otpCode}
-                  onChange={setOtpCode}
-                >
+                <InputOTP maxLength={6} value={otpCode} onChange={setOtpCode}>
                   <InputOTPGroup>
                     <InputOTPSlot index={0} />
                     <InputOTPSlot index={1} />
@@ -318,7 +322,9 @@ export default function Signup() {
                   disabled={resendCooldown > 0 || isLoading}
                   className="text-sm"
                 >
-                  {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : "Resend Code"}
+                  {resendCooldown > 0
+                    ? `Resend in ${resendCooldown}s`
+                    : "Resend Code"}
                 </Button>
               </div>
             </div>
@@ -424,7 +430,9 @@ export default function Signup() {
                   type={showPassword ? "text" : "password"}
                   placeholder="Create a strong password"
                   value={formData.password}
-                  onChange={(e) => handleInputChange("password", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("password", e.target.value)
+                  }
                   className={`pl-10 pr-10 ${errors.password ? "border-destructive" : ""}`}
                 />
                 <button
@@ -432,7 +440,11 @@ export default function Signup() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
                 </button>
               </div>
               {errors.password && (
@@ -449,7 +461,9 @@ export default function Signup() {
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirm your password"
                   value={formData.confirmPassword}
-                  onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("confirmPassword", e.target.value)
+                  }
                   className={`pl-10 pr-10 ${errors.confirmPassword ? "border-destructive" : ""}`}
                 />
                 <button
@@ -457,11 +471,17 @@ export default function Signup() {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
                 >
-                  {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showConfirmPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
                 </button>
               </div>
               {errors.confirmPassword && (
-                <p className="text-sm text-destructive">{errors.confirmPassword}</p>
+                <p className="text-sm text-destructive">
+                  {errors.confirmPassword}
+                </p>
               )}
             </div>
 
@@ -478,7 +498,10 @@ export default function Signup() {
           <div className="mt-6 text-center space-y-2">
             <p className="text-sm text-muted-foreground">
               Managing multiple client businesses?{" "}
-              <Link to="/agency-signup" className="text-primary hover:underline">
+              <Link
+                to="/agency-signup"
+                className="text-primary hover:underline"
+              >
                 Create Agency Account
               </Link>
             </p>
@@ -492,8 +515,8 @@ export default function Signup() {
 
           <div className="mt-4 p-3 bg-muted/50 rounded-lg">
             <p className="text-xs text-muted-foreground text-center">
-              By creating an account, you agree to our Terms of Service and Privacy Policy. 
-              No credit card required to get started.
+              By creating an account, you agree to our Terms of Service and
+              Privacy Policy. No credit card required to get started.
             </p>
           </div>
         </CardContent>

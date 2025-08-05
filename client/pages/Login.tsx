@@ -4,14 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import {
-  Building2,
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  AlertCircle,
-} from "lucide-react";
+import { Building2, Mail, Lock, Eye, EyeOff, AlertCircle } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { AccountManager } from "@/lib/accountManager";
@@ -58,7 +51,7 @@ export default function Login() {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -68,30 +61,35 @@ export default function Login() {
 
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Authenticate using AccountManager
-      const account = AccountManager.authenticateAccount(formData.email, formData.password);
-      
+      const account = AccountManager.authenticateAccount(
+        formData.email,
+        formData.password,
+      );
+
       if (account) {
         // Set current user in localStorage
-        localStorage.setItem("current_user", JSON.stringify({
-          id: account.id,
-          name: account.name,
-          email: account.email,
-          accountNumber: account.accountNumber,
-          role: account.role,
-          businessName: account.businessName,
-          phoneVerified: account.phoneVerified,
-          emailVerified: account.emailVerified,
-        }));
-        
+        localStorage.setItem(
+          "current_user",
+          JSON.stringify({
+            id: account.id,
+            name: account.name,
+            email: account.email,
+            accountNumber: account.accountNumber,
+            role: account.role,
+            businessName: account.businessName,
+            phoneVerified: account.phoneVerified,
+            emailVerified: account.emailVerified,
+          }),
+        );
+
         toast.success("Login successful!");
         navigate("/admin/projects");
       } else {
         setErrors({ general: "Invalid email or password" });
       }
-      
     } catch (error) {
       setErrors({ general: "Something went wrong. Please try again." });
     } finally {
@@ -101,10 +99,10 @@ export default function Login() {
 
   // Handle form input changes
   const handleInputChange = (field: keyof LoginFormData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: undefined }));
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
   };
 
@@ -156,7 +154,9 @@ export default function Login() {
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
                   value={formData.password}
-                  onChange={(e) => handleInputChange("password", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("password", e.target.value)
+                  }
                   className={`pl-10 pr-10 ${errors.password ? "border-destructive" : ""}`}
                 />
                 <button
@@ -164,7 +164,11 @@ export default function Login() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
                 </button>
               </div>
               {errors.password && (
@@ -173,7 +177,10 @@ export default function Login() {
             </div>
 
             <div className="flex items-center justify-between text-sm">
-              <Link to="/forgot-password" className="text-primary hover:underline">
+              <Link
+                to="/forgot-password"
+                className="text-primary hover:underline"
+              >
                 Forgot password?
               </Link>
             </div>
@@ -199,7 +206,8 @@ export default function Login() {
 
           <div className="mt-4 p-3 bg-muted/50 rounded-lg">
             <p className="text-xs text-muted-foreground text-center">
-              For demo purposes, you can also use any existing account credentials.
+              For demo purposes, you can also use any existing account
+              credentials.
             </p>
           </div>
         </CardContent>
