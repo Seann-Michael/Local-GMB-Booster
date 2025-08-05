@@ -63,6 +63,8 @@ interface FileWithMetadata {
     suggestedTags?: string[];
     suggestedKeywords?: string[];
   };
+  // Secure URL integration
+  secureMediaFile?: SecureMediaFile;
 }
 
 interface SmartMediaUploaderProps {
