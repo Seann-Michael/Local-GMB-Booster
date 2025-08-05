@@ -153,18 +153,22 @@ export class AccountManager {
   // Get account statistics
   static getAccountStats(): {
     totalAccounts: number;
+    adminAccounts: number;
+    agencyAccounts: number;
     verifiedEmails: number;
     verifiedPhones: number;
     accountsToday: number;
   } {
     const accounts = this.getAllAccounts();
     const today = new Date().toDateString();
-    
+
     return {
       totalAccounts: accounts.length,
+      adminAccounts: accounts.filter(acc => acc.role === "admin").length,
+      agencyAccounts: accounts.filter(acc => acc.role === "agency").length,
       verifiedEmails: accounts.filter(acc => acc.emailVerified).length,
       verifiedPhones: accounts.filter(acc => acc.phoneVerified).length,
-      accountsToday: accounts.filter(acc => 
+      accountsToday: accounts.filter(acc =>
         new Date(acc.createdAt).toDateString() === today
       ).length,
     };
