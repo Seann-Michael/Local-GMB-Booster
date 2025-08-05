@@ -946,7 +946,7 @@ export function SmartMediaUploader({
                                 updateFile(file.id, { title: e.target.value })
                               }
                               placeholder="Enter a descriptive title..."
-                              className="h-8 text-sm"
+                              className="h-10 md:h-8 text-base md:text-sm"
                             />
                           </div>
 
