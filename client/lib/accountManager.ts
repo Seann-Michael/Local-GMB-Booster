@@ -63,6 +63,22 @@ export class AccountManager {
     return accounts.find(acc => acc.accountNumber === accountNumber) || null;
   }
 
+  // Get accounts by role
+  static getAccountsByRole(role: "admin" | "agency"): AdminAccount[] {
+    const accounts = this.getAllAccounts();
+    return accounts.filter(acc => acc.role === role);
+  }
+
+  // Get admin accounts only
+  static getAdminAccounts(): AdminAccount[] {
+    return this.getAccountsByRole("admin");
+  }
+
+  // Get agency accounts only
+  static getAgencyAccounts(): AdminAccount[] {
+    return this.getAccountsByRole("agency");
+  }
+
   // Create new admin or agency account
   static createAccount(accountData: Omit<AdminAccount, "id" | "accountNumber" | "createdAt">): AdminAccount {
     const accounts = this.getAllAccounts();
