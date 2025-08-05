@@ -936,7 +936,7 @@ export function SmartMediaUploader({
                         )}
 
                         {/* Metadata Fields */}
-                        <div className="space-y-3">
+                        <div className="space-y-4 md:space-y-3">
                           {/* Title (Always visible) */}
                           <div>
                             <Label className="text-xs font-medium">Title</Label>
