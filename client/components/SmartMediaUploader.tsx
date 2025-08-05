@@ -1114,7 +1114,7 @@ export function SmartMediaUploader({
                                     placeholder="project tags"
                                     allowMultiple={true}
                                     separator=","
-                                    className="h-8 text-sm"
+                                    className="h-10 md:h-8 text-base md:text-sm"
                                   />
                                 </div>
                                 <div>
@@ -1129,7 +1129,7 @@ export function SmartMediaUploader({
                                       })
                                     }
                                     placeholder="SEO keywords"
-                                    className="h-8 text-sm"
+                                    className="h-10 md:h-8 text-base md:text-sm"
                                   />
                                 </div>
                                 <div>
@@ -1144,7 +1144,7 @@ export function SmartMediaUploader({
                                       })
                                     }
                                     placeholder="Accessibility description"
-                                    className="h-8 text-sm"
+                                    className="h-10 md:h-8 text-base md:text-sm"
                                   />
                                 </div>
                               </div>
