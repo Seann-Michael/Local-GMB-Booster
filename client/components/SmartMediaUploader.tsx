@@ -739,48 +739,80 @@ export function SmartMediaUploader({
                       <X className="h-4 w-4" />
                     </Button>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
-                    <div>
-                      <Label className="text-xs">Category</Label>
-                      <Input
-                        placeholder="e.g., progress photos"
-                        value={bulkMetadata.category}
-                        onChange={(e) =>
-                          setBulkMetadata((prev) => ({
-                            ...prev,
-                            category: e.target.value,
-                          }))
-                        }
-                        className="h-8"
-                      />
+                  <div className="space-y-3 mb-3">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      <div>
+                        <Label className="text-xs">Category</Label>
+                        <Input
+                          placeholder="e.g., progress photos"
+                          value={bulkMetadata.category}
+                          onChange={(e) =>
+                            setBulkMetadata((prev) => ({
+                              ...prev,
+                              category: e.target.value,
+                            }))
+                          }
+                          className="h-8"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Additional Tags</Label>
+                        <SmartDropdownInput
+                          fieldName={DROPDOWN_FIELDS.PROJECT_KEYWORDS}
+                          value={bulkMetadata.tags}
+                          onChange={(value) =>
+                            setBulkMetadata((prev) => ({ ...prev, tags: value }))
+                          }
+                          placeholder="before, progress, final"
+                          allowMultiple={true}
+                          separator=","
+                          className="h-8"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Additional Keywords</Label>
+                        <Input
+                          placeholder="renovation, construction"
+                          value={bulkMetadata.keywords}
+                          onChange={(e) =>
+                            setBulkMetadata((prev) => ({
+                              ...prev,
+                              keywords: e.target.value,
+                            }))
+                          }
+                          className="h-8"
+                        />
+                      </div>
                     </div>
-                    <div>
-                      <Label className="text-xs">Additional Tags</Label>
-                      <SmartDropdownInput
-                        fieldName={DROPDOWN_FIELDS.PROJECT_KEYWORDS}
-                        value={bulkMetadata.tags}
-                        onChange={(value) =>
-                          setBulkMetadata((prev) => ({ ...prev, tags: value }))
-                        }
-                        placeholder="before, progress, final"
-                        allowMultiple={true}
-                        separator=","
-                        className="h-8"
-                      />
-                    </div>
-                    <div>
-                      <Label className="text-xs">Additional Keywords</Label>
-                      <Input
-                        placeholder="renovation, construction"
-                        value={bulkMetadata.keywords}
-                        onChange={(e) =>
-                          setBulkMetadata((prev) => ({
-                            ...prev,
-                            keywords: e.target.value,
-                          }))
-                        }
-                        className="h-8"
-                      />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div>
+                        <Label className="text-xs">Attribution</Label>
+                        <Input
+                          placeholder="Photo credit or copyright"
+                          value={bulkMetadata.attribution}
+                          onChange={(e) =>
+                            setBulkMetadata((prev) => ({
+                              ...prev,
+                              attribution: e.target.value,
+                            }))
+                          }
+                          className="h-8"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Caption Template</Label>
+                        <Input
+                          placeholder="Standard caption for all files"
+                          value={bulkMetadata.caption}
+                          onChange={(e) =>
+                            setBulkMetadata((prev) => ({
+                              ...prev,
+                              caption: e.target.value,
+                            }))
+                          }
+                          className="h-8"
+                        />
+                      </div>
                     </div>
                   </div>
                   <Button
