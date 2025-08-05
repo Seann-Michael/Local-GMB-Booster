@@ -475,7 +475,13 @@ export default function Signup() {
             </Button>
           </form>
 
-          <div className="mt-6 text-center">
+          <div className="mt-6 text-center space-y-2">
+            <p className="text-sm text-muted-foreground">
+              Managing multiple client businesses?{" "}
+              <Link to="/agency-signup" className="text-primary hover:underline">
+                Create Agency Account
+              </Link>
+            </p>
             <p className="text-sm text-muted-foreground">
               Already have an account?{" "}
               <Link to="/login" className="text-primary hover:underline">
