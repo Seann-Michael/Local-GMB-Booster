@@ -16,18 +16,27 @@ export interface AdminAccount {
 export class AccountManager {
   private static readonly STORAGE_KEY = "admin_accounts";
 
-  // Generate unique 9-digit account number in format 123-123-1234
-  static generateAccountNumber(): string {
+  // Generate unique account number in format 123-123-1234 (admin) or A23-123-1234 (agency)
+  static generateAccountNumber(role: "admin" | "agency" = "admin"): string {
     const existingAccounts = this.getAllAccounts();
     let accountNumber: string;
-    
+
     do {
-      const part1 = Math.floor(Math.random() * 900) + 100; // 100-999
-      const part2 = Math.floor(Math.random() * 900) + 100; // 100-999
-      const part3 = Math.floor(Math.random() * 9000) + 1000; // 1000-9999
-      accountNumber = `${part1}-${part2}-${part3}`;
+      if (role === "agency") {
+        // Agency format: A23-123-1234 (A + 2 digits + 3 digits + 4 digits)
+        const part1 = Math.floor(Math.random() * 90) + 10; // 10-99
+        const part2 = Math.floor(Math.random() * 900) + 100; // 100-999
+        const part3 = Math.floor(Math.random() * 9000) + 1000; // 1000-9999
+        accountNumber = `A${part1}-${part2}-${part3}`;
+      } else {
+        // Admin format: 123-123-1234 (3 digits + 3 digits + 4 digits)
+        const part1 = Math.floor(Math.random() * 900) + 100; // 100-999
+        const part2 = Math.floor(Math.random() * 900) + 100; // 100-999
+        const part3 = Math.floor(Math.random() * 9000) + 1000; // 1000-9999
+        accountNumber = `${part1}-${part2}-${part3}`;
+      }
     } while (existingAccounts.some(acc => acc.accountNumber === accountNumber));
-    
+
     return accountNumber;
   }
 
