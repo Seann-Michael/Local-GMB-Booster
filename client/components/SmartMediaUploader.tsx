@@ -685,15 +685,16 @@ export function SmartMediaUploader({
                   <Select
                     value={editMode}
                     onValueChange={(value) =>
-                      setEditMode(value as "simple" | "advanced")
+                      setEditMode(value as "simple" | "advanced" | "complete")
                     }
                   >
-                    <SelectTrigger className="w-32">
+                    <SelectTrigger className="w-36">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="simple">Simple</SelectItem>
                       <SelectItem value="advanced">Advanced</SelectItem>
+                      <SelectItem value="complete">Complete</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
