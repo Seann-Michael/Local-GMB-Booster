@@ -1202,6 +1202,330 @@ export function SmartMediaUploader({
                             </div>
                           )}
 
+                          {/* Complete Mode - All Fields with Full Control */}
+                          {editMode === "complete" && (
+                            <div className="space-y-4 border-l-4 border-purple-200 pl-4">
+                              {/* File Management */}
+                              <div className="bg-purple-50 p-3 rounded">
+                                <h4 className="text-xs font-bold text-purple-900 mb-2">File Management</h4>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                  <div>
+                                    <Label className="text-xs font-medium">Original File Name</Label>
+                                    <Input
+                                      value={file.fileName}
+                                      onChange={(e) =>
+                                        updateFile(file.id, { fileName: e.target.value })
+                                      }
+                                      className="h-7 text-xs"
+                                    />
+                                  </div>
+                                  <div>
+                                    <Label className="text-xs font-medium">Display Title</Label>
+                                    <Input
+                                      value={file.title}
+                                      onChange={(e) =>
+                                        updateFile(file.id, { title: e.target.value })
+                                      }
+                                      className="h-7 text-xs"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Content Description */}
+                              <div className="bg-blue-50 p-3 rounded">
+                                <h4 className="text-xs font-bold text-blue-900 mb-2">Content Description</h4>
+                                <div className="space-y-2">
+                                  <div>
+                                    <Label className="text-xs font-medium">Caption</Label>
+                                    <Input
+                                      value={file.caption}
+                                      onChange={(e) =>
+                                        updateFile(file.id, { caption: e.target.value })
+                                      }
+                                      placeholder="Brief caption for display"
+                                      className="h-7 text-xs"
+                                    />
+                                  </div>
+                                  <div>
+                                    <Label className="text-xs font-medium">Description</Label>
+                                    <Textarea
+                                      value={file.description}
+                                      onChange={(e) =>
+                                        updateFile(file.id, { description: e.target.value })
+                                      }
+                                      placeholder="Detailed description"
+                                      rows={3}
+                                      className="text-xs"
+                                    />
+                                  </div>
+                                  <div>
+                                    <Label className="text-xs font-medium">Alt Text (Accessibility)</Label>
+                                    <Input
+                                      value={file.altText}
+                                      onChange={(e) =>
+                                        updateFile(file.id, { altText: e.target.value })
+                                      }
+                                      placeholder="Screen reader description"
+                                      className="h-7 text-xs"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Classification */}
+                              <div className="bg-green-50 p-3 rounded">
+                                <h4 className="text-xs font-bold text-green-900 mb-2">Classification & Tagging</h4>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                  <div>
+                                    <Label className="text-xs font-medium">Category</Label>
+                                    <Select
+                                      value={file.category}
+                                      onValueChange={(value) =>
+                                        updateFile(file.id, { category: value })
+                                      }
+                                    >
+                                      <SelectTrigger className="h-7 text-xs">
+                                        <SelectValue />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        <SelectItem value="before">Before Photos</SelectItem>
+                                        <SelectItem value="progress">Progress Photos</SelectItem>
+                                        <SelectItem value="after">After Photos</SelectItem>
+                                        <SelectItem value="detail">Detail Shots</SelectItem>
+                                        <SelectItem value="overview">Overview</SelectItem>
+                                        <SelectItem value="walkthrough">Walkthrough</SelectItem>
+                                        <SelectItem value="documentation">Documentation</SelectItem>
+                                        <SelectItem value="reference">Reference</SelectItem>
+                                      </SelectContent>
+                                    </Select>
+                                  </div>
+                                  <div>
+                                    <Label className="text-xs font-medium">Tags</Label>
+                                    <SmartDropdownInput
+                                      fieldName={DROPDOWN_FIELDS.PROJECT_KEYWORDS}
+                                      value={file.tags}
+                                      onChange={(value) =>
+                                        updateFile(file.id, { tags: value })
+                                      }
+                                      allowMultiple={true}
+                                      separator=","
+                                      className="h-7 text-xs"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="mt-2">
+                                  <Label className="text-xs font-medium">SEO Keywords</Label>
+                                  <Input
+                                    value={file.keywords}
+                                    onChange={(e) =>
+                                      updateFile(file.id, { keywords: e.target.value })
+                                    }
+                                    placeholder="SEO keywords, comma separated"
+                                    className="h-7 text-xs"
+                                  />
+                                </div>
+                              </div>
+
+                              {/* Attribution & Rights */}
+                              <div className="bg-orange-50 p-3 rounded">
+                                <h4 className="text-xs font-bold text-orange-900 mb-2">Attribution & Rights</h4>
+                                <div>
+                                  <Label className="text-xs font-medium">Attribution</Label>
+                                  <Input
+                                    value={file.attribution}
+                                    onChange={(e) =>
+                                      updateFile(file.id, { attribution: e.target.value })
+                                    }
+                                    placeholder="Photo credit, copyright, or source attribution"
+                                    className="h-7 text-xs"
+                                  />
+                                </div>
+                              </div>
+
+                              {/* Technical EXIF Data */}
+                              {file.exifData && (
+                                <div className="bg-gray-50 p-3 rounded">
+                                  <h4 className="text-xs font-bold text-gray-900 mb-2">EXIF Technical Data</h4>
+                                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                    <div>
+                                      <Label className="text-xs">Camera</Label>
+                                      <Input
+                                        value={file.exifData.camera || ""}
+                                        onChange={(e) =>
+                                          updateFile(file.id, {
+                                            exifData: { ...file.exifData, camera: e.target.value }
+                                          })
+                                        }
+                                        className="h-6 text-xs"
+                                        placeholder="Camera model"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">Lens</Label>
+                                      <Input
+                                        value={file.exifData.lens || ""}
+                                        onChange={(e) =>
+                                          updateFile(file.id, {
+                                            exifData: { ...file.exifData, lens: e.target.value }
+                                          })
+                                        }
+                                        className="h-6 text-xs"
+                                        placeholder="Lens info"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">Focal Length</Label>
+                                      <Input
+                                        value={file.exifData.focalLength || ""}
+                                        onChange={(e) =>
+                                          updateFile(file.id, {
+                                            exifData: { ...file.exifData, focalLength: e.target.value }
+                                          })
+                                        }
+                                        className="h-6 text-xs"
+                                        placeholder="mm"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">Aperture</Label>
+                                      <Input
+                                        value={file.exifData.aperture || ""}
+                                        onChange={(e) =>
+                                          updateFile(file.id, {
+                                            exifData: { ...file.exifData, aperture: e.target.value }
+                                          })
+                                        }
+                                        className="h-6 text-xs"
+                                        placeholder="f/2.8"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">Shutter Speed</Label>
+                                      <Input
+                                        value={file.exifData.shutterSpeed || ""}
+                                        onChange={(e) =>
+                                          updateFile(file.id, {
+                                            exifData: { ...file.exifData, shutterSpeed: e.target.value }
+                                          })
+                                        }
+                                        className="h-6 text-xs"
+                                        placeholder="1/60s"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">ISO</Label>
+                                      <Input
+                                        value={file.exifData.iso || ""}
+                                        onChange={(e) =>
+                                          updateFile(file.id, {
+                                            exifData: { ...file.exifData, iso: e.target.value }
+                                          })
+                                        }
+                                        className="h-6 text-xs"
+                                        placeholder="400"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">Date Taken</Label>
+                                      <Input
+                                        value={file.exifData.dateTaken || ""}
+                                        onChange={(e) =>
+                                          updateFile(file.id, {
+                                            exifData: { ...file.exifData, dateTaken: e.target.value }
+                                          })
+                                        }
+                                        className="h-6 text-xs"
+                                        placeholder="Date"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">GPS Coordinates</Label>
+                                      <Input
+                                        value={file.exifData.gpsCoordinates || ""}
+                                        onChange={(e) =>
+                                          updateFile(file.id, {
+                                            exifData: { ...file.exifData, gpsCoordinates: e.target.value }
+                                          })
+                                        }
+                                        className="h-6 text-xs"
+                                        placeholder="lat,lng"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Structured Data Schema.org */}
+                              <div className="bg-indigo-50 p-3 rounded">
+                                <h4 className="text-xs font-bold text-indigo-900 mb-2">Structured Data (Schema.org)</h4>
+                                <div className="space-y-2">
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <div>
+                                      <Label className="text-xs">Schema Type</Label>
+                                      <Select
+                                        value={file.structuredData?.["@type"] || ""}
+                                        onValueChange={(value) =>
+                                          updateFile(file.id, {
+                                            structuredData: {
+                                              ...file.structuredData,
+                                              "@type": value
+                                            }
+                                          })
+                                        }
+                                      >
+                                        <SelectTrigger className="h-6 text-xs">
+                                          <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                          <SelectItem value="ImageObject">Image Object</SelectItem>
+                                          <SelectItem value="VideoObject">Video Object</SelectItem>
+                                          <SelectItem value="Photograph">Photograph</SelectItem>
+                                          <SelectItem value="CreativeWork">Creative Work</SelectItem>
+                                        </SelectContent>
+                                      </Select>
+                                    </div>
+                                    <div>
+                                      <Label className="text-xs">Creator</Label>
+                                      <Input
+                                        value={file.structuredData?.creator || ""}
+                                        onChange={(e) =>
+                                          updateFile(file.id, {
+                                            structuredData: {
+                                              ...file.structuredData,
+                                              creator: e.target.value
+                                            }
+                                          })
+                                        }
+                                        className="h-6 text-xs"
+                                        placeholder="Creator name"
+                                      />
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <Label className="text-xs">License</Label>
+                                    <Input
+                                      value={file.structuredData?.license || ""}
+                                      onChange={(e) =>
+                                        updateFile(file.id, {
+                                          structuredData: {
+                                            ...file.structuredData,
+                                            license: e.target.value
+                                          }
+                                        })
+                                      }
+                                      className="h-6 text-xs"
+                                      placeholder="e.g., CC BY 4.0, All Rights Reserved"
+                                    />
+                                  </div>
+                                  <div className="text-xs text-indigo-600 bg-indigo-100 p-2 rounded">
+                                    💡 This structured data will be embedded as JSON-LD for enhanced SEO, rich snippets, and better search engine understanding.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
                           {/* AI Suggestions */}
                           {enableAIFeatures && file.autoGenerated && (
                             <div className="text-xs bg-blue-50 p-2 rounded border border-blue-200">
