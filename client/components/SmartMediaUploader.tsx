@@ -515,10 +515,16 @@ export function SmartMediaUploader({
           ? `${file.keywords}, ${bulkMetadata.keywords}`
           : bulkMetadata.keywords;
       }
+      if (bulkMetadata.attribution) {
+        updates.attribution = bulkMetadata.attribution;
+      }
+      if (bulkMetadata.caption) {
+        updates.caption = bulkMetadata.caption;
+      }
       updateFile(file.id, updates);
     });
     setBulkEdit(false);
-    setBulkMetadata({ category: "", tags: "", keywords: "" });
+    setBulkMetadata({ category: "", tags: "", keywords: "", attribution: "", caption: "" });
     toast.success("Bulk metadata applied to all files");
   }, [files, bulkMetadata, updateFile]);
 
