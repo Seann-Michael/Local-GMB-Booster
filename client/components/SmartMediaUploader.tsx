@@ -1499,7 +1499,7 @@ export function SmartMediaUploader({
                                   <h4 className="text-xs font-bold text-gray-900 mb-2">
                                     EXIF Technical Data
                                   </h4>
-                                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
                                     <div>
                                       <Label className="text-xs">Camera</Label>
                                       <Input
