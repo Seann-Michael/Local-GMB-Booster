@@ -207,12 +207,13 @@ const generateMockProjects = (): MockProject[] => {
       const photoTypes = ['before', 'during', 'after', 'detail', 'progress'];
       const categories = ['interior', 'exterior', 'structural', 'electrical', 'plumbing', 'finishing'];
       
-      // Use multiple reliable image sources with fallbacks
-      const imageId = i * 100 + j;
+      // Use simple SVG data URLs that will always work
+      const colors = ['4f46e5', '059669', 'dc2626', 'ea580c', '7c2d12', '6366f1'];
+      const color = colors[j % colors.length];
       const imageUrls = [
-        `https://via.placeholder.com/800x600/666666/ffffff?text=Photo+${j + 1}`,
-        `https://dummyimage.com/800x600/cccccc/666666&text=Project+Photo+${j + 1}`,
-        `https://picsum.photos/800/600?random=${imageId}`
+        `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600"><rect width="800" height="600" fill="%23${color}"/><text x="400" y="300" font-family="Arial" font-size="48" fill="white" text-anchor="middle" dominant-baseline="middle">Photo ${j + 1}</text></svg>`,
+        `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600"><rect width="800" height="600" fill="%23666666"/><text x="400" y="300" font-family="Arial" font-size="32" fill="white" text-anchor="middle" dominant-baseline="middle">Project Photo ${j + 1}</text></svg>`,
+        `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600"><rect width="800" height="600" fill="%23cccccc"/><text x="400" y="300" font-family="Arial" font-size="40" fill="%23333333" text-anchor="middle" dominant-baseline="middle">Image ${j + 1}</text></svg>`
       ];
 
       photos.push({
