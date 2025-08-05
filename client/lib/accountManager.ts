@@ -8,8 +8,9 @@ export interface AdminAccount {
   emailVerified: boolean;
   phoneVerified: boolean;
   createdAt: string;
-  role: "admin";
+  role: "admin" | "agency";
   businessName: string;
+  agencyName?: string; // For agency accounts
 }
 
 export class AccountManager {
