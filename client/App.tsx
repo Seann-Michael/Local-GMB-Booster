@@ -51,6 +51,7 @@ import SuperAdminAgencyManagement from "./pages/SuperAdminAgencyManagement";
 import SuperAdminSettings from "./pages/SuperAdminSettings";
 import SuperAdminStaff from "./pages/SuperAdminStaff";
 import Signup from "./pages/Signup";
+import AgencySignup from "./pages/AgencySignup";
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import Support from "./pages/Support";
