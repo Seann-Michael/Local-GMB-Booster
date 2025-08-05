@@ -320,6 +320,5 @@ export class MediaUrlUtils {
   }
 }
 
-// Export types and classes (SecureMediaUrlGenerator already exported above)
-export { MediaUrlUtils };
+// Export types (classes already exported above)
 export type { SecureMediaConfig, SecureMediaFile };
