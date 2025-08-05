@@ -166,9 +166,13 @@ export default function SignIn() {
               </Link>
             </p>
             <p className="text-sm text-muted-foreground">
-              Don't have a business account?{" "}
+              Don't have an account?{" "}
               <Link to="/signup" className="text-primary hover:underline">
                 Create Business Account
+              </Link>
+              {" "} or {" "}
+              <Link to="/agency-signup" className="text-primary hover:underline">
+                Agency Account
               </Link>
             </p>
           </div>
