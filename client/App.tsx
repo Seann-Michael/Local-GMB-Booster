@@ -50,7 +50,7 @@ import AgencyAdminUserEdit from "./pages/AgencyAdminUserEdit";
 import SuperAdminAgencyManagement from "./pages/SuperAdminAgencyManagement";
 import SuperAdminSettings from "./pages/SuperAdminSettings";
 import SuperAdminStaff from "./pages/SuperAdminStaff";
-import SignUp from "./pages/SignUp";
+import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import Support from "./pages/Support";
 import SupportTicketDetail from "./pages/SupportTicketDetail";
