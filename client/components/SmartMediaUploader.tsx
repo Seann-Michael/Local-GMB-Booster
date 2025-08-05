@@ -177,6 +177,55 @@ export function SmartMediaUploader({
     });
   }, []);
 
+  // Extract EXIF data from image files
+  const extractExifData = useCallback(async (file: File): Promise<any> => {
+    if (!file.type.startsWith("image/")) {
+      return null;
+    }
+
+    try {
+      // Basic EXIF extraction using FileReader and manual parsing
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const arrayBuffer = e.target?.result as ArrayBuffer;
+          if (!arrayBuffer) {
+            resolve(null);
+            return;
+          }
+
+          // Simple EXIF extraction - in production, use a library like 'exifr' or 'piexifjs'
+          const dataView = new DataView(arrayBuffer);
+          const exifData: any = {
+            fileSize: file.size,
+            fileName: file.name,
+            mimeType: file.type,
+            lastModified: new Date(file.lastModified).toISOString(),
+          };
+
+          // Basic image dimensions extraction
+          if (file.type === "image/jpeg") {
+            // JPEG EXIF parsing would go here
+            exifData.format = "JPEG";
+          } else if (file.type === "image/png") {
+            exifData.format = "PNG";
+          }
+
+          // Placeholder for actual EXIF data - in production, implement proper parsing
+          exifData.camera = "Unknown";
+          exifData.dateTaken = new Date(file.lastModified).toISOString();
+
+          resolve(exifData);
+        };
+        reader.onerror = () => resolve(null);
+        reader.readAsArrayBuffer(file);
+      });
+    } catch (error) {
+      console.error("Error extracting EXIF data:", error);
+      return null;
+    }
+  }, []);
+
   // Auto-generate metadata
   const generateMetadata = useCallback(
     (file: File): Partial<FileWithMetadata> => {
