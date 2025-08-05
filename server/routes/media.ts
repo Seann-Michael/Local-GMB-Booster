@@ -369,11 +369,4 @@ function hashString(str: string): string {
   return Math.abs(hash).toString(36);
 }
 
-// Export all handlers
-export {
-  handleSecureMedia,
-  handlePublicMedia,
-  handleThumbnails,
-  handleMediaUpload,
-  handleMediaMetadata
-};
+// Functions are already exported individually above
