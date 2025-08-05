@@ -54,6 +54,7 @@ import {
   TrendingUp,
   Percent,
   FolderKanban,
+  ClipboardCheck,
 } from "lucide-react";
 import React, { useState, useEffect, ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
