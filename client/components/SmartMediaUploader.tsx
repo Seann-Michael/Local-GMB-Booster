@@ -1394,7 +1394,7 @@ export function SmartMediaUploader({
                                 <h4 className="text-xs font-bold text-green-900 mb-2">
                                   Classification & Tagging
                                 </h4>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div className="grid grid-cols-1 gap-3">
                                   <div>
                                     <Label className="text-xs font-medium">
                                       Category
