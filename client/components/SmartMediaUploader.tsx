@@ -716,7 +716,7 @@ export function SmartMediaUploader({
                       setEditMode(value as "simple" | "advanced" | "complete")
                     }
                   >
-                    <SelectTrigger className="w-36">
+                    <SelectTrigger className="w-36 h-10 md:h-8">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
