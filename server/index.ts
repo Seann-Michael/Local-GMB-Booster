@@ -24,5 +24,15 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
+  // Secure Media Routes
+  app.get("/api/media/:mediaId/:filename", handleSecureMedia);
+  app.get("/api/media/thumbs/:size/:mediaId/:filename", handleThumbnails);
+  app.post("/api/media/upload", handleMediaUpload);
+  app.get("/api/media/metadata/:mediaId", handleMediaMetadata);
+
+  // Public Media Routes
+  app.get("/public/media/:publicId/:filename", handlePublicMedia);
+  app.get("/public/media/thumbs/:size/:publicId/:filename", handleThumbnails);
+
   return app;
 }
