@@ -20,6 +20,7 @@ const Gallery = lazy(() => import("./pages/Gallery"));
 const Settings = lazy(() => import("./pages/Settings"));
 const Automation = lazy(() => import("./pages/Automation"));
 const Reports = lazy(() => import("./pages/Reports"));
+const Audits = lazy(() => import("./pages/Audits"));
 const WorkflowBuilder = lazy(() => import("./pages/WorkflowBuilder"));
 
 import SuperAdmin from "./pages/SuperAdmin";
