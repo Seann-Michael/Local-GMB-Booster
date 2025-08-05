@@ -766,7 +766,7 @@ export function SmartMediaUploader({
                     </Button>
                   </div>
                   <div className="space-y-3 mb-3">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-1 gap-3">
                       <div>
                         <Label className="text-xs">Category</Label>
                         <Input
