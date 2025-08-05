@@ -317,6 +317,14 @@ export function AppLayout({ children }: AppLayoutProps) {
       comingSoon: false,
     },
     {
+      id: "audits",
+      label: "Audits",
+      href: "/admin/audits",
+      icon: ClipboardCheck,
+      active: location.pathname === "/admin/audits",
+      comingSoon: true,
+    },
+    {
       id: "maps",
       label: "Maps",
       href: "/admin/maps",
