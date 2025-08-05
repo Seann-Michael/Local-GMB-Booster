@@ -873,7 +873,7 @@ export function SmartMediaUploader({
                       {/* Preview */}
                       <div className="flex-shrink-0">
                         {file.preview ? (
-                          <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-muted">
+                          <div className="relative w-20 h-20 md:w-16 md:h-16 rounded-lg overflow-hidden bg-muted">
                             <img
                               src={file.preview}
                               alt={file.title}
