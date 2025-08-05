@@ -39,6 +39,7 @@ import AddAgencyClient from "./pages/AddAgencyClient";
 import AgencyCommission from "./pages/AgencyCommission";
 import AgencyAnalytics from "./pages/AgencyAnalytics";
 import AgencyReports from "./pages/AgencyReports";
+import AgencyAudits from "./pages/AgencyAudits";
 import AgencyBilling from "./pages/AgencyBilling";
 import AgencyBusinessOwners from "./pages/AgencyBusinessOwners";
 import AgencyAdminUsers from "./pages/AgencyAdminUsers";
