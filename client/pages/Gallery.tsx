@@ -384,14 +384,20 @@ export default function Gallery() {
     if (confirm("Are you sure you want to delete this photo?")) {
       try {
         // Get projects from localStorage
-        const projectsData = JSON.parse(localStorage.getItem("projects") || "[]");
+        const projectsData = JSON.parse(
+          localStorage.getItem("projects") || "[]",
+        );
 
         // Find and update the project that contains this photo
-        const projectIndex = projectsData.findIndex((p: any) => p.id === photo.projectId);
+        const projectIndex = projectsData.findIndex(
+          (p: any) => p.id === photo.projectId,
+        );
         if (projectIndex !== -1) {
           // Remove photo from project
-          projectsData[projectIndex].photos = projectsData[projectIndex].photos.filter(
-            (p: any) => (typeof p === 'string' ? p : p.url) !== photo.url
+          projectsData[projectIndex].photos = projectsData[
+            projectIndex
+          ].photos.filter(
+            (p: any) => (typeof p === "string" ? p : p.url) !== photo.url,
           );
 
           // Save updated projects
@@ -415,16 +421,18 @@ export default function Gallery() {
       const projectsData = JSON.parse(localStorage.getItem("projects") || "[]");
 
       // Find and update the project that contains this photo
-      const projectIndex = projectsData.findIndex((p: any) => p.id === photo.projectId);
+      const projectIndex = projectsData.findIndex(
+        (p: any) => p.id === photo.projectId,
+      );
       if (projectIndex !== -1) {
         // Find the photo and toggle isPrimary (using as favorite)
         const photoIndex = projectsData[projectIndex].photos.findIndex(
-          (p: any) => (typeof p === 'string' ? p : p.url) === photo.url
+          (p: any) => (typeof p === "string" ? p : p.url) === photo.url,
         );
 
         if (photoIndex !== -1) {
           const currentPhoto = projectsData[projectIndex].photos[photoIndex];
-          if (typeof currentPhoto === 'object') {
+          if (typeof currentPhoto === "object") {
             currentPhoto.isPrimary = !currentPhoto.isPrimary;
           }
 
@@ -434,7 +442,11 @@ export default function Gallery() {
           // Refresh the gallery
           window.location.reload();
 
-          toast.success(currentPhoto.isPrimary ? "Added to favorites" : "Removed from favorites");
+          toast.success(
+            currentPhoto.isPrimary
+              ? "Added to favorites"
+              : "Removed from favorites",
+          );
         }
       }
     } catch (error) {
@@ -465,7 +477,9 @@ export default function Gallery() {
           {/* Sort and Thumbnail Size Controls */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4 w-full sm:w-auto min-w-0">
             <div className="flex items-center gap-2 w-full sm:w-auto min-w-0">
-              <Label className="text-sm text-muted-foreground whitespace-nowrap shrink-0">Sort:</Label>
+              <Label className="text-sm text-muted-foreground whitespace-nowrap shrink-0">
+                Sort:
+              </Label>
               <Select
                 value={filters.sortOrder}
                 onValueChange={(value: "newest" | "oldest") =>
@@ -483,7 +497,9 @@ export default function Gallery() {
             </div>
 
             <div className="flex items-center gap-2 w-full sm:w-auto min-w-0">
-              <Label className="text-sm text-muted-foreground whitespace-nowrap shrink-0">Size:</Label>
+              <Label className="text-sm text-muted-foreground whitespace-nowrap shrink-0">
+                Size:
+              </Label>
               <Select
                 value={filters.thumbnailSize}
                 onValueChange={(value: "small" | "medium" | "large") =>
@@ -503,7 +519,10 @@ export default function Gallery() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-            <Button onClick={() => setShowUploader(true)} className="gap-2 w-full sm:w-auto">
+            <Button
+              onClick={() => setShowUploader(true)}
+              className="gap-2 w-full sm:w-auto"
+            >
               <Upload className="h-4 w-4" />
               <span className="hidden sm:inline">Upload Files</span>
               <span className="sm:hidden">Upload</span>
@@ -515,7 +534,9 @@ export default function Gallery() {
               className="gap-2 w-full sm:w-auto"
             >
               <SlidersHorizontal className="h-4 w-4" />
-              <span className="hidden sm:inline">{showFilters ? "Hide Filters" : "Show Filters"}</span>
+              <span className="hidden sm:inline">
+                {showFilters ? "Hide Filters" : "Show Filters"}
+              </span>
               <span className="sm:hidden">Filters</span>
             </Button>
           </div>
