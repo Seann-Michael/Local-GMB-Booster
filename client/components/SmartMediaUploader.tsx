@@ -77,11 +77,18 @@ interface SmartMediaUploaderProps {
     keywords: string[];
     address?: string;
     customerName?: string;
+    id?: string;
   };
   // Settings from admin panel
   enableAIFeatures?: boolean;
   autoApplyDefaults?: boolean;
   className?: string;
+  // Context for URL generation
+  context?: {
+    type: 'project' | 'gallery';
+    projectId?: string;
+    isPublic?: boolean;
+  };
 }
 
 export function SmartMediaUploader({
