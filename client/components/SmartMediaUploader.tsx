@@ -38,6 +38,10 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import {
+  SecureMediaUrlGenerator,
+  type SecureMediaFile
+} from "@/lib/secureMediaUrls";
 
 interface FileWithMetadata {
   id: string;
