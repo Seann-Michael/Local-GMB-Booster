@@ -922,9 +922,9 @@ export function SmartMediaUploader({
                               variant="ghost"
                               size="sm"
                               onClick={() => removeFile(file.id)}
-                              className="h-6 w-6 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                              className="h-8 w-8 md:h-6 md:w-6 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
                             >
-                              <Trash2 className="h-3 w-3" />
+                              <Trash2 className="h-4 w-4 md:h-3 md:w-3" />
                             </Button>
                           </div>
                         </div>
