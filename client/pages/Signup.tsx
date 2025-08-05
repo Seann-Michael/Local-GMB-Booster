@@ -161,25 +161,17 @@ export default function Signup() {
       
       // For demo purposes, accept any 6-digit code
       if (otpCode === "123456" || otpCode.length === 6) {
-        // Create account
-        const newAccount = {
-          id: Date.now().toString(),
-          accountNumber,
+        // Create account using AccountManager
+        const newAccount = AccountManager.createAccount({
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
           password: formData.password, // In real app, this would be hashed
           emailVerified: false,
           phoneVerified: true,
-          createdAt: new Date().toISOString(),
-          role: "admin",
+          role: "admin" as const,
           businessName: formData.name + "'s Business", // Default business name
-        };
-
-        // Save to localStorage (in real app, this would be API call)
-        const existingAccounts = JSON.parse(localStorage.getItem("admin_accounts") || "[]");
-        existingAccounts.push(newAccount);
-        localStorage.setItem("admin_accounts", JSON.stringify(existingAccounts));
+        });
 
         setStep("success");
         toast.success("Account created successfully!");
