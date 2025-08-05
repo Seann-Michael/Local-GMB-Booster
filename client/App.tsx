@@ -262,6 +262,14 @@ const App = () => (
                   }
                 />
                 <Route
+                  path="/admin/audits"
+                  element={
+                    <ProtectedRoute>
+                      <Audits />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
                   path="/admin/workflow-builder"
                   element={
                     <ProtectedRoute>
