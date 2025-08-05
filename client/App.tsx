@@ -155,7 +155,7 @@ const App = () => (
               <Routes>
                 {/* Public routes */}
                 <Route path="/signin" element={<SignIn />} />
-                <Route path="/signup" element={<SignUp />} />
+                <Route path="/signup" element={<Signup />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/help" element={<KnowledgeBase />} />
                 <Route path="/knowledge-base" element={<KnowledgeBase />} />
