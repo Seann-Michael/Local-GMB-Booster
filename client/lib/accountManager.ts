@@ -63,15 +63,15 @@ export class AccountManager {
     return accounts.find(acc => acc.accountNumber === accountNumber) || null;
   }
 
-  // Create new admin account
+  // Create new admin or agency account
   static createAccount(accountData: Omit<AdminAccount, "id" | "accountNumber" | "createdAt">): AdminAccount {
     const accounts = this.getAllAccounts();
-    
+
     // Check if email already exists
     if (accounts.some(acc => acc.email === accountData.email)) {
       throw new Error("An account with this email already exists");
     }
-    
+
     // Check if phone already exists
     if (accounts.some(acc => acc.phone === accountData.phone)) {
       throw new Error("An account with this phone number already exists");
@@ -79,14 +79,14 @@ export class AccountManager {
 
     const newAccount: AdminAccount = {
       id: Date.now().toString(),
-      accountNumber: this.generateAccountNumber(),
+      accountNumber: this.generateAccountNumber(accountData.role),
       createdAt: new Date().toISOString(),
       ...accountData,
     };
 
     accounts.push(newAccount);
     this.saveAccounts(accounts);
-    
+
     return newAccount;
   }
 
