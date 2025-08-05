@@ -47,13 +47,39 @@ interface FileWithMetadata {
   id: string;
   file: File;
   preview?: string;
-  // User-friendly metadata fields
+  // Core metadata fields
   title: string;
   description: string;
   tags: string;
   keywords: string;
   altText: string;
   category: string;
+  // Enhanced metadata fields
+  fileName: string;
+  attribution: string;
+  caption: string;
+  exifData?: {
+    camera?: string;
+    lens?: string;
+    focalLength?: string;
+    aperture?: string;
+    shutterSpeed?: string;
+    iso?: string;
+    dateTaken?: string;
+    gpsCoordinates?: string;
+    [key: string]: any;
+  };
+  structuredData?: {
+    "@context"?: string;
+    "@type"?: string;
+    name?: string;
+    description?: string;
+    creator?: string;
+    dateCreated?: string;
+    contentUrl?: string;
+    license?: string;
+    [key: string]: any;
+  };
   // Technical fields (auto-populated)
   status: "pending" | "processing" | "ready" | "error";
   error?: string;
@@ -62,6 +88,7 @@ interface FileWithMetadata {
     aiDescription?: string;
     suggestedTags?: string[];
     suggestedKeywords?: string[];
+    extractedExif?: any;
   };
   // Secure URL integration
   secureMediaFile?: SecureMediaFile;
