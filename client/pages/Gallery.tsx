@@ -150,6 +150,8 @@ export default function Gallery() {
             isPrimary: photoData.isPrimary || false,
             type: isVideo ? "video" : "photo",
             size: fileSize as "small" | "medium" | "large",
+            // Preserve metadata with fallback URLs for ImageWithFallback component
+            metadata: photoData.metadata,
           });
         });
       }
