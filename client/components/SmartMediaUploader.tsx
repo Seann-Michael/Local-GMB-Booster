@@ -132,7 +132,7 @@ export function SmartMediaUploader({
   const [files, setFiles] = useState<FileWithMetadata[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
-  const [editMode, setEditMode] = useState<"simple" | "advanced">("simple");
+  const [editMode, setEditMode] = useState<"simple" | "advanced" | "complete">("simple");
   const [bulkEdit, setBulkEdit] = useState(false);
   const [bulkMetadata, setBulkMetadata] = useState({
     category: "",
