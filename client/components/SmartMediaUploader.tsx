@@ -421,6 +421,7 @@ export function SmartMediaUploader({
       validateFile,
       generateMetadata,
       generatePreview,
+      extractExifData,
       enableAIFeatures,
     ],
   );
