@@ -484,7 +484,9 @@ export function SmartMediaUploader({
       updates: Partial<
         Pick<
           FileWithMetadata,
-          "title" | "tags" | "description" | "keywords" | "altText" | "category"
+          | "title" | "fileName" | "tags" | "description" | "keywords"
+          | "altText" | "category" | "attribution" | "caption"
+          | "exifData" | "structuredData"
         >
       >,
     ) => {
