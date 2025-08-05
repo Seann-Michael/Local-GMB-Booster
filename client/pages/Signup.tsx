@@ -124,27 +124,15 @@ export default function Signup() {
       // Simulate API call to check if email/phone already exists
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Check for existing accounts (in real app, this would be an API call)
-      const existingAccounts = JSON.parse(localStorage.getItem("admin_accounts") || "[]");
-      const emailExists = existingAccounts.find((acc: any) => acc.email === formData.email);
-      const phoneExists = existingAccounts.find((acc: any) => acc.phone === formData.phone);
-      
+      // Check for existing accounts using AccountManager
+      const emailExists = AccountManager.getAccountByEmail(formData.email);
       if (emailExists) {
         setErrors({ email: "An account with this email already exists" });
         return;
       }
-      
-      if (phoneExists) {
-        setErrors({ phone: "An account with this phone number already exists" });
-        return;
-      }
 
-      // Generate account number
-      let newAccountNumber;
-      do {
-        newAccountNumber = generateAccountNumber();
-      } while (existingAccounts.find((acc: any) => acc.accountNumber === newAccountNumber));
-      
+      // Generate unique account number
+      const newAccountNumber = AccountManager.generateAccountNumber();
       setAccountNumber(newAccountNumber);
       
       // Move to phone verification step
