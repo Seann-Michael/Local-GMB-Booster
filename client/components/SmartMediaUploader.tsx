@@ -966,7 +966,7 @@ export function SmartMediaUploader({
                                     })
                                   }
                                   placeholder="Short caption for this media..."
-                                  className="h-8 text-sm"
+                                  className="h-10 md:h-8 text-base md:text-sm"
                                 />
                               </div>
 
@@ -1723,7 +1723,7 @@ export function SmartMediaUploader({
                                     />
                                   </div>
                                   <div className="text-xs text-indigo-600 bg-indigo-100 p-2 rounded">
-                                    💡 This structured data will be embedded as
+                                    ���� This structured data will be embedded as
                                     JSON-LD for enhanced SEO, rich snippets, and
                                     better search engine understanding.
                                   </div>
