@@ -70,11 +70,8 @@ export default function Login() {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Check admin accounts
-      const adminAccounts = JSON.parse(localStorage.getItem("admin_accounts") || "[]");
-      const account = adminAccounts.find((acc: any) => 
-        acc.email === formData.email && acc.password === formData.password
-      );
+      // Authenticate using AccountManager
+      const account = AccountManager.authenticateAccount(formData.email, formData.password);
       
       if (account) {
         // Set current user in localStorage
