@@ -2,7 +2,7 @@
 
 ## 🛡️ Comprehensive Security Features
 
-This GMB Booster application implements enterprise-grade security measures to protect sensitive business data, client information, and user credentials.
+This Local SEO Ranker application implements enterprise-grade security measures to protect sensitive business data, client information, and user credentials.
 
 ## 🔐 Authentication & Authorization
 
