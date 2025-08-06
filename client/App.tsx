@@ -118,7 +118,10 @@ const App = () => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <ThemeProvider defaultTheme="system" storageKey="local-seo-ranker-theme">
+        <ThemeProvider
+          defaultTheme="system"
+          storageKey="local-seo-ranker-theme"
+        >
           <TooltipProvider>
             <Sonner />
             <Suspense
