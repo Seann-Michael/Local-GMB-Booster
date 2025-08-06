@@ -823,13 +823,11 @@ export function AppLayout({ children }: AppLayoutProps) {
       </div>
 
       {/* Main Content */}
-      <div
-        className={cn(
-          "flex-1 flex flex-col pt-[73px] transition-all duration-300",
-          "md:ml-60", // Account for sidebar width on desktop
-          sidebarCollapsed && "md:ml-16", // Account for collapsed sidebar width
-        )}
-      >
+      <div className={cn(
+        "flex-1 flex flex-col pt-[73px] transition-all duration-300",
+        "md:ml-60", // Account for sidebar width on desktop
+        sidebarCollapsed && "md:ml-16" // Account for collapsed sidebar width
+      )}>
         {/* Top Header */}
         <header
           className={cn(
