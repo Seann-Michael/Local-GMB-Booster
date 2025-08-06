@@ -2,7 +2,7 @@
 
 ## Overview
 
-This implementation adds comprehensive metadata enhancement to all uploaded videos and images in the GMB Booster project management system. The metadata includes business information, timestamps, location data, project keywords, and tags.
+This implementation adds comprehensive metadata enhancement to all uploaded videos and images in the Local SEO Ranker project management system. The metadata includes business information, timestamps, location data, project keywords, and tags.
 
 ## Features Implemented
 
