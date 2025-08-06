@@ -823,7 +823,11 @@ export function AppLayout({ children }: AppLayoutProps) {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col pt-[73px]">
+      <div className={cn(
+        "flex-1 flex flex-col pt-[73px] transition-all duration-300",
+        "md:ml-60", // Account for sidebar width on desktop
+        sidebarCollapsed && "md:ml-16" // Account for collapsed sidebar width
+      )}>
         {/* Top Header */}
         <header className="bg-background border-b px-2 md:px-4 py-3 fixed top-0 left-0 right-0 z-50">
           <div className="flex items-center justify-between">
