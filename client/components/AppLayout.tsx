@@ -1058,7 +1058,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         {/* Page Content */}
         <main
           className={cn(
-            "flex-1 overflow-y-auto overflow-x-hidden pb-28 md:pb-0 transition-all duration-300 w-full min-w-0",
+            "flex-1 overflow-y-auto overflow-x-auto pb-28 md:pb-0 transition-all duration-300 w-full",
             sidebarCollapsed ? "md:ml-16" : "md:ml-60",
           )}
           style={{ paddingBottom: "calc(80px + env(safe-area-inset-bottom))" }}
