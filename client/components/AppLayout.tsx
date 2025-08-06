@@ -823,17 +823,21 @@ export function AppLayout({ children }: AppLayoutProps) {
       </div>
 
       {/* Main Content */}
-      <div className={cn(
-        "flex-1 flex flex-col pt-[73px] transition-all duration-300",
-        "md:ml-60", // Account for sidebar width on desktop
-        sidebarCollapsed && "md:ml-16" // Account for collapsed sidebar width
-      )}>
+      <div
+        className={cn(
+          "flex-1 flex flex-col pt-[73px] transition-all duration-300",
+          "md:ml-60", // Account for sidebar width on desktop
+          sidebarCollapsed && "md:ml-16", // Account for collapsed sidebar width
+        )}
+      >
         {/* Top Header */}
-        <header className={cn(
-          "bg-background border-b px-2 md:px-4 py-3 fixed top-0 right-0 z-50 transition-all duration-300",
-          "md:left-60", // Account for sidebar width on desktop
-          sidebarCollapsed && "md:left-16" // Account for collapsed sidebar width
-        )}>
+        <header
+          className={cn(
+            "bg-background border-b px-2 md:px-4 py-3 fixed top-0 right-0 z-50 transition-all duration-300",
+            "md:left-60", // Account for sidebar width on desktop
+            sidebarCollapsed && "md:left-16", // Account for collapsed sidebar width
+          )}
+        >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 md:gap-4 min-w-0 flex-1">
               {/* Mobile hamburger menu */}

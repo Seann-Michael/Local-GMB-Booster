@@ -3,6 +3,7 @@
 ## 🏗️ Infrastructure Architecture
 
 ### Production Environment
+
 - **Frontend Hosting**: Netlify CDN
 - **Backend Database**: Supabase PostgreSQL
 - **Authentication**: Supabase Auth
@@ -12,6 +13,7 @@
 - **SSL Certificates**: Automatic via Netlify
 
 ### Domain Configuration
+
 ```
 mylocalseoranker.com          → WordPress Marketing Site
 app.mylocalseoranker.com      → React Web Application
@@ -21,6 +23,7 @@ api.mylocalseoranker.com      → API Gateway (Netlify Functions)
 ## 🚀 Netlify Deployment
 
 ### Build Configuration
+
 ```toml
 # netlify.toml
 [build]
@@ -74,6 +77,7 @@ api.mylocalseoranker.com      → API Gateway (Netlify Functions)
 ```
 
 ### Environment Variables (Netlify)
+
 ```bash
 # Supabase Configuration
 VITE_SUPABASE_URL=https://your-project.supabase.co
@@ -105,6 +109,7 @@ ANALYTICS_ID=your-analytics-id
 ```
 
 ### Deployment Commands
+
 ```bash
 # Install Netlify CLI
 npm install -g netlify-cli
@@ -123,6 +128,7 @@ netlify deploy --prod
 ## 🗄️ Supabase Configuration
 
 ### Database Setup
+
 ```sql
 -- Enable required extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -179,6 +185,7 @@ CREATE INDEX idx_projects_status ON projects(status);
 ```
 
 ### Row Level Security (RLS)
+
 ```sql
 -- Enable RLS
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
@@ -200,18 +207,19 @@ CREATE POLICY "Business owners can manage their businesses" ON businesses
 CREATE POLICY "Project access through business ownership" ON projects
   FOR ALL USING (
     EXISTS (
-      SELECT 1 FROM businesses 
-      WHERE businesses.id = projects.business_id 
+      SELECT 1 FROM businesses
+      WHERE businesses.id = projects.business_id
       AND businesses.owner_id = auth.uid()
     )
   );
 ```
 
 ### Storage Buckets
+
 ```sql
 -- Create storage buckets
 INSERT INTO storage.buckets (id, name, public)
-VALUES 
+VALUES
   ('business-media', 'business-media', true),
   ('project-files', 'project-files', false),
   ('user-avatars', 'user-avatars', true);
@@ -228,6 +236,7 @@ CREATE POLICY "Project files access" ON storage.objects
 ```
 
 ### Database Functions
+
 ```sql
 -- Update timestamp function
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -255,12 +264,14 @@ CREATE TRIGGER update_projects_updated_at
 ## 🔧 Local Development
 
 ### Prerequisites
+
 - Node.js 18+
 - npm or yarn
 - Git
 - VS Code (recommended)
 
 ### Setup Steps
+
 ```bash
 # 1. Clone repository
 git clone https://github.com/your-org/local-seo-ranker.git
@@ -283,6 +294,7 @@ open http://localhost:8080
 ```
 
 ### Development Environment Variables
+
 ```env
 # .env.local
 VITE_SUPABASE_URL=https://your-dev-project.supabase.co
@@ -299,6 +311,7 @@ TWILIO_AUTH_TOKEN=your-test-token
 ## 🧪 Testing & Quality Assurance
 
 ### Testing Setup
+
 ```bash
 # Run all tests
 npm test
@@ -320,6 +333,7 @@ npm run format
 ```
 
 ### Pre-deployment Checklist
+
 - [ ] All tests passing
 - [ ] TypeScript compilation successful
 - [ ] No ESLint errors
@@ -332,9 +346,10 @@ npm run format
 ## 📊 Monitoring & Logging
 
 ### Application Monitoring
+
 ```javascript
 // Error tracking setup
-import { initSentry } from './lib/monitoring';
+import { initSentry } from "./lib/monitoring";
 
 initSentry({
   dsn: process.env.SENTRY_DSN,
@@ -343,15 +358,17 @@ initSentry({
 });
 
 // Performance monitoring
-import { trackPerformance } from './lib/analytics';
+import { trackPerformance } from "./lib/analytics";
 
 trackPerformance({
   route: window.location.pathname,
-  loadTime: performance.timing.loadEventEnd - performance.timing.navigationStart
+  loadTime:
+    performance.timing.loadEventEnd - performance.timing.navigationStart,
 });
 ```
 
 ### Log Aggregation
+
 ```bash
 # Netlify Function logs
 netlify functions:invoke api --logs
@@ -361,34 +378,35 @@ netlify functions:invoke api --logs
 ```
 
 ### Health Checks
+
 ```javascript
 // Health check endpoint
 export const handler = async (event, context) => {
   try {
     // Check database connection
-    const { data, error } = await supabase.from('users').select('id').limit(1);
-    
+    const { data, error } = await supabase.from("users").select("id").limit(1);
+
     if (error) throw error;
-    
+
     return {
       statusCode: 200,
       body: JSON.stringify({
-        status: 'healthy',
+        status: "healthy",
         timestamp: new Date().toISOString(),
         services: {
-          database: 'up',
-          storage: 'up',
-          auth: 'up'
-        }
-      })
+          database: "up",
+          storage: "up",
+          auth: "up",
+        },
+      }),
     };
   } catch (error) {
     return {
       statusCode: 503,
       body: JSON.stringify({
-        status: 'unhealthy',
-        error: error.message
-      })
+        status: "unhealthy",
+        error: error.message,
+      }),
     };
   }
 };
@@ -397,6 +415,7 @@ export const handler = async (event, context) => {
 ## 🔄 CI/CD Pipeline
 
 ### GitHub Actions Workflow
+
 ```yaml
 # .github/workflows/deploy.yml
 name: Deploy to Production
@@ -414,9 +433,9 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
-          cache: 'npm'
-      
+          node-version: "18"
+          cache: "npm"
+
       - run: npm ci
       - run: npm run test
       - run: npm run typecheck
@@ -430,16 +449,16 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
-          cache: 'npm'
-      
+          node-version: "18"
+          cache: "npm"
+
       - run: npm ci
       - run: npm run build
-      
+
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
         with:
-          publish-dir: './dist/spa'
+          publish-dir: "./dist/spa"
           production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Deploy from GitHub Actions"
@@ -451,6 +470,7 @@ jobs:
 ## 🔐 Security Configuration
 
 ### Supabase Security
+
 ```sql
 -- Enable audit logging
 CREATE TABLE audit_logs (
@@ -481,6 +501,7 @@ $$ LANGUAGE plpgsql;
 ```
 
 ### Backup Strategy
+
 ```bash
 # Database backups (automated via Supabase)
 # Point-in-time recovery available
@@ -500,6 +521,7 @@ $$ LANGUAGE plpgsql;
 ### Common Issues
 
 **Build Failures**
+
 ```bash
 # Clear node modules and reinstall
 rm -rf node_modules package-lock.json
@@ -510,6 +532,7 @@ netlify build --clear-cache
 ```
 
 **Database Connection Issues**
+
 ```bash
 # Check Supabase status
 curl https://status.supabase.com
@@ -519,6 +542,7 @@ netlify env:list
 ```
 
 **Performance Issues**
+
 ```bash
 # Analyze bundle size
 npm run build:analyze
@@ -528,6 +552,7 @@ lighthouse https://app.mylocalseoranker.com
 ```
 
 ### Emergency Procedures
+
 1. **Service Down**: Check status.mylocalseoranker.com
 2. **Database Issues**: Contact Supabase support
 3. **CDN Issues**: Contact Netlify support

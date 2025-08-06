@@ -1,6 +1,7 @@
 # Local SEO Ranker - API Documentation
 
 ## 🔗 Base URL
+
 - **Production**: `https://app.mylocalseoranker.com/api`
 - **Development**: `http://localhost:8080/api`
 
@@ -9,6 +10,7 @@
 All API requests require authentication using JWT tokens obtained through the authentication endpoints.
 
 ### Headers
+
 ```http
 Authorization: Bearer <jwt_token>
 Content-Type: application/json
@@ -16,6 +18,7 @@ X-API-Key: <optional_api_key>
 ```
 
 ### Rate Limiting
+
 - **Standard Users**: 1000 requests/hour
 - **Premium Users**: 5000 requests/hour
 - **Enterprise**: 10000 requests/hour
@@ -23,6 +26,7 @@ X-API-Key: <optional_api_key>
 ## 📝 Response Format
 
 ### Success Response
+
 ```json
 {
   "success": true,
@@ -33,6 +37,7 @@ X-API-Key: <optional_api_key>
 ```
 
 ### Error Response
+
 ```json
 {
   "success": false,
@@ -48,9 +53,11 @@ X-API-Key: <optional_api_key>
 ## 🔑 Authentication Endpoints
 
 ### POST /api/auth/login
+
 Authenticate user and receive JWT token.
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com",
@@ -60,6 +67,7 @@ Authenticate user and receive JWT token.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -79,9 +87,11 @@ Authenticate user and receive JWT token.
 ```
 
 ### POST /api/auth/2fa/verify
+
 Verify 2FA code during login.
 
 **Request Body:**
+
 ```json
 {
   "login_token": "temporary_login_token",
@@ -90,9 +100,11 @@ Verify 2FA code during login.
 ```
 
 ### POST /api/auth/register
+
 Register new user account.
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com",
@@ -104,12 +116,15 @@ Register new user account.
 ```
 
 ### POST /api/auth/logout
+
 Logout user and invalidate tokens.
 
 ### POST /api/auth/refresh
+
 Refresh access token using refresh token.
 
 **Request Body:**
+
 ```json
 {
   "refresh_token": "refresh_token_here"
@@ -119,9 +134,11 @@ Refresh access token using refresh token.
 ## 🏢 Business Management
 
 ### GET /api/businesses
+
 List all businesses for authenticated user.
 
 **Query Parameters:**
+
 - `page` (number): Page number (default: 1)
 - `limit` (number): Items per page (default: 20)
 - `search` (string): Search term
@@ -129,6 +146,7 @@ List all businesses for authenticated user.
 - `status` (string): Business status filter
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -165,9 +183,11 @@ List all businesses for authenticated user.
 ```
 
 ### POST /api/businesses
+
 Create new business.
 
 **Request Body:**
+
 ```json
 {
   "name": "New Business",
@@ -187,20 +207,25 @@ Create new business.
 ```
 
 ### GET /api/businesses/:id
+
 Get specific business details.
 
 ### PUT /api/businesses/:id
+
 Update business information.
 
 ### DELETE /api/businesses/:id
+
 Delete business (soft delete).
 
 ## 📊 SEO Analysis
 
 ### POST /api/seo/analyze
+
 Perform comprehensive SEO analysis.
 
 **Request Body:**
+
 ```json
 {
   "business_id": "business-uuid",
@@ -215,6 +240,7 @@ Perform comprehensive SEO analysis.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -252,9 +278,11 @@ Perform comprehensive SEO analysis.
 ```
 
 ### GET /api/seo/rankings
+
 Get keyword ranking data.
 
 **Query Parameters:**
+
 - `business_id` (string): Business ID
 - `keywords` (string[]): Keywords to check
 - `location` (string): Location for local search
@@ -262,23 +290,28 @@ Get keyword ranking data.
 - `end_date` (string): End date (ISO 8601)
 
 ### POST /api/seo/optimize
+
 Generate SEO optimization recommendations.
 
 ## 📍 Location & Maps
 
 ### GET /api/locations/search
+
 Search for business locations using Google Places API.
 
 **Query Parameters:**
+
 - `query` (string): Search query
 - `location` (string): Center point for search
 - `radius` (number): Search radius in meters
 - `type` (string): Place type filter
 
 ### POST /api/locations/validate
+
 Validate and standardize address.
 
 **Request Body:**
+
 ```json
 {
   "address": {
@@ -291,14 +324,17 @@ Validate and standardize address.
 ```
 
 ### GET /api/locations/:place_id/details
+
 Get detailed information about a Google Place.
 
 ## ⭐ Reviews Management
 
 ### GET /api/reviews
+
 Get reviews for business.
 
 **Query Parameters:**
+
 - `business_id` (string): Business ID
 - `source` (string): Review source (google, yelp, facebook)
 - `rating` (number): Filter by rating
@@ -306,12 +342,15 @@ Get reviews for business.
 - `end_date` (string): End date
 
 ### POST /api/reviews/import
+
 Import reviews from external sources.
 
 ### POST /api/reviews/respond
+
 Respond to customer review.
 
 **Request Body:**
+
 ```json
 {
   "review_id": "review-uuid",
@@ -321,14 +360,17 @@ Respond to customer review.
 ```
 
 ### GET /api/reviews/analytics
+
 Get review analytics and insights.
 
 ## 📞 Communications (Twilio Integration)
 
 ### POST /api/communications/sms/send
+
 Send SMS message via Twilio.
 
 **Request Body:**
+
 ```json
 {
   "to": "+1234567890",
@@ -338,9 +380,11 @@ Send SMS message via Twilio.
 ```
 
 ### POST /api/communications/email/send
+
 Send email via Twilio SendGrid.
 
 **Request Body:**
+
 ```json
 {
   "to": "customer@example.com",
@@ -354,17 +398,21 @@ Send email via Twilio SendGrid.
 ```
 
 ### GET /api/communications/templates
+
 Get available message templates.
 
 ### POST /api/communications/campaigns
+
 Create communication campaign.
 
 ## 🔗 Webhooks
 
 ### POST /api/webhooks/register
+
 Register webhook endpoint.
 
 **Request Body:**
+
 ```json
 {
   "url": "https://your-app.com/webhook",
@@ -374,13 +422,17 @@ Register webhook endpoint.
 ```
 
 ### GET /api/webhooks
+
 List registered webhooks.
 
 ### DELETE /api/webhooks/:id
+
 Delete webhook registration.
 
 ### Webhook Events
+
 Available webhook events:
+
 - `review.created` - New review received
 - `review.updated` - Review response added
 - `business.updated` - Business information changed
@@ -388,6 +440,7 @@ Available webhook events:
 - `ranking.changed` - Keyword ranking changed
 
 ### Webhook Payload Example
+
 ```json
 {
   "event": "review.created",
@@ -410,12 +463,15 @@ Available webhook events:
 ## 📰 RSS Feeds
 
 ### GET /api/rss/feeds
+
 List available RSS feeds.
 
 ### POST /api/rss/subscribe
+
 Subscribe to RSS feed.
 
 **Request Body:**
+
 ```json
 {
   "url": "https://example.com/feed.xml",
@@ -425,35 +481,44 @@ Subscribe to RSS feed.
 ```
 
 ### GET /api/rss/items
+
 Get RSS feed items.
 
 ### POST /api/rss/parse
+
 Parse and import RSS feed content.
 
 ## 📈 Analytics & Reporting
 
 ### GET /api/analytics/dashboard
+
 Get dashboard analytics data.
 
 **Query Parameters:**
+
 - `business_id` (string): Business ID
 - `start_date` (string): Start date
 - `end_date` (string): End date
 - `metrics` (string[]): Specific metrics to include
 
 ### GET /api/analytics/rankings
+
 Get ranking analytics.
 
 ### GET /api/analytics/reviews
+
 Get review analytics.
 
 ### GET /api/analytics/traffic
+
 Get website traffic analytics.
 
 ### POST /api/reports/generate
+
 Generate custom report.
 
 **Request Body:**
+
 ```json
 {
   "business_id": "business-uuid",
@@ -467,38 +532,48 @@ Generate custom report.
 ## 👥 User Management
 
 ### GET /api/users
+
 List users (admin only).
 
 ### POST /api/users
+
 Create new user (admin only).
 
 ### GET /api/users/:id
+
 Get user details.
 
 ### PUT /api/users/:id
+
 Update user information.
 
 ### POST /api/users/:id/2fa/enable
+
 Enable 2FA for user.
 
 ### POST /api/users/:id/invite
+
 Send user invitation.
 
 ## 🔒 Security Features
 
 ### Two-Factor Authentication (2FA)
+
 - **TOTP Support**: Time-based one-time passwords
 - **Backup Codes**: Recovery codes for account access
 - **QR Code Generation**: Easy setup with authenticator apps
 
 ### API Security
+
 - **Rate Limiting**: Request throttling per user/IP
 - **Input Validation**: Comprehensive request validation
 - **SQL Injection Protection**: Parameterized queries
 - **XSS Prevention**: Input sanitization and output encoding
 
 ### Audit Logging
+
 All API requests are logged with:
+
 - User ID and IP address
 - Request method and endpoint
 - Request/response data (sensitive data masked)
@@ -506,26 +581,28 @@ All API requests are logged with:
 
 ## 🚨 Error Codes
 
-| Code | Description |
-|------|-------------|
+| Code                      | Description                       |
+| ------------------------- | --------------------------------- |
 | `AUTHENTICATION_REQUIRED` | Missing or invalid authentication |
-| `AUTHORIZATION_FAILED` | Insufficient permissions |
-| `VALIDATION_ERROR` | Invalid request data |
-| `RESOURCE_NOT_FOUND` | Requested resource doesn't exist |
-| `RATE_LIMIT_EXCEEDED` | Too many requests |
-| `INTERNAL_SERVER_ERROR` | Unexpected server error |
-| `SERVICE_UNAVAILABLE` | External service unavailable |
-| `PAYMENT_REQUIRED` | Subscription upgrade needed |
+| `AUTHORIZATION_FAILED`    | Insufficient permissions          |
+| `VALIDATION_ERROR`        | Invalid request data              |
+| `RESOURCE_NOT_FOUND`      | Requested resource doesn't exist  |
+| `RATE_LIMIT_EXCEEDED`     | Too many requests                 |
+| `INTERNAL_SERVER_ERROR`   | Unexpected server error           |
+| `SERVICE_UNAVAILABLE`     | External service unavailable      |
+| `PAYMENT_REQUIRED`        | Subscription upgrade needed       |
 
 ## 📞 Support
 
 ### API Support
+
 - **Documentation**: https://docs.mylocalseoranker.com
 - **Status Page**: https://status.mylocalseoranker.com
 - **Support Email**: api-support@mylocalseoranker.com
 - **Community**: https://community.mylocalseoranker.com
 
 ### SDK & Libraries
+
 - **JavaScript/TypeScript**: `@mylocalseoranker/js-sdk`
 - **Python**: `mylocalseoranker-python`
 - **PHP**: `mylocalseoranker/php-sdk`
