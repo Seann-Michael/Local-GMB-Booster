@@ -842,13 +842,13 @@ export function AppLayout({ children }: AppLayoutProps) {
                 )}
               </Button>
 
-              {/* GMB Booster branding - responsive */}
+              {/* Local SEO Ranker branding - responsive */}
               <div className="flex items-center space-x-2 min-w-0">
                 <div className="flex h-6 w-6 md:h-8 md:w-8 items-center justify-center rounded-lg bg-primary shadow-sm">
                   <Building2 className="h-3 w-3 md:h-4 md:w-4 text-primary-foreground" />
                 </div>
                 <span className="font-bold text-sm md:text-lg truncate">
-                  GMB Booster
+                  Local SEO Ranker
                 </span>
               </div>
 
