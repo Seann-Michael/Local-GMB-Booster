@@ -377,7 +377,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               </div>
               <div>
                 <span className="font-bold text-base text-foreground">
-                  GMB Booster
+                  Local SEO Ranker
                 </span>
               </div>
             </div>
