@@ -428,14 +428,6 @@ export default function Index() {
           </div>
         </div>
 
-        {/* Debug Info */}
-        <div className="mb-4 p-4 bg-gray-100 rounded">
-          <p>Loading: {isLoading ? 'Yes' : 'No'}</p>
-          <p>Total Projects: {projects.length}</p>
-          <p>Filtered Projects: {filteredProjects.length}</p>
-          <p>Project Sort: {projectSort}</p>
-        </div>
-
         {isLoading ? (
           <ProjectGridSkeleton />
         ) : filteredProjects.length === 0 ? (
