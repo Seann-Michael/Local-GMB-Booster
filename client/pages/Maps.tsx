@@ -69,23 +69,31 @@ const MOCK_KEYWORDS = [
   { id: 3, keyword: "best pizza delivery", active: false, generated: true },
 ];
 
-// Generate mock ranking data
+// Generate mock ranking data with DataForSEO-like structure
 const generateMockRankingData = () => {
   const center = { lat: 38.2493, lng: -122.0397 };
   const radius = 0.1;
   const results = [];
-  
+
+  const competitorNames = [
+    "Tony's Pizza Palace", "Mario's Italian Bistro", "Fairfield Pizza Co",
+    "Slice Heaven", "Papa Giuseppe's", "Nonna's Pizza Kitchen",
+    "Milano's Pizzeria", "Rustic Oven", "Pizza Corner", "Italian Express",
+    "Fire Stone Pizza", "Roma's Restaurant", "Sicilian Delight", "Pizza Hut",
+    "Domino's Pizza", "Round Table Pizza", "Little Caesars", "Mountain Mike's"
+  ];
+
   for (let i = 0; i < 24; i++) {
     const angle = (i / 24) * 2 * Math.PI;
     const distance = 0.02 + (Math.random() * radius);
     const lat = center.lat + Math.cos(angle) * distance;
     const lng = center.lng + Math.sin(angle) * distance;
-    
+
     const distanceFromCenter = Math.sqrt(Math.pow(lat - center.lat, 2) + Math.pow(lng - center.lng, 2));
     let rank = null;
-    
+
     const rankProbability = Math.max(0, 1 - (distanceFromCenter / radius) * 2);
-    
+
     if (Math.random() < rankProbability) {
       if (distanceFromCenter < radius * 0.3) {
         rank = Math.floor(Math.random() * 3) + 1;
@@ -95,21 +103,45 @@ const generateMockRankingData = () => {
         rank = Math.floor(Math.random() * 10) + 11;
       }
     }
-    
+
+    // Generate competitors with more realistic data
+    const numCompetitors = Math.min(Math.floor(Math.random() * 8) + 3, competitorNames.length);
+    const shuffledCompetitors = [...competitorNames].sort(() => 0.5 - Math.random()).slice(0, numCompetitors);
+
+    const competitors = shuffledCompetitors.map((name, idx) => ({
+      name,
+      rank: idx + 1,
+      rating: parseFloat((3.5 + Math.random() * 1.5).toFixed(1)),
+      reviews: Math.floor(Math.random() * 500) + 20,
+      address: `${Math.floor(Math.random() * 9999) + 1000} ${['Main St', 'Oak Ave', 'Elm St', 'Park Blvd', 'First St'][Math.floor(Math.random() * 5)]}, Fairfield, CA`,
+      phone: `(707) ${Math.floor(Math.random() * 900) + 100}-${Math.floor(Math.random() * 9000) + 1000}`,
+      website: `https://${name.toLowerCase().replace(/[^a-z0-9]/g, '')}.com`,
+      category: "Pizza Restaurant",
+      price_level: "$".repeat(Math.floor(Math.random() * 3) + 1),
+      hours: "Open • Closes at " + [9, 10, 11, 12][Math.floor(Math.random() * 4)] + "PM",
+      distance: (distanceFromCenter * 111).toFixed(1) + " km", // Convert degrees to km roughly
+    }));
+
     results.push({
       id: `waypoint-${i}`,
       lat,
       lng,
       rank,
-      address: `Location ${i + 1}`,
-      competitors: [
-        { name: "Tony's Pizza Palace", rank: 1, rating: 4.5, reviews: 89 },
-        { name: "Mario's Italian Bistro", rank: 2, rating: 4.3, reviews: 156 },
-        { name: "Fairfield Pizza Co", rank: 3, rating: 4.2, reviews: 203 },
-      ].slice(0, Math.floor(Math.random() * 3) + 1)
+      address: `Search Point ${i + 1}`,
+      searchRadius: "1.5 km",
+      totalResults: competitors.length,
+      searchQuery: "pizza restaurant near me",
+      device: "desktop",
+      language: "en",
+      competitors,
+      analysis: {
+        topBusinessRating: Math.max(...competitors.map(c => c.rating)),
+        averageRating: competitors.reduce((sum, c) => sum + c.rating, 0) / competitors.length,
+        competitionLevel: competitors.length > 15 ? "High" : competitors.length > 10 ? "Medium" : "Low",
+      }
     });
   }
-  
+
   return results;
 };
 
