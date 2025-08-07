@@ -38,5 +38,9 @@ export function createServer() {
   app.get("/public/media/:publicId/:filename", handlePublicMedia);
   app.get("/public/media/thumbs/:size/:publicId/:filename", handleThumbnails);
 
+  // DataForSEO Routes
+  app.post("/api/dataforseo/proxy", handleDataForSEOProxy);
+  app.get("/api/dataforseo/status", handleDataForSEOStatus);
+
   return app;
 }
