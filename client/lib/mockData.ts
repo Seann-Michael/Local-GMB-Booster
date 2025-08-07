@@ -110,7 +110,7 @@ const generateMockProjects = (): MockProject[] => {
   const projectNames = [
     "Kitchen Renovation - Smith Residence",
     "Bathroom Remodel - Johnson Home",
-    "Deck Construction - Williams Property", 
+    "Deck Construction - Williams Property",
     "Basement Finishing - Davis House",
     "Office Build-out - TechCorp HQ",
     "Retail Store Renovation - Downtown Market",
@@ -122,7 +122,12 @@ const generateMockProjects = (): MockProject[] => {
     "Tile Work - Luxury Spa Project",
     "Electrical Upgrade - Manufacturing Plant",
     "Plumbing Overhaul - Historic Building",
-    "Painting - Corporate Headquarters"
+    "Painting - Corporate Headquarters",
+    "Pool Installation - Martinez Family",
+    "Garage Addition - Wilson Property",
+    "Fence Installation - Brown Residence",
+    "Driveway Paving - Miller Home",
+    "Sunroom Addition - Garcia House"
   ];
 
   const addresses = [
