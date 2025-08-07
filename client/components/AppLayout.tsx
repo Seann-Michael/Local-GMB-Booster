@@ -1225,7 +1225,6 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
         </header>
 
-
         {/* Contextual Header */}
         <div
           className={cn(
@@ -1237,15 +1236,12 @@ export function AppLayout({ children }: AppLayoutProps) {
         </div>
 
         {/* Page Content */}
-        <main
-          className="flex-1 overflow-y-auto overflow-x-auto transition-all duration-300 w-full"
-        >
+        <main className="flex-1 overflow-y-auto overflow-x-auto transition-all duration-300 w-full">
           {children}
         </main>
 
         {/* Footer */}
         <Footer />
-
       </div>
 
       {/* App Notifications (PWA updates, install prompts) */}
