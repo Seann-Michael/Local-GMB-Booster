@@ -70,6 +70,25 @@ export function PhotoActionMenu({
     onToggleFavorite?.(photo);
   };
 
+  const handleShare = () => {
+    if (onShare) {
+      onShare(photo);
+    } else {
+      // Default share behavior
+      const photoUrl = typeof photo === 'string' ? photo : photo.url;
+      if (navigator.share) {
+        navigator.share({
+          title: `Photo from ${projectName}`,
+          url: photoUrl,
+        });
+      } else {
+        // Fallback: copy to clipboard
+        navigator.clipboard.writeText(photoUrl);
+        // Note: Would need to show a toast here in real implementation
+      }
+    }
+  };
+
   const handleViewDetails = () => {
     onViewDetails?.(photo);
   };
