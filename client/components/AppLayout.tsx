@@ -1026,7 +1026,7 @@ export function AppLayout({ children }: AppLayoutProps) {
         {/* Top Header */}
         <header
           className={cn(
-            "bg-background border-b px-3 md:px-4 py-2 md:py-3 fixed top-0 right-0 z-50 transition-all duration-300 shadow-sm",
+            "bg-background border-b px-0 md:px-4 py-2 md:py-3 fixed top-0 left-0 right-0 z-50 transition-all duration-300 shadow-sm",
             "md:left-60", // Account for sidebar width on desktop
             sidebarCollapsed && "md:left-16", // Account for collapsed sidebar width
           )}
