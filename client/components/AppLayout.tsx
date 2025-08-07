@@ -562,6 +562,9 @@ export function AppLayout({ children }: AppLayoutProps) {
                       <p className="text-sm font-medium truncate">
                         {businessName || "My Business"}
                       </p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        ID: {currentUser?.id || currentBusiness?.id || "ACC-001"}
+                      </p>
                     </div>
                     <ChevronDown className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                   </div>
