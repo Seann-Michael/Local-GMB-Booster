@@ -198,6 +198,14 @@ const App = () => (
                   }
                 />
                 <Route
+                  path="/admin/google-maps-test"
+                  element={
+                    <ProtectedRoute>
+                      <GoogleMapsTest />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
                   path="/project/:id"
                   element={
                     <ProtectedRoute>
