@@ -305,6 +305,39 @@ const App = () => (
                     </ProtectedRoute>
                   }
                 />
+                {/* Audits routes (same components as Maps) */}
+                <Route
+                  path="/admin/audits"
+                  element={
+                    <ProtectedRoute>
+                      <Maps />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/audits/one-time-scan"
+                  element={
+                    <ProtectedRoute>
+                      <OneTimeScan />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/audits/recurring-scans"
+                  element={
+                    <ProtectedRoute>
+                      <RecurringScans />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/audits/scan-history"
+                  element={
+                    <ProtectedRoute>
+                      <ScanHistory />
+                    </ProtectedRoute>
+                  }
+                />
                 <Route
                   path="/admin/workflow-builder"
                   element={
