@@ -96,6 +96,7 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
+    console.log("📝 AddressAutocomplete: Input changed to:", newValue, "API key available:", apiKeyAvailable);
     setInputValue(newValue);
     setSelectedPlace(null);
 
@@ -106,6 +107,9 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
     if (newValue.length < 3 || !apiKeyAvailable) {
       clearSuggestions();
       setShowSuggestions(false);
+      if (newValue.length < 3) {
+        console.log("⚠️ AddressAutocomplete: Input too short, clearing suggestions");
+      }
     }
   };
 
