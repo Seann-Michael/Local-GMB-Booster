@@ -121,6 +121,49 @@ const mockGroups: UserGroup[] = [
   },
 ];
 
+const permissionCategories = {
+  projects: [
+    "view_projects",
+    "create_projects",
+    "edit_projects",
+    "delete_projects",
+    "manage_project_settings"
+  ],
+  clients: [
+    "view_clients",
+    "create_clients",
+    "edit_clients",
+    "delete_clients",
+    "manage_client_communications"
+  ],
+  media: [
+    "view_media",
+    "upload_media",
+    "edit_media",
+    "delete_media",
+    "manage_media_library"
+  ],
+  users: [
+    "view_users",
+    "create_users",
+    "edit_users",
+    "delete_users",
+    "manage_user_permissions"
+  ],
+  reports: [
+    "view_reports",
+    "create_reports",
+    "export_reports",
+    "manage_analytics"
+  ],
+  system: [
+    "system_settings",
+    "backup_restore",
+    "api_access",
+    "integrations"
+  ]
+};
+
 const mockUsers: User[] = [
   {
     id: "1",
