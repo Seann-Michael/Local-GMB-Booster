@@ -374,7 +374,8 @@ export function AppLayout({ children }: AppLayoutProps) {
   ];
 
   return (
-    <div className="min-h-[100dvh] bg-background flex w-full">
+    <CreditProvider>
+      <div className="min-h-[100dvh] bg-background flex w-full">
       {/* Mobile Sidebar Overlay */}
       {mobileSidebarOpen && (
         <div
@@ -1379,8 +1380,9 @@ export function AppLayout({ children }: AppLayoutProps) {
         <Footer />
       </div>
 
-      {/* App Notifications (PWA updates, install prompts) */}
-      <AppNotifications />
-    </div>
+        {/* App Notifications (PWA updates, install prompts) */}
+        <AppNotifications />
+      </div>
+    </CreditProvider>
   );
 }
