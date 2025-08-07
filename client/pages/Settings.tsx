@@ -632,7 +632,7 @@ export default function Settings() {
                             navigator.clipboard.writeText(
                               settings.subAccountId,
                             );
-                            toast.success("Sub Account ID copied to clipboard");
+                            toast.success("Business Account ID copied to clipboard");
                           }}
                           className="h-6 w-6 p-0"
                         >
