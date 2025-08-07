@@ -279,7 +279,7 @@ export default function Maps() {
                 <div className="p-2 bg-blue-600 rounded-lg">
                   <Target className="h-5 w-5 text-white" />
                 </div>
-                <h2 class="font-bold text-slate-900">Target Business</h2>
+                <h2 className="font-bold text-slate-900">Target Business</h2>
                 {business.verified && (
                   <Tooltip>
                     <TooltipTrigger>
