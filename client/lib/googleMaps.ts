@@ -52,7 +52,7 @@ export const getGoogleMapsApiKey = (): string => {
 
     const integrations = JSON.parse(stored || "[]");
     console.log("🔍 Parsed integrations:", integrations);
-    console.log("�� Number of integrations:", integrations.length);
+    console.log("🔢 Number of integrations:", integrations.length);
 
     const googleMapsIntegration = integrations.find((int: any) => {
       console.log(
@@ -385,6 +385,19 @@ export const validateGoogleMapsApiKey = async (
 export const testGoogleMapsConnection = async (): Promise<boolean> => {
   try {
     console.log("🧪 Starting Google Maps API connection test...");
+
+    // Check if we're in Builder.io editor environment
+    const isBuilderIoEditor =
+      typeof window !== 'undefined' &&
+      (window.location.href.includes('builder.io') ||
+       window.parent !== window ||
+       document.referrer.includes('builder.io'));
+
+    if (isBuilderIoEditor) {
+      console.log("�� Builder.io editor detected - Google Maps API testing disabled");
+      toast.error("Google Maps API testing disabled in Builder.io editor");
+      return false;
+    }
 
     const apiKey = getGoogleMapsApiKey();
     if (!apiKey) {
