@@ -215,9 +215,9 @@ export default function Maps() {
               <h3 class="font-semibold text-gray-900">${point?.address || 'Unknown Location'}</h3>
               ${point?.rank ? 
                 `<span class="px-2 py-1 text-xs font-medium rounded-full ${
-                  point.rank <= 3 ? 'bg-green-100 text-green-800' :
-                  point.rank <= 10 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'
-                }">#${point.rank}</span>` : 
+                  (point?.rank || 0) <= 3 ? 'bg-green-100 text-green-800' :
+                  (point?.rank || 0) <= 10 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'
+                }">#${point?.rank}</span>` : 
                 '<span class="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-600 rounded-full">Not Ranking</span>'
               }
             </div>
