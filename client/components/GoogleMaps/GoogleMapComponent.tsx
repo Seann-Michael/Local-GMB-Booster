@@ -91,24 +91,136 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
     return () => clearTimeout(timer);
   }, [isLoaded, error, useIframeFallback]);
 
+  // Create custom marker icon based on rank and color
+  const createMarkerIcon = (marker: MapMarker): google.maps.Icon | string => {
+    if (marker.icon === "business") {
+      return {
+        url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+          <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="14" fill="${marker.color || "#3B82F6"}" stroke="white" stroke-width="2"/>
+            <path d="M16 8 L20 12 L18 12 L18 20 L14 20 L14 12 L12 12 Z" fill="white"/>
+          </svg>
+        `)}`,
+        scaledSize: new google.maps.Size(32, 32),
+        anchor: new google.maps.Point(16, 16),
+      };
+    }
+
+    if (marker.rank) {
+      return {
+        url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+          <svg width="32" height="40" viewBox="0 0 32 40" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 0 C7.163 0 0 7.163 0 16 C0 24.837 16 40 16 40 S32 24.837 32 16 C32 7.163 24.837 0 16 0 Z" fill="${marker.color || "#6B7280"}"/>
+            <circle cx="16" cy="16" r="12" fill="white"/>
+            <text x="16" y="21" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="${marker.color || "#6B7280"}">${marker.rank}</text>
+          </svg>
+        `)}`,
+        scaledSize: new google.maps.Size(32, 40),
+        anchor: new google.maps.Point(16, 40),
+      };
+    }
+
+    return {
+      url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+        <svg width="24" height="30" viewBox="0 0 24 30" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 0 C5.373 0 0 5.373 0 12 C0 18.627 12 30 12 30 S24 18.627 24 12 C24 5.373 18.627 0 12 0 Z" fill="${marker.color || "#6B7280"}"/>
+          <circle cx="12" cy="12" r="8" fill="white"/>
+        </svg>
+      `)}`,
+      scaledSize: new google.maps.Size(24, 30),
+      anchor: new google.maps.Point(12, 30),
+    };
+  };
+
+  // Clear existing markers
+  const clearMarkers = () => {
+    mapMarkers.forEach(marker => marker.setMap(null));
+    setMapMarkers([]);
+    if (infoWindow) {
+      infoWindow.close();
+    }
+  };
+
+  // Handle map center and markers
   useEffect(() => {
-    if (map && lat !== undefined && lng !== undefined) {
-      // Set center and add marker for coordinates
-      const position = { lat, lng };
-      setCenter(position);
+    if (!map) return;
 
-      // Remove existing marker
-      if (marker) {
-        marker.setMap(null);
-      }
+    // Determine the center
+    let mapCenter = center;
+    if (!mapCenter && lat !== undefined && lng !== undefined) {
+      mapCenter = { lat, lng };
+    }
+    if (!mapCenter && markers.length > 0) {
+      // Calculate center from markers
+      const avgLat = markers.reduce((sum, m) => sum + m.position.lat, 0) / markers.length;
+      const avgLng = markers.reduce((sum, m) => sum + m.position.lng, 0) / markers.length;
+      mapCenter = { lat: avgLat, lng: avgLng };
+    }
 
-      // Add new marker
-      const newMarker = addMarker(position, {
+    if (mapCenter) {
+      setCenter(mapCenter);
+    }
+
+    // Clear existing markers
+    clearMarkers();
+
+    // Create info window if not exists
+    if (!infoWindow) {
+      setInfoWindow(new google.maps.InfoWindow());
+    }
+
+    // Add new markers
+    const newMarkers: google.maps.Marker[] = [];
+
+    // Add custom markers
+    markers.forEach(markerData => {
+      const googleMarker = new google.maps.Marker({
+        position: markerData.position,
+        map: map,
+        title: markerData.title,
+        icon: createMarkerIcon(markerData),
+      });
+
+      // Add click listener
+      googleMarker.addListener('click', () => {
+        if (infoWindow && markerData.content) {
+          infoWindow.setContent(markerData.content);
+          infoWindow.open(map, googleMarker);
+        }
+        if (onMarkerClick) {
+          onMarkerClick(markerData);
+        }
+      });
+
+      newMarkers.push(googleMarker);
+    });
+
+    // Add legacy single marker if no custom markers and coordinates provided
+    if (markers.length === 0 && lat !== undefined && lng !== undefined) {
+      const legacyMarker = addMarker({ lat, lng }, {
         title: address || "Location",
       });
-      setMarker(newMarker);
+      newMarkers.push(legacyMarker);
     }
-  }, [map, lat, lng, address, addMarker, setCenter, marker]);
+
+    setMapMarkers(newMarkers);
+
+    // Fit bounds if multiple markers
+    if (markers.length > 1) {
+      const bounds = new google.maps.LatLngBounds();
+      markers.forEach(marker => {
+        bounds.extend(marker.position);
+      });
+      map.fitBounds(bounds);
+
+      // Add padding
+      setTimeout(() => {
+        if (map.getZoom() && map.getZoom()! > 15) {
+          map.setZoom(15);
+        }
+      }, 100);
+    }
+  }, [map, markers, center, lat, lng, address, addMarker, setCenter, infoWindow, onMarkerClick]);
 
   const openInGoogleMaps = () => {
     let url = "https://maps.google.com/";
