@@ -42,6 +42,7 @@ export function getCurrentUser(): User | null {
         businesses: [
           {
             id: "business-1",
+            accountId: "102-456-789",
             name: "Smith Construction LLC",
             description: "General contracting and home renovations",
             address: "123 Main St, Springfield, IL 62701",
@@ -50,6 +51,7 @@ export function getCurrentUser(): User | null {
           },
           {
             id: "business-2",
+            accountId: "203-567-890",
             name: "Smith Property Management",
             description: "Residential and commercial property management",
             address: "456 Oak Ave, Springfield, IL 62702",
@@ -58,6 +60,7 @@ export function getCurrentUser(): User | null {
           },
           {
             id: "business-3",
+            accountId: "304-678-901",
             name: "Elite Home Renovations",
             description: "Premium kitchen and bathroom remodeling",
             address: "789 Pine St, Springfield, IL 62703",
