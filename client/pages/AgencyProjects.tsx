@@ -98,7 +98,7 @@ export default function AgencyProjects() {
         clientId: "client-2",
         clientName: "RetailPlus Inc",
         clientEmail: "marketing@retailplus.com",
-        services: ["seo", "content-marketing"],
+        services: ["local-optimization", "content-marketing"],
         budget: 2500,
         estimatedHours: 20,
         actualHours: 18,
