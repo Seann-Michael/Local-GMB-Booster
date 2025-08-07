@@ -1031,9 +1031,9 @@ export function AppLayout({ children }: AppLayoutProps) {
             sidebarCollapsed && "md:left-16", // Account for collapsed sidebar width
           )}
         >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3 md:gap-4 min-w-0 flex-1">
-              {/* Mobile hamburger menu */}
+          <div className="flex items-center justify-between w-full">
+            {/* Mobile hamburger menu - far left */}
+            <div className="flex items-center">
               <Button
                 variant="ghost"
                 size="icon"
@@ -1047,11 +1047,9 @@ export function AppLayout({ children }: AppLayoutProps) {
                 )}
               </Button>
 
-              {/* Breadcrumbs moved left to fill space */}
-
-              {/* Breadcrumbs */}
+              {/* Breadcrumbs - only on desktop */}
               {getBreadcrumbs(location.pathname).length > 0 && (
-                <div className="hidden lg:flex items-center ml-2">
+                <div className="hidden lg:flex items-center ml-4">
                   <Breadcrumb>
                     <BreadcrumbList>
                       {getBreadcrumbs(location.pathname).map((crumb, index) => (
@@ -1084,7 +1082,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               )}
 
               {isImpersonated && (
-                <div className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1 bg-yellow-100 text-yellow-800 rounded-lg text-xs md:text-sm">
+                <div className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1 bg-yellow-100 text-yellow-800 rounded-lg text-xs md:text-sm ml-4">
                   <Shield className="h-3 w-3 md:h-4 md:w-4" />
                   <span className="hidden sm:inline">Impersonating</span>
                   <Button
@@ -1099,7 +1097,8 @@ export function AppLayout({ children }: AppLayoutProps) {
               )}
             </div>
 
-            <div className="flex items-center gap-2 md:gap-1 flex-shrink-0">
+            {/* Right side icons - far right */}
+            <div className="flex items-center gap-2 md:gap-1">
               {/* Functional Search - responsive */}
               <div className="hidden md:block">
                 <HeaderSearch />
