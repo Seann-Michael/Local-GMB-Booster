@@ -340,6 +340,14 @@ const App = () => (
                   }
                 />
                 <Route
+                  path="/admin/audits/report/:id"
+                  element={
+                    <ProtectedRoute>
+                      <AuditReport />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
                   path="/admin/workflow-builder"
                   element={
                     <ProtectedRoute>
