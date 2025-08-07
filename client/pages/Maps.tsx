@@ -188,7 +188,7 @@ export default function Maps() {
     const markers = [];
 
     // Add ranking waypoint markers
-    rankingData.forEach((point, index) => {
+    (rankingData || []).forEach((point, index) => {
       let color = "#9CA3AF"; // Gray for not ranking
       let size = "small";
       
