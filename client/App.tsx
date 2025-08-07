@@ -350,6 +350,22 @@ const App = () => (
                   }
                 /> */}
                 <Route
+                  path="/admin/credits/purchase"
+                  element={
+                    <ProtectedRoute>
+                      <CreditPurchase />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/credits/history"
+                  element={
+                    <ProtectedRoute>
+                      <CreditHistory />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
                   path="/admin/workflow-builder"
                   element={
                     <ProtectedRoute>
