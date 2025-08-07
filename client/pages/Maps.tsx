@@ -127,6 +127,9 @@ export default function Maps() {
   const [gridPattern, setGridPattern] = useState("circular");
   const [gridDensity, setGridDensity] = useState("medium");
   const [gridRadius, setGridRadius] = useState("10");
+  const [searchDepth, setSearchDepth] = useState("20");
+  const [deviceType, setDeviceType] = useState<"desktop" | "mobile">("desktop");
+  const [languageCode, setLanguageCode] = useState("en");
   
   const [analysisComplete, setAnalysisComplete] = useState(true);
   const [rankingData] = useState(MOCK_RANKING_DATA);
