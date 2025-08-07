@@ -8,6 +8,10 @@ import {
   handleMediaUpload,
   handleMediaMetadata
 } from "./routes/media";
+import {
+  handleDataForSEOProxy,
+  handleDataForSEOStatus
+} from "./routes/dataforseo";
 
 export function createServer() {
   const app = express();
