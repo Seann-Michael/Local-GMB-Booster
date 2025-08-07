@@ -25,7 +25,7 @@ const Maps = lazy(() => import("./pages/Maps"));
 const OneTimeScan = lazy(() => import("./pages/OneTimeScanEnhanced"));
 const RecurringScans = lazy(() => import("./pages/RecurringScans"));
 const ScanHistory = lazy(() => import("./pages/ScanHistory"));
-// const AuditReport = lazy(() => import("./pages/AuditReportSimple"));
+const AuditReport = lazy(() => import("./pages/AuditReport"));
 const CreditPurchase = lazy(() => import("./pages/CreditPurchase"));
 const CreditHistory = lazy(() => import("./pages/CreditHistory"));
 const CreditAnalytics = lazy(() => import("./pages/CreditAnalytics"));
