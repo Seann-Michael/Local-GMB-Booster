@@ -588,32 +588,28 @@ export function AppLayout({ children }: AppLayoutProps) {
                 </div>
                 <DropdownMenuSeparator />
 
-                {/* Current Business Owner Profile */}
+                {/* Current Business Profile */}
                 {(!profileSearchQuery ||
-                  `${currentUser?.name || "User"} Business Owner`
+                  `${businessName || "My Business"}`
                     .toLowerCase()
                     .includes(profileSearchQuery.toLowerCase())) && (
-                  <DropdownMenuItem className="flex flex-col items-start p-3">
+                  <DropdownMenuItem className="flex flex-col items-start p-3 bg-primary/5">
                     <div className="flex items-center gap-3 w-full">
-                      <Avatar className="h-8 w-8">
+                      <Avatar className="h-10 w-10">
                         <AvatarImage src={currentUser?.avatar} />
-                        <AvatarFallback className="text-xs">
-                          {currentUser?.name ? (
-                            currentUser.name
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")
-                          ) : (
-                            <User className="h-4 w-4" />
-                          )}
+                        <AvatarFallback className="text-xs bg-primary/10">
+                          <Building2 className="h-5 w-5 text-primary" />
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
-                        <div className="font-medium">
-                          {currentUser?.name || "User"}
+                        <div className="font-medium text-sm">
+                          {businessName || "My Business"}
                         </div>
                         <div className="text-xs text-muted-foreground">
-                          Business Owner
+                          ID: {currentUser?.id || currentBusiness?.id || "ACC-001"}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          Current Business
                         </div>
                       </div>
                       <CheckCircle className="h-4 w-4 text-primary" />
