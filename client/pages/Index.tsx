@@ -202,6 +202,15 @@ export default function Index() {
     applyFilters();
   }, [projects, searchQuery, filters, projectSort]);
 
+  // Update displayed projects when filtered projects change
+  useEffect(() => {
+    if (showAllProjects) {
+      setDisplayedProjects(filteredProjects);
+    } else {
+      setDisplayedProjects(filteredProjects.slice(0, 20));
+    }
+  }, [filteredProjects, showAllProjects]);
+
   const clearFilters = () => {
     setFilters({
       startDate: "",
