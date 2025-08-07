@@ -285,6 +285,30 @@ const App = () => (
                   }
                 />
                 <Route
+                  path="/admin/maps/one-time-scan"
+                  element={
+                    <ProtectedRoute>
+                      <OneTimeScan />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/maps/recurring-scans"
+                  element={
+                    <ProtectedRoute>
+                      <RecurringScans />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/maps/scan-history"
+                  element={
+                    <ProtectedRoute>
+                      <ScanHistory />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
                   path="/admin/workflow-builder"
                   element={
                     <ProtectedRoute>
