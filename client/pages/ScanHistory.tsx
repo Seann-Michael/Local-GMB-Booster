@@ -173,7 +173,7 @@ export default function ScanHistory() {
   };
 
   const viewScanDetails = (scanId: string) => {
-    navigate("/admin/maps", { state: { scanId } });
+    navigate(`/admin/audits/report/${scanId}`);
   };
 
   const exportScanData = (scanId: string) => {
