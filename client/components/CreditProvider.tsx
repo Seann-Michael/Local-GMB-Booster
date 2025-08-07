@@ -1,11 +1,17 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { 
-  getCreditBalance, 
-  getCreditTransactions, 
-  CreditBalance, 
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import {
+  getCreditBalance,
+  getCreditTransactions,
+  CreditBalance,
   CreditTransaction,
-  initializeCreditSystem 
-} from '@/lib/creditSystem';
+  initializeCreditSystem,
+} from "@/lib/creditSystem";
 
 interface CreditContextType {
   balance: CreditBalance;
@@ -37,7 +43,7 @@ export function CreditProvider({ children }: CreditProviderProps) {
       setBalance(currentBalance);
       setTransactions(currentTransactions);
     } catch (error) {
-      console.error('Error refreshing credits:', error);
+      console.error("Error refreshing credits:", error);
       // Set fallback values on error
       setBalance({
         total: 250000,
@@ -63,17 +69,23 @@ export function CreditProvider({ children }: CreditProviderProps) {
           setBalance(event.detail.balance);
           refreshCredits(); // Refresh transactions as well
         } catch (error) {
-          console.error('Error handling credit update:', error);
+          console.error("Error handling credit update:", error);
         }
       };
 
-      window.addEventListener('creditsUpdated', handleCreditUpdate as EventListener);
+      window.addEventListener(
+        "creditsUpdated",
+        handleCreditUpdate as EventListener,
+      );
 
       return () => {
-        window.removeEventListener('creditsUpdated', handleCreditUpdate as EventListener);
+        window.removeEventListener(
+          "creditsUpdated",
+          handleCreditUpdate as EventListener,
+        );
       };
     } catch (error) {
-      console.error('Error initializing credit system:', error);
+      console.error("Error initializing credit system:", error);
       // Ensure we're not in loading state even if initialization fails
       setIsLoading(false);
     }
@@ -87,16 +99,16 @@ export function CreditProvider({ children }: CreditProviderProps) {
   };
 
   return (
-    <CreditContext.Provider value={value}>
-      {children}
-    </CreditContext.Provider>
+    <CreditContext.Provider value={value}>{children}</CreditContext.Provider>
   );
 }
 
 export function useCredits(): CreditContextType {
   const context = useContext(CreditContext);
   if (context === undefined) {
-    console.warn('useCredits must be used within a CreditProvider. Returning fallback values to prevent crashes.');
+    console.warn(
+      "useCredits must be used within a CreditProvider. Returning fallback values to prevent crashes.",
+    );
     // Return a safe fallback context to prevent app crashes
     return {
       balance: {
@@ -107,7 +119,7 @@ export function useCredits(): CreditContextType {
       },
       transactions: [],
       refreshCredits: () => {
-        console.warn('refreshCredits called outside of CreditProvider context');
+        console.warn("refreshCredits called outside of CreditProvider context");
       },
       isLoading: false, // Set to false to prevent loading state issues
     };

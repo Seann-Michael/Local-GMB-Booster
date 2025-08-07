@@ -30,7 +30,12 @@ import { useState, useMemo } from "react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useCredits } from "@/components/CreditProvider";
-import { calculateScanCost, deductCredits, hasSufficientCredits, formatCredits } from "@/lib/creditSystem";
+import {
+  calculateScanCost,
+  deductCredits,
+  hasSufficientCredits,
+  formatCredits,
+} from "@/lib/creditSystem";
 
 export default function OneTimeScan() {
   const navigate = useNavigate();
@@ -75,7 +80,9 @@ export default function OneTimeScan() {
 
     // Check if user has sufficient credits
     if (!hasSufficientCredits(scanCost)) {
-      toast.error(`Insufficient credits. Need ${formatCredits(scanCost)} credits, but only have ${formatCredits(balance.remaining)} remaining.`);
+      toast.error(
+        `Insufficient credits. Need ${formatCredits(scanCost)} credits, but only have ${formatCredits(balance.remaining)} remaining.`,
+      );
       return;
     }
 
@@ -89,10 +96,10 @@ export default function OneTimeScan() {
         `One-time scan: ${businessName} (${keywords.length} keywords, ${searchDepth} waypoints)`,
         {
           scanId,
-          scanType: 'one-time',
+          scanType: "one-time",
           waypointCount: parseInt(searchDepth),
           keywordCount: keywords.length,
-        }
+        },
       );
 
       if (!success) {
@@ -100,7 +107,9 @@ export default function OneTimeScan() {
         return;
       }
 
-      toast.success(`Scan started! ${formatCredits(scanCost)} credits deducted.`);
+      toast.success(
+        `Scan started! ${formatCredits(scanCost)} credits deducted.`,
+      );
 
       // Navigate to Maps page with scan data
       navigate("/admin/maps", {
@@ -420,14 +429,18 @@ export default function OneTimeScan() {
               <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <div className="flex items-center gap-2">
                   <Zap className="h-4 w-4 text-blue-600" />
-                  <span className="text-sm font-medium text-gray-700">Scan Cost</span>
+                  <span className="text-sm font-medium text-gray-700">
+                    Scan Cost
+                  </span>
                 </div>
                 <div className="text-right">
                   <div className="text-lg font-bold text-gray-900">
                     {formatCredits(scanCost)} credits
                   </div>
                   {balance.remaining < scanCost && (
-                    <div className="text-xs text-red-600">Insufficient credits</div>
+                    <div className="text-xs text-red-600">
+                      Insufficient credits
+                    </div>
                   )}
                 </div>
               </div>
@@ -468,9 +481,10 @@ export default function OneTimeScan() {
                         Insufficient Credits
                       </p>
                       <p className="text-xs text-red-700">
-                        You need {formatCredits(scanCost)} credits but only have {formatCredits(balance.remaining)} remaining.
+                        You need {formatCredits(scanCost)} credits but only have{" "}
+                        {formatCredits(balance.remaining)} remaining.
                         <button
-                          onClick={() => navigate('/admin/credits/purchase')}
+                          onClick={() => navigate("/admin/credits/purchase")}
                           className="text-red-800 underline ml-1"
                         >
                           Purchase more credits

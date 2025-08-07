@@ -43,14 +43,14 @@ export default function CreditHistory() {
 
     // Filter by type
     if (filterType !== "all") {
-      filtered = filtered.filter(tx => tx.type === filterType);
+      filtered = filtered.filter((tx) => tx.type === filterType);
     }
 
     // Filter by date range
     if (dateRange !== "all") {
       const now = new Date();
       let startDate = new Date();
-      
+
       switch (dateRange) {
         case "7days":
           startDate.setDate(now.getDate() - 7);
@@ -62,15 +62,16 @@ export default function CreditHistory() {
           startDate.setDate(now.getDate() - 90);
           break;
       }
-      
-      filtered = filtered.filter(tx => new Date(tx.timestamp) >= startDate);
+
+      filtered = filtered.filter((tx) => new Date(tx.timestamp) >= startDate);
     }
 
     // Filter by search query
     if (searchQuery) {
-      filtered = filtered.filter(tx =>
-        tx.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tx.id.toLowerCase().includes(searchQuery.toLowerCase())
+      filtered = filtered.filter(
+        (tx) =>
+          tx.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          tx.id.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
 
@@ -80,15 +81,19 @@ export default function CreditHistory() {
   // Calculate summary stats
   const summaryStats = useMemo(() => {
     const totalCreditsAdded = filteredTransactions
-      .filter(tx => tx.amount > 0)
+      .filter((tx) => tx.amount > 0)
       .reduce((sum, tx) => sum + tx.amount, 0);
-    
+
     const totalCreditsUsed = filteredTransactions
-      .filter(tx => tx.amount < 0)
+      .filter((tx) => tx.amount < 0)
       .reduce((sum, tx) => sum + Math.abs(tx.amount), 0);
 
-    const scanCount = filteredTransactions.filter(tx => tx.type === 'scan').length;
-    const purchaseCount = filteredTransactions.filter(tx => tx.type === 'purchase').length;
+    const scanCount = filteredTransactions.filter(
+      (tx) => tx.type === "scan",
+    ).length;
+    const purchaseCount = filteredTransactions.filter(
+      (tx) => tx.type === "purchase",
+    ).length;
 
     return {
       totalAdded: totalCreditsAdded,
@@ -100,13 +105,13 @@ export default function CreditHistory() {
 
   const getTransactionIcon = (type: string) => {
     switch (type) {
-      case 'purchase':
+      case "purchase":
         return <CreditCard className="h-4 w-4 text-green-600" />;
-      case 'scan':
+      case "scan":
         return <Zap className="h-4 w-4 text-blue-600" />;
-      case 'refund':
+      case "refund":
         return <RotateCcw className="h-4 w-4 text-yellow-600" />;
-      case 'bonus':
+      case "bonus":
         return <Gift className="h-4 w-4 text-purple-600" />;
       default:
         return <Zap className="h-4 w-4 text-gray-600" />;
@@ -114,36 +119,38 @@ export default function CreditHistory() {
   };
 
   const getTransactionColor = (amount: number) => {
-    return amount > 0 ? 'text-green-600' : 'text-red-600';
+    return amount > 0 ? "text-green-600" : "text-red-600";
   };
 
   const formatDate = (timestamp: string) => {
-    return new Date(timestamp).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
+    return new Date(timestamp).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
   const exportHistory = () => {
     const csv = [
-      ['Date', 'Type', 'Description', 'Credits', 'Transaction ID'].join(','),
-      ...filteredTransactions.map(tx => [
-        new Date(tx.timestamp).toISOString(),
-        tx.type,
-        `"${tx.description}"`,
-        tx.amount,
-        tx.id
-      ].join(','))
-    ].join('\n');
+      ["Date", "Type", "Description", "Credits", "Transaction ID"].join(","),
+      ...filteredTransactions.map((tx) =>
+        [
+          new Date(tx.timestamp).toISOString(),
+          tx.type,
+          `"${tx.description}"`,
+          tx.amount,
+          tx.id,
+        ].join(","),
+      ),
+    ].join("\n");
 
-    const blob = new Blob([csv], { type: 'text/csv' });
+    const blob = new Blob([csv], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = `credit-history-${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = `credit-history-${new Date().toISOString().split("T")[0]}.csv`;
     a.click();
     window.URL.revokeObjectURL(url);
   };
@@ -153,23 +160,21 @@ export default function CreditHistory() {
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         {/* Header */}
         <div className="mb-8">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate(-1)}
-            className="mb-4"
-          >
+          <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
           </Button>
-          
+
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Credit History</h1>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Credit History
+              </h1>
               <p className="text-gray-600">
                 Track your credit purchases and usage over time
               </p>
             </div>
-            
+
             <Button onClick={exportHistory} variant="outline" className="gap-2">
               <Download className="h-4 w-4" />
               Export CSV
@@ -183,7 +188,9 @@ export default function CreditHistory() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Current Balance</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Current Balance
+                  </p>
                   <p className="text-2xl font-bold text-blue-600">
                     {formatCredits(balance.remaining)}
                   </p>
@@ -199,7 +206,9 @@ export default function CreditHistory() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Credits Added</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Credits Added
+                  </p>
                   <p className="text-2xl font-bold text-green-600">
                     +{formatCredits(summaryStats.totalAdded)}
                   </p>
@@ -215,7 +224,9 @@ export default function CreditHistory() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Credits Used</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Credits Used
+                  </p>
                   <p className="text-2xl font-bold text-red-600">
                     -{formatCredits(summaryStats.totalUsed)}
                   </p>
@@ -231,7 +242,9 @@ export default function CreditHistory() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Scans</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Total Scans
+                  </p>
                   <p className="text-2xl font-bold text-gray-900">
                     {summaryStats.scanCount}
                   </p>
@@ -263,7 +276,7 @@ export default function CreditHistory() {
                   className="pl-10"
                 />
               </div>
-              
+
               <Select value={filterType} onValueChange={setFilterType}>
                 <SelectTrigger>
                   <SelectValue placeholder="Filter by type" />
@@ -276,7 +289,7 @@ export default function CreditHistory() {
                   <SelectItem value="bonus">Bonuses</SelectItem>
                 </SelectContent>
               </Select>
-              
+
               <Select value={dateRange} onValueChange={setDateRange}>
                 <SelectTrigger>
                   <SelectValue placeholder="Filter by date" />
@@ -314,11 +327,13 @@ export default function CreditHistory() {
                     ? "Try adjusting your filters to see more results."
                     : "Your credit transactions will appear here once you start using the service."}
                 </p>
-                {(!searchQuery && filterType === "all" && dateRange === "all") && (
-                  <Button onClick={() => navigate('/admin/credits/purchase')}>
-                    Purchase Credits
-                  </Button>
-                )}
+                {!searchQuery &&
+                  filterType === "all" &&
+                  dateRange === "all" && (
+                    <Button onClick={() => navigate("/admin/credits/purchase")}>
+                      Purchase Credits
+                    </Button>
+                  )}
               </div>
             ) : (
               <div className="space-y-4">
@@ -331,7 +346,7 @@ export default function CreditHistory() {
                       <div className="flex-shrink-0">
                         {getTransactionIcon(transaction.type)}
                       </div>
-                      
+
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
                           <h4 className="font-medium text-gray-900 capitalize">
@@ -358,10 +373,12 @@ export default function CreditHistory() {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="text-right">
-                      <div className={`text-lg font-bold ${getTransactionColor(transaction.amount)}`}>
-                        {transaction.amount > 0 ? '+' : ''}
+                      <div
+                        className={`text-lg font-bold ${getTransactionColor(transaction.amount)}`}
+                      >
+                        {transaction.amount > 0 ? "+" : ""}
                         {formatCredits(transaction.amount)}
                       </div>
                       <div className="text-xs text-gray-500">credits</div>

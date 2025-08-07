@@ -1,25 +1,25 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
-} from '@/components/ui/dropdown-menu';
-import { 
-  Zap, 
-  CreditCard, 
-  History, 
-  Plus, 
-  TrendingUp, 
-  AlertTriangle 
-} from 'lucide-react';
-import { useCredits } from '@/components/CreditProvider';
-import { formatCredits } from '@/lib/creditSystem';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Zap,
+  CreditCard,
+  History,
+  Plus,
+  TrendingUp,
+  AlertTriangle,
+} from "lucide-react";
+import { useCredits } from "@/components/CreditProvider";
+import { formatCredits } from "@/lib/creditSystem";
+import { useNavigate } from "react-router-dom";
 
 export function CreditDisplay() {
   const { balance, isLoading } = useCredits();
@@ -35,15 +35,15 @@ export function CreditDisplay() {
   }
 
   const getBalanceColor = () => {
-    if (balance.remaining < 1000) return 'text-red-600';
-    if (balance.remaining < 5000) return 'text-yellow-600';
-    return 'text-green-600';
+    if (balance.remaining < 1000) return "text-red-600";
+    if (balance.remaining < 5000) return "text-yellow-600";
+    return "text-green-600";
   };
 
   const getBalanceVariant = () => {
-    if (balance.remaining < 1000) return 'destructive';
-    if (balance.remaining < 5000) return 'secondary';
-    return 'default';
+    if (balance.remaining < 1000) return "destructive";
+    if (balance.remaining < 5000) return "secondary";
+    return "default";
   };
 
   return (
@@ -62,7 +62,7 @@ export function CreditDisplay() {
       <DropdownMenuContent align="end" className="w-64">
         <DropdownMenuLabel>Credit Balance</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        
+
         <div className="p-3 space-y-3">
           {/* Current Balance */}
           <div className="flex items-center justify-between">
@@ -71,14 +71,14 @@ export function CreditDisplay() {
               {formatCredits(balance.remaining)}
             </span>
           </div>
-          
+
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600">Total Used</span>
             <span className="text-sm text-gray-900">
               {formatCredits(balance.used)}
             </span>
           </div>
-          
+
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600">Total Credits</span>
             <span className="text-sm text-gray-900">
@@ -93,9 +93,11 @@ export function CreditDisplay() {
               <span>{((balance.used / balance.total) * 100).toFixed(1)}%</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
-              <div 
+              <div
                 className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                style={{ width: `${Math.min((balance.used / balance.total) * 100, 100)}%` }}
+                style={{
+                  width: `${Math.min((balance.used / balance.total) * 100, 100)}%`,
+                }}
               />
             </div>
           </div>
@@ -107,7 +109,9 @@ export function CreditDisplay() {
                 <AlertTriangle className="h-4 w-4 text-yellow-600 mt-0.5" />
                 <div>
                   <p className="text-xs font-medium text-yellow-800">
-                    {balance.remaining < 1000 ? 'Critical Low Balance' : 'Low Balance Warning'}
+                    {balance.remaining < 1000
+                      ? "Critical Low Balance"
+                      : "Low Balance Warning"}
                   </p>
                   <p className="text-xs text-yellow-700">
                     Consider purchasing more credits to continue scanning.
@@ -119,18 +123,18 @@ export function CreditDisplay() {
         </div>
 
         <DropdownMenuSeparator />
-        
-        <DropdownMenuItem onClick={() => navigate('/admin/credits/purchase')}>
+
+        <DropdownMenuItem onClick={() => navigate("/admin/credits/purchase")}>
           <Plus className="mr-2 h-4 w-4" />
           <span>Purchase Credits</span>
         </DropdownMenuItem>
-        
-        <DropdownMenuItem onClick={() => navigate('/admin/credits/history')}>
+
+        <DropdownMenuItem onClick={() => navigate("/admin/credits/history")}>
           <History className="mr-2 h-4 w-4" />
           <span>Usage History</span>
         </DropdownMenuItem>
-        
-        <DropdownMenuItem onClick={() => navigate('/admin/credits/analytics')}>
+
+        <DropdownMenuItem onClick={() => navigate("/admin/credits/analytics")}>
           <TrendingUp className="mr-2 h-4 w-4" />
           <span>Usage Analytics</span>
         </DropdownMenuItem>

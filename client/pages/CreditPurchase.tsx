@@ -40,7 +40,12 @@ const creditPackages = [
     pricePerCredit: 0.00198,
     popular: true,
     description: "Most popular choice",
-    features: ["50,000 credits", "Priority support", "60-day expiry", "15% savings"],
+    features: [
+      "50,000 credits",
+      "Priority support",
+      "60-day expiry",
+      "15% savings",
+    ],
   },
   {
     id: "enterprise",
@@ -50,7 +55,12 @@ const creditPackages = [
     pricePerCredit: 0.00166,
     popular: false,
     description: "For large operations",
-    features: ["150,000 credits", "Premium support", "90-day expiry", "30% savings"],
+    features: [
+      "150,000 credits",
+      "Premium support",
+      "90-day expiry",
+      "30% savings",
+    ],
   },
   {
     id: "unlimited",
@@ -60,7 +70,12 @@ const creditPackages = [
     pricePerCredit: 0.001398,
     popular: false,
     description: "Maximum value",
-    features: ["500,000 credits", "White-glove support", "1-year expiry", "50% savings"],
+    features: [
+      "500,000 credits",
+      "White-glove support",
+      "1-year expiry",
+      "50% savings",
+    ],
   },
 ];
 
@@ -71,26 +86,32 @@ export default function CreditPurchase() {
   const [customAmount, setCustomAmount] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const handlePurchase = async (packageId: string, credits: number, amount: number) => {
+  const handlePurchase = async (
+    packageId: string,
+    credits: number,
+    amount: number,
+  ) => {
     setIsProcessing(true);
-    
+
     try {
       // Simulate payment processing delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       // Add credits to user account
-      const packageInfo = creditPackages.find(p => p.id === packageId);
+      const packageInfo = creditPackages.find((p) => p.id === packageId);
       addCredits(
         credits,
-        'purchase',
-        `Credit purchase: ${packageInfo?.name || 'Custom'} - $${amount}`
+        "purchase",
+        `Credit purchase: ${packageInfo?.name || "Custom"} - $${amount}`,
       );
-      
-      toast.success(`Successfully purchased ${formatCredits(credits)} credits!`);
-      navigate('/admin/projects');
+
+      toast.success(
+        `Successfully purchased ${formatCredits(credits)} credits!`,
+      );
+      navigate("/admin/projects");
     } catch (error) {
-      toast.error('Payment failed. Please try again.');
-      console.error('Payment error:', error);
+      toast.error("Payment failed. Please try again.");
+      console.error("Payment error:", error);
     } finally {
       setIsProcessing(false);
     }
@@ -99,12 +120,12 @@ export default function CreditPurchase() {
   const handleCustomPurchase = () => {
     const credits = parseInt(customAmount);
     if (!credits || credits < 1000) {
-      toast.error('Minimum purchase is 1,000 credits');
+      toast.error("Minimum purchase is 1,000 credits");
       return;
     }
-    
+
     const amount = Math.round(credits * 0.003 * 100) / 100; // $0.003 per credit
-    handlePurchase('custom', credits, amount);
+    handlePurchase("custom", credits, amount);
   };
 
   return (
@@ -112,21 +133,19 @@ export default function CreditPurchase() {
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         {/* Header */}
         <div className="mb-8">
-          <Button 
-            variant="ghost" 
-            onClick={() => navigate(-1)}
-            className="mb-4"
-          >
+          <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
           </Button>
-          
+
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Purchase Credits</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Purchase Credits
+            </h1>
             <p className="text-gray-600 mb-6">
               Choose the perfect credit package for your scanning needs
             </p>
-            
+
             {/* Current Balance */}
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 rounded-lg">
               <Zap className="h-4 w-4 text-blue-600" />
@@ -140,11 +159,11 @@ export default function CreditPurchase() {
         {/* Credit Packages */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {creditPackages.map((pkg) => (
-            <Card 
+            <Card
               key={pkg.id}
               className={`relative transition-all hover:shadow-lg cursor-pointer ${
-                selectedPackage === pkg.id ? 'ring-2 ring-blue-500' : ''
-              } ${pkg.popular ? 'border-blue-500' : ''}`}
+                selectedPackage === pkg.id ? "ring-2 ring-blue-500" : ""
+              } ${pkg.popular ? "border-blue-500" : ""}`}
               onClick={() => setSelectedPackage(pkg.id)}
             >
               {pkg.popular && (
@@ -155,18 +174,20 @@ export default function CreditPurchase() {
                   </Badge>
                 </div>
               )}
-              
+
               <CardHeader className="text-center pb-4">
                 <CardTitle className="text-xl font-bold">{pkg.name}</CardTitle>
                 <p className="text-sm text-gray-600">{pkg.description}</p>
                 <div className="mt-4">
-                  <div className="text-3xl font-bold text-gray-900">${pkg.price}</div>
+                  <div className="text-3xl font-bold text-gray-900">
+                    ${pkg.price}
+                  </div>
                   <div className="text-sm text-gray-500">
                     ${pkg.pricePerCredit.toFixed(4)} per credit
                   </div>
                 </div>
               </CardHeader>
-              
+
               <CardContent className="pt-0">
                 <div className="text-center mb-4">
                   <div className="text-2xl font-bold text-blue-600">
@@ -174,7 +195,7 @@ export default function CreditPurchase() {
                   </div>
                   <div className="text-sm text-gray-500">credits</div>
                 </div>
-                
+
                 <ul className="space-y-2 mb-6">
                   {pkg.features.map((feature, index) => (
                     <li key={index} className="flex items-center text-sm">
@@ -183,7 +204,7 @@ export default function CreditPurchase() {
                     </li>
                   ))}
                 </ul>
-                
+
                 <Button
                   className="w-full"
                   variant={pkg.popular ? "default" : "outline"}
@@ -215,7 +236,8 @@ export default function CreditPurchase() {
               Custom Amount
             </CardTitle>
             <p className="text-sm text-gray-600">
-              Need a different amount? Purchase custom credits at $0.003 per credit
+              Need a different amount? Purchase custom credits at $0.003 per
+              credit
             </p>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -231,12 +253,14 @@ export default function CreditPurchase() {
                 step="1000"
               />
             </div>
-            
+
             {customAmount && parseInt(customAmount) >= 1000 && (
               <div className="p-3 bg-gray-50 rounded-lg">
                 <div className="flex justify-between text-sm">
                   <span>Credits:</span>
-                  <span className="font-medium">{formatCredits(parseInt(customAmount))}</span>
+                  <span className="font-medium">
+                    {formatCredits(parseInt(customAmount))}
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Total Cost:</span>
@@ -246,11 +270,13 @@ export default function CreditPurchase() {
                 </div>
               </div>
             )}
-            
+
             <Button
               className="w-full"
               onClick={handleCustomPurchase}
-              disabled={!customAmount || parseInt(customAmount) < 1000 || isProcessing}
+              disabled={
+                !customAmount || parseInt(customAmount) < 1000 || isProcessing
+              }
             >
               <CreditCard className="h-4 w-4 mr-2" />
               Purchase Custom Amount
@@ -260,28 +286,34 @@ export default function CreditPurchase() {
 
         {/* Trust Indicators */}
         <div className="mt-12 text-center">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Why Choose Our Credits?</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Why Choose Our Credits?
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="flex flex-col items-center text-center">
               <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
                 <Shield className="h-6 w-6 text-blue-600" />
               </div>
-              <h4 className="font-medium text-gray-900 mb-1">Secure Payments</h4>
+              <h4 className="font-medium text-gray-900 mb-1">
+                Secure Payments
+              </h4>
               <p className="text-sm text-gray-600">
                 256-bit SSL encryption and PCI compliance
               </p>
             </div>
-            
+
             <div className="flex flex-col items-center text-center">
               <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center mb-3">
                 <Zap className="h-6 w-6 text-green-600" />
               </div>
-              <h4 className="font-medium text-gray-900 mb-1">Instant Activation</h4>
+              <h4 className="font-medium text-gray-900 mb-1">
+                Instant Activation
+              </h4>
               <p className="text-sm text-gray-600">
                 Credits are added to your account immediately
               </p>
             </div>
-            
+
             <div className="flex flex-col items-center text-center">
               <div className="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center mb-3">
                 <Sparkles className="h-6 w-6 text-purple-600" />
