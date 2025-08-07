@@ -377,10 +377,129 @@ export function SmartSearch({
   );
 }
 
-// Compact version for header
+// Simple search input for header (no popup)
 export function HeaderSearch() {
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const [showResults, setShowResults] = useState(false);
+  const navigate = useNavigate();
+
+  const searchData = useMemo(
+    () => ({
+      projects: [
+        {
+          id: "1",
+          name: "Kitchen Renovation - Smith Residence",
+          client: "John Smith",
+          status: "Active",
+          value: "$25,000",
+          type: "Residential",
+        },
+        {
+          id: "2",
+          name: "Bathroom Remodel - Johnson Home",
+          client: "Sarah Johnson",
+          status: "Completed",
+          value: "$15,000",
+          type: "Residential",
+        },
+      ],
+      pages: [
+        { label: "Projects", href: "/admin/projects", icon: FolderOpen },
+        { label: "Gallery", href: "/admin/gallery", icon: Camera },
+        { label: "Reviews", href: "/admin/reviews", icon: Star },
+        { label: "Settings", href: "/admin/settings", icon: Settings },
+      ],
+    }),
+    [],
+  );
+
+  useEffect(() => {
+    if (!query.trim()) {
+      setResults([]);
+      setShowResults(false);
+      return;
+    }
+
+    const lowerQuery = query.toLowerCase();
+    const filtered: SearchResult[] = [];
+
+    // Search projects
+    searchData.projects.forEach((project) => {
+      if (
+        project.name.toLowerCase().includes(lowerQuery) ||
+        project.client.toLowerCase().includes(lowerQuery)
+      ) {
+        filtered.push({
+          id: project.id,
+          title: project.name,
+          subtitle: `${project.client} • ${project.status}`,
+          type: "project",
+          icon: FolderOpen,
+          href: `/project/${project.id}`,
+        });
+      }
+    });
+
+    // Search pages
+    searchData.pages.forEach((page) => {
+      if (page.label.toLowerCase().includes(lowerQuery)) {
+        filtered.push({
+          id: `page-${page.label}`,
+          title: page.label,
+          subtitle: "Page",
+          type: "page",
+          icon: page.icon,
+          href: page.href,
+        });
+      }
+    });
+
+    setResults(filtered.slice(0, 8)); // Limit to 8 results
+    setShowResults(true);
+  }, [query, searchData]);
+
+  const handleSelect = (result: SearchResult) => {
+    if (result.href) {
+      navigate(result.href);
+    }
+    setQuery("");
+    setShowResults(false);
+  };
+
   return (
-    <SmartSearch className="w-32 md:w-40 lg:w-64" placeholder="Search..." />
+    <div className="relative w-32 md:w-40 lg:w-64">
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          placeholder="Search..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onFocus={() => query && setShowResults(true)}
+          onBlur={() => setTimeout(() => setShowResults(false), 200)}
+          className="pl-9 h-9"
+        />
+      </div>
+
+      {/* Results dropdown */}
+      {showResults && results.length > 0 && (
+        <div className="absolute top-full mt-1 left-0 right-0 bg-background border rounded-md shadow-lg z-50 max-h-80 overflow-y-auto">
+          {results.map((result) => (
+            <div
+              key={result.id}
+              className="flex items-center gap-3 px-3 py-2 hover:bg-muted cursor-pointer border-b last:border-b-0"
+              onClick={() => handleSelect(result)}
+            >
+              <result.icon className="h-4 w-4 text-muted-foreground" />
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-medium truncate">{result.title}</div>
+                <div className="text-xs text-muted-foreground truncate">{result.subtitle}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
