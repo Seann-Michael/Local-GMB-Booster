@@ -259,7 +259,7 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
     if (!map || !waypoints.length) return;
 
     // Clear existing waypoint markers
-    mapMarkers.forEach(marker => marker.setMap(null));
+    mapMarkers.forEach((marker) => marker.setMap(null));
 
     const waypointMarkers: google.maps.Marker[] = [];
 
@@ -299,7 +299,10 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
         map: map,
         icon: markerIcon,
         title: `Rank #${waypoint.rank}`,
-        animation: selectedWaypoint === waypoint.id ? google.maps.Animation.BOUNCE : undefined,
+        animation:
+          selectedWaypoint === waypoint.id
+            ? google.maps.Animation.BOUNCE
+            : undefined,
       });
 
       // Add click listener for waypoints
@@ -334,7 +337,6 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
     if (onMapLoad) {
       onMapLoad(map);
     }
-
   }, [map, waypoints, selectedWaypoint, onWaypointClick, onMapLoad]);
 
   const openInGoogleMaps = () => {

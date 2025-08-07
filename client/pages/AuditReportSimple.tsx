@@ -59,8 +59,8 @@ export default function AuditReportSimple() {
         <div className="bg-white border-b border-gray-200 px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 size="sm"
                 onClick={() => navigate("/admin/audits/scan-history")}
                 className="gap-2"
@@ -69,9 +69,13 @@ export default function AuditReportSimple() {
                 Back to Scan History
               </Button>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">{mockData.businessName}</h1>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  {mockData.businessName}
+                </h1>
                 <p className="text-sm text-gray-600">
-                  Audit Report • {new Date(mockData.scanDate).toLocaleDateString()} • {mockData.location}
+                  Audit Report •{" "}
+                  {new Date(mockData.scanDate).toLocaleDateString()} •{" "}
+                  {mockData.location}
                 </p>
               </div>
             </div>
@@ -91,8 +95,10 @@ export default function AuditReportSimple() {
         <div className="flex h-[calc(100vh-140px)]">
           {/* Left Panel - Controls & Summary */}
           <div className="w-80 bg-white border-r border-gray-200 flex flex-col p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Audit Summary</h3>
-            
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Audit Summary
+            </h3>
+
             <div className="space-y-4 mb-6">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">Total Waypoints</span>
@@ -107,19 +113,23 @@ export default function AuditReportSimple() {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">Top 3 Positions</span>
                 <Badge variant="secondary">
-                  {mockData.waypoints.filter(wp => wp.rank <= 3).length}
+                  {mockData.waypoints.filter((wp) => wp.rank <= 3).length}
                 </Badge>
               </div>
             </div>
 
             {/* Waypoint List */}
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Waypoints</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Waypoints
+            </h3>
             <div className="space-y-3 flex-1 overflow-y-auto">
               {mockData.waypoints.map((waypoint, index) => (
-                <Card 
+                <Card
                   key={waypoint.id}
                   className={`cursor-pointer transition-all hover:shadow-md ${
-                    selectedWaypoint === waypoint.id ? "ring-2 ring-blue-500 bg-blue-50" : ""
+                    selectedWaypoint === waypoint.id
+                      ? "ring-2 ring-blue-500 bg-blue-50"
+                      : ""
                   }`}
                   onClick={() => setSelectedWaypoint(waypoint.id)}
                 >
@@ -155,11 +165,16 @@ export default function AuditReportSimple() {
           <div className="flex-1 relative bg-gray-100 flex items-center justify-center">
             <div className="text-center">
               <MapPin className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-600 mb-2">Google Maps Integration</h3>
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                Google Maps Integration
+              </h3>
               <p className="text-gray-500 max-w-md">
-                Interactive Google Maps with waypoint markers showing ranking positions will appear here.
-                <br /><br />
-                Click on waypoints in the left panel to see details in the right panel.
+                Interactive Google Maps with waypoint markers showing ranking
+                positions will appear here.
+                <br />
+                <br />
+                Click on waypoints in the left panel to see details in the right
+                panel.
               </p>
             </div>
           </div>
@@ -168,21 +183,25 @@ export default function AuditReportSimple() {
           {selectedWaypoint && (
             <div className="w-96 bg-white border-l border-gray-200 shadow-lg p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-gray-900">Waypoint Details</h2>
-                <Button 
-                  variant="ghost" 
+                <h2 className="text-xl font-semibold text-gray-900">
+                  Waypoint Details
+                </h2>
+                <Button
+                  variant="ghost"
                   size="sm"
                   onClick={() => setSelectedWaypoint(null)}
                 >
                   <X className="h-4 w-4" />
                 </Button>
               </div>
-              
+
               {/* Business Profile Card */}
               <Card className="mb-6">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg">Smith Construction LLC</CardTitle>
+                    <CardTitle className="text-lg">
+                      Smith Construction LLC
+                    </CardTitle>
                     <Badge variant="secondary" className="gap-1">
                       <Shield className="h-3 w-3" />
                       Verified
@@ -192,23 +211,33 @@ export default function AuditReportSimple() {
                 <CardContent className="space-y-3">
                   <div className="flex items-center gap-2">
                     <Star className="h-4 w-4 text-yellow-500" />
-                    <span className="text-sm text-gray-900">4.8 (247 reviews)</span>
+                    <span className="text-sm text-gray-900">
+                      4.8 (247 reviews)
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Phone className="h-4 w-4 text-gray-500" />
-                    <span className="text-sm text-gray-600">(217) 555-0123</span>
+                    <span className="text-sm text-gray-600">
+                      (217) 555-0123
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Globe className="h-4 w-4 text-gray-500" />
-                    <span className="text-sm text-gray-600">smithconstruction.com</span>
+                    <span className="text-sm text-gray-600">
+                      smithconstruction.com
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="h-4 w-4 text-gray-500" />
-                    <span className="text-sm text-gray-600">123 Main St, Springfield, IL</span>
+                    <span className="text-sm text-gray-600">
+                      123 Main St, Springfield, IL
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4 text-gray-500" />
-                    <span className="text-sm text-gray-600">Mon-Fri 8AM-6PM</span>
+                    <span className="text-sm text-gray-600">
+                      Mon-Fri 8AM-6PM
+                    </span>
                   </div>
                 </CardContent>
               </Card>
@@ -216,30 +245,62 @@ export default function AuditReportSimple() {
               {/* Current Rank */}
               <div className="text-center py-4 mb-6 bg-gray-50 rounded-lg">
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  {getRankIcon(mockData.waypoints.find(wp => wp.id === selectedWaypoint)?.rank || 1)}
+                  {getRankIcon(
+                    mockData.waypoints.find((wp) => wp.id === selectedWaypoint)
+                      ?.rank || 1,
+                  )}
                   <span className="text-2xl font-bold text-gray-900">
-                    #{mockData.waypoints.find(wp => wp.id === selectedWaypoint)?.rank}
+                    #
+                    {
+                      mockData.waypoints.find(
+                        (wp) => wp.id === selectedWaypoint,
+                      )?.rank
+                    }
                   </span>
                 </div>
-                <p className="text-sm text-gray-600">Current Ranking for "general contractor"</p>
+                <p className="text-sm text-gray-600">
+                  Current Ranking for "general contractor"
+                </p>
               </div>
 
               {/* Competitors */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Nearby Competitors</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Nearby Competitors
+                </h3>
                 <div className="space-y-3">
                   {[
-                    { name: "Elite Builders", rank: 1, rating: 4.6, reviews: 189 },
-                    { name: "Premier Home Builders", rank: 2, rating: 4.5, reviews: 203 },
-                    { name: "Springfield Construction", rank: 4, rating: 4.4, reviews: 156 },
+                    {
+                      name: "Elite Builders",
+                      rank: 1,
+                      rating: 4.6,
+                      reviews: 189,
+                    },
+                    {
+                      name: "Premier Home Builders",
+                      rank: 2,
+                      rating: 4.5,
+                      reviews: 203,
+                    },
+                    {
+                      name: "Springfield Construction",
+                      rank: 4,
+                      rating: 4.4,
+                      reviews: 156,
+                    },
                   ].map((competitor) => (
-                    <Card key={competitor.name} className="border-l-4 border-l-gray-300">
+                    <Card
+                      key={competitor.name}
+                      className="border-l-4 border-l-gray-300"
+                    >
                       <CardContent className="p-4">
                         <div className="flex items-center justify-between mb-2">
-                          <span className="font-medium text-gray-900">{competitor.name}</span>
+                          <span className="font-medium text-gray-900">
+                            {competitor.name}
+                          </span>
                           <div className="flex items-center gap-2">
                             {getRankIcon(competitor.rank)}
-                            <Badge 
+                            <Badge
                               className={getRankColor(competitor.rank)}
                               variant="outline"
                             >
