@@ -140,7 +140,12 @@ class DataForSEOService {
   }
 
   private loadCredentials() {
-    // Try to load from environment variables first
+    // If credentials already loaded from environment variables, skip
+    if (this.credentials) {
+      return;
+    }
+
+    // Try to load from localStorage as fallback
     if (typeof window !== "undefined") {
       const username = localStorage.getItem("dataforseo_username");
       const password = localStorage.getItem("dataforseo_password");
