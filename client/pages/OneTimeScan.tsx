@@ -120,9 +120,12 @@ export default function OneTimeScan() {
 
                 <div>
                   <Label htmlFor="businessAddress">Business Address *</Label>
-                  <AddressAutocomplete
-                    onAddressSelect={handleAddressSelect}
+                  <Input
+                    id="businessAddress"
+                    value={businessAddress}
+                    onChange={handleAddressChange}
                     placeholder="Enter your business address"
+                    className="mt-1"
                   />
                 </div>
               </CardContent>
