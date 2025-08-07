@@ -82,9 +82,9 @@ export default function Index() {
         const mockProjects = mockDataService.getProjects();
         console.log('Loaded projects:', mockProjects.length, mockProjects);
 
-        if (mockProjects.length === 0) {
-          console.warn('No projects found, generating mock data...');
-          // Force regenerate mock data if empty
+        if (mockProjects.length < 10) {
+          console.warn('Few projects found, regenerating mock data...');
+          // Force regenerate mock data if too few
           mockDataService.resetData();
           const newProjects = mockDataService.getProjects();
           console.log('Generated new projects:', newProjects.length);
