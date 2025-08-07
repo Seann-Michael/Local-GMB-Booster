@@ -264,67 +264,18 @@ export default function AuditReport() {
           </CardHeader>
         </Card>
 
-        {/* Audit Results Grid */}
+        {/* Geo Grid Scan Results */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Google My Business */}
+          {/* Grid Coverage */}
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
-                  <Globe className="h-5 w-5" />
-                  Google My Business
+                  <MapPin className="h-5 w-5" />
+                  Grid Coverage
                 </CardTitle>
-                <Badge variant={getScoreVariant(auditData.results.gmb.score)}>
-                  {auditData.results.gmb.score}%
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {auditData.results.gmb.issues.length > 0 && (
-                <div>
-                  <h4 className="font-medium text-sm mb-2 flex items-center gap-1">
-                    <AlertCircle className="h-4 w-4 text-yellow-500" />
-                    Issues Found
-                  </h4>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    {auditData.results.gmb.issues.map((issue, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <span className="text-red-500 mt-1">•</span>
-                        {issue}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              <div>
-                <h4 className="font-medium text-sm mb-2 flex items-center gap-1">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  Recommendations
-                </h4>
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  {auditData.results.gmb.recommendations.map((rec, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <span className="text-green-500 mt-1">•</span>
-                      {rec}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Citations */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2">
-                  <FileText className="h-5 w-5" />
-                  Citations
-                </CardTitle>
-                <Badge
-                  variant={getScoreVariant(auditData.results.citations.score)}
-                >
-                  {auditData.results.citations.score}%
+                <Badge variant={getVisibilityVariant(scanData.scanResults.gridCoverage.visibility)}>
+                  {scanData.scanResults.gridCoverage.visibility}%
                 </Badge>
               </div>
             </CardHeader>
@@ -332,176 +283,190 @@ export default function AuditReport() {
               <div className="grid grid-cols-2 gap-4 text-center">
                 <div>
                   <div className="text-2xl font-bold text-green-600">
-                    {auditData.results.citations.found}
+                    {scanData.scanResults.gridCoverage.scannedPoints}
                   </div>
-                  <div className="text-xs text-muted-foreground">Found</div>
+                  <div className="text-xs text-muted-foreground">Scanned Points</div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-muted-foreground">
-                    {auditData.results.citations.total}
+                    {scanData.scanResults.gridCoverage.totalGridPoints}
                   </div>
-                  <div className="text-xs text-muted-foreground">
-                    Total Possible
-                  </div>
+                  <div className="text-xs text-muted-foreground">Total Grid Points</div>
                 </div>
               </div>
               <Separator />
-              <div>
-                <h4 className="font-medium text-sm mb-2 flex items-center gap-1">
-                  <AlertCircle className="h-4 w-4 text-yellow-500" />
-                  Issues Found
-                </h4>
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  {auditData.results.citations.issues.map((issue, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <span className="text-red-500 mt-1">•</span>
-                      {issue}
-                    </li>
-                  ))}
-                </ul>
+              <div className="text-center">
+                <div className="text-lg font-bold text-blue-600">
+                  Avg Rank: {scanData.scanResults.gridCoverage.averageRank}
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  Average ranking position across all grid points
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Reviews */}
+          {/* Local Pack Performance */}
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
                   <Star className="h-5 w-5" />
-                  Reviews
+                  Local Pack
                 </CardTitle>
-                <Badge
-                  variant={getScoreVariant(auditData.results.reviews.score)}
-                >
-                  {auditData.results.reviews.score}%
+                <Badge variant={getVisibilityVariant(scanData.scanResults.localPack.visibility)}>
+                  {scanData.scanResults.localPack.visibility}%
                 </Badge>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4 text-center">
                 <div>
-                  <div className="text-2xl font-bold text-yellow-600 flex items-center justify-center gap-1">
-                    {auditData.results.reviews.averageRating}
-                    <Star className="h-4 w-4 fill-current" />
+                  <div className="text-2xl font-bold text-green-600">
+                    {scanData.scanResults.localPack.appearances}
                   </div>
-                  <div className="text-xs text-muted-foreground">
-                    Average Rating
-                  </div>
+                  <div className="text-xs text-muted-foreground">Appearances</div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-blue-600">
-                    {auditData.results.reviews.totalReviews}
+                    {scanData.scanResults.localPack.averagePosition}
                   </div>
-                  <div className="text-xs text-muted-foreground">
-                    Total Reviews
-                  </div>
+                  <div className="text-xs text-muted-foreground">Avg Position</div>
                 </div>
               </div>
               <Separator />
-              <div>
-                <h4 className="font-medium text-sm mb-2 flex items-center gap-1">
-                  <AlertCircle className="h-4 w-4 text-yellow-500" />
-                  Action Required
-                </h4>
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  {auditData.results.reviews.issues.map((issue, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <span className="text-red-500 mt-1">•</span>
-                      {issue}
-                    </li>
-                  ))}
-                </ul>
+              <div className="text-center">
+                <div className="text-sm text-muted-foreground">
+                  Appeared in {scanData.scanResults.localPack.appearances} of {scanData.scanResults.localPack.totalSearches} local pack searches
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Website */}
+          {/* Organic Results */}
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
-                  <Smartphone className="h-5 w-5" />
-                  Website
+                  <Globe className="h-5 w-5" />
+                  Organic Results
                 </CardTitle>
-                <Badge
-                  variant={getScoreVariant(auditData.results.website.score)}
-                >
-                  {auditData.results.website.score}%
+                <Badge variant={getVisibilityVariant(scanData.scanResults.organicResults.visibility)}>
+                  {scanData.scanResults.organicResults.visibility}%
                 </Badge>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div>
-                <h4 className="font-medium text-sm mb-2 flex items-center gap-1">
-                  <XCircle className="h-4 w-4 text-red-500" />
-                  Issues Found
-                </h4>
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  {auditData.results.website.issues.map((issue, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <span className="text-red-500 mt-1">•</span>
-                      {issue}
-                    </li>
-                  ))}
-                </ul>
+              <div className="grid grid-cols-2 gap-4 text-center">
+                <div>
+                  <div className="text-2xl font-bold text-green-600">
+                    {scanData.scanResults.organicResults.appearances}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Appearances</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-orange-600">
+                    {scanData.scanResults.organicResults.averagePosition}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Avg Position</div>
+                </div>
               </div>
-              <div>
-                <h4 className="font-medium text-sm mb-2 flex items-center gap-1">
-                  <TrendingUp className="h-4 w-4 text-green-500" />
-                  Recommendations
-                </h4>
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  {auditData.results.website.recommendations.map(
-                    (rec, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <span className="text-green-500 mt-1">•</span>
-                        {rec}
-                      </li>
-                    ),
-                  )}
-                </ul>
+              <Separator />
+              <div className="text-center">
+                <div className="text-sm text-muted-foreground">
+                  GMB profile appeared in organic results for {scanData.scanResults.organicResults.appearances} searches
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Social Media */}
+          {/* Geographic Distribution */}
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2">
-                  <Share2 className="h-5 w-5" />
-                  Social Media
-                </CardTitle>
-                <Badge
-                  variant={getScoreVariant(auditData.results.social.score)}
-                >
-                  {auditData.results.social.score}%
-                </Badge>
-              </div>
+              <CardTitle className="flex items-center gap-2">
+                <MapPin className="h-5 w-5" />
+                Geographic Distribution
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <h4 className="font-medium text-sm mb-2">Active Platforms</h4>
+                <h4 className="font-medium text-sm mb-2 flex items-center gap-1">
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  Strong Areas
+                </h4>
                 <div className="flex flex-wrap gap-1">
-                  {auditData.results.social.platforms.map((platform, index) => (
-                    <Badge key={index} variant="outline" className="text-xs">
-                      {platform}
+                  {scanData.scanResults.geoDistribution.strongAreas.map((area, index) => (
+                    <Badge key={index} variant="default" className="text-xs">
+                      {area}
                     </Badge>
                   ))}
                 </div>
               </div>
-              <Separator />
               <div>
                 <h4 className="font-medium text-sm mb-2 flex items-center gap-1">
                   <AlertCircle className="h-4 w-4 text-yellow-500" />
-                  Areas for Improvement
+                  Weak Areas
+                </h4>
+                <div className="flex flex-wrap gap-1">
+                  {scanData.scanResults.geoDistribution.weakAreas.map((area, index) => (
+                    <Badge key={index} variant="secondary" className="text-xs">
+                      {area}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h4 className="font-medium text-sm mb-2 flex items-center gap-1">
+                  <XCircle className="h-4 w-4 text-red-500" />
+                  No Visibility
+                </h4>
+                <div className="flex flex-wrap gap-1">
+                  {scanData.scanResults.geoDistribution.noVisibility.map((area, index) => (
+                    <Badge key={index} variant="destructive" className="text-xs">
+                      {area}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Keyword Performance */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Search className="h-5 w-5" />
+                Top Keywords
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <h4 className="font-medium text-sm mb-2">Best Performing Keywords</h4>
+                <div className="space-y-2">
+                  {scanData.scanResults.keywordPerformance.topKeywords.map((keyword, index) => (
+                    <div key={index} className="flex items-center justify-between p-2 bg-muted/50 rounded">
+                      <span className="text-sm font-medium">{keyword.keyword}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-muted-foreground">Rank {keyword.rank}</span>
+                        <Badge variant={getVisibilityVariant(keyword.visibility)} className="text-xs">
+                          {keyword.visibility}%
+                        </Badge>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <Separator />
+              <div>
+                <h4 className="font-medium text-sm mb-2 flex items-center gap-1">
+                  <TrendingUp className="h-4 w-4 text-blue-500" />
+                  Growth Opportunities
                 </h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
-                  {auditData.results.social.issues.map((issue, index) => (
+                  {scanData.scanResults.keywordPerformance.improvementOpportunities.map((opportunity, index) => (
                     <li key={index} className="flex items-start gap-2">
-                      <span className="text-yellow-500 mt-1">•</span>
-                      {issue}
+                      <span className="text-blue-500 mt-1">•</span>
+                      {opportunity}
                     </li>
                   ))}
                 </ul>
