@@ -31,6 +31,7 @@ import {
 import { AppLayout } from "@/components/AppLayout";
 import { GoogleMapComponent } from "@/components/GoogleMaps/GoogleMapComponent";
 import { AddressAutocomplete } from "@/components/GoogleMaps/AddressAutocomplete";
+import { CompetitorAnalysis } from "@/components/CompetitorAnalysis";
 import { 
   dataForSEOService, 
   type BusinessProfile, 
