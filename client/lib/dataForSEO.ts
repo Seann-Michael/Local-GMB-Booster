@@ -25,38 +25,57 @@ interface SERPMapResult {
   title: string;
   url: string;
   breadcrumb?: string;
-  is_image: boolean;
-  is_video: boolean;
-  is_featured_snippet: boolean;
-  is_malicious: boolean;
-  is_web_story: boolean;
+  website?: string;
   description?: string;
-  pre_snippet?: string;
-  extended_snippet?: string;
-  amp_version: boolean;
+  phone?: string;
+  address?: string;
   rating?: {
     rating_type: string;
     value: number;
     votes_count: number;
     rating_max: number;
   };
-  place_id?: string;
-  phone?: string;
-  address?: string;
-  additional_info?: {
-    service_options?: string[];
-    price_range?: string;
-    reviews_count?: number;
-    rating?: number;
-    hours?: {
-      day: string;
-      time: string;
-    }[];
-  };
+  price_level?: string;
+  reviews_count?: number;
+  main_image?: string;
+  total_photos?: number;
+  snippet?: string;
   latitude?: number;
   longitude?: number;
-  local_map_url?: string;
+  place_id?: string;
   cid?: string;
+  feature_id?: string;
+  place_topics?: string[];
+  category?: string;
+  additional_info?: {
+    service_options?: string[];
+    highlights?: string[];
+    popular_times?: {
+      day_of_week: number;
+      time_values: number[];
+    }[];
+    time_spent?: {
+      min_minutes: number;
+      max_minutes: number;
+    };
+    reservation_links?: string[];
+    order_links?: string[];
+  };
+  work_hours?: {
+    timetable?: {
+      [key: string]: {
+        open?: {
+          hour: number;
+          minute: number;
+        };
+        close?: {
+          hour: number;
+          minute: number;
+        };
+      };
+    };
+    current_status?: string;
+  };
 }
 
 interface RankingRequestParams {
