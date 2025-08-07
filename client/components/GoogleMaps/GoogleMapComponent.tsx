@@ -34,13 +34,17 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
   address,
   lat,
   lng,
+  center,
   zoom = 14,
   height = "300px",
   showControls = true,
   showDirectionsButton = true,
   className,
+  markers = [],
+  onMarkerClick,
 }) => {
-  const [marker, setMarker] = useState<google.maps.Marker | null>(null);
+  const [mapMarkers, setMapMarkers] = useState<google.maps.Marker[]>([]);
+  const [infoWindow, setInfoWindow] = useState<google.maps.InfoWindow | null>(null);
   const [useIframeFallback, setUseIframeFallback] = useState(false);
   const [loadingTimeout, setLoadingTimeout] = useState(false);
 
