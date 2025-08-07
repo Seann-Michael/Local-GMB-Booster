@@ -643,42 +643,59 @@ export function AppLayout({ children }: AppLayoutProps) {
                     </DropdownMenuItem>
                   )}
 
-                {/* Business Profiles */}
-                {(userBusinesses || [])
-                  .filter(
-                    (business) =>
-                      !profileSearchQuery ||
-                      business.name
-                        .toLowerCase()
-                        .includes(profileSearchQuery.toLowerCase()) ||
-                      business.description
-                        ?.toLowerCase()
-                        .includes(profileSearchQuery.toLowerCase()),
-                  )
-                  .map((business) => (
-                    <DropdownMenuItem
-                      key={business.id}
-                      className="flex flex-col items-start p-3"
-                      onClick={() => handleBusinessSwitch(business.id)}
-                    >
-                      <div className="flex items-center gap-3 w-full">
-                        <Avatar className="h-8 w-8">
-                          <AvatarFallback className="text-xs bg-blue-100">
-                            <Building2 className="h-4 w-4 text-blue-600" />
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                          <div className="font-medium">{business.name}</div>
-                          <div className="text-xs text-muted-foreground">
-                            {business.description || "Business Profile"}
+                {/* Available Business Profiles */}
+                {(userBusinesses || []).length > 0 && (
+                  <>
+                    <div className="px-3 py-2">
+                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                        Available Businesses
+                      </p>
+                    </div>
+                    {(userBusinesses || [])
+                      .filter(
+                        (business) =>
+                          business.id !== (currentBusiness?.id || currentUser?.id) &&
+                          (!profileSearchQuery ||
+                            business.name
+                              .toLowerCase()
+                              .includes(profileSearchQuery.toLowerCase()) ||
+                            business.description
+                              ?.toLowerCase()
+                              .includes(profileSearchQuery.toLowerCase())),
+                      )
+                      .map((business) => (
+                        <DropdownMenuItem
+                          key={business.id}
+                          className="flex flex-col items-start p-3 cursor-pointer hover:bg-muted/50"
+                          onClick={() => handleBusinessSwitch(business.id)}
+                        >
+                          <div className="flex items-center gap-3 w-full">
+                            <Avatar className="h-10 w-10">
+                              <AvatarFallback className="text-xs bg-blue-100">
+                                <Building2 className="h-5 w-5 text-blue-600" />
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1">
+                              <div className="font-medium text-sm">{business.name}</div>
+                              <div className="text-xs text-muted-foreground">
+                                ID: {business.id}
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                {business.description || "Business Profile"}
+                              </div>
+                            </div>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-8 w-16 text-xs"
+                            >
+                              Switch
+                            </Button>
                           </div>
-                        </div>
-                        {business.id === currentBusiness?.id && (
-                          <CheckCircle className="h-4 w-4 text-primary" />
-                        )}
-                      </div>
-                    </DropdownMenuItem>
-                  ))}
+                        </DropdownMenuItem>
+                      ))}
+                  </>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           )}
