@@ -1240,6 +1240,9 @@ export function AppLayout({ children }: AppLayoutProps) {
                 <HeaderSearch />
               </div>
 
+              {/* Credit Display */}
+              <CreditDisplay />
+
               {/* Notifications Dropdown */}
               <NotificationDropdown />
 
