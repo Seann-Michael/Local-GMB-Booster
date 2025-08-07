@@ -18,12 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
   DialogContent,
@@ -85,28 +80,38 @@ interface LocationPerformance {
   dominatingCompetitor?: string;
 }
 
-export function CompetitorAnalysis({ 
-  results, 
-  businessName, 
-  keyword, 
-  onWaypointSelect 
+export function CompetitorAnalysis({
+  results,
+  businessName,
+  keyword,
+  onWaypointSelect,
 }: CompetitorAnalysisProps) {
-  const [selectedView, setSelectedView] = useState<"overview" | "locations" | "competitors">("overview");
-  const [selectedCompetitor, setSelectedCompetitor] = useState<CompetitorSummary | null>(null);
-  const [filterBy, setFilterBy] = useState<"all" | "ranking" | "not-ranking">("all");
-  const [sortBy, setSortBy] = useState<"rank" | "dominance" | "appearances">("dominance");
+  const [selectedView, setSelectedView] = useState<
+    "overview" | "locations" | "competitors"
+  >("overview");
+  const [selectedCompetitor, setSelectedCompetitor] =
+    useState<CompetitorSummary | null>(null);
+  const [filterBy, setFilterBy] = useState<"all" | "ranking" | "not-ranking">(
+    "all",
+  );
+  const [sortBy, setSortBy] = useState<"rank" | "dominance" | "appearances">(
+    "dominance",
+  );
   const [searchQuery, setSearchQuery] = useState("");
 
   // Calculate competitor summaries
   const competitorSummaries = useMemo(() => {
-    const competitorMap = new Map<string, {
-      ranks: number[];
-      appearances: number;
-      details: any;
-    }>();
+    const competitorMap = new Map<
+      string,
+      {
+        ranks: number[];
+        appearances: number;
+        details: any;
+      }
+    >();
 
-    results.forEach(result => {
-      result.competitors.forEach(competitor => {
+    results.forEach((result) => {
+      result.competitors.forEach((competitor) => {
         const key = competitor.name.toLowerCase().trim();
         if (!competitorMap.has(key)) {
           competitorMap.set(key, {
@@ -115,7 +120,7 @@ export function CompetitorAnalysis({
             details: competitor,
           });
         }
-        
+
         const competitorData = competitorMap.get(key)!;
         competitorData.ranks.push(competitor.rank);
         competitorData.appearances++;
@@ -123,11 +128,12 @@ export function CompetitorAnalysis({
     });
 
     const summaries: CompetitorSummary[] = [];
-    
+
     competitorMap.forEach((data, name) => {
-      const averageRank = data.ranks.reduce((sum, rank) => sum + rank, 0) / data.ranks.length;
+      const averageRank =
+        data.ranks.reduce((sum, rank) => sum + rank, 0) / data.ranks.length;
       const dominancePercentage = (data.appearances / results.length) * 100;
-      
+
       summaries.push({
         name: data.details.name,
         averageRank,
@@ -160,8 +166,8 @@ export function CompetitorAnalysis({
 
   // Calculate location performance
   const locationPerformance = useMemo(() => {
-    return results.map(result => {
-      const topCompetitors = result.competitors.slice(0, 3).map(comp => ({
+    return results.map((result) => {
+      const topCompetitors = result.competitors.slice(0, 3).map((comp) => ({
         rank: comp.rank,
         name: comp.name,
         rating: comp.rating,
@@ -185,18 +191,23 @@ export function CompetitorAnalysis({
     // Filter by ranking status
     switch (filterBy) {
       case "ranking":
-        filtered = filtered.filter(loc => loc.businessRank !== null);
+        filtered = filtered.filter((loc) => loc.businessRank !== null);
         break;
       case "not-ranking":
-        filtered = filtered.filter(loc => loc.businessRank === null);
+        filtered = filtered.filter((loc) => loc.businessRank === null);
         break;
     }
 
     // Filter by search query
     if (searchQuery) {
-      filtered = filtered.filter(loc => 
-        loc.waypoint.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        loc.dominatingCompetitor?.toLowerCase().includes(searchQuery.toLowerCase())
+      filtered = filtered.filter(
+        (loc) =>
+          loc.waypoint.name
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          loc.dominatingCompetitor
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()),
       );
     }
 
@@ -206,14 +217,25 @@ export function CompetitorAnalysis({
   // Calculate overview statistics
   const overviewStats = useMemo(() => {
     const totalLocations = results.length;
-    const rankingLocations = results.filter(r => r.businessRank !== null).length;
+    const rankingLocations = results.filter(
+      (r) => r.businessRank !== null,
+    ).length;
     const notRankingLocations = totalLocations - rankingLocations;
-    const top3Rankings = results.filter(r => r.businessRank && r.businessRank <= 3).length;
-    const top10Rankings = results.filter(r => r.businessRank && r.businessRank <= 10).length;
-    
-    const allRanks = results.filter(r => r.businessRank !== null).map(r => r.businessRank!);
-    const averageRank = allRanks.length > 0 ? allRanks.reduce((sum, rank) => sum + rank, 0) / allRanks.length : 0;
-    
+    const top3Rankings = results.filter(
+      (r) => r.businessRank && r.businessRank <= 3,
+    ).length;
+    const top10Rankings = results.filter(
+      (r) => r.businessRank && r.businessRank <= 10,
+    ).length;
+
+    const allRanks = results
+      .filter((r) => r.businessRank !== null)
+      .map((r) => r.businessRank!);
+    const averageRank =
+      allRanks.length > 0
+        ? allRanks.reduce((sum, rank) => sum + rank, 0) / allRanks.length
+        : 0;
+
     return {
       totalLocations,
       rankingLocations,
@@ -228,7 +250,7 @@ export function CompetitorAnalysis({
   }, [results]);
 
   const exportCompetitorData = () => {
-    const csvData = competitorSummaries.map(comp => ({
+    const csvData = competitorSummaries.map((comp) => ({
       competitor_name: comp.name,
       average_rank: comp.averageRank.toFixed(2),
       appearances: comp.appearanceCount,
@@ -243,14 +265,18 @@ export function CompetitorAnalysis({
 
     const csv = [
       Object.keys(csvData[0]).join(","),
-      ...csvData.map(row => Object.values(row).map(val => `"${val}"`).join(","))
+      ...csvData.map((row) =>
+        Object.values(row)
+          .map((val) => `"${val}"`)
+          .join(","),
+      ),
     ].join("\n");
 
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `competitor-analysis-${keyword}-${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = `competitor-analysis-${keyword}-${new Date().toISOString().split("T")[0]}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -272,7 +298,10 @@ export function CompetitorAnalysis({
       </div>
 
       {/* Tabs */}
-      <Tabs value={selectedView} onValueChange={(value: any) => setSelectedView(value)}>
+      <Tabs
+        value={selectedView}
+        onValueChange={(value: any) => setSelectedView(value)}
+      >
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="locations">Locations</TabsTrigger>
@@ -287,8 +316,12 @@ export function CompetitorAnalysis({
                 <div className="flex items-center gap-2">
                   <Target className="h-5 w-5 text-blue-600" />
                   <div>
-                    <div className="text-2xl font-bold">{overviewStats.rankingPercentage.toFixed(1)}%</div>
-                    <div className="text-sm text-muted-foreground">Ranking Locations</div>
+                    <div className="text-2xl font-bold">
+                      {overviewStats.rankingPercentage.toFixed(1)}%
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Ranking Locations
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -299,8 +332,12 @@ export function CompetitorAnalysis({
                 <div className="flex items-center gap-2">
                   <Award className="h-5 w-5 text-green-600" />
                   <div>
-                    <div className="text-2xl font-bold">{overviewStats.top3Percentage.toFixed(1)}%</div>
-                    <div className="text-sm text-muted-foreground">Top 3 Rankings</div>
+                    <div className="text-2xl font-bold">
+                      {overviewStats.top3Percentage.toFixed(1)}%
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Top 3 Rankings
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -311,8 +348,12 @@ export function CompetitorAnalysis({
                 <div className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 text-yellow-600" />
                   <div>
-                    <div className="text-2xl font-bold">{overviewStats.averageRank.toFixed(1)}</div>
-                    <div className="text-sm text-muted-foreground">Average Rank</div>
+                    <div className="text-2xl font-bold">
+                      {overviewStats.averageRank.toFixed(1)}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Average Rank
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -323,8 +364,12 @@ export function CompetitorAnalysis({
                 <div className="flex items-center gap-2">
                   <Users className="h-5 w-5 text-purple-600" />
                   <div>
-                    <div className="text-2xl font-bold">{competitorSummaries.length}</div>
-                    <div className="text-sm text-muted-foreground">Unique Competitors</div>
+                    <div className="text-2xl font-bold">
+                      {competitorSummaries.length}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Unique Competitors
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -339,13 +384,18 @@ export function CompetitorAnalysis({
             <CardContent>
               <div className="space-y-3">
                 {competitorSummaries.slice(0, 10).map((competitor, index) => (
-                  <div key={competitor.name} className="flex items-center gap-3">
+                  <div
+                    key={competitor.name}
+                    className="flex items-center gap-3"
+                  >
                     <div className="w-8 text-sm font-medium text-center">
                       #{index + 1}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-1">
-                        <span className="font-medium text-sm">{competitor.name}</span>
+                        <span className="font-medium text-sm">
+                          {competitor.name}
+                        </span>
                         <div className="flex items-center gap-2">
                           <Badge variant="outline" className="text-xs">
                             Avg: #{competitor.averageRank.toFixed(1)}
@@ -358,7 +408,9 @@ export function CompetitorAnalysis({
                       <div className="w-full bg-gray-200 rounded-full h-2">
                         <div
                           className="bg-blue-600 h-2 rounded-full"
-                          style={{ width: `${competitor.dominancePercentage}%` }}
+                          style={{
+                            width: `${competitor.dominancePercentage}%`,
+                          }}
                         />
                       </div>
                     </div>
@@ -390,7 +442,10 @@ export function CompetitorAnalysis({
                 </div>
                 <div>
                   <Label>Filter By</Label>
-                  <Select value={filterBy} onValueChange={(value: any) => setFilterBy(value)}>
+                  <Select
+                    value={filterBy}
+                    onValueChange={(value: any) => setFilterBy(value)}
+                  >
                     <SelectTrigger className="w-40">
                       <SelectValue />
                     </SelectTrigger>
@@ -426,9 +481,12 @@ export function CompetitorAnalysis({
                     <TableRow key={location.waypoint.id}>
                       <TableCell>
                         <div>
-                          <div className="font-medium">{location.waypoint.name}</div>
+                          <div className="font-medium">
+                            {location.waypoint.name}
+                          </div>
                           <div className="text-xs text-muted-foreground">
-                            {location.waypoint.lat.toFixed(4)}, {location.waypoint.lng.toFixed(4)}
+                            {location.waypoint.lat.toFixed(4)},{" "}
+                            {location.waypoint.lng.toFixed(4)}
                           </div>
                         </div>
                       </TableCell>
@@ -439,8 +497,8 @@ export function CompetitorAnalysis({
                               location.businessRank <= 3
                                 ? "default"
                                 : location.businessRank <= 10
-                                ? "secondary"
-                                : "destructive"
+                                  ? "secondary"
+                                  : "destructive"
                             }
                           >
                             #{location.businessRank}
@@ -460,7 +518,9 @@ export function CompetitorAnalysis({
                                 <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                                 {location.topCompetitors[0].rating.toFixed(1)}
                                 {location.topCompetitors[0]?.reviewsCount && (
-                                  <span>({location.topCompetitors[0].reviewsCount})</span>
+                                  <span>
+                                    ({location.topCompetitors[0].reviewsCount})
+                                  </span>
                                 )}
                               </div>
                             )}
@@ -471,22 +531,24 @@ export function CompetitorAnalysis({
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <span className="text-sm">{location.totalCompetitors} competitors</span>
+                          <span className="text-sm">
+                            {location.totalCompetitors} competitors
+                          </span>
                           <Badge
                             variant={
                               location.totalCompetitors > 15
                                 ? "destructive"
                                 : location.totalCompetitors > 10
-                                ? "secondary"
-                                : "default"
+                                  ? "secondary"
+                                  : "default"
                             }
                             className="text-xs"
                           >
                             {location.totalCompetitors > 15
                               ? "High"
                               : location.totalCompetitors > 10
-                              ? "Medium"
-                              : "Low"}
+                                ? "Medium"
+                                : "Low"}
                           </Badge>
                         </div>
                       </TableCell>
@@ -515,7 +577,10 @@ export function CompetitorAnalysis({
             <CardContent className="p-4">
               <div className="flex items-center gap-4">
                 <Label>Sort By</Label>
-                <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
+                <Select
+                  value={sortBy}
+                  onValueChange={(value: any) => setSortBy(value)}
+                >
                   <SelectTrigger className="w-48">
                     <SelectValue />
                   </SelectTrigger>
@@ -564,14 +629,19 @@ export function CompetitorAnalysis({
                       </TableCell>
                       <TableCell>
                         <div className="text-sm">
-                          <span className="text-green-600">#{competitor.bestRank}</span>
+                          <span className="text-green-600">
+                            #{competitor.bestRank}
+                          </span>
                           {" / "}
-                          <span className="text-red-600">#{competitor.worstRank}</span>
+                          <span className="text-red-600">
+                            #{competitor.worstRank}
+                          </span>
                         </div>
                       </TableCell>
                       <TableCell>
                         <div className="text-sm">
-                          {competitor.appearanceCount} / {competitor.totalLocations}
+                          {competitor.appearanceCount} /{" "}
+                          {competitor.totalLocations}
                         </div>
                       </TableCell>
                       <TableCell>
@@ -579,7 +649,9 @@ export function CompetitorAnalysis({
                           <div className="w-16 bg-gray-200 rounded-full h-2">
                             <div
                               className="bg-blue-600 h-2 rounded-full"
-                              style={{ width: `${competitor.dominancePercentage}%` }}
+                              style={{
+                                width: `${competitor.dominancePercentage}%`,
+                              }}
                             />
                           </div>
                           <span className="text-sm">
@@ -591,7 +663,9 @@ export function CompetitorAnalysis({
                         {competitor.rating ? (
                           <div className="flex items-center gap-1">
                             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                            <span className="text-sm">{competitor.rating.toFixed(1)}</span>
+                            <span className="text-sm">
+                              {competitor.rating.toFixed(1)}
+                            </span>
                             {competitor.reviewsCount && (
                               <span className="text-xs text-muted-foreground">
                                 ({competitor.reviewsCount})
@@ -599,18 +673,28 @@ export function CompetitorAnalysis({
                             )}
                           </div>
                         ) : (
-                          <span className="text-muted-foreground text-sm">No rating</span>
+                          <span className="text-muted-foreground text-sm">
+                            No rating
+                          </span>
                         )}
                       </TableCell>
                       <TableCell>
                         <div className="flex gap-1">
                           {competitor.phoneNumber && (
-                            <Button variant="outline" size="sm" className="h-6 w-6 p-0">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="h-6 w-6 p-0"
+                            >
                               <Phone className="h-3 w-3" />
                             </Button>
                           )}
                           {competitor.website && (
-                            <Button variant="outline" size="sm" className="h-6 w-6 p-0">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="h-6 w-6 p-0"
+                            >
                               <Globe className="h-3 w-3" />
                             </Button>
                           )}
@@ -627,7 +711,10 @@ export function CompetitorAnalysis({
 
       {/* Competitor Detail Modal */}
       {selectedCompetitor && (
-        <Dialog open={!!selectedCompetitor} onOpenChange={() => setSelectedCompetitor(null)}>
+        <Dialog
+          open={!!selectedCompetitor}
+          onOpenChange={() => setSelectedCompetitor(null)}
+        >
           <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle>{selectedCompetitor.name}</DialogTitle>
@@ -661,14 +748,18 @@ export function CompetitorAnalysis({
                 </div>
               </div>
 
-              {(selectedCompetitor.rating || selectedCompetitor.phoneNumber || selectedCompetitor.website) && (
+              {(selectedCompetitor.rating ||
+                selectedCompetitor.phoneNumber ||
+                selectedCompetitor.website) && (
                 <div className="border-t pt-4">
                   <Label>Business Information</Label>
                   <div className="space-y-2 mt-2">
                     {selectedCompetitor.rating && (
                       <div className="flex items-center gap-2">
                         <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span>{selectedCompetitor.rating.toFixed(1)} stars</span>
+                        <span>
+                          {selectedCompetitor.rating.toFixed(1)} stars
+                        </span>
                         {selectedCompetitor.reviewsCount && (
                           <span className="text-muted-foreground">
                             ({selectedCompetitor.reviewsCount} reviews)

@@ -96,21 +96,23 @@ const generateMockRankingData = () => {
   const center = { lat: 38.2493, lng: -122.0397 };
   const radius = 0.1; // roughly 10km in degrees
   const results = [];
-  
+
   // Generate circular pattern of waypoints with ranking data
   for (let i = 0; i < 24; i++) {
     const angle = (i / 24) * 2 * Math.PI;
-    const distance = 0.02 + (Math.random() * radius);
+    const distance = 0.02 + Math.random() * radius;
     const lat = center.lat + Math.cos(angle) * distance;
     const lng = center.lng + Math.sin(angle) * distance;
-    
+
     // Generate realistic ranking data
-    const distanceFromCenter = Math.sqrt(Math.pow(lat - center.lat, 2) + Math.pow(lng - center.lng, 2));
+    const distanceFromCenter = Math.sqrt(
+      Math.pow(lat - center.lat, 2) + Math.pow(lng - center.lng, 2),
+    );
     let rank = null;
-    
+
     // Businesses closer to center tend to rank better
     const rankProbability = Math.max(0, 1 - (distanceFromCenter / radius) * 2);
-    
+
     if (Math.random() < rankProbability) {
       if (distanceFromCenter < radius * 0.3) {
         rank = Math.floor(Math.random() * 3) + 1; // Top 3
@@ -120,7 +122,7 @@ const generateMockRankingData = () => {
         rank = Math.floor(Math.random() * 10) + 11; // 11-20
       }
     }
-    
+
     results.push({
       id: `waypoint-${i}`,
       lat,
@@ -131,10 +133,10 @@ const generateMockRankingData = () => {
         { name: "Tony's Pizza Palace", rank: 1, rating: 4.5, reviews: 89 },
         { name: "Mario's Italian Bistro", rank: 2, rating: 4.3, reviews: 156 },
         { name: "Fairfield Pizza Co", rank: 3, rating: 4.2, reviews: 203 },
-      ].slice(0, Math.floor(Math.random() * 3) + 1)
+      ].slice(0, Math.floor(Math.random() * 3) + 1),
     });
   }
-  
+
   return results;
 };
 
@@ -152,19 +154,28 @@ export default function Maps() {
   const [gridPattern, setGridPattern] = useState("circular");
   const [gridDensity, setGridDensity] = useState("medium");
   const [gridRadius, setGridRadius] = useState("10");
-  
+
   // Analysis state
   const [analysisComplete, setAnalysisComplete] = useState(true);
   const [rankingData] = useState(MOCK_RANKING_DATA);
-  
+
   // Calculated stats
   const totalLocations = (rankingData || []).length;
-  const rankingLocations = (rankingData || []).filter(r => r?.rank !== null).length;
-  const top3Count = (rankingData || []).filter(r => r?.rank && r.rank <= 3).length;
-  const top10Count = (rankingData || []).filter(r => r?.rank && r.rank <= 10).length;
-  const averageRank = rankingLocations > 0
-    ? (rankingData || []).filter(r => r?.rank).reduce((sum, r) => sum + (r?.rank || 0), 0) / rankingLocations
-    : 0;
+  const rankingLocations = (rankingData || []).filter(
+    (r) => r?.rank !== null,
+  ).length;
+  const top3Count = (rankingData || []).filter(
+    (r) => r?.rank && r.rank <= 3,
+  ).length;
+  const top10Count = (rankingData || []).filter(
+    (r) => r?.rank && r.rank <= 10,
+  ).length;
+  const averageRank =
+    rankingLocations > 0
+      ? (rankingData || [])
+          .filter((r) => r?.rank)
+          .reduce((sum, r) => sum + (r?.rank || 0), 0) / rankingLocations
+      : 0;
 
   const centerLocation = { lat: 38.2493, lng: -122.0397 };
 
@@ -172,13 +183,13 @@ export default function Maps() {
     setIsAnalyzing(true);
     setProgress(0);
     setAnalysisComplete(false);
-    
+
     // Simulate analysis progress
     for (let i = 0; i <= 100; i += 5) {
       setProgress(i);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
     }
-    
+
     setIsAnalyzing(false);
     setAnalysisComplete(true);
     toast.success("Ranking analysis completed!");
@@ -212,27 +223,40 @@ export default function Maps() {
         content: `
           <div style="padding: 12px; min-width: 224px;">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-              <h3 style="font-weight: 600; color: #111827;">${point?.address || 'Unknown Location'}</h3>
-              ${point?.rank ?
-                `<span style="padding: 4px 8px; font-size: 12px; font-weight: 500; border-radius: 9999px; ${
-                  (point?.rank || 0) <= 3 ? 'background-color: #dcfce7; color: #166534;' :
-                  (point?.rank || 0) <= 10 ? 'background-color: #fef3c7; color: #92400e;' : 'background-color: #fee2e2; color: #991b1b;'
-                }">#${point?.rank}</span>` :
-                '<span style="padding: 4px 8px; font-size: 12px; font-weight: 500; background-color: #f3f4f6; color: #4b5563; border-radius: 9999px;">Not Ranking</span>'
+              <h3 style="font-weight: 600; color: #111827;">${point?.address || "Unknown Location"}</h3>
+              ${
+                point?.rank
+                  ? `<span style="padding: 4px 8px; font-size: 12px; font-weight: 500; border-radius: 9999px; ${
+                      (point?.rank || 0) <= 3
+                        ? "background-color: #dcfce7; color: #166534;"
+                        : (point?.rank || 0) <= 10
+                          ? "background-color: #fef3c7; color: #92400e;"
+                          : "background-color: #fee2e2; color: #991b1b;"
+                    }">#${point?.rank}</span>`
+                  : '<span style="padding: 4px 8px; font-size: 12px; font-weight: 500; background-color: #f3f4f6; color: #4b5563; border-radius: 9999px;">Not Ranking</span>'
               }
             </div>
-            <p style="font-size: 14px; color: #4b5563; margin-bottom: 12px;">Keyword: ${activeKeyword?.keyword || ''}</p>
-            ${(point.competitors || []).length > 0 ? `
+            <p style="font-size: 14px; color: #4b5563; margin-bottom: 12px;">Keyword: ${activeKeyword?.keyword || ""}</p>
+            ${
+              (point.competitors || []).length > 0
+                ? `
               <div style="border-top: 1px solid #e5e7eb; padding-top: 8px;">
                 <p style="font-size: 12px; font-weight: 500; color: #374151; margin-bottom: 4px;">Top Competitors:</p>
-                ${(point.competitors || []).slice(0, 2).map(comp => `
+                ${(point.competitors || [])
+                  .slice(0, 2)
+                  .map(
+                    (comp) => `
                   <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
                     <span style="color: #4b5563;">${comp.name}</span>
                     <span style="font-weight: 500;">#${comp.rank}</span>
                   </div>
-                `).join('')}
+                `,
+                  )
+                  .join("")}
               </div>
-            ` : ''}
+            `
+                : ""
+            }
           </div>
         `,
         color,
@@ -252,7 +276,7 @@ export default function Maps() {
           <p style="font-size: 14px; color: #4b5563; margin-bottom: 8px;">${business.address}</p>
           <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
             <div style="display: flex; color: #fbbf24;">
-              ${[1,2,3,4,5].map(i => `<svg style="width: 12px; height: 12px; fill: currentColor;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`).join('')}
+              ${[1, 2, 3, 4, 5].map((i) => `<svg style="width: 12px; height: 12px; fill: currentColor;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`).join("")}
             </div>
             <span style="font-size: 14px; color: #4b5563;">${business.rating} (${business.reviewCount})</span>
           </div>
@@ -293,7 +317,7 @@ export default function Maps() {
                   </Tooltip>
                 )}
               </div>
-              
+
               <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
                 <div className="flex items-start gap-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 shadow-md">
@@ -306,7 +330,11 @@ export default function Maps() {
                       </h3>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-6 w-6 p-0 hover:bg-slate-100">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 w-6 p-0 hover:bg-slate-100"
+                          >
                             <Edit className="h-3 w-3" />
                           </Button>
                         </TooltipTrigger>
@@ -315,20 +343,28 @@ export default function Maps() {
                         </TooltipContent>
                       </Tooltip>
                     </div>
-                    
+
                     <div className="flex items-center gap-1 mb-2">
                       <div className="flex text-amber-400">
                         {[1, 2, 3, 4, 5].map((star) => (
                           <Star key={star} className="h-3 w-3 fill-current" />
                         ))}
                       </div>
-                      <span className="text-sm font-medium text-slate-700">{business.rating}</span>
-                      <span className="text-xs text-slate-500">({business.reviewCount})</span>
+                      <span className="text-sm font-medium text-slate-700">
+                        {business.rating}
+                      </span>
+                      <span className="text-xs text-slate-500">
+                        ({business.reviewCount})
+                      </span>
                     </div>
 
                     <div className="flex flex-wrap gap-1 mb-3">
                       {(business.categories || []).map((category, idx) => (
-                        <Badge key={idx} variant="secondary" className="text-xs bg-slate-100 text-slate-700">
+                        <Badge
+                          key={idx}
+                          variant="secondary"
+                          className="text-xs bg-slate-100 text-slate-700"
+                        >
                           {category}
                         </Badge>
                       ))}
@@ -354,7 +390,9 @@ export default function Maps() {
                 <div className="mt-3 p-2 bg-emerald-50 border border-emerald-200 rounded-lg">
                   <div className="flex items-center gap-2">
                     <CheckCircle className="h-4 w-4 text-emerald-600" />
-                    <span className="text-sm font-medium text-emerald-800">{business.hours}</span>
+                    <span className="text-sm font-medium text-emerald-800">
+                      {business.hours}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -367,7 +405,7 @@ export default function Maps() {
                   <Search className="h-5 w-5 text-slate-600" />
                   <h2 className="font-bold text-slate-900">Keywords</h2>
                   <Badge variant="outline" className="text-xs">
-                    {(keywords || []).filter(k => k?.active).length}
+                    {(keywords || []).filter((k) => k?.active).length}
                   </Badge>
                 </div>
               </div>
@@ -378,14 +416,17 @@ export default function Maps() {
                     key={kw.id}
                     className={`flex items-center justify-between p-3 rounded-lg border transition-all cursor-pointer ${
                       activeKeyword?.id === kw.id
-                        ? 'bg-blue-50 border-blue-200 ring-1 ring-blue-200'
-                        : 'bg-white border-slate-200 hover:border-slate-300'
+                        ? "bg-blue-50 border-blue-200 ring-1 ring-blue-200"
+                        : "bg-white border-slate-200 hover:border-slate-300"
                     }`}
                     onClick={() => setActiveKeyword(kw)}
                   >
                     <div className="flex items-center gap-2 flex-1 min-w-0">
                       {kw.generated && (
-                        <Badge variant="secondary" className="bg-purple-100 text-purple-700 text-xs">
+                        <Badge
+                          variant="secondary"
+                          className="bg-purple-100 text-purple-700 text-xs"
+                        >
                           Auto
                         </Badge>
                       )}
@@ -490,7 +531,8 @@ export default function Maps() {
                   <div className="flex items-center gap-2">
                     <Info className="h-4 w-4 text-blue-600" />
                     <span className="text-sm text-blue-800">
-                      Analysis will use <strong>{totalLocations} credits</strong> per keyword
+                      Analysis will use{" "}
+                      <strong>{totalLocations} credits</strong> per keyword
                     </span>
                   </div>
                 </div>
@@ -549,7 +591,9 @@ export default function Maps() {
                   <div className="grid grid-cols-2 gap-3 mb-4">
                     <Card className="p-3 border-emerald-200 bg-emerald-50">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-emerald-700">{top3Count}</div>
+                        <div className="text-2xl font-bold text-emerald-700">
+                          {top3Count}
+                        </div>
                         <div className="text-xs text-emerald-600 flex items-center justify-center gap-1">
                           <Crown className="h-3 w-3" />
                           Top 3
@@ -558,7 +602,9 @@ export default function Maps() {
                     </Card>
                     <Card className="p-3 border-amber-200 bg-amber-50">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-amber-700">{top10Count}</div>
+                        <div className="text-2xl font-bold text-amber-700">
+                          {top10Count}
+                        </div>
                         <div className="text-xs text-amber-600 flex items-center justify-center gap-1">
                           <Award className="h-3 w-3" />
                           Top 10
@@ -567,13 +613,20 @@ export default function Maps() {
                     </Card>
                     <Card className="p-3 border-slate-200 bg-slate-50">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-slate-700">{averageRank.toFixed(1)}</div>
+                        <div className="text-2xl font-bold text-slate-700">
+                          {averageRank.toFixed(1)}
+                        </div>
                         <div className="text-xs text-slate-600">Avg Rank</div>
                       </div>
                     </Card>
                     <Card className="p-3 border-blue-200 bg-blue-50">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-blue-700">{((rankingLocations/totalLocations)*100).toFixed(0)}%</div>
+                        <div className="text-2xl font-bold text-blue-700">
+                          {((rankingLocations / totalLocations) * 100).toFixed(
+                            0,
+                          )}
+                          %
+                        </div>
                         <div className="text-xs text-blue-600">Coverage</div>
                       </div>
                     </Card>
@@ -591,8 +644,13 @@ export default function Maps() {
                         </span>
                         {result.rank ? (
                           <Badge
-                            variant={result.rank <= 3 ? "default" : 
-                                    result.rank <= 10 ? "secondary" : "destructive"}
+                            variant={
+                              result.rank <= 3
+                                ? "default"
+                                : result.rank <= 10
+                                  ? "secondary"
+                                  : "destructive"
+                            }
                             className="text-xs ml-2"
                           >
                             #{result.rank}
@@ -648,7 +706,7 @@ export default function Maps() {
                   </Tooltip>
                 </div>
               </div>
-              
+
               <div className="bg-white/95 backdrop-blur-sm rounded-lg border border-slate-200 shadow-lg p-2">
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -658,7 +716,11 @@ export default function Maps() {
                       onClick={() => setShowCompetitors(!showCompetitors)}
                       className="h-8"
                     >
-                      {showCompetitors ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                      {showCompetitors ? (
+                        <Eye className="h-4 w-4" />
+                      ) : (
+                        <EyeOff className="h-4 w-4" />
+                      )}
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -679,16 +741,21 @@ export default function Maps() {
                           <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
                         </div>
                         <div>
-                          <div className="font-semibold text-slate-900">Analyzing Rankings</div>
+                          <div className="font-semibold text-slate-900">
+                            Analyzing Rankings
+                          </div>
                           <div className="text-sm text-slate-600">
-                            Processing {totalLocations} locations for "{activeKeyword?.keyword || ''}"
+                            Processing {totalLocations} locations for "
+                            {activeKeyword?.keyword || ""}"
                           </div>
                         </div>
                       </div>
                       <div className="flex-1">
                         <div className="flex justify-between text-sm mb-1">
                           <span className="text-slate-600">Progress</span>
-                          <span className="font-medium text-slate-900">{progress}%</span>
+                          <span className="font-medium text-slate-900">
+                            {progress}%
+                          </span>
                         </div>
                         <div className="w-full bg-slate-200 rounded-full h-2">
                           <div
@@ -710,17 +777,23 @@ export default function Maps() {
                   <CardContent className="p-3">
                     <div className="flex items-center gap-3">
                       <div className="text-center">
-                        <div className="text-lg font-bold text-emerald-600">{top3Count}</div>
+                        <div className="text-lg font-bold text-emerald-600">
+                          {top3Count}
+                        </div>
                         <div className="text-xs text-slate-600">Top 3</div>
                       </div>
                       <div className="w-px h-8 bg-slate-200" />
                       <div className="text-center">
-                        <div className="text-lg font-bold text-amber-600">{top10Count}</div>
+                        <div className="text-lg font-bold text-amber-600">
+                          {top10Count}
+                        </div>
                         <div className="text-xs text-slate-600">Top 10</div>
                       </div>
                       <div className="w-px h-8 bg-slate-200" />
                       <div className="text-center">
-                        <div className="text-lg font-bold text-slate-700">{averageRank.toFixed(1)}</div>
+                        <div className="text-lg font-bold text-slate-700">
+                          {averageRank.toFixed(1)}
+                        </div>
                         <div className="text-xs text-slate-600">Avg</div>
                       </div>
                     </div>

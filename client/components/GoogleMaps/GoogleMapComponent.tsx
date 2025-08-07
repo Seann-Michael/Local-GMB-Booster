@@ -44,7 +44,9 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
   onMarkerClick,
 }) => {
   const [mapMarkers, setMapMarkers] = useState<google.maps.Marker[]>([]);
-  const [infoWindow, setInfoWindow] = useState<google.maps.InfoWindow | null>(null);
+  const [infoWindow, setInfoWindow] = useState<google.maps.InfoWindow | null>(
+    null,
+  );
   const [useIframeFallback, setUseIframeFallback] = useState(false);
   const [loadingTimeout, setLoadingTimeout] = useState(false);
 
@@ -134,7 +136,7 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
 
   // Clear existing markers
   const clearMarkers = () => {
-    mapMarkers.forEach(marker => marker.setMap(null));
+    mapMarkers.forEach((marker) => marker.setMap(null));
     setMapMarkers([]);
     if (infoWindow) {
       infoWindow.close();
@@ -152,8 +154,10 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
     }
     if (!mapCenter && markers.length > 0) {
       // Calculate center from markers
-      const avgLat = markers.reduce((sum, m) => sum + m.position.lat, 0) / markers.length;
-      const avgLng = markers.reduce((sum, m) => sum + m.position.lng, 0) / markers.length;
+      const avgLat =
+        markers.reduce((sum, m) => sum + m.position.lat, 0) / markers.length;
+      const avgLng =
+        markers.reduce((sum, m) => sum + m.position.lng, 0) / markers.length;
       mapCenter = { lat: avgLat, lng: avgLng };
     }
 
@@ -173,7 +177,7 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
     const newMarkers: google.maps.Marker[] = [];
 
     // Add custom markers
-    markers.forEach(markerData => {
+    markers.forEach((markerData) => {
       const googleMarker = new google.maps.Marker({
         position: markerData.position,
         map: map,
@@ -182,7 +186,7 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
       });
 
       // Add click listener
-      googleMarker.addListener('click', () => {
+      googleMarker.addListener("click", () => {
         if (infoWindow && markerData.content) {
           infoWindow.setContent(markerData.content);
           infoWindow.open(map, googleMarker);
@@ -197,9 +201,12 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
 
     // Add legacy single marker if no custom markers and coordinates provided
     if (markers.length === 0 && lat !== undefined && lng !== undefined) {
-      const legacyMarker = addMarker({ lat, lng }, {
-        title: address || "Location",
-      });
+      const legacyMarker = addMarker(
+        { lat, lng },
+        {
+          title: address || "Location",
+        },
+      );
       newMarkers.push(legacyMarker);
     }
 
@@ -208,7 +215,7 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
     // Fit bounds if multiple markers
     if (markers.length > 1) {
       const bounds = new google.maps.LatLngBounds();
-      markers.forEach(marker => {
+      markers.forEach((marker) => {
         bounds.extend(marker.position);
       });
       map.fitBounds(bounds);
@@ -220,7 +227,18 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
         }
       }, 100);
     }
-  }, [map, markers, center, lat, lng, address, addMarker, setCenter, infoWindow, onMarkerClick]);
+  }, [
+    map,
+    markers,
+    center,
+    lat,
+    lng,
+    address,
+    addMarker,
+    setCenter,
+    infoWindow,
+    onMarkerClick,
+  ]);
 
   const openInGoogleMaps = () => {
     let url = "https://maps.google.com/";

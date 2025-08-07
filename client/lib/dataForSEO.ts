@@ -111,7 +111,7 @@ class DataForSEOService {
     if (typeof window !== "undefined") {
       const username = localStorage.getItem("dataforseo_username");
       const password = localStorage.getItem("dataforseo_password");
-      
+
       if (username && password) {
         this.credentials = { username, password };
       }
@@ -139,27 +139,33 @@ class DataForSEOService {
 
   private async makeRequest(endpoint: string, data: any): Promise<any> {
     if (!this.credentials) {
-      throw new Error("DataForSEO credentials not configured. Please set up your API credentials in Settings.");
+      throw new Error(
+        "DataForSEO credentials not configured. Please set up your API credentials in Settings.",
+      );
     }
 
     try {
       const response = await fetch(`${this.baseUrl}${endpoint}`, {
         method: "POST",
         headers: {
-          "Authorization": `Basic ${this.getAuthHeader()}`,
+          Authorization: `Basic ${this.getAuthHeader()}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
 
       if (!response.ok) {
-        throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+        throw new Error(
+          `API request failed: ${response.status} ${response.statusText}`,
+        );
       }
 
       const result = await response.json();
-      
+
       if (result.status_code !== 20000) {
-        throw new Error(`API error: ${result.status_message || "Unknown error"}`);
+        throw new Error(
+          `API error: ${result.status_message || "Unknown error"}`,
+        );
       }
 
       return result;
@@ -171,7 +177,7 @@ class DataForSEOService {
 
   async checkLocalRankings(
     business: BusinessProfile,
-    params: RankingRequestParams
+    params: RankingRequestParams,
   ): Promise<RankingResult> {
     const waypoint: GeographicWaypoint = {
       id: `${params.latitude}-${params.longitude}`,
@@ -180,17 +186,22 @@ class DataForSEOService {
     };
 
     try {
-      const requestData = [{
-        keyword: params.keyword,
-        location_coordinate: `${params.latitude},${params.longitude}`,
-        language_code: params.language_code || "en",
-        device: params.device || "desktop",
-        os: params.os || "windows",
-        depth: params.depth || 20,
-      }];
+      const requestData = [
+        {
+          keyword: params.keyword,
+          location_coordinate: `${params.latitude},${params.longitude}`,
+          language_code: params.language_code || "en",
+          device: params.device || "desktop",
+          os: params.os || "windows",
+          depth: params.depth || 20,
+        },
+      ];
 
-      const response = await this.makeRequest("/serp/google/maps/live", requestData);
-      
+      const response = await this.makeRequest(
+        "/serp/google/maps/live",
+        requestData,
+      );
+
       if (!response.tasks || response.tasks.length === 0) {
         throw new Error("No results returned from API");
       }
@@ -201,28 +212,30 @@ class DataForSEOService {
       }
 
       const results = task.result?.[0]?.items || [];
-      
+
       // Find business rank
       let businessRank: number | null = null;
       for (let i = 0; i < results.length; i++) {
         const result = results[i];
         if (this.isBusinessMatch(result, business)) {
-          businessRank = result.rank_group || (i + 1);
+          businessRank = result.rank_group || i + 1;
           break;
         }
       }
 
       // Extract competitors
-      const competitors = results.slice(0, 10).map((result: SERPMapResult, index: number) => ({
-        rank: result.rank_group || (index + 1),
-        name: result.title || "Unknown Business",
-        address: result.address,
-        rating: result.additional_info?.rating,
-        reviewsCount: result.additional_info?.reviews_count,
-        placeId: result.place_id,
-        phone: result.phone,
-        website: result.url,
-      }));
+      const competitors = results
+        .slice(0, 10)
+        .map((result: SERPMapResult, index: number) => ({
+          rank: result.rank_group || index + 1,
+          name: result.title || "Unknown Business",
+          address: result.address,
+          rating: result.additional_info?.rating,
+          reviewsCount: result.additional_info?.reviews_count,
+          placeId: result.place_id,
+          phone: result.phone,
+          website: result.url,
+        }));
 
       return {
         waypoint,
@@ -246,13 +259,19 @@ class DataForSEOService {
     }
   }
 
-  private isBusinessMatch(result: SERPMapResult, business: BusinessProfile): boolean {
+  private isBusinessMatch(
+    result: SERPMapResult,
+    business: BusinessProfile,
+  ): boolean {
     // Match by business name (case insensitive, partial match)
     if (result.title && business.name) {
       const resultName = result.title.toLowerCase().trim();
       const businessName = business.name.toLowerCase().trim();
-      
-      if (resultName.includes(businessName) || businessName.includes(resultName)) {
+
+      if (
+        resultName.includes(businessName) ||
+        businessName.includes(resultName)
+      ) {
         return true;
       }
     }
@@ -276,18 +295,22 @@ class DataForSEOService {
     if (result.address && business.address) {
       const resultAddress = result.address.toLowerCase();
       const businessAddress = business.address.toLowerCase();
-      
+
       // Extract street number and name for comparison
       const extractStreetInfo = (addr: string) => {
         const match = addr.match(/(\d+)\s+([^,]+)/);
         return match ? `${match[1]} ${match[2]}`.trim() : addr;
       };
-      
+
       const resultStreet = extractStreetInfo(resultAddress);
       const businessStreet = extractStreetInfo(businessAddress);
-      
-      if (resultStreet && businessStreet && 
-          (resultStreet.includes(businessStreet) || businessStreet.includes(resultStreet))) {
+
+      if (
+        resultStreet &&
+        businessStreet &&
+        (resultStreet.includes(businessStreet) ||
+          businessStreet.includes(resultStreet))
+      ) {
         return true;
       }
     }
@@ -303,15 +326,15 @@ class DataForSEOService {
       device?: "desktop" | "mobile";
       language?: string;
       depth?: number;
-    }
+    },
   ): Promise<RankingResult[]> {
     const batchSize = 5; // Process in batches to avoid overwhelming the API
     const results: RankingResult[] = [];
-    
+
     for (let i = 0; i < waypoints.length; i += batchSize) {
       const batch = waypoints.slice(i, i + batchSize);
-      
-      const batchPromises = batch.map(waypoint => 
+
+      const batchPromises = batch.map((waypoint) =>
         this.checkLocalRankings(business, {
           keyword,
           latitude: waypoint.lat,
@@ -319,12 +342,12 @@ class DataForSEOService {
           device: options?.device || "desktop",
           language_code: options?.language || "en",
           depth: options?.depth || 20,
-        })
+        }),
       );
 
       try {
         const batchResults = await Promise.allSettled(batchPromises);
-        
+
         batchResults.forEach((result, batchIndex) => {
           if (result.status === "fulfilled") {
             results.push(result.value);
@@ -344,7 +367,7 @@ class DataForSEOService {
 
         // Add delay between batches to respect API limits
         if (i + batchSize < waypoints.length) {
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, 1000));
         }
       } catch (error) {
         console.error("Batch processing error:", error);
@@ -358,7 +381,10 @@ class DataForSEOService {
   async testConnection(): Promise<boolean> {
     try {
       // Use a simple endpoint to test credentials
-      const response = await this.makeRequest("/serp/google/maps/locations", []);
+      const response = await this.makeRequest(
+        "/serp/google/maps/locations",
+        [],
+      );
       return response.status_code === 20000;
     } catch (error) {
       console.error("Connection test failed:", error);
@@ -370,27 +396,27 @@ class DataForSEOService {
     centerLat: number,
     centerLng: number,
     radiusKm: number = 10,
-    gridSize: number = 5
+    gridSize: number = 5,
   ): GeographicWaypoint[] {
     const waypoints: GeographicWaypoint[] = [];
-    
+
     // Convert radius from km to degrees (rough approximation)
     const latDegreePerKm = 1 / 111; // 1 degree latitude ≈ 111 km
-    const lngDegreePerKm = 1 / (111 * Math.cos(centerLat * Math.PI / 180)); // Adjust for longitude
-    
+    const lngDegreePerKm = 1 / (111 * Math.cos((centerLat * Math.PI) / 180)); // Adjust for longitude
+
     const latRadius = radiusKm * latDegreePerKm;
     const lngRadius = radiusKm * lngDegreePerKm;
-    
+
     const step = 2 / (gridSize - 1); // Step size for grid
-    
+
     for (let i = 0; i < gridSize; i++) {
       for (let j = 0; j < gridSize; j++) {
         const latOffset = (i * step - 1) * latRadius;
         const lngOffset = (j * step - 1) * lngRadius;
-        
+
         const lat = centerLat + latOffset;
         const lng = centerLng + lngOffset;
-        
+
         waypoints.push({
           id: `waypoint-${i}-${j}`,
           lat,
@@ -399,7 +425,7 @@ class DataForSEOService {
         });
       }
     }
-    
+
     return waypoints;
   }
 
@@ -407,10 +433,10 @@ class DataForSEOService {
     centerLat: number,
     centerLng: number,
     radiusKm: number = 10,
-    numberOfPoints: number = 12
+    numberOfPoints: number = 12,
   ): GeographicWaypoint[] {
     const waypoints: GeographicWaypoint[] = [];
-    
+
     // Add center point
     waypoints.push({
       id: "center",
@@ -418,20 +444,20 @@ class DataForSEOService {
       lng: centerLng,
       name: "Center Point",
     });
-    
+
     // Convert radius from km to degrees
     const latDegreePerKm = 1 / 111;
-    const lngDegreePerKm = 1 / (111 * Math.cos(centerLat * Math.PI / 180));
-    
+    const lngDegreePerKm = 1 / (111 * Math.cos((centerLat * Math.PI) / 180));
+
     const latRadius = radiusKm * latDegreePerKm;
     const lngRadius = radiusKm * lngDegreePerKm;
-    
+
     // Generate points in a circle
     for (let i = 0; i < numberOfPoints; i++) {
       const angle = (2 * Math.PI * i) / numberOfPoints;
       const lat = centerLat + latRadius * Math.cos(angle);
       const lng = centerLng + lngRadius * Math.sin(angle);
-      
+
       waypoints.push({
         id: `circle-${i}`,
         lat,
@@ -439,7 +465,7 @@ class DataForSEOService {
         name: `Point ${i + 1}`,
       });
     }
-    
+
     return waypoints;
   }
 }
