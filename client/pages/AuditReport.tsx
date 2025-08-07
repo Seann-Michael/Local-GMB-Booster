@@ -27,41 +27,45 @@ import {
   Smartphone,
 } from "lucide-react";
 
-interface AuditReportData {
+interface GeoGridScanData {
   id: string;
   businessName: string;
-  location: string;
+  gmbProfileUrl: string;
   scanDate: string;
   scanType: string;
-  overallScore: number;
+  overallVisibility: number;
   status: "completed" | "in-progress" | "failed";
-  results: {
-    gmb: {
-      score: number;
-      issues: string[];
-      recommendations: string[];
+  scanResults: {
+    gridCoverage: {
+      totalGridPoints: number;
+      scannedPoints: number;
+      visibility: number;
+      averageRank: number;
     };
-    citations: {
-      score: number;
-      found: number;
-      total: number;
-      issues: string[];
+    localPack: {
+      appearances: number;
+      totalSearches: number;
+      averagePosition: number;
+      visibility: number;
     };
-    reviews: {
-      score: number;
-      averageRating: number;
-      totalReviews: number;
-      issues: string[];
+    organicResults: {
+      appearances: number;
+      totalSearches: number;
+      averagePosition: number;
+      visibility: number;
     };
-    website: {
-      score: number;
-      issues: string[];
-      recommendations: string[];
+    geoDistribution: {
+      strongAreas: string[];
+      weakAreas: string[];
+      noVisibility: string[];
     };
-    social: {
-      score: number;
-      platforms: string[];
-      issues: string[];
+    keywordPerformance: {
+      topKeywords: Array<{
+        keyword: string;
+        rank: number;
+        visibility: number;
+      }>;
+      improvementOpportunities: string[];
     };
   };
 }
