@@ -642,80 +642,9 @@ export default function OneTimeScanEnhanced() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div>
-                    <Label>Number of Pins</Label>
-                    <div className="mt-1">
-                      <Slider
-                        value={[waypointConfig.count]}
-                        onValueChange={(value) =>
-                          setWaypointConfig({
-                            ...waypointConfig,
-                            count: value[0],
-                          })
-                        }
-                        min={3}
-                        max={50}
-                        step={1}
-                        className="w-full"
-                      />
-                      <div className="flex justify-between text-xs text-gray-500 mt-1">
-                        <span>3</span>
-                        <span>{waypointConfig.count}</span>
-                        <span>50</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label>Distance Between Pins</Label>
-                    <div className="mt-1">
-                      <Slider
-                        value={[waypointConfig.distanceBetween]}
-                        onValueChange={(value) =>
-                          setWaypointConfig({
-                            ...waypointConfig,
-                            distanceBetween: value[0],
-                          })
-                        }
-                        min={0.1}
-                        max={10}
-                        step={0.1}
-                        className="w-full"
-                      />
-                      <div className="flex justify-between text-xs text-gray-500 mt-1">
-                        <span>0.1</span>
-                        <span>
-                          {waypointConfig.distanceBetween} {waypointConfig.unit}
-                        </span>
-                        <span>10</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label>Distance Unit</Label>
-                    <Select
-                      value={waypointConfig.unit}
-                      onValueChange={(value) =>
-                        setWaypointConfig({
-                          ...waypointConfig,
-                          unit: value as "miles" | "kilometers",
-                        })
-                      }
-                    >
-                      <SelectTrigger className="mt-1">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="miles">Miles</SelectItem>
-                        <SelectItem value="kilometers">Kilometers</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <Label>Pattern</Label>
+                <div>
+                  <Label className="text-base font-medium">Map Grid</Label>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-3">
                     <Select
                       value={waypointConfig.pattern}
                       onValueChange={(value) =>
@@ -725,14 +654,14 @@ export default function OneTimeScanEnhanced() {
                         })
                       }
                     >
-                      <SelectTrigger className="mt-1">
+                      <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="circle">
                           <div className="flex items-center gap-2">
                             <Circle className="h-4 w-4" />
-                            Circular
+                            Circle
                           </div>
                         </SelectItem>
                         <SelectItem value="grid">
@@ -749,6 +678,74 @@ export default function OneTimeScanEnhanced() {
                         </SelectItem>
                       </SelectContent>
                     </Select>
+
+                    <Select
+                      value={`${waypointConfig.count}-${waypointConfig.distanceBetween}`}
+                      onValueChange={(value) => {
+                        const [count, distance] = value.split('-');
+                        setWaypointConfig({
+                          ...waypointConfig,
+                          count: parseInt(count),
+                          distanceBetween: parseFloat(distance)
+                        });
+                      }}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-60">
+                        <SelectItem value="5-0.5">5 Pins | ⌀0.5</SelectItem>
+                        <SelectItem value="5-1">5 Pins | ⌀1</SelectItem>
+                        <SelectItem value="5-2">5 Pins | ⌀2</SelectItem>
+                        <SelectItem value="8-0.5">8 Pins | ⌀0.5</SelectItem>
+                        <SelectItem value="8-1">8 Pins | ⌀1</SelectItem>
+                        <SelectItem value="8-2">8 Pins | ⌀2</SelectItem>
+                        <SelectItem value="10-0.5">10 Pins | ⌀0.5</SelectItem>
+                        <SelectItem value="10-1">10 Pins | ⌀1</SelectItem>
+                        <SelectItem value="10-2">10 Pins | ⌀2</SelectItem>
+                        <SelectItem value="15-0.5">15 Pins | ⌀0.5</SelectItem>
+                        <SelectItem value="15-1">15 Pins | ⌀1</SelectItem>
+                        <SelectItem value="15-2">15 Pins | ⌀2</SelectItem>
+                        <SelectItem value="20-0.5">20 Pins | ⌀0.5</SelectItem>
+                        <SelectItem value="20-1">20 Pins | ⌀1</SelectItem>
+                        <SelectItem value="20-2">20 Pins | ⌀2</SelectItem>
+                        <SelectItem value="25-1">25 Pins | ⌀1</SelectItem>
+                        <SelectItem value="25-2">25 Pins | ⌀2</SelectItem>
+                        <SelectItem value="30-1">30 Pins | ⌀1</SelectItem>
+                        <SelectItem value="30-2">30 Pins | ⌀2</SelectItem>
+                        <SelectItem value="30-3">30 Pins | ⌀3</SelectItem>
+                        <SelectItem value="40-2">40 Pins | ⌀2</SelectItem>
+                        <SelectItem value="40-3">40 Pins | ⌀3</SelectItem>
+                        <SelectItem value="50-2">50 Pins | ⌀2</SelectItem>
+                        <SelectItem value="50-3">50 Pins | ⌀3</SelectItem>
+                        <SelectItem value="50-5">50 Pins | ⌀5</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <div className="flex rounded-md border overflow-hidden">
+                      <button
+                        type="button"
+                        onClick={() => setWaypointConfig({ ...waypointConfig, unit: "kilometers" })}
+                        className={`flex-1 px-3 py-2 text-sm font-medium border-r transition-colors ${
+                          waypointConfig.unit === "kilometers"
+                            ? "bg-blue-50 text-blue-700 border-blue-200"
+                            : "bg-white text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                        }`}
+                      >
+                        km
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setWaypointConfig({ ...waypointConfig, unit: "miles" })}
+                        className={`flex-1 px-3 py-2 text-sm font-medium transition-colors ${
+                          waypointConfig.unit === "miles"
+                            ? "bg-blue-50 text-blue-700"
+                            : "bg-white text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                        }`}
+                      >
+                        mi
+                      </button>
+                    </div>
                   </div>
                 </div>
 
