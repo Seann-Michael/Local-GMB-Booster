@@ -1151,6 +1151,9 @@ export function AppLayout({ children }: AppLayoutProps) {
                 </DropdownMenu>
               </div>
 
+              {/* Theme Toggle */}
+              <ThemeToggle />
+
               {/* User Profile Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
