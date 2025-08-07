@@ -375,7 +375,7 @@ export default function Maps() {
                   <div
                     key={kw.id}
                     className={`flex items-center justify-between p-3 rounded-lg border transition-all cursor-pointer ${
-                      activeKeyword.id === kw.id
+                      activeKeyword?.id === kw.id
                         ? 'bg-blue-50 border-blue-200 ring-1 ring-blue-200'
                         : 'bg-white border-slate-200 hover:border-slate-300'
                     }`}
