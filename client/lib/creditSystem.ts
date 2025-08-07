@@ -27,6 +27,30 @@ export interface ScanOptions {
   isRecurring?: boolean;
 }
 
+export interface BusinessLocation {
+  name: string;
+  address?: string;
+  coordinates?: {
+    lat: number;
+    lng: number;
+  };
+  placeId?: string;
+  cid?: string;
+  mapUrl?: string;
+  isServiceBased?: boolean;
+}
+
+export interface WaypointConfig {
+  id: string;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  enabled: boolean;
+  isCenter?: boolean;
+  distance?: number; // Distance from center in selected unit
+}
+
 export interface ScanCost {
   baseCredits: number;
   perWaypoint: number;
