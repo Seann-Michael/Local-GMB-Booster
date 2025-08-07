@@ -966,8 +966,8 @@ export function SmartMediaUploader({
                                 />
                               </div>
 
-                              {/* Tags and Category Grid */}
-                              <div className="grid grid-cols-1 gap-3">
+                              {/* Tags and Category - Side by Side */}
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
                                   <Label className="text-sm md:text-xs font-medium">
                                     Tags
