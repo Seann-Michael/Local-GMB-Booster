@@ -218,29 +218,58 @@ export default function Maps() {
         position: { lat: point?.lat || 0, lng: point?.lng || 0 },
         title: point?.rank ? `Rank #${point.rank}` : "Not Ranking",
         content: `
-          <div style="padding: 12px; min-width: 224px;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-              <h3 style="font-weight: 600; color: #111827;">${point?.address || 'Unknown Location'}</h3>
-              ${point?.rank ? 
-                `<span style="padding: 4px 8px; font-size: 12px; font-weight: 500; border-radius: 9999px; ${
+          <div style="padding: 16px; min-width: 320px; max-width: 400px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px;">
+              <div>
+                <h3 style="font-weight: 600; color: #111827; margin: 0;">${point?.address || 'Search Location'}</h3>
+                <p style="font-size: 12px; color: #6b7280; margin: 4px 0 0 0;">Search Radius: ${point?.searchRadius || '1.5 km'}</p>
+              </div>
+              ${point?.rank ?
+                `<span style="padding: 6px 12px; font-size: 12px; font-weight: 600; border-radius: 20px; ${
                   (point?.rank || 0) <= 3 ? 'background-color: #dcfce7; color: #166534;' :
                   (point?.rank || 0) <= 10 ? 'background-color: #fef3c7; color: #92400e;' : 'background-color: #fee2e2; color: #991b1b;'
-                }">#${point?.rank}</span>` : 
-                '<span style="padding: 4px 8px; font-size: 12px; font-weight: 500; background-color: #f3f4f6; color: #4b5563; border-radius: 9999px;">Not Ranking</span>'
+                }">RANK #${point?.rank}</span>` :
+                '<span style="padding: 6px 12px; font-size: 12px; font-weight: 500; background-color: #f3f4f6; color: #4b5563; border-radius: 20px;">NOT RANKING</span>'
               }
             </div>
-            <p style="font-size: 14px; color: #4b5563; margin-bottom: 12px;">Keyword: ${activeKeyword?.keyword || ''}</p>
+
+            <div style="margin-bottom: 12px;">
+              <p style="font-size: 13px; color: #374151; margin: 0;"><strong>Query:</strong> ${activeKeyword?.keyword || ''}</p>
+              <p style="font-size: 13px; color: #374151; margin: 4px 0 0 0;"><strong>Results Found:</strong> ${point?.totalResults || 0} businesses</p>
+              <p style="font-size: 13px; color: #374151; margin: 4px 0 0 0;"><strong>Competition:</strong>
+                <span style="color: ${point?.analysis?.competitionLevel === 'High' ? '#dc2626' : point?.analysis?.competitionLevel === 'Medium' ? '#d97706' : '#059669'};">
+                  ${point?.analysis?.competitionLevel || 'Medium'}
+                </span>
+              </p>
+            </div>
+
             ${(point?.competitors || []).length > 0 ? `
-              <div style="border-top: 1px solid #e5e7eb; padding-top: 8px;">
-                <p style="font-size: 12px; font-weight: 500; color: #374151; margin-bottom: 4px;">Top Competitors:</p>
-                ${(point?.competitors || []).slice(0, 2).map(comp => `
-                  <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
-                    <span style="color: #4b5563;">${comp?.name}</span>
-                    <span style="font-weight: 500;">#${comp?.rank}</span>
+              <div style="border-top: 1px solid #e5e7eb; padding-top: 12px;">
+                <p style="font-size: 12px; font-weight: 600; color: #374151; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">Top Ranking Businesses</p>
+                ${(point?.competitors || []).slice(0, 5).map((comp, idx) => `
+                  <div style="display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: ${idx < 4 ? '1px solid #f3f4f6' : 'none'};">
+                    <div style="flex: 1; min-width: 0;">
+                      <div style="font-size: 13px; font-weight: 500; color: #111827; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${comp?.name}</div>
+                      <div style="font-size: 11px; color: #6b7280; margin: 2px 0 0 0; display: flex; align-items: center; gap: 8px;">
+                        <span>⭐ ${comp?.rating}</span>
+                        <span>📍 ${comp?.distance}</span>
+                        <span style="color: #059669;">${comp?.price_level || '$'}</span>
+                      </div>
+                    </div>
+                    <div style="margin-left: 12px;">
+                      <span style="background-color: ${idx === 0 ? '#fbbf24' : idx === 1 ? '#9ca3af' : idx === 2 ? '#cd7c2f' : '#e5e7eb'}; color: ${idx < 3 ? 'white' : '#6b7280'}; font-size: 11px; font-weight: 600; padding: 4px 8px; border-radius: 12px;">#${comp?.rank}</span>
+                    </div>
                   </div>
                 `).join('')}
+                ${(point?.competitors || []).length > 5 ? `
+                  <p style="font-size: 11px; color: #6b7280; margin: 8px 0 0 0; text-align: center;">+${(point?.competitors || []).length - 5} more businesses</p>
+                ` : ''}
               </div>
             ` : ''}
+
+            <div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid #e5e7eb;">
+              <p style="font-size: 10px; color: #9ca3af; margin: 0; text-align: center;">DataForSEO Local Rankings • ${new Date().toLocaleDateString()}</p>
+            </div>
           </div>
         `,
         color,
