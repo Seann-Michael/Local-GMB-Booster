@@ -16,6 +16,12 @@ interface MapMarker {
   icon?: string;
 }
 
+interface Waypoint {
+  id: string;
+  position: { lat: number; lng: number };
+  rank: number;
+}
+
 interface GoogleMapComponentProps {
   address?: string;
   lat?: number;
@@ -28,6 +34,10 @@ interface GoogleMapComponentProps {
   className?: string;
   markers?: MapMarker[];
   onMarkerClick?: (marker: MapMarker) => void;
+  waypoints?: Waypoint[];
+  onWaypointClick?: (waypointId: string) => void;
+  selectedWaypoint?: string | null;
+  onMapLoad?: (map: google.maps.Map) => void;
 }
 
 export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
