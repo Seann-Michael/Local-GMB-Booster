@@ -191,8 +191,8 @@ export default function Maps() {
     (rankingData || []).forEach((point, index) => {
       let color = "#9CA3AF"; // Gray for not ranking
       let size = "small";
-      
-      if (point.rank) {
+
+      if (point?.rank) {
         if (point.rank <= 3) {
           color = "#10B981"; // Green for top 3
           size = "large";
