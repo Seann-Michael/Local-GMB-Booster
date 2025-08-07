@@ -14,6 +14,7 @@ import {
   Star,
   Download,
   Info,
+  Share,
 } from "lucide-react";
 
 interface PhotoActionMenuProps {
