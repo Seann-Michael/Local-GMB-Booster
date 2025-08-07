@@ -570,13 +570,16 @@ export function AppLayout({ children }: AppLayoutProps) {
                   </div>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-64">
+              <DropdownMenuContent align="start" className="w-72">
+                <DropdownMenuLabel>Business Profiles</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+
                 {/* Search Bar */}
                 <div className="p-2">
                   <div className="relative">
                     <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
-                      placeholder="Search profiles..."
+                      placeholder="Search business profiles..."
                       value={profileSearchQuery}
                       onChange={(e) => setProfileSearchQuery(e.target.value)}
                       className="pl-8 h-8 text-sm"
