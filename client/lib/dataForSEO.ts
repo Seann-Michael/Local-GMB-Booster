@@ -122,6 +122,20 @@ class DataForSEOService {
   private baseUrl = DATAFORSEO_BASE_URL;
 
   constructor() {
+    // Initialize with environment variables if available
+    const envUsername = import.meta.env.VITE_DATAFORSEO_USERNAME;
+    const envPassword = import.meta.env.VITE_DATAFORSEO_PASSWORD;
+
+    if (envUsername && envPassword) {
+      console.log("✅ DataForSEO: Using environment variables");
+      this.credentials = {
+        username: envUsername,
+        password: envPassword
+      };
+    }
+  }
+
+  constructor() {
     this.loadCredentials();
   }
 
