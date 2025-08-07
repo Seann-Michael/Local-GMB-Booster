@@ -642,6 +642,75 @@ class MockDataService {
     this.initialize();
   }
 
+  // Minimal mock data for Builder.io editor
+  private getMinimalMockProjects(): MockProject[] {
+    return [
+      {
+        id: "builder-project-1",
+        name: "Sample Kitchen Remodel",
+        description: "A beautiful kitchen renovation project",
+        status: "completed",
+        priority: "medium",
+        clientName: "John Doe",
+        clientEmail: "john@example.com",
+        startDate: "2024-01-01",
+        endDate: "2024-02-15",
+        lastActivity: "2024-02-15",
+        progress: 100,
+        starred: false,
+        archived: false,
+        tags: ["kitchen", "renovation"],
+        photos: [],
+        teamMembers: [],
+        documents: [],
+        notes: [],
+        budget: 25000,
+        spent: 24500,
+        estimatedHours: 120,
+        actualHours: 115,
+        metadata: {
+          createdBy: "user-1",
+          createdAt: "2024-01-01T00:00:00Z",
+          updatedAt: "2024-02-15T00:00:00Z",
+          version: 1
+        }
+      }
+    ];
+  }
+
+  private getMinimalMockUsers(): MockUser[] {
+    return [
+      {
+        id: "user-1",
+        name: "Admin User",
+        email: "admin@example.com",
+        role: "admin",
+        avatar: "",
+        phone: "+1234567890",
+        isActive: true,
+        lastLogin: "2024-01-01T00:00:00Z",
+        createdAt: "2024-01-01T00:00:00Z"
+      }
+    ];
+  }
+
+  private getMinimalMockClients(): MockClient[] {
+    return [
+      {
+        id: "client-1",
+        name: "John Doe",
+        email: "john@example.com",
+        phone: "+1234567890",
+        address: "123 Main St, City, State",
+        company: "ABC Company",
+        projects: ["builder-project-1"],
+        notes: "",
+        createdAt: "2024-01-01T00:00:00Z",
+        updatedAt: "2024-01-01T00:00:00Z"
+      }
+    ];
+  }
+
   // Project methods
   getProjects(): MockProject[] {
     this.initialize();
