@@ -222,7 +222,7 @@ export default function Index() {
 
   return (
     <AppLayout>
-      <div className="w-full px-3 sm:px-4 py-6 max-w-full overflow-x-hidden min-w-0">
+      <div className="w-full px-3 sm:px-4 py-6 max-w-full overflow-x-hidden min-w-0 bg-background">
         {/* Broadcast Messages */}
         <EnhancedBroadcastAlert />
 
