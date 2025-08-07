@@ -607,7 +607,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                           {businessName || "My Business"}
                         </div>
                         <div className="text-xs text-muted-foreground">
-                          ID: {currentUser?.id || currentBusiness?.id || "ACC-001"}
+                          ID: {currentBusiness?.accountId || "102-456-789"}
                         </div>
                         <div className="text-xs text-muted-foreground">
                           Current Business
