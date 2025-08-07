@@ -78,7 +78,19 @@ export function CreditProvider({ children }: CreditProviderProps) {
 export function useCredits(): CreditContextType {
   const context = useContext(CreditContext);
   if (context === undefined) {
-    throw new Error('useCredits must be used within a CreditProvider');
+    console.error('useCredits must be used within a CreditProvider. Make sure the component is wrapped with CreditProvider.');
+    // Return a fallback context to prevent app crashes
+    return {
+      balance: {
+        total: 0,
+        used: 0,
+        remaining: 0,
+        lastUpdated: new Date().toISOString(),
+      },
+      transactions: [],
+      refreshCredits: () => {},
+      isLoading: true,
+    };
   }
   return context;
 }
