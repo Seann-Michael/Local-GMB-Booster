@@ -363,19 +363,15 @@ export default function AuditReport() {
           </div>
 
           {/* Center Panel - Google Maps */}
-          <div className="flex-1 relative">
-            <GoogleMapComponent
-              center={mockAuditData.center}
-              zoom={12}
-              waypoints={mockAuditData.waypoints.map(wp => ({
-                id: wp.id,
-                position: wp.position,
-                rank: wp.rank,
-              }))}
-              onWaypointClick={handleWaypointClick}
-              selectedWaypoint={selectedWaypoint}
-              onMapLoad={handleMapLoad}
-            />
+          <div className="flex-1 relative bg-gray-100 flex items-center justify-center">
+            <div className="text-center">
+              <MapPin className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">Interactive Google Maps</h3>
+              <p className="text-gray-500 max-w-md">
+                Interactive Google Maps with custom ranking markers will appear here.
+                Waypoint markers will show ranking numbers and be color-coded by performance.
+              </p>
+            </div>
           </div>
 
           {/* Right Panel - Waypoint Details (slides in when waypoint selected) */}
