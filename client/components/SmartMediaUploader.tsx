@@ -1499,115 +1499,11 @@ export function SmartMediaUploader({
                               {file.exifData && (
                                 <div className="bg-gray-50 p-3 rounded">
                                   <h4 className="text-xs font-bold text-gray-900 mb-2">
-                                    EXIF Technical Data
+                                    Photo Details
                                   </h4>
-                                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     <div>
-                                      <Label className="text-xs">Camera</Label>
-                                      <Input
-                                        value={file.exifData.camera || ""}
-                                        onChange={(e) =>
-                                          updateFile(file.id, {
-                                            exifData: {
-                                              ...file.exifData,
-                                              camera: e.target.value,
-                                            },
-                                          })
-                                        }
-                                        className="h-6 text-xs"
-                                        placeholder="Camera model"
-                                      />
-                                    </div>
-                                    <div>
-                                      <Label className="text-xs">Lens</Label>
-                                      <Input
-                                        value={file.exifData.lens || ""}
-                                        onChange={(e) =>
-                                          updateFile(file.id, {
-                                            exifData: {
-                                              ...file.exifData,
-                                              lens: e.target.value,
-                                            },
-                                          })
-                                        }
-                                        className="h-6 text-xs"
-                                        placeholder="Lens info"
-                                      />
-                                    </div>
-                                    <div>
-                                      <Label className="text-xs">
-                                        Focal Length
-                                      </Label>
-                                      <Input
-                                        value={file.exifData.focalLength || ""}
-                                        onChange={(e) =>
-                                          updateFile(file.id, {
-                                            exifData: {
-                                              ...file.exifData,
-                                              focalLength: e.target.value,
-                                            },
-                                          })
-                                        }
-                                        className="h-6 text-xs"
-                                        placeholder="mm"
-                                      />
-                                    </div>
-                                    <div>
-                                      <Label className="text-xs">
-                                        Aperture
-                                      </Label>
-                                      <Input
-                                        value={file.exifData.aperture || ""}
-                                        onChange={(e) =>
-                                          updateFile(file.id, {
-                                            exifData: {
-                                              ...file.exifData,
-                                              aperture: e.target.value,
-                                            },
-                                          })
-                                        }
-                                        className="h-6 text-xs"
-                                        placeholder="f/2.8"
-                                      />
-                                    </div>
-                                    <div>
-                                      <Label className="text-xs">
-                                        Shutter Speed
-                                      </Label>
-                                      <Input
-                                        value={file.exifData.shutterSpeed || ""}
-                                        onChange={(e) =>
-                                          updateFile(file.id, {
-                                            exifData: {
-                                              ...file.exifData,
-                                              shutterSpeed: e.target.value,
-                                            },
-                                          })
-                                        }
-                                        className="h-6 text-xs"
-                                        placeholder="1/60s"
-                                      />
-                                    </div>
-                                    <div>
-                                      <Label className="text-xs">ISO</Label>
-                                      <Input
-                                        value={file.exifData.iso || ""}
-                                        onChange={(e) =>
-                                          updateFile(file.id, {
-                                            exifData: {
-                                              ...file.exifData,
-                                              iso: e.target.value,
-                                            },
-                                          })
-                                        }
-                                        className="h-6 text-xs"
-                                        placeholder="400"
-                                      />
-                                    </div>
-                                    <div>
-                                      <Label className="text-xs">
-                                        Date Taken
-                                      </Label>
+                                      <Label className="text-xs">Date Taken</Label>
                                       <Input
                                         value={file.exifData.dateTaken || ""}
                                         onChange={(e) =>
@@ -1618,29 +1514,40 @@ export function SmartMediaUploader({
                                             },
                                           })
                                         }
-                                        className="h-6 text-xs"
-                                        placeholder="Date"
+                                        className="h-8 text-xs"
+                                        type="datetime-local"
                                       />
                                     </div>
-                                    <div>
-                                      <Label className="text-xs">
-                                        GPS Coordinates
-                                      </Label>
-                                      <Input
-                                        value={
-                                          file.exifData.gpsCoordinates || ""
-                                        }
-                                        onChange={(e) =>
-                                          updateFile(file.id, {
-                                            exifData: {
-                                              ...file.exifData,
-                                              gpsCoordinates: e.target.value,
-                                            },
-                                          })
-                                        }
-                                        className="h-6 text-xs"
-                                        placeholder="lat,lng"
-                                      />
+                                    <div className="space-y-2">
+                                      <Label className="text-xs">GPS Coordinates</Label>
+                                      <div className="grid grid-cols-2 gap-2">
+                                        <Input
+                                          value={file.exifData.gpsLatitude || ""}
+                                          onChange={(e) =>
+                                            updateFile(file.id, {
+                                              exifData: {
+                                                ...file.exifData,
+                                                gpsLatitude: e.target.value,
+                                              },
+                                            })
+                                          }
+                                          className="h-8 text-xs"
+                                          placeholder="Latitude"
+                                        />
+                                        <Input
+                                          value={file.exifData.gpsLongitude || ""}
+                                          onChange={(e) =>
+                                            updateFile(file.id, {
+                                              exifData: {
+                                                ...file.exifData,
+                                                gpsLongitude: e.target.value,
+                                              },
+                                            })
+                                          }
+                                          className="h-8 text-xs"
+                                          placeholder="Longitude"
+                                        />
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
