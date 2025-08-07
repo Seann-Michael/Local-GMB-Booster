@@ -125,8 +125,8 @@ export default function AgencyProjectCreate() {
         id: "user-3",
         name: "Emily Rodriguez",
         email: "emily@agency.com",
-        role: "SEO Specialist",
-        specialties: ["seo", "content-marketing", "analytics"],
+        role: "Local Optimization Specialist",
+        specialties: ["local-optimization", "content-marketing", "analytics"],
         isActive: true,
       },
       {
