@@ -137,16 +137,16 @@ export default function AuditReport() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate API call to fetch audit data
-    const fetchAuditData = async () => {
+    // Simulate API call to fetch geo scan data
+    const fetchGeoScanData = async () => {
       setLoading(true);
-      // In a real implementation, you would fetch data based on the ID
+      // In a real implementation, you would fetch geo grid scan data based on the ID
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      setAuditData(mockAuditData);
+      setScanData(mockGeoScanData);
       setLoading(false);
     };
 
-    fetchAuditData();
+    fetchGeoScanData();
   }, [id]);
 
   if (loading) {
