@@ -236,7 +236,9 @@ export default function AuditReport() {
           <CardHeader>
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
               <div className="space-y-2">
-                <CardTitle className="text-xl">{auditData.businessName}</CardTitle>
+                <CardTitle className="text-xl">
+                  {auditData.businessName}
+                </CardTitle>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <MapPin className="h-4 w-4" />
                   <span className="text-sm">{auditData.location}</span>
@@ -244,16 +246,24 @@ export default function AuditReport() {
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Clock className="h-4 w-4" />
                   <span className="text-sm">
-                    {auditData.scanType} • {new Date(auditData.scanDate).toLocaleString()}
+                    {auditData.scanType} •{" "}
+                    {new Date(auditData.scanDate).toLocaleString()}
                   </span>
                 </div>
               </div>
               <div className="text-center">
-                <div className={`text-4xl font-bold ${getScoreColor(auditData.overallScore)}`}>
+                <div
+                  className={`text-4xl font-bold ${getScoreColor(auditData.overallScore)}`}
+                >
                   {auditData.overallScore}
                 </div>
-                <div className="text-sm text-muted-foreground">Overall Score</div>
-                <Badge variant={getScoreVariant(auditData.overallScore)} className="mt-2">
+                <div className="text-sm text-muted-foreground">
+                  Overall Score
+                </div>
+                <Badge
+                  variant={getScoreVariant(auditData.overallScore)}
+                  className="mt-2"
+                >
                   {auditData.status}
                 </Badge>
               </div>
@@ -318,7 +328,9 @@ export default function AuditReport() {
                   <FileText className="h-5 w-5" />
                   Citations
                 </CardTitle>
-                <Badge variant={getScoreVariant(auditData.results.citations.score)}>
+                <Badge
+                  variant={getScoreVariant(auditData.results.citations.score)}
+                >
                   {auditData.results.citations.score}%
                 </Badge>
               </div>
@@ -335,7 +347,9 @@ export default function AuditReport() {
                   <div className="text-2xl font-bold text-muted-foreground">
                     {auditData.results.citations.total}
                   </div>
-                  <div className="text-xs text-muted-foreground">Total Possible</div>
+                  <div className="text-xs text-muted-foreground">
+                    Total Possible
+                  </div>
                 </div>
               </div>
               <Separator />
@@ -364,7 +378,9 @@ export default function AuditReport() {
                   <Star className="h-5 w-5" />
                   Reviews
                 </CardTitle>
-                <Badge variant={getScoreVariant(auditData.results.reviews.score)}>
+                <Badge
+                  variant={getScoreVariant(auditData.results.reviews.score)}
+                >
                   {auditData.results.reviews.score}%
                 </Badge>
               </div>
@@ -376,13 +392,17 @@ export default function AuditReport() {
                     {auditData.results.reviews.averageRating}
                     <Star className="h-4 w-4 fill-current" />
                   </div>
-                  <div className="text-xs text-muted-foreground">Average Rating</div>
+                  <div className="text-xs text-muted-foreground">
+                    Average Rating
+                  </div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-blue-600">
                     {auditData.results.reviews.totalReviews}
                   </div>
-                  <div className="text-xs text-muted-foreground">Total Reviews</div>
+                  <div className="text-xs text-muted-foreground">
+                    Total Reviews
+                  </div>
                 </div>
               </div>
               <Separator />
@@ -411,7 +431,9 @@ export default function AuditReport() {
                   <Smartphone className="h-5 w-5" />
                   Website
                 </CardTitle>
-                <Badge variant={getScoreVariant(auditData.results.website.score)}>
+                <Badge
+                  variant={getScoreVariant(auditData.results.website.score)}
+                >
                   {auditData.results.website.score}%
                 </Badge>
               </div>
@@ -437,12 +459,14 @@ export default function AuditReport() {
                   Recommendations
                 </h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
-                  {auditData.results.website.recommendations.map((rec, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <span className="text-green-500 mt-1">•</span>
-                      {rec}
-                    </li>
-                  ))}
+                  {auditData.results.website.recommendations.map(
+                    (rec, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <span className="text-green-500 mt-1">•</span>
+                        {rec}
+                      </li>
+                    ),
+                  )}
                 </ul>
               </div>
             </CardContent>
@@ -456,7 +480,9 @@ export default function AuditReport() {
                   <Share2 className="h-5 w-5" />
                   Social Media
                 </CardTitle>
-                <Badge variant={getScoreVariant(auditData.results.social.score)}>
+                <Badge
+                  variant={getScoreVariant(auditData.results.social.score)}
+                >
                   {auditData.results.social.score}%
                 </Badge>
               </div>
@@ -501,31 +527,41 @@ export default function AuditReport() {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-center">
                 <div>
-                  <div className={`text-lg font-bold ${getScoreColor(auditData.results.gmb.score)}`}>
+                  <div
+                    className={`text-lg font-bold ${getScoreColor(auditData.results.gmb.score)}`}
+                  >
                     {auditData.results.gmb.score}%
                   </div>
                   <div className="text-xs text-muted-foreground">GMB</div>
                 </div>
                 <div>
-                  <div className={`text-lg font-bold ${getScoreColor(auditData.results.citations.score)}`}>
+                  <div
+                    className={`text-lg font-bold ${getScoreColor(auditData.results.citations.score)}`}
+                  >
                     {auditData.results.citations.score}%
                   </div>
                   <div className="text-xs text-muted-foreground">Citations</div>
                 </div>
                 <div>
-                  <div className={`text-lg font-bold ${getScoreColor(auditData.results.reviews.score)}`}>
+                  <div
+                    className={`text-lg font-bold ${getScoreColor(auditData.results.reviews.score)}`}
+                  >
                     {auditData.results.reviews.score}%
                   </div>
                   <div className="text-xs text-muted-foreground">Reviews</div>
                 </div>
                 <div>
-                  <div className={`text-lg font-bold ${getScoreColor(auditData.results.website.score)}`}>
+                  <div
+                    className={`text-lg font-bold ${getScoreColor(auditData.results.website.score)}`}
+                  >
                     {auditData.results.website.score}%
                   </div>
                   <div className="text-xs text-muted-foreground">Website</div>
                 </div>
                 <div>
-                  <div className={`text-lg font-bold ${getScoreColor(auditData.results.social.score)}`}>
+                  <div
+                    className={`text-lg font-bold ${getScoreColor(auditData.results.social.score)}`}
+                  >
                     {auditData.results.social.score}%
                   </div>
                   <div className="text-xs text-muted-foreground">Social</div>
@@ -535,9 +571,10 @@ export default function AuditReport() {
               <div className="bg-muted/50 p-4 rounded-lg">
                 <h4 className="font-medium mb-2">Next Steps</h4>
                 <p className="text-sm text-muted-foreground">
-                  Focus on improving Google My Business profile completeness and website 
-                  technical SEO issues. Consider implementing a review management strategy 
-                  to increase response rates and maintain positive online reputation.
+                  Focus on improving Google My Business profile completeness and
+                  website technical SEO issues. Consider implementing a review
+                  management strategy to increase response rates and maintain
+                  positive online reputation.
                 </p>
               </div>
             </CardContent>
