@@ -679,7 +679,7 @@ export default function Maps() {
                         <div>
                           <div className="font-semibold text-slate-900">Analyzing Rankings</div>
                           <div className="text-sm text-slate-600">
-                            Processing {totalLocations} locations for "{activeKeyword.keyword}"
+                            Processing {totalLocations} locations for "{activeKeyword?.keyword || ''}"
                           </div>
                         </div>
                       </div>
