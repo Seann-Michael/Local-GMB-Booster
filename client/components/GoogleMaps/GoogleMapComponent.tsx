@@ -254,6 +254,89 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
     onMarkerClick,
   ]);
 
+  // Handle waypoint markers for audit reports
+  useEffect(() => {
+    if (!map || !waypoints.length) return;
+
+    // Clear existing waypoint markers
+    mapMarkers.forEach(marker => marker.setMap(null));
+
+    const waypointMarkers: google.maps.Marker[] = [];
+
+    waypoints.forEach((waypoint) => {
+      const getRankColor = (rank: number) => {
+        if (rank <= 3) return "#10b981"; // green
+        if (rank <= 10) return "#f59e0b"; // yellow
+        return "#ef4444"; // red
+      };
+
+      const getRankTextColor = (rank: number) => {
+        if (rank <= 3) return "#ffffff";
+        if (rank <= 10) return "#ffffff";
+        return "#ffffff";
+      };
+
+      // Create custom marker with rank number
+      const markerIcon = {
+        url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 32 40">
+            <path d="M16 0C7.163 0 0 7.163 0 16c0 8.837 16 24 16 24s16-15.163 16-24C32 7.163 24.837 0 16 0z"
+                  fill="${getRankColor(waypoint.rank)}" stroke="#fff" stroke-width="2"/>
+            <circle cx="16" cy="16" r="10" fill="${getRankColor(waypoint.rank)}"/>
+            <text x="16" y="21" text-anchor="middle" font-family="Arial, sans-serif"
+                  font-size="12" font-weight="bold" fill="${getRankTextColor(waypoint.rank)}">
+              ${waypoint.rank}
+            </text>
+          </svg>
+        `)}`,
+        scaledSize: new google.maps.Size(32, 40),
+        anchor: new google.maps.Point(16, 40),
+      };
+
+      // Create marker
+      const marker = new google.maps.Marker({
+        position: waypoint.position,
+        map: map,
+        icon: markerIcon,
+        title: `Rank #${waypoint.rank}`,
+        animation: selectedWaypoint === waypoint.id ? google.maps.Animation.BOUNCE : undefined,
+      });
+
+      // Add click listener for waypoints
+      marker.addListener("click", () => {
+        if (onWaypointClick) {
+          onWaypointClick(waypoint.id);
+        }
+      });
+
+      waypointMarkers.push(marker);
+    });
+
+    setMapMarkers(waypointMarkers);
+
+    // Fit bounds to show all waypoints
+    if (waypoints.length > 1) {
+      const bounds = new google.maps.LatLngBounds();
+      waypoints.forEach((waypoint) => {
+        bounds.extend(waypoint.position);
+      });
+      map.fitBounds(bounds);
+
+      // Add padding
+      setTimeout(() => {
+        if (map.getZoom() && map.getZoom()! > 15) {
+          map.setZoom(15);
+        }
+      }, 100);
+    }
+
+    // Call onMapLoad if provided
+    if (onMapLoad) {
+      onMapLoad(map);
+    }
+
+  }, [map, waypoints, selectedWaypoint, onWaypointClick, onMapLoad]);
+
   const openInGoogleMaps = () => {
     let url = "https://maps.google.com/";
 
