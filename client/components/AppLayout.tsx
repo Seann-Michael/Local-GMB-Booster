@@ -397,14 +397,14 @@ export function AppLayout({ children }: AppLayoutProps) {
         )}
       >
         {/* Mobile Sidebar Header */}
-        <div className="p-4 border-b bg-primary/5">
+        <div className="p-4 border-b bg-background">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary shadow-sm">
-                <Building2 className="h-5 w-5 text-primary-foreground" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary shadow-sm">
+                <Building2 className="h-4 w-4 text-primary-foreground" />
               </div>
               <div>
-                <span className="font-bold text-base text-foreground">
+                <span className="font-bold text-sm text-foreground">
                   Local SEO Ranker
                 </span>
               </div>
@@ -413,9 +413,9 @@ export function AppLayout({ children }: AppLayoutProps) {
               variant="ghost"
               size="icon"
               onClick={() => setMobileSidebarOpen(false)}
-              className="h-10 w-10 min-h-[44px] min-w-[44px] hover:bg-muted text-foreground"
+              className="h-8 w-8 hover:bg-muted text-foreground"
             >
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4" />
             </Button>
           </div>
         </div>
@@ -971,24 +971,24 @@ export function AppLayout({ children }: AppLayoutProps) {
         {/* Top Header */}
         <header
           className={cn(
-            "bg-background border-b px-2 md:px-4 py-3 fixed top-0 right-0 z-50 transition-all duration-300",
+            "bg-background border-b px-3 md:px-4 py-2 md:py-3 fixed top-0 right-0 z-50 transition-all duration-300 shadow-sm",
             "md:left-60", // Account for sidebar width on desktop
             sidebarCollapsed && "md:left-16", // Account for collapsed sidebar width
           )}
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 md:gap-4 min-w-0 flex-1">
+            <div className="flex items-center gap-1 md:gap-4 min-w-0 flex-1">
               {/* Mobile hamburger menu */}
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden text-foreground hover:bg-muted h-8 w-8"
+                className="md:hidden text-foreground hover:bg-muted h-9 w-9 rounded-md"
                 onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
               >
                 {mobileSidebarOpen ? (
-                  <X className="h-4 w-4" />
+                  <X className="h-5 w-5" />
                 ) : (
-                  <Menu className="h-4 w-4" />
+                  <Menu className="h-5 w-5" />
                 )}
               </Button>
 
@@ -1044,7 +1044,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               )}
             </div>
 
-            <div className="flex items-center -space-x-2 flex-shrink-0">
+            <div className="flex items-center gap-1 flex-shrink-0">
               {/* Functional Search - responsive */}
               <div className="hidden md:block">
                 <HeaderSearch />
@@ -1056,8 +1056,8 @@ export function AppLayout({ children }: AppLayoutProps) {
               {/* Theme Toggle - Now visible on mobile too */}
               <ThemeToggle />
 
-              {/* Zoom Controls - now visible on mobile */}
-              <div className="block">
+              {/* Zoom Controls - desktop only */}
+              <div className="hidden md:block">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -1168,10 +1168,10 @@ export function AppLayout({ children }: AppLayoutProps) {
         </header>
 
         {/* Mobile second header row with Add Project button */}
-        <div className="md:hidden bg-background border-b px-4 py-2">
+        <div className="md:hidden bg-background border-b px-4 py-3">
           <div className="flex justify-center">
             <Link to="/admin/add-project">
-              <Button size="sm" className="gap-2">
+              <Button size="sm" className="gap-2 shadow-sm">
                 <Plus className="h-4 w-4" />
                 <span>Add Project</span>
               </Button>
