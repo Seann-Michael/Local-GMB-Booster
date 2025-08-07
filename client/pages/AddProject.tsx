@@ -23,6 +23,7 @@ import { SmartDropdownInput } from "@/components/SmartDropdownInput";
 import { DROPDOWN_FIELDS } from "@/hooks/useDropdownState";
 import { generateProjectId } from "@/lib/idGenerator";
 import { AddressAutocomplete } from "@/components/GoogleMaps";
+import { GoogleMapsDebug } from "@/components/GoogleMapsDebug";
 
 interface EnhancedPhoto {
   url: string;
