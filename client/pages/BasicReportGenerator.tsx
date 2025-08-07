@@ -254,7 +254,7 @@ const getIcon = (category: string) => {
       return Target;
     case "Financial":
       return Zap;
-    case "SEO":
+    case "Local Visibility":
       return TrendingUp;
     case "Geographic":
       return Map;
