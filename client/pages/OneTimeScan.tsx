@@ -34,6 +34,7 @@ import { calculateScanCost, deductCredits, hasSufficientCredits, formatCredits }
 
 export default function OneTimeScan() {
   const navigate = useNavigate();
+  const { balance } = useCredits();
   const [businessName, setBusinessName] = useState("");
   const [businessAddress, setBusinessAddress] = useState("");
   const [keywords, setKeywords] = useState<string[]>([]);
@@ -41,6 +42,7 @@ export default function OneTimeScan() {
   const [gridPattern, setGridPattern] = useState("circular");
   const [gridRadius, setGridRadius] = useState("10");
   const [searchDepth, setSearchDepth] = useState("20");
+  const [isRunning, setIsRunning] = useState(false);
 
   const addKeyword = () => {
     if (newKeyword.trim() && !keywords.includes(newKeyword.trim())) {
