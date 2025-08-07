@@ -303,7 +303,7 @@ export default function Maps() {
                         {business.name}
                       </h3>
                       <Tooltip>
-                        <TooltipTrigger>
+                        <TooltipTrigger asChild>
                           <Button variant="ghost" size="sm" className="h-6 w-6 p-0 hover:bg-slate-100">
                             <Edit className="h-3 w-3" />
                           </Button>
