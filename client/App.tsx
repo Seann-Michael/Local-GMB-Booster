@@ -343,14 +343,14 @@ const App = () => (
                     </ProtectedRoute>
                   }
                 />
-                {/* <Route
+                <Route
                   path="/admin/audits/report/:id"
                   element={
                     <ProtectedRoute>
                       <AuditReport />
                     </ProtectedRoute>
                   }
-                /> */}
+                />
                 <Route
                   path="/admin/credits/purchase"
                   element={
