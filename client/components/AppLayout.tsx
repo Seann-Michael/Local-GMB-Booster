@@ -336,8 +336,29 @@ export function AppLayout({ children }: AppLayoutProps) {
       label: "Maps",
       href: "/admin/maps",
       icon: Target,
-      active: location.pathname === "/admin/maps",
+      active: location.pathname.startsWith("/admin/maps"),
       comingSoon: false,
+      hasSubmenu: true,
+      submenuItems: [
+        {
+          id: "one-time-scan",
+          label: "One Time Scan",
+          href: "/admin/maps/one-time-scan",
+          active: location.pathname === "/admin/maps/one-time-scan",
+        },
+        {
+          id: "recurring-scans",
+          label: "Recurring Scans",
+          href: "/admin/maps/recurring-scans",
+          active: location.pathname === "/admin/maps/recurring-scans",
+        },
+        {
+          id: "scan-history",
+          label: "Scan History",
+          href: "/admin/maps/scan-history",
+          active: location.pathname === "/admin/maps/scan-history",
+        },
+      ],
     },
   ];
 
