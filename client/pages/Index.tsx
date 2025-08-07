@@ -508,7 +508,7 @@ export default function Index() {
                     : "md:grid-cols-1 lg:grid-cols-2"
               }`}
             >
-              {filteredProjects.map((project) => (
+              {displayedProjects.map((project) => (
                 <div key={project.id} className="flex">
                   <ProjectCard
                     project={project}
