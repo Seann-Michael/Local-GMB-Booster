@@ -118,13 +118,13 @@ const mockGeoScanData: GeoGridScanData = {
   },
 };
 
-const getScoreColor = (score: number) => {
+const getVisibilityColor = (score: number) => {
   if (score >= 80) return "text-green-600";
   if (score >= 60) return "text-yellow-600";
   return "text-red-600";
 };
 
-const getScoreVariant = (score: number) => {
+const getVisibilityVariant = (score: number) => {
   if (score >= 80) return "default";
   if (score >= 60) return "secondary";
   return "destructive";
@@ -133,7 +133,7 @@ const getScoreVariant = (score: number) => {
 export default function AuditReport() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [auditData, setAuditData] = useState<AuditReportData | null>(null);
+  const [scanData, setScanData] = useState<GeoGridScanData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
