@@ -67,8 +67,11 @@ export const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
   useEffect(() => {
     const timer = setTimeout(() => {
       if (inputValue !== value && apiKeyAvailable) {
+        console.log("🔍 AddressAutocomplete: Searching for address:", inputValue);
         searchAddress(inputValue);
         setShowSuggestions(true);
+      } else if (!apiKeyAvailable) {
+        console.log("❌ AddressAutocomplete: Search skipped - API key not available");
       }
     }, 300);
 
