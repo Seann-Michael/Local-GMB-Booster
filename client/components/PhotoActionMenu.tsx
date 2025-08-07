@@ -39,6 +39,7 @@ export function PhotoActionMenu({
   onDelete,
   onToggleFavorite,
   onDownload,
+  onShare,
   onViewDetails,
   isFavorite = false,
   className = "",
