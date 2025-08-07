@@ -440,6 +440,61 @@ export function AppLayout({ children }: AppLayoutProps) {
         <nav className="flex-1 px-3 py-2">
           <div className="space-y-1">
             {sidebarItems.map((item) => {
+              // Special handling for Maps with submenu
+              if (item.id === "maps" && item.hasSubmenu) {
+                return (
+                  <div key={item.id}>
+                    <Button
+                      variant={item.active ? "secondary" : "ghost"}
+                      className={cn(
+                        "w-full justify-start gap-3 h-10 font-medium px-4",
+                        item.active &&
+                          "bg-primary/10 text-primary border-r-2 border-primary",
+                        !item.active &&
+                          "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                      )}
+                      size="sm"
+                      onClick={() => setMapsDropdownOpen(!mapsDropdownOpen)}
+                    >
+                      <item.icon
+                        className={cn("h-5 w-5", item.active && "text-primary")}
+                      />
+                      <span className="font-medium flex-1 text-left">
+                        {item.label}
+                      </span>
+                      {mapsDropdownOpen ? (
+                        <ChevronUp className="h-4 w-4" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4" />
+                      )}
+                    </Button>
+
+                    {/* Mobile Submenu */}
+                    {mapsDropdownOpen && (
+                      <div className="ml-6 mt-1 space-y-1">
+                        {item.submenuItems?.map((subItem) => (
+                          <Link key={subItem.id} to={subItem.href} onClick={() => setMobileSidebarOpen(false)}>
+                            <Button
+                              variant={subItem.active ? "secondary" : "ghost"}
+                              className={cn(
+                                "w-full justify-start h-9 font-medium text-sm px-3",
+                                subItem.active && "bg-primary/10 text-primary",
+                                !subItem.active &&
+                                  "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+                              )}
+                              size="sm"
+                            >
+                              {subItem.label}
+                            </Button>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              // Regular navigation items
               const NavButton = (
                 <Button
                   variant={item.active ? "secondary" : "ghost"}
