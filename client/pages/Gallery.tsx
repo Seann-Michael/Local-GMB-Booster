@@ -774,35 +774,7 @@ export default function Gallery() {
           </Card>
         ) : (
           <div className="space-y-8">
-            {/* Enhanced Media Viewer with Metadata */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Images className="h-5 w-5" />
-                  Media Gallery ({filteredPhotos.length} items)
-                  <Badge variant="secondary" className="ml-auto">
-                    Enhanced Metadata Available
-                  </Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <MediaViewer
-                  photos={filteredPhotos.map((photo) => ({
-                    url: photo.url,
-                    tags: photo.tags,
-                    uploadedAt: photo.uploadedAt,
-                    uploadedBy: photo.uploadedBy,
-                    isPrimary: photo.isPrimary,
-                  }))}
-                  selectedPhoto={selectedPhoto}
-                  onPhotoSelect={setSelectedPhoto}
-                  projectName="Gallery"
-                  showMetadata={true}
-                />
-              </CardContent>
-            </Card>
-
-            {/* Group photos by date - Traditional View */}
+            {/* Timeline View - Only View */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
