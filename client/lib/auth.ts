@@ -55,6 +55,14 @@ export function getCurrentUser(): User | null {
             phone: "(555) 234-5678",
             website: "https://smithproperties.com",
           },
+          {
+            id: "business-3",
+            name: "Elite Home Renovations",
+            description: "Premium kitchen and bathroom remodeling",
+            address: "789 Pine St, Springfield, IL 62703",
+            phone: "(555) 345-6789",
+            website: "https://elitehomerenos.com",
+          },
         ],
       };
       localStorage.setItem("auth_user", JSON.stringify(defaultUser));
