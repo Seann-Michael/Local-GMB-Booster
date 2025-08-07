@@ -210,25 +210,25 @@ export default function Maps() {
         position: { lat: point?.lat || 0, lng: point?.lng || 0 },
         title: point?.rank ? `Rank #${point.rank}` : "Not Ranking",
         content: `
-          <div class="p-3 min-w-56">
-            <div class="flex items-center justify-between mb-2">
-              <h3 class="font-semibold text-gray-900">${point?.address || 'Unknown Location'}</h3>
-              ${point?.rank ? 
-                `<span class="px-2 py-1 text-xs font-medium rounded-full ${
-                  (point?.rank || 0) <= 3 ? 'bg-green-100 text-green-800' :
-                  (point?.rank || 0) <= 10 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'
-                }">#${point?.rank}</span>` : 
-                '<span class="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-600 rounded-full">Not Ranking</span>'
+          <div style="padding: 12px; min-width: 224px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              <h3 style="font-weight: 600; color: #111827;">${point?.address || 'Unknown Location'}</h3>
+              ${point?.rank ?
+                `<span style="padding: 4px 8px; font-size: 12px; font-weight: 500; border-radius: 9999px; ${
+                  (point?.rank || 0) <= 3 ? 'background-color: #dcfce7; color: #166534;' :
+                  (point?.rank || 0) <= 10 ? 'background-color: #fef3c7; color: #92400e;' : 'background-color: #fee2e2; color: #991b1b;'
+                }">#${point?.rank}</span>` :
+                '<span style="padding: 4px 8px; font-size: 12px; font-weight: 500; background-color: #f3f4f6; color: #4b5563; border-radius: 9999px;">Not Ranking</span>'
               }
             </div>
-            <p class="text-sm text-gray-600 mb-3">Keyword: ${activeKeyword?.keyword || ''}</p>
+            <p style="font-size: 14px; color: #4b5563; margin-bottom: 12px;">Keyword: ${activeKeyword?.keyword || ''}</p>
             ${(point.competitors || []).length > 0 ? `
-              <div class="border-t pt-2">
-                <p class="text-xs font-medium text-gray-700 mb-1">Top Competitors:</p>
+              <div style="border-top: 1px solid #e5e7eb; padding-top: 8px;">
+                <p style="font-size: 12px; font-weight: 500; color: #374151; margin-bottom: 4px;">Top Competitors:</p>
                 ${(point.competitors || []).slice(0, 2).map(comp => `
-                  <div class="flex items-center justify-between text-xs mb-1">
-                    <span class="text-gray-600">${comp.name}</span>
-                    <span class="font-medium">#${comp.rank}</span>
+                  <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                    <span style="color: #4b5563;">${comp.name}</span>
+                    <span style="font-weight: 500;">#${comp.rank}</span>
                   </div>
                 `).join('')}
               </div>
