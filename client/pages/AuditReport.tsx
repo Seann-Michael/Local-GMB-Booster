@@ -28,7 +28,7 @@ import {
   BarChart3,
   Eye,
   Download,
-  Compare,
+  GitCompare,
   X,
   Crown,
   Award,
