@@ -52,6 +52,10 @@ export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
   className,
   markers = [],
   onMarkerClick,
+  waypoints = [],
+  onWaypointClick,
+  selectedWaypoint,
+  onMapLoad,
 }) => {
   const [mapMarkers, setMapMarkers] = useState<google.maps.Marker[]>([]);
   const [infoWindow, setInfoWindow] = useState<google.maps.InfoWindow | null>(
