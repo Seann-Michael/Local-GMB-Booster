@@ -52,12 +52,8 @@ export default function OneTimeScan() {
     setKeywords(keywords.filter((k) => k !== keyword));
   };
 
-  const handleAddressSelect = (
-    address: string,
-    placeId: string,
-    location: { lat: number; lng: number },
-  ) => {
-    setBusinessAddress(address);
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBusinessAddress(e.target.value);
   };
 
   const startScan = () => {
