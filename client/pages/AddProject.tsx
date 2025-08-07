@@ -277,6 +277,11 @@ export default function AddProject() {
           <h1 className="text-xl sm:text-2xl font-bold">Add New Project</h1>
         </div>
 
+        {/* Temporary Google Maps Debug Component */}
+        <div className="mb-6">
+          <GoogleMapsDebug />
+        </div>
+
         <form onSubmit={handleSubmit} className="max-w-full sm:max-w-2xl mx-auto space-y-6">
           <Card>
             <CardHeader>
