@@ -389,22 +389,22 @@ export function AppLayout({ children }: AppLayoutProps) {
         />
       )}
 
-      {/* Mobile Sidebar */}
+      {/* Mobile Sidebar - Same layout as desktop */}
       <div
         className={cn(
           "md:hidden fixed inset-y-0 left-0 w-60 bg-card border-r shadow-lg transform transition-transform duration-300 flex flex-col",
           mobileSidebarOpen ? "translate-x-0 z-50" : "-translate-x-full z-0",
         )}
       >
-        {/* Mobile Sidebar Header */}
-        <div className="p-4 border-b bg-background">
+        {/* Brand Logo - At top of sidebar with close button */}
+        <div className="px-4 pt-4 pb-3 border-b bg-background">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary shadow-sm">
                 <Building2 className="h-4 w-4 text-primary-foreground" />
               </div>
               <div>
-                <span className="font-bold text-sm text-foreground">
+                <span className="font-bold text-lg text-foreground">
                   Local SEO Ranker
                 </span>
               </div>
@@ -420,12 +420,176 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
         </div>
 
-        {/* Mobile Quick Action Button */}
+        {/* Business Selector */}
+        <div className="px-4 pt-4 pb-4 border-b bg-background">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="w-full justify-start p-3 h-auto bg-white border rounded-lg hover:bg-gray-50"
+              >
+                <div className="flex items-center gap-3 w-full">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={currentUser?.avatar} />
+                    <AvatarFallback className="text-xs">
+                      {currentUser?.name ? (
+                        currentUser.name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")
+                      ) : (
+                        <User className="h-4 w-4" />
+                      )}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 min-w-0 text-left">
+                    <p className="text-sm font-medium truncate">
+                      {businessName || "My Business"}
+                    </p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      ID: {currentBusiness?.accountId || "102-456-789"}
+                    </p>
+                  </div>
+                  <ChevronDown className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                </div>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-72">
+              <DropdownMenuLabel>Business Profiles</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+
+              {/* Search Bar */}
+              <div className="p-2">
+                <div className="relative">
+                  <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search business profiles..."
+                    value={profileSearchQuery}
+                    onChange={(e) => setProfileSearchQuery(e.target.value)}
+                    className="pl-8 h-8 text-sm"
+                  />
+                </div>
+              </div>
+              <DropdownMenuSeparator />
+
+              {/* Current Business Profile */}
+              {(!profileSearchQuery ||
+                `${businessName || "My Business"}`
+                  .toLowerCase()
+                  .includes(profileSearchQuery.toLowerCase())) && (
+                <DropdownMenuItem className="flex flex-col items-start p-3 bg-primary/5">
+                  <div className="flex items-center gap-3 w-full">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage src={currentUser?.avatar} />
+                      <AvatarFallback className="text-xs bg-primary/10">
+                        <Building2 className="h-5 w-5 text-primary" />
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <div className="font-medium text-sm">
+                        {businessName || "My Business"}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        ID: {currentBusiness?.accountId || "102-456-789"}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        Current Business
+                      </div>
+                    </div>
+                    <CheckCircle className="h-4 w-4 text-primary" />
+                  </div>
+                </DropdownMenuItem>
+              )}
+
+              {/* Super Admin Profile */}
+              {showSuperAdmin &&
+                (!profileSearchQuery ||
+                  "Super Admin System Administrator"
+                    .toLowerCase()
+                    .includes(profileSearchQuery.toLowerCase())) && (
+                  <DropdownMenuItem
+                    className="flex flex-col items-start p-3"
+                    onClick={() => navigate("/super-admin")}
+                  >
+                    <div className="flex items-center gap-3 w-full">
+                      <Avatar className="h-8 w-8">
+                        <AvatarFallback className="text-xs bg-purple-100">
+                          <Shield className="h-4 w-4 text-purple-600" />
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <div className="font-medium">Super Admin</div>
+                        <div className="text-xs text-muted-foreground">
+                          System Administrator
+                        </div>
+                      </div>
+                    </div>
+                  </DropdownMenuItem>
+                )}
+
+              {/* Available Business Profiles */}
+              {(userBusinesses || []).length > 0 && (
+                <>
+                  <div className="px-3 py-2">
+                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                      Available Businesses
+                    </p>
+                  </div>
+                  {(userBusinesses || [])
+                    .filter(
+                      (business) =>
+                        business.id !==
+                          (currentBusiness?.id || currentUser?.id) &&
+                        (!profileSearchQuery ||
+                          business.name
+                            .toLowerCase()
+                            .includes(profileSearchQuery.toLowerCase()) ||
+                          business.description
+                            ?.toLowerCase()
+                            .includes(profileSearchQuery.toLowerCase())),
+                    )
+                    .map((business) => (
+                      <DropdownMenuItem
+                        key={business.id}
+                        className="flex flex-col items-start p-3 cursor-pointer hover:bg-muted/50"
+                        onClick={() => handleBusinessSwitch(business.id)}
+                      >
+                        <div className="flex items-center gap-3 w-full">
+                          <Avatar className="h-10 w-10">
+                            <AvatarFallback className="text-xs bg-blue-100">
+                              <Building2 className="h-5 w-5 text-blue-600" />
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1">
+                            <div className="font-medium text-sm">
+                              {business.name}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              ID: {business.accountId}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {business.description || "Business Profile"}
+                            </div>
+                          </div>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-8 w-16 text-xs"
+                          >
+                            Switch
+                          </Button>
+                        </div>
+                      </DropdownMenuItem>
+                    ))}
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        {/* Quick Action Button */}
         <div className="p-3">
-          <Link
-            to="/admin/add-project"
-            onClick={() => setMobileSidebarOpen(false)}
-          >
+          <Link to="/admin/add-project" onClick={() => setMobileSidebarOpen(false)}>
             <Button
               className="w-full gap-2 shadow-sm bg-primary hover:bg-primary/90"
               size="sm"
@@ -436,7 +600,7 @@ export function AppLayout({ children }: AppLayoutProps) {
           </Link>
         </div>
 
-        {/* Mobile Main Navigation */}
+        {/* Main Navigation */}
         <nav className="flex-1 px-3 py-2">
           <div className="space-y-1">
             {sidebarItems.map((item) => {
@@ -469,15 +633,11 @@ export function AppLayout({ children }: AppLayoutProps) {
                       )}
                     </Button>
 
-                    {/* Mobile Submenu */}
+                    {/* Submenu */}
                     {mapsDropdownOpen && (
                       <div className="ml-6 mt-1 space-y-1">
                         {item.submenuItems?.map((subItem) => (
-                          <Link
-                            key={subItem.id}
-                            to={subItem.href}
-                            onClick={() => setMobileSidebarOpen(false)}
-                          >
+                          <Link key={subItem.id} to={subItem.href} onClick={() => setMobileSidebarOpen(false)}>
                             <Button
                               variant={subItem.active ? "secondary" : "ghost"}
                               className={cn(
@@ -552,15 +712,11 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
         </nav>
 
-        {/* Mobile Bottom Navigation */}
+        {/* Bottom Navigation */}
         <div className="px-3 py-2 border-t">
           <div className="space-y-1">
             {bottomSidebarItems.map((item) => (
-              <Link
-                key={item.id}
-                to={item.href}
-                onClick={() => setMobileSidebarOpen(false)}
-              >
+              <Link key={item.id} to={item.href} onClick={() => setMobileSidebarOpen(false)}>
                 <Button
                   variant={item.active ? "secondary" : "ghost"}
                   className={cn(
@@ -580,36 +736,18 @@ export function AppLayout({ children }: AppLayoutProps) {
               </Link>
             ))}
           </div>
-        </div>
 
-        {/* Mobile User Info */}
-        <div className="p-3 border-t bg-muted/20">
-          <div className="p-3 rounded-lg bg-background/50 border">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-8 w-8">
-                <AvatarImage src={currentUser?.avatar} />
-                <AvatarFallback className="text-xs">
-                  {currentUser?.name ? (
-                    currentUser.name
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")
-                  ) : (
-                    <User className="h-4 w-4" />
-                  )}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">
-                  {currentUser?.name || "User"}
-                </p>
-                <p className="text-xs text-muted-foreground truncate">
-                  {currentUser?.firstName && currentUser?.lastName
-                    ? `${currentUser.firstName} ${currentUser.lastName}`
-                    : "Business Owner"}
-                </p>
-              </div>
-            </div>
+          {/* Sidebar Collapse Toggle - Mobile doesn't need this but keeping structure consistent */}
+          <div className="mt-4 pt-4 border-t">
+            <Button
+              variant="ghost"
+              onClick={() => setMobileSidebarOpen(false)}
+              className="w-full gap-3 h-10 font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 px-4 justify-start"
+              size="sm"
+            >
+              <ChevronLeft className="h-5 w-5" />
+              <span className="font-medium">Close Menu</span>
+            </Button>
           </div>
         </div>
       </div>
