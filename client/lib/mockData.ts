@@ -168,7 +168,12 @@ const generateMockProjects = (): MockProject[] => {
     ["tile", "ceramic", "installation", "grout", "waterproofing"],
     ["electrical", "upgrade", "wiring", "panel", "outlets"],
     ["plumbing", "pipes", "fixtures", "repair", "installation"],
-    ["painting", "interior", "exterior", "primer", "finish"]
+    ["painting", "interior", "exterior", "primer", "finish"],
+    ["pool", "installation", "excavation", "liner", "filtration"],
+    ["garage", "addition", "concrete", "doors", "storage"],
+    ["fence", "installation", "privacy", "security", "landscaping"],
+    ["driveway", "paving", "asphalt", "concrete", "drainage"],
+    ["sunroom", "addition", "windows", "heating", "insulation"]
   ];
 
   const taskTitles = [
