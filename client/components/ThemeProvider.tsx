@@ -161,7 +161,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-md hover:bg-muted/80 text-foreground transition-colors"
+      className="h-10 w-10 rounded-md hover:bg-muted/80 text-foreground transition-colors flex items-center justify-center"
       aria-label={getLabel()}
       title={getLabel()}
     >
