@@ -143,7 +143,19 @@ export const loadGoogleMapsAPI = (): Promise<typeof google> => {
 
     script.onerror = (error) => {
       console.error("💥 Failed to load Google Maps API script:", error);
-      reject(new Error(`Failed to load Google Maps API script: ${error}`));
+      console.error("💥 Script src:", script.src);
+      console.error("💥 Error type:", typeof error);
+      console.error("💥 Error details:", error);
+
+      // Provide more detailed error information
+      let errorMessage = "Failed to load Google Maps API script";
+      if (error instanceof ErrorEvent) {
+        errorMessage += `: ${error.message}`;
+      } else if (error instanceof Event) {
+        errorMessage += ": Network or loading error";
+      }
+
+      reject(new Error(errorMessage));
     };
 
     document.head.appendChild(script);
