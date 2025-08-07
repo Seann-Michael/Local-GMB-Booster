@@ -28,6 +28,7 @@ const ScanHistory = lazy(() => import("./pages/ScanHistory"));
 // const AuditReport = lazy(() => import("./pages/AuditReportSimple"));
 const CreditPurchase = lazy(() => import("./pages/CreditPurchase"));
 const CreditHistory = lazy(() => import("./pages/CreditHistory"));
+const CreditAnalytics = lazy(() => import("./pages/CreditAnalytics"));
 const WorkflowBuilder = lazy(() => import("./pages/WorkflowBuilder"));
 
 import SuperAdmin from "./pages/SuperAdmin";
