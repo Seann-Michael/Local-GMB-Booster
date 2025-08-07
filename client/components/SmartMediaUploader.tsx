@@ -72,7 +72,6 @@ interface FileWithMetadata {
     creator?: string;
     dateCreated?: string;
     contentUrl?: string;
-    license?: string;
     [key: string]: any;
   };
   // Technical fields (auto-populated)
