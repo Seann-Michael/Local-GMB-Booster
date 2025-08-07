@@ -1,570 +1,547 @@
-import { useState, useCallback, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { AppLayout } from "@/components/AppLayout";
-// import { GoogleMapComponent } from "@/components/GoogleMaps/GoogleMapComponent";
-import {
-  MapPin,
-  Target,
-  Star,
-  Phone,
-  Globe,
-  Clock,
-  Users,
-  TrendingUp,
-  TrendingDown,
-  ArrowLeft,
-  Calendar,
-  BarChart3,
-  Eye,
-  Download,
-  GitCompare,
-  X,
-  Crown,
-  Award,
-  Shield,
-} from "lucide-react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { cn } from "@/lib/utils";
+import { AppLayout } from "@/components/AppLayout";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import {
+  ArrowLeft,
+  Download,
+  Share2,
+  MapPin,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  XCircle,
+  FileText,
+  Star,
+  TrendingUp,
+  Globe,
+  Smartphone,
+} from "lucide-react";
 
-// Mock data for the audit report
-const mockAuditData = {
-  id: "audit_001",
-  businessName: "Smith Construction LLC",
-  scanDate: "2024-12-14T10:30:00Z",
-  location: "Springfield, IL",
-  center: { lat: 39.7817, lng: -89.6501 },
-  keywords: [
-    "general contractor",
-    "home builder",
-    "construction company",
-    "home renovation",
-  ],
-  selectedKeyword: "general contractor",
-  waypoints: [
-    {
-      id: "wp_001",
-      position: { lat: 39.7917, lng: -89.6601 },
-      rank: 1,
-      businessProfile: {
-        name: "Smith Construction LLC",
-        rating: 4.8,
-        reviews: 247,
-        phone: "(217) 555-0123",
-        website: "smithconstruction.com",
-        address: "123 Main St, Springfield, IL",
-        hours: "Mon-Fri 8AM-6PM",
-        verified: true,
-      },
-      competitors: [
-        { name: "Elite Builders", rank: 2, rating: 4.6, reviews: 189 },
-        {
-          name: "Springfield Construction",
-          rank: 3,
-          rating: 4.4,
-          reviews: 156,
-        },
-        { name: "Premier Home Builders", rank: 4, rating: 4.5, reviews: 203 },
+interface AuditReportData {
+  id: string;
+  businessName: string;
+  location: string;
+  scanDate: string;
+  scanType: string;
+  overallScore: number;
+  status: "completed" | "in-progress" | "failed";
+  results: {
+    gmb: {
+      score: number;
+      issues: string[];
+      recommendations: string[];
+    };
+    citations: {
+      score: number;
+      found: number;
+      total: number;
+      issues: string[];
+    };
+    reviews: {
+      score: number;
+      averageRating: number;
+      totalReviews: number;
+      issues: string[];
+    };
+    website: {
+      score: number;
+      issues: string[];
+      recommendations: string[];
+    };
+    social: {
+      score: number;
+      platforms: string[];
+      issues: string[];
+    };
+  };
+}
+
+// Mock data for demonstration
+const mockAuditData: AuditReportData = {
+  id: "3",
+  businessName: "Local Restaurant & Grill",
+  location: "123 Main St, Downtown, CA 90210",
+  scanDate: "2024-01-20T10:30:00Z",
+  scanType: "Comprehensive Audit",
+  overallScore: 78,
+  status: "completed",
+  results: {
+    gmb: {
+      score: 85,
+      issues: ["Missing business hours for Sunday", "Need more photos"],
+      recommendations: [
+        "Add complete business hours",
+        "Upload high-quality photos of interior and menu",
+        "Respond to recent reviews",
       ],
     },
-    {
-      id: "wp_002",
-      position: { lat: 39.7717, lng: -89.6401 },
-      rank: 3,
-      businessProfile: {
-        name: "Smith Construction LLC",
-        rating: 4.8,
-        reviews: 247,
-        phone: "(217) 555-0123",
-        website: "smithconstruction.com",
-        address: "123 Main St, Springfield, IL",
-        hours: "Mon-Fri 8AM-6PM",
-        verified: true,
-      },
-      competitors: [
-        { name: "Elite Builders", rank: 1, rating: 4.6, reviews: 189 },
-        { name: "Premier Home Builders", rank: 2, rating: 4.5, reviews: 203 },
-        {
-          name: "Springfield Construction",
-          rank: 4,
-          rating: 4.4,
-          reviews: 156,
-        },
-        { name: "Quality Construction Co", rank: 5, rating: 4.3, reviews: 134 },
+    citations: {
+      score: 72,
+      found: 28,
+      total: 35,
+      issues: [
+        "Inconsistent phone number on 3 directories",
+        "Missing listings on key platforms",
       ],
     },
-    {
-      id: "wp_003",
-      position: { lat: 39.7617, lng: -89.6701 },
-      rank: 2,
-      businessProfile: {
-        name: "Smith Construction LLC",
-        rating: 4.8,
-        reviews: 247,
-        phone: "(217) 555-0123",
-        website: "smithconstruction.com",
-        address: "123 Main St, Springfield, IL",
-        hours: "Mon-Fri 8AM-6PM",
-        verified: true,
-      },
-      competitors: [
-        { name: "Elite Builders", rank: 1, rating: 4.6, reviews: 189 },
-        {
-          name: "Springfield Construction",
-          rank: 3,
-          rating: 4.4,
-          reviews: 156,
-        },
-        { name: "Premier Home Builders", rank: 4, rating: 4.5, reviews: 203 },
+    reviews: {
+      score: 88,
+      averageRating: 4.2,
+      totalReviews: 127,
+      issues: ["3 unanswered reviews from last month"],
+    },
+    website: {
+      score: 65,
+      issues: [
+        "Missing local schema markup",
+        "Page load speed could be improved",
+        "Missing contact page NAP consistency",
+      ],
+      recommendations: [
+        "Add LocalBusiness schema markup",
+        "Optimize images for faster loading",
+        "Ensure contact information matches GMB",
       ],
     },
-    {
-      id: "wp_004",
-      position: { lat: 39.7817, lng: -89.6301 },
-      rank: 5,
-      businessProfile: {
-        name: "Smith Construction LLC",
-        rating: 4.8,
-        reviews: 247,
-        phone: "(217) 555-0123",
-        website: "smithconstruction.com",
-        address: "123 Main St, Springfield, IL",
-        hours: "Mon-Fri 8AM-6PM",
-        verified: true,
-      },
-      competitors: [
-        { name: "Elite Builders", rank: 1, rating: 4.6, reviews: 189 },
-        { name: "Premier Home Builders", rank: 2, rating: 4.5, reviews: 203 },
-        {
-          name: "Springfield Construction",
-          rank: 3,
-          rating: 4.4,
-          reviews: 156,
-        },
-        { name: "Quality Construction Co", rank: 4, rating: 4.3, reviews: 134 },
-        { name: "Reliable Builders Inc", rank: 6, rating: 4.2, reviews: 98 },
+    social: {
+      score: 70,
+      platforms: ["Facebook", "Instagram"],
+      issues: [
+        "Twitter account inactive",
+        "Inconsistent posting schedule",
+        "Missing location tags on posts",
       ],
     },
-    {
-      id: "wp_005",
-      position: { lat: 39.7517, lng: -89.6601 },
-      rank: 7,
-      businessProfile: {
-        name: "Smith Construction LLC",
-        rating: 4.8,
-        reviews: 247,
-        phone: "(217) 555-0123",
-        website: "smithconstruction.com",
-        address: "123 Main St, Springfield, IL",
-        hours: "Mon-Fri 8AM-6PM",
-        verified: true,
-      },
-      competitors: [
-        { name: "Elite Builders", rank: 1, rating: 4.6, reviews: 189 },
-        { name: "Premier Home Builders", rank: 2, rating: 4.5, reviews: 203 },
-        {
-          name: "Springfield Construction",
-          rank: 3,
-          rating: 4.4,
-          reviews: 156,
-        },
-        { name: "Quality Construction Co", rank: 4, rating: 4.3, reviews: 134 },
-        { name: "Reliable Builders Inc", rank: 5, rating: 4.2, reviews: 98 },
-        { name: "Metro Construction", rank: 6, rating: 4.1, reviews: 87 },
-        { name: "City Wide Builders", rank: 8, rating: 4.0, reviews: 76 },
-      ],
-    },
-  ],
-  previousScans: [
-    { id: "scan_001", date: "2024-12-07", averageRank: 3.2 },
-    { id: "scan_002", date: "2024-11-30", averageRank: 3.8 },
-    { id: "scan_003", date: "2024-11-23", averageRank: 4.1 },
-  ],
+  },
+};
+
+const getScoreColor = (score: number) => {
+  if (score >= 80) return "text-green-600";
+  if (score >= 60) return "text-yellow-600";
+  return "text-red-600";
+};
+
+const getScoreVariant = (score: number) => {
+  if (score >= 80) return "default";
+  if (score >= 60) return "secondary";
+  return "destructive";
 };
 
 export default function AuditReport() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [selectedKeyword, setSelectedKeyword] = useState(
-    mockAuditData.selectedKeyword,
-  );
-  const [selectedWaypoint, setSelectedWaypoint] = useState<string | null>(null);
-  const [showComparison, setShowComparison] = useState(false);
-  const [comparisonScan, setComparisonScan] = useState<string>("");
-  const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
+  const [auditData, setAuditData] = useState<AuditReportData | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const selectedWaypointData = selectedWaypoint
-    ? mockAuditData.waypoints.find((wp) => wp.id === selectedWaypoint)
-    : null;
+  useEffect(() => {
+    // Simulate API call to fetch audit data
+    const fetchAuditData = async () => {
+      setLoading(true);
+      // In a real implementation, you would fetch data based on the ID
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setAuditData(mockAuditData);
+      setLoading(false);
+    };
 
-  const averageRank =
-    mockAuditData.waypoints.reduce((sum, wp) => sum + wp.rank, 0) /
-    mockAuditData.waypoints.length;
+    fetchAuditData();
+  }, [id]);
 
-  const handleWaypointClick = useCallback((waypointId: string) => {
-    setSelectedWaypoint(waypointId);
-  }, []);
-
-  const handleMapLoad = useCallback((map: google.maps.Map) => {
-    setMapInstance(map);
-  }, []);
-
-  const getRankColor = (rank: number) => {
-    if (rank <= 3) return "text-green-600 bg-green-100";
-    if (rank <= 10) return "text-yellow-600 bg-yellow-100";
-    return "text-red-600 bg-red-100";
-  };
-
-  const getRankIcon = (rank: number) => {
-    if (rank === 1) return <Crown className="h-4 w-4" />;
-    if (rank <= 3) return <Award className="h-4 w-4" />;
-    if (rank <= 10) return <Shield className="h-4 w-4" />;
-    return <TrendingDown className="h-4 w-4" />;
-  };
-
-  return (
-    <AppLayout>
-      <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <div className="bg-white border-b border-gray-200 px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate("/admin/audits/scan-history")}
-                className="gap-2"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Back to Scan History
-              </Button>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">
-                  {mockAuditData.businessName}
-                </h1>
-                <p className="text-sm text-gray-600">
-                  Audit Report •{" "}
-                  {new Date(mockAuditData.scanDate).toLocaleDateString()} •{" "}
-                  {mockAuditData.location}
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <Button variant="outline" size="sm" className="gap-2">
-                <Download className="h-4 w-4" />
-                Export Report
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-2"
-                onClick={() => setShowComparison(!showComparison)}
-              >
-                <GitCompare className="h-4 w-4" />
-                Compare Scans
-              </Button>
+  if (loading) {
+    return (
+      <AppLayout>
+        <div className="p-6 max-w-6xl mx-auto">
+          <div className="animate-pulse space-y-6">
+            <div className="h-8 bg-muted rounded w-1/3"></div>
+            <div className="h-32 bg-muted rounded"></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="h-48 bg-muted rounded"></div>
+              ))}
             </div>
           </div>
         </div>
+      </AppLayout>
+    );
+  }
 
-        <div className="flex h-[calc(100vh-140px)]">
-          {/* Left Panel - Controls */}
-          <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
-            {/* Keyword Selector */}
-            <div className="p-6 border-b border-gray-200">
-              <Label
-                htmlFor="keyword-select"
-                className="text-sm font-medium text-gray-700 mb-3 block"
-              >
-                Select Keyword
-              </Label>
-              <Select
-                value={selectedKeyword}
-                onValueChange={setSelectedKeyword}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {mockAuditData.keywords.map((keyword) => (
-                    <SelectItem key={keyword} value={keyword}>
-                      {keyword}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+  if (!auditData) {
+    return (
+      <AppLayout>
+        <div className="p-6 max-w-6xl mx-auto">
+          <Card>
+            <CardContent className="text-center py-12">
+              <FileText className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+              <h3 className="text-lg font-medium mb-2">Report Not Found</h3>
+              <p className="text-muted-foreground mb-4">
+                The audit report with ID "{id}" could not be found.
+              </p>
+              <Button onClick={() => navigate("/admin/audits")}>
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Audits
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </AppLayout>
+    );
+  }
 
-            {/* Comparison Panel */}
-            {showComparison && (
-              <div className="p-6 border-b border-gray-200 bg-blue-50">
-                <div className="flex items-center justify-between mb-3">
-                  <Label className="text-sm font-medium text-gray-700">
-                    Compare with Previous Scan
-                  </Label>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setShowComparison(false)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-                <Select
-                  value={comparisonScan}
-                  onValueChange={setComparisonScan}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select scan to compare" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {mockAuditData.previousScans.map((scan) => (
-                      <SelectItem key={scan.id} value={scan.id}>
-                        {new Date(scan.date).toLocaleDateString()} (Avg Rank:{" "}
-                        {scan.averageRank})
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-
-            {/* Summary Stats */}
-            <div className="p-6 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Audit Summary
-              </h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Total Waypoints</span>
-                  <Badge variant="outline">
-                    {mockAuditData.waypoints.length}
-                  </Badge>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Average Rank</span>
-                  <Badge className={getRankColor(averageRank)}>
-                    #{averageRank.toFixed(1)}
-                  </Badge>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Top 3 Positions</span>
-                  <Badge variant="secondary">
-                    {
-                      mockAuditData.waypoints.filter((wp) => wp.rank <= 3)
-                        .length
-                    }
-                  </Badge>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">
-                    Top 10 Positions
-                  </span>
-                  <Badge variant="secondary">
-                    {
-                      mockAuditData.waypoints.filter((wp) => wp.rank <= 10)
-                        .length
-                    }
-                  </Badge>
-                </div>
-              </div>
-            </div>
-
-            {/* Waypoint List */}
-            <div className="flex-1 p-6 overflow-y-auto">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Waypoints
-              </h3>
-              <div className="space-y-3">
-                {mockAuditData.waypoints.map((waypoint, index) => (
-                  <Card
-                    key={waypoint.id}
-                    className={cn(
-                      "cursor-pointer transition-all hover:shadow-md",
-                      selectedWaypoint === waypoint.id &&
-                        "ring-2 ring-blue-500 bg-blue-50",
-                    )}
-                    onClick={() => handleWaypointClick(waypoint.id)}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-sm font-medium">
-                            {index + 1}
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium text-gray-900">
-                              Waypoint {index + 1}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              {waypoint.position.lat.toFixed(4)},{" "}
-                              {waypoint.position.lng.toFixed(4)}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {getRankIcon(waypoint.rank)}
-                          <Badge className={getRankColor(waypoint.rank)}>
-                            #{waypoint.rank}
-                          </Badge>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Center Panel - Google Maps */}
-          <div className="flex-1 relative bg-gray-100 flex items-center justify-center">
-            <div className="text-center">
-              <MapPin className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                Interactive Google Maps
-              </h3>
-              <p className="text-gray-500 max-w-md">
-                Interactive Google Maps with custom ranking markers will appear
-                here. Waypoint markers will show ranking numbers and be
-                color-coded by performance.
+  return (
+    <AppLayout>
+      <div className="p-6 max-w-6xl mx-auto space-y-6">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate("/admin/audits")}
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back
+            </Button>
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight">
+                Audit Report #{auditData.id}
+              </h1>
+              <p className="text-muted-foreground">
+                Generated on {new Date(auditData.scanDate).toLocaleDateString()}
               </p>
             </div>
           </div>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm">
+              <Share2 className="h-4 w-4 mr-2" />
+              Share
+            </Button>
+            <Button variant="outline" size="sm">
+              <Download className="h-4 w-4 mr-2" />
+              Export PDF
+            </Button>
+          </div>
+        </div>
 
-          {/* Right Panel - Waypoint Details (slides in when waypoint selected) */}
-          {selectedWaypointData && (
-            <div className="w-96 bg-white border-l border-gray-200 shadow-lg animate-in slide-in-from-right duration-300">
-              <div className="p-6 border-b border-gray-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-semibold text-gray-900">
-                    Ranking Details
-                  </h2>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSelectedWaypoint(null)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
+        {/* Business Info & Overall Score */}
+        <Card>
+          <CardHeader>
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+              <div className="space-y-2">
+                <CardTitle className="text-xl">{auditData.businessName}</CardTitle>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <MapPin className="h-4 w-4" />
+                  <span className="text-sm">{auditData.location}</span>
                 </div>
-
-                {/* Business Profile */}
-                <Card className="mb-6">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg">
-                        {selectedWaypointData.businessProfile.name}
-                      </CardTitle>
-                      {selectedWaypointData.businessProfile.verified && (
-                        <Badge variant="secondary" className="gap-1">
-                          <Shield className="h-3 w-3" />
-                          Verified
-                        </Badge>
-                      )}
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex items-center gap-2">
-                      <Star className="h-4 w-4 text-yellow-500" />
-                      <span className="text-sm text-gray-900">
-                        {selectedWaypointData.businessProfile.rating} (
-                        {selectedWaypointData.businessProfile.reviews} reviews)
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Phone className="h-4 w-4 text-gray-500" />
-                      <span className="text-sm text-gray-600">
-                        {selectedWaypointData.businessProfile.phone}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Globe className="h-4 w-4 text-gray-500" />
-                      <span className="text-sm text-gray-600">
-                        {selectedWaypointData.businessProfile.website}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-gray-500" />
-                      <span className="text-sm text-gray-600">
-                        {selectedWaypointData.businessProfile.address}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-gray-500" />
-                      <span className="text-sm text-gray-600">
-                        {selectedWaypointData.businessProfile.hours}
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Current Rank */}
-                <div className="text-center py-4 mb-6 bg-gray-50 rounded-lg">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    {getRankIcon(selectedWaypointData.rank)}
-                    <span className="text-2xl font-bold text-gray-900">
-                      #{selectedWaypointData.rank}
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-600">
-                    Current Ranking for "{selectedKeyword}"
-                  </p>
-                </div>
-
-                {/* Competitors */}
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                    Nearby Competitors
-                  </h3>
-                  <div className="space-y-3">
-                    {selectedWaypointData.competitors.map((competitor) => (
-                      <Card
-                        key={competitor.name}
-                        className="border-l-4 border-l-gray-300"
-                      >
-                        <CardContent className="p-4">
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="font-medium text-gray-900">
-                              {competitor.name}
-                            </span>
-                            <div className="flex items-center gap-2">
-                              {getRankIcon(competitor.rank)}
-                              <Badge
-                                className={getRankColor(competitor.rank)}
-                                variant="outline"
-                              >
-                                #{competitor.rank}
-                              </Badge>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-4 text-sm text-gray-600">
-                            <div className="flex items-center gap-1">
-                              <Star className="h-3 w-3 text-yellow-500" />
-                              <span>{competitor.rating}</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Users className="h-3 w-3" />
-                              <span>{competitor.reviews} reviews</span>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Clock className="h-4 w-4" />
+                  <span className="text-sm">
+                    {auditData.scanType} • {new Date(auditData.scanDate).toLocaleString()}
+                  </span>
                 </div>
               </div>
+              <div className="text-center">
+                <div className={`text-4xl font-bold ${getScoreColor(auditData.overallScore)}`}>
+                  {auditData.overallScore}
+                </div>
+                <div className="text-sm text-muted-foreground">Overall Score</div>
+                <Badge variant={getScoreVariant(auditData.overallScore)} className="mt-2">
+                  {auditData.status}
+                </Badge>
+              </div>
             </div>
-          )}
+          </CardHeader>
+        </Card>
+
+        {/* Audit Results Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Google My Business */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2">
+                  <Globe className="h-5 w-5" />
+                  Google My Business
+                </CardTitle>
+                <Badge variant={getScoreVariant(auditData.results.gmb.score)}>
+                  {auditData.results.gmb.score}%
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {auditData.results.gmb.issues.length > 0 && (
+                <div>
+                  <h4 className="font-medium text-sm mb-2 flex items-center gap-1">
+                    <AlertCircle className="h-4 w-4 text-yellow-500" />
+                    Issues Found
+                  </h4>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    {auditData.results.gmb.issues.map((issue, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <span className="text-red-500 mt-1">•</span>
+                        {issue}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              <div>
+                <h4 className="font-medium text-sm mb-2 flex items-center gap-1">
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  Recommendations
+                </h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  {auditData.results.gmb.recommendations.map((rec, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <span className="text-green-500 mt-1">•</span>
+                      {rec}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Citations */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  Citations
+                </CardTitle>
+                <Badge variant={getScoreVariant(auditData.results.citations.score)}>
+                  {auditData.results.citations.score}%
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4 text-center">
+                <div>
+                  <div className="text-2xl font-bold text-green-600">
+                    {auditData.results.citations.found}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Found</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-muted-foreground">
+                    {auditData.results.citations.total}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Total Possible</div>
+                </div>
+              </div>
+              <Separator />
+              <div>
+                <h4 className="font-medium text-sm mb-2 flex items-center gap-1">
+                  <AlertCircle className="h-4 w-4 text-yellow-500" />
+                  Issues Found
+                </h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  {auditData.results.citations.issues.map((issue, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <span className="text-red-500 mt-1">•</span>
+                      {issue}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Reviews */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2">
+                  <Star className="h-5 w-5" />
+                  Reviews
+                </CardTitle>
+                <Badge variant={getScoreVariant(auditData.results.reviews.score)}>
+                  {auditData.results.reviews.score}%
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 gap-4 text-center">
+                <div>
+                  <div className="text-2xl font-bold text-yellow-600 flex items-center justify-center gap-1">
+                    {auditData.results.reviews.averageRating}
+                    <Star className="h-4 w-4 fill-current" />
+                  </div>
+                  <div className="text-xs text-muted-foreground">Average Rating</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-blue-600">
+                    {auditData.results.reviews.totalReviews}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Total Reviews</div>
+                </div>
+              </div>
+              <Separator />
+              <div>
+                <h4 className="font-medium text-sm mb-2 flex items-center gap-1">
+                  <AlertCircle className="h-4 w-4 text-yellow-500" />
+                  Action Required
+                </h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  {auditData.results.reviews.issues.map((issue, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <span className="text-red-500 mt-1">•</span>
+                      {issue}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Website */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2">
+                  <Smartphone className="h-5 w-5" />
+                  Website
+                </CardTitle>
+                <Badge variant={getScoreVariant(auditData.results.website.score)}>
+                  {auditData.results.website.score}%
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <h4 className="font-medium text-sm mb-2 flex items-center gap-1">
+                  <XCircle className="h-4 w-4 text-red-500" />
+                  Issues Found
+                </h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  {auditData.results.website.issues.map((issue, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <span className="text-red-500 mt-1">•</span>
+                      {issue}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-medium text-sm mb-2 flex items-center gap-1">
+                  <TrendingUp className="h-4 w-4 text-green-500" />
+                  Recommendations
+                </h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  {auditData.results.website.recommendations.map((rec, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <span className="text-green-500 mt-1">•</span>
+                      {rec}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Social Media */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2">
+                  <Share2 className="h-5 w-5" />
+                  Social Media
+                </CardTitle>
+                <Badge variant={getScoreVariant(auditData.results.social.score)}>
+                  {auditData.results.social.score}%
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <h4 className="font-medium text-sm mb-2">Active Platforms</h4>
+                <div className="flex flex-wrap gap-1">
+                  {auditData.results.social.platforms.map((platform, index) => (
+                    <Badge key={index} variant="outline" className="text-xs">
+                      {platform}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+              <Separator />
+              <div>
+                <h4 className="font-medium text-sm mb-2 flex items-center gap-1">
+                  <AlertCircle className="h-4 w-4 text-yellow-500" />
+                  Areas for Improvement
+                </h4>
+                <ul className="text-sm text-muted-foreground space-y-1">
+                  {auditData.results.social.issues.map((issue, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <span className="text-yellow-500 mt-1">•</span>
+                      {issue}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Summary Card */}
+          <Card className="md:col-span-2">
+            <CardHeader>
+              <CardTitle>Audit Summary</CardTitle>
+              <CardDescription>
+                Key findings and next steps for improving local SEO performance
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-center">
+                <div>
+                  <div className={`text-lg font-bold ${getScoreColor(auditData.results.gmb.score)}`}>
+                    {auditData.results.gmb.score}%
+                  </div>
+                  <div className="text-xs text-muted-foreground">GMB</div>
+                </div>
+                <div>
+                  <div className={`text-lg font-bold ${getScoreColor(auditData.results.citations.score)}`}>
+                    {auditData.results.citations.score}%
+                  </div>
+                  <div className="text-xs text-muted-foreground">Citations</div>
+                </div>
+                <div>
+                  <div className={`text-lg font-bold ${getScoreColor(auditData.results.reviews.score)}`}>
+                    {auditData.results.reviews.score}%
+                  </div>
+                  <div className="text-xs text-muted-foreground">Reviews</div>
+                </div>
+                <div>
+                  <div className={`text-lg font-bold ${getScoreColor(auditData.results.website.score)}`}>
+                    {auditData.results.website.score}%
+                  </div>
+                  <div className="text-xs text-muted-foreground">Website</div>
+                </div>
+                <div>
+                  <div className={`text-lg font-bold ${getScoreColor(auditData.results.social.score)}`}>
+                    {auditData.results.social.score}%
+                  </div>
+                  <div className="text-xs text-muted-foreground">Social</div>
+                </div>
+              </div>
+              <Separator />
+              <div className="bg-muted/50 p-4 rounded-lg">
+                <h4 className="font-medium mb-2">Next Steps</h4>
+                <p className="text-sm text-muted-foreground">
+                  Focus on improving Google My Business profile completeness and website 
+                  technical SEO issues. Consider implementing a review management strategy 
+                  to increase response rates and maintain positive online reputation.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </AppLayout>
