@@ -44,6 +44,7 @@ import {
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { formatTableDate } from "@/lib/dateUtils";
+import { ReviewRequest } from "@/components/ReviewRequest";
 
 interface ReviewRequest {
   id: string;
