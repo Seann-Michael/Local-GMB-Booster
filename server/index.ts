@@ -49,5 +49,12 @@ export function createServer() {
   app.post("/api/dataforseo/proxy", handleDataForSEOProxy);
   app.get("/api/dataforseo/status", handleDataForSEOStatus);
 
+  // Twilio Routes
+  app.post("/api/twilio/sms/send", handleSendSMS);
+  app.post("/api/twilio/review-request", handleSendReviewRequest);
+  app.post("/api/webhooks/twilio", handleTwilioWebhook);
+  app.get("/api/twilio/test", handleTwilioTest);
+  app.get("/api/twilio/status", handleTwilioStatus);
+
   return app;
 }
