@@ -123,10 +123,15 @@ export function PhotoActionMenu({
           <Download className="h-4 w-4" />
           Download
         </DropdownMenuItem>
-        
+
+        <DropdownMenuItem onClick={handleShare} className="gap-2">
+          <Share className="h-4 w-4" />
+          Share
+        </DropdownMenuItem>
+
         <DropdownMenuItem onClick={handleViewDetails} className="gap-2">
           <Info className="h-4 w-4" />
-          Details
+          Edit Metadata
         </DropdownMenuItem>
         
         <DropdownMenuSeparator />
