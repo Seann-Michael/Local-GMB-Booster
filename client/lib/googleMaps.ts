@@ -26,6 +26,15 @@ export interface AddressComponent {
 export const getGoogleMapsApiKey = (): string => {
   try {
     console.log("🗝️ Getting Google Maps API key...");
+
+    // First check environment variable (Netlify/production)
+    const envApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+    if (envApiKey) {
+      console.log("✅ Using environment variable API key");
+      return envApiKey;
+    }
+
+    console.log("⚙️ Environment variable not found, checking localStorage...");
     const stored = localStorage.getItem("third_party_integrations");
     console.log("📦 Raw localStorage data:", stored);
 
