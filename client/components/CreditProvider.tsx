@@ -52,21 +52,31 @@ export function CreditProvider({ children }: CreditProviderProps) {
   };
 
   useEffect(() => {
-    // Initialize credit system
-    initializeCreditSystem();
-    refreshCredits();
+    try {
+      // Initialize credit system
+      initializeCreditSystem();
+      refreshCredits();
 
-    // Listen for credit updates
-    const handleCreditUpdate = (event: CustomEvent) => {
-      setBalance(event.detail.balance);
-      refreshCredits(); // Refresh transactions as well
-    };
+      // Listen for credit updates
+      const handleCreditUpdate = (event: CustomEvent) => {
+        try {
+          setBalance(event.detail.balance);
+          refreshCredits(); // Refresh transactions as well
+        } catch (error) {
+          console.error('Error handling credit update:', error);
+        }
+      };
 
-    window.addEventListener('creditsUpdated', handleCreditUpdate as EventListener);
+      window.addEventListener('creditsUpdated', handleCreditUpdate as EventListener);
 
-    return () => {
-      window.removeEventListener('creditsUpdated', handleCreditUpdate as EventListener);
-    };
+      return () => {
+        window.removeEventListener('creditsUpdated', handleCreditUpdate as EventListener);
+      };
+    } catch (error) {
+      console.error('Error initializing credit system:', error);
+      // Ensure we're not in loading state even if initialization fails
+      setIsLoading(false);
+    }
   }, []);
 
   const value: CreditContextType = {
