@@ -196,7 +196,8 @@ export function AppLayout({ children }: AppLayoutProps) {
   // Load business name and zoom level on mount and listen for changes
   useEffect(() => {
     const loadBusinessName = () => {
-      const name = localStorage.getItem("business_name") || "My Business";
+      const business = getCurrentBusiness();
+      const name = business?.name || localStorage.getItem("business_name") || "My Business";
       console.log("Loading business name:", name);
       setBusinessName(name);
     };
