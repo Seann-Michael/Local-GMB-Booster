@@ -836,6 +836,60 @@ const App = () => (
                   element={<Navigate to="/admin/audits/one-time-scan" replace />}
                 />
 
+                {/* Builder.io compatibility routes (URLs without separators) */}
+                <Route
+                  path="/AddProject"
+                  element={<Navigate to="/admin/add-project" replace />}
+                />
+                <Route
+                  path="/AdminProjects"
+                  element={<Navigate to="/admin/projects" replace />}
+                />
+                <Route
+                  path="/AdminGallery"
+                  element={<Navigate to="/admin/gallery" replace />}
+                />
+                <Route
+                  path="/AdminSettings"
+                  element={<Navigate to="/admin/settings" replace />}
+                />
+                <Route
+                  path="/AdminReviews"
+                  element={<Navigate to="/admin/reviews" replace />}
+                />
+                <Route
+                  path="/AdminReports"
+                  element={<Navigate to="/admin/reports" replace />}
+                />
+                <Route
+                  path="/AdminAudits"
+                  element={<Navigate to="/admin/audits" replace />}
+                />
+                <Route
+                  path="/AdminMaps"
+                  element={<Navigate to="/admin/maps" replace />}
+                />
+                <Route
+                  path="/RecurringScans"
+                  element={<Navigate to="/admin/audits/recurring-scans" replace />}
+                />
+                <Route
+                  path="/ScanHistory"
+                  element={<Navigate to="/admin/audits/scan-history" replace />}
+                />
+                <Route
+                  path="/CreditPurchase"
+                  element={<Navigate to="/admin/credits/purchase" replace />}
+                />
+                <Route
+                  path="/CreditHistory"
+                  element={<Navigate to="/admin/credits/history" replace />}
+                />
+                <Route
+                  path="/CreditAnalytics"
+                  element={<Navigate to="/admin/credits/analytics" replace />}
+                />
+
                 {/* Agency Admin Legacy URL Redirects */}
                 <Route
                   path="/agency"
