@@ -354,6 +354,14 @@ export function AppLayout({ children }: AppLayoutProps) {
         },
       ],
     },
+    {
+      id: "google-maps-test",
+      label: "Maps Test",
+      href: "/admin/google-maps-test",
+      icon: Monitor,
+      active: location.pathname === "/admin/google-maps-test",
+      comingSoon: false,
+    },
   ];
 
   const bottomSidebarItems = [
