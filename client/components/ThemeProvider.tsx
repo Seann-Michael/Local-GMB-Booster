@@ -32,7 +32,7 @@ export function ThemeProvider({
     () => (localStorage.getItem(storageKey) as Theme) || defaultTheme,
   );
 
-  const [actualTheme, setActualTheme] = useState<"dark" | "light">("light");
+  const [actualTheme, setActualTheme] = useState<"dark" | "light">("dark");
 
   useEffect(() => {
     const root = window.document.documentElement;
