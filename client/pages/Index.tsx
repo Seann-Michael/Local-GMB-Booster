@@ -533,6 +533,19 @@ export default function Index() {
                 </div>
               ))}
             </div>
+
+            {/* Load More / View All Button */}
+            {!showAllProjects && filteredProjects.length > 20 && (
+              <div className="flex justify-center mt-8">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowAllProjects(true)}
+                  className="px-8"
+                >
+                  View All {filteredProjects.length} Projects
+                </Button>
+              </div>
+            )}
           </>
         )}
       </div>
