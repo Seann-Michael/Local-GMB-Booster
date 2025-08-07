@@ -1086,8 +1086,10 @@ export function AppLayout({ children }: AppLayoutProps) {
           style={{ paddingBottom: "calc(80px + env(safe-area-inset-bottom))" }}
         >
           {children}
-          {/* Quick Action Bar */}
         </main>
+
+        {/* Footer */}
+        <Footer />
 
         {/* Mobile Bottom Navigation - Fixed with safe area support */}
         <nav
