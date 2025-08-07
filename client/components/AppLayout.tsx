@@ -16,6 +16,7 @@ import { HeaderSearch } from "@/components/SmartSearch";
 import { ThemeToggle } from "@/components/ThemeProvider";
 import { AppNotifications } from "@/components/UpdateNotification";
 import { NotificationDropdown } from "@/components/NotificationDropdown";
+import { Footer } from "@/components/Footer";
 import {
   DropdownMenu,
   DropdownMenuContent,
