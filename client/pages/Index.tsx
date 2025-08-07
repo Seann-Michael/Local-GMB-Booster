@@ -411,7 +411,9 @@ export default function Index() {
           </div>
         </div>
 
-        {filteredProjects.length === 0 ? (
+        {isLoading ? (
+          <ProjectGridSkeleton />
+        ) : filteredProjects.length === 0 ? (
           <Card className="text-center py-12">
             <CardContent>
               <FolderOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
