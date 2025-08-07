@@ -26,9 +26,11 @@ import {
   Info,
   ArrowRight,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { useCredits } from "@/components/CreditProvider";
+import { calculateScanCost, deductCredits, hasSufficientCredits, formatCredits } from "@/lib/creditSystem";
 
 export default function OneTimeScan() {
   const navigate = useNavigate();
