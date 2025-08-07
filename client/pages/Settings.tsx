@@ -243,7 +243,7 @@ const createDefaultSettings = (): SettingsData => ({
   // Business Info
   businessName: "Joe's Pizza",
   businessType: "restaurant",
-  subAccountId: "SUB_" + Math.random().toString(36).substr(2, 9).toUpperCase(),
+  subAccountId: "102-456-789", // Business Account ID
   businessLogo: "",
   contactName: "Joe Smith",
   email: "joe@joespizza.com",
