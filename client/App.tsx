@@ -376,6 +376,14 @@ const App = () => (
                   }
                 />
                 <Route
+                  path="/admin/report-generator"
+                  element={
+                    <ProtectedRoute>
+                      <ReportGenerator />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
                   path="/admin/workflow-builder"
                   element={
                     <ProtectedRoute>
