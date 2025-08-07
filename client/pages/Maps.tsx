@@ -206,9 +206,9 @@ export default function Maps() {
       }
 
       markers.push({
-        id: point.id,
-        position: { lat: point.lat, lng: point.lng },
-        title: point.rank ? `Rank #${point.rank}` : "Not Ranking",
+        id: point?.id || `marker-${index}`,
+        position: { lat: point?.lat || 0, lng: point?.lng || 0 },
+        title: point?.rank ? `Rank #${point.rank}` : "Not Ranking",
         content: `
           <div class="p-3 min-w-56">
             <div class="flex items-center justify-between mb-2">
