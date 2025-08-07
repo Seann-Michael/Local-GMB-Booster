@@ -224,40 +224,40 @@ export default function AuditReport() {
           </div>
         </div>
 
-        {/* Business Info & Overall Score */}
+        {/* Business Info & Overall Visibility */}
         <Card>
           <CardHeader>
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
               <div className="space-y-2">
                 <CardTitle className="text-xl">
-                  {auditData.businessName}
+                  {scanData.businessName}
                 </CardTitle>
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <MapPin className="h-4 w-4" />
-                  <span className="text-sm">{auditData.location}</span>
+                  <Globe className="h-4 w-4" />
+                  <span className="text-sm">{scanData.gmbProfileUrl}</span>
                 </div>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Clock className="h-4 w-4" />
                   <span className="text-sm">
-                    {auditData.scanType} •{" "}
-                    {new Date(auditData.scanDate).toLocaleString()}
+                    {scanData.scanType} •{" "}
+                    {new Date(scanData.scanDate).toLocaleString()}
                   </span>
                 </div>
               </div>
               <div className="text-center">
                 <div
-                  className={`text-4xl font-bold ${getScoreColor(auditData.overallScore)}`}
+                  className={`text-4xl font-bold ${getVisibilityColor(scanData.overallVisibility)}`}
                 >
-                  {auditData.overallScore}
+                  {scanData.overallVisibility}%
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  Overall Score
+                  Overall Visibility
                 </div>
                 <Badge
-                  variant={getScoreVariant(auditData.overallScore)}
+                  variant={getVisibilityVariant(scanData.overallVisibility)}
                   className="mt-2"
                 >
-                  {auditData.status}
+                  {scanData.status}
                 </Badge>
               </div>
             </div>
