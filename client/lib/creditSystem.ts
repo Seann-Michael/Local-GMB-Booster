@@ -132,23 +132,64 @@ export function getCreditTransactions(): CreditTransaction[] {
   }
 }
 
-// Calculate scan cost
+// Calculate scan cost (backward compatibility)
 export function calculateScanCost(
   waypointCount: number,
   keywordCount: number,
   isRecurring: boolean = false,
 ): number {
-  const { baseCredits, perWaypoint, perKeyword, recurring } = CREDIT_PRICING;
+  return calculateAdvancedScanCost({
+    waypointCount,
+    keywordCount,
+    depth: 20, // Default depth
+    apiCallType: 'circle', // Default to circle
+    priority: 'standard', // Default priority
+    isRecurring,
+  });
+}
 
+// Calculate scan cost with all options
+export function calculateAdvancedScanCost(options: ScanOptions): number {
+  const {
+    waypointCount,
+    keywordCount,
+    depth,
+    apiCallType,
+    priority,
+    isRecurring = false,
+  } = options;
+
+  const {
+    baseCredits,
+    perWaypoint,
+    perKeyword,
+    perDepthUnit,
+    apiCallTypeMultiplier,
+    priorityMultiplier,
+    recurring,
+  } = CREDIT_PRICING;
+
+  // Calculate base cost
+  const depthUnits = Math.ceil(depth / 10); // Each 10 results = 1 unit
   let totalCost =
-    baseCredits + waypointCount * perWaypoint + keywordCount * perKeyword;
+    baseCredits +
+    waypointCount * perWaypoint +
+    keywordCount * perKeyword +
+    depthUnits * perDepthUnit;
 
-  if (isRecurring) {
-    totalCost += recurring!.setupFee;
-    totalCost = Math.round(totalCost * recurring!.perExecution);
+  // Apply API call type multiplier
+  totalCost *= apiCallTypeMultiplier[apiCallType];
+
+  // Apply priority multiplier
+  totalCost *= priorityMultiplier[priority];
+
+  // Handle recurring scans
+  if (isRecurring && recurring) {
+    totalCost += recurring.setupFee;
+    totalCost = Math.round(totalCost * recurring.perExecution);
   }
 
-  return totalCost;
+  return Math.round(totalCost);
 }
 
 // Check if user has sufficient credits
