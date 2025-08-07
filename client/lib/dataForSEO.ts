@@ -213,6 +213,8 @@ class DataForSEOService {
           device: params.device || "desktop",
           os: params.os || "windows",
           depth: params.depth || 20,
+          se_domain: "google.com",
+          calculate_rectangles: true,
         },
       ];
 
