@@ -122,10 +122,7 @@ const App = () => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <ThemeProvider
-          defaultTheme="light"
-          storageKey="local-seo-ranker-theme"
-        >
+        <ThemeProvider defaultTheme="light" storageKey="local-seo-ranker-theme">
           <TooltipProvider>
             <Sonner />
             <Suspense

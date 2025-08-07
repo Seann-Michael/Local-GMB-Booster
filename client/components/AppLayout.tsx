@@ -473,7 +473,11 @@ export function AppLayout({ children }: AppLayoutProps) {
                     {mapsDropdownOpen && (
                       <div className="ml-6 mt-1 space-y-1">
                         {item.submenuItems?.map((subItem) => (
-                          <Link key={subItem.id} to={subItem.href} onClick={() => setMobileSidebarOpen(false)}>
+                          <Link
+                            key={subItem.id}
+                            to={subItem.href}
+                            onClick={() => setMobileSidebarOpen(false)}
+                          >
                             <Button
                               variant={subItem.active ? "secondary" : "ghost"}
                               className={cn(
