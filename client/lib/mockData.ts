@@ -194,7 +194,7 @@ const generateMockProjects = (): MockProject[] => {
 
   const projects: MockProject[] = [];
 
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 20; i++) {
     const projectId = `project-${i + 1}`;
     const startDate = new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1);
     const endDate = new Date(startDate.getTime() + (Math.random() * 90 + 30) * 24 * 60 * 60 * 1000);
