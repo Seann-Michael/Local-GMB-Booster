@@ -81,6 +81,7 @@ export default function AdminReviews() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortBy, setSortBy] = useState("sentAt");
+  const [showReviewRequest, setShowReviewRequest] = useState(false);
 
   useEffect(() => {
     loadReviewData();
