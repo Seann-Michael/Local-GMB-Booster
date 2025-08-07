@@ -578,7 +578,7 @@ export default function Maps() {
 
                   {/* Quick Location Results */}
                   <div className="space-y-2 max-h-32 overflow-y-auto">
-                    {rankingData.slice(0, 8).map((result, index) => (
+                    {(rankingData || []).slice(0, 8).map((result, index) => (
                       <div
                         key={result.id}
                         className="flex items-center justify-between p-2 bg-white rounded-lg border border-slate-200 text-sm"
