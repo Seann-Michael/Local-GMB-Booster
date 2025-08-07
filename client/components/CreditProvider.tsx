@@ -38,6 +38,14 @@ export function CreditProvider({ children }: CreditProviderProps) {
       setTransactions(currentTransactions);
     } catch (error) {
       console.error('Error refreshing credits:', error);
+      // Set fallback values on error
+      setBalance({
+        total: 250000,
+        used: 0,
+        remaining: 250000,
+        lastUpdated: new Date().toISOString(),
+      });
+      setTransactions([]);
     } finally {
       setIsLoading(false);
     }
