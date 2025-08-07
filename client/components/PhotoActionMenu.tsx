@@ -25,6 +25,7 @@ interface PhotoActionMenuProps {
   onDelete?: (photo: any) => void;
   onToggleFavorite?: (photo: any) => void;
   onDownload?: (photo: any) => void;
+  onShare?: (photo: any) => void;
   onViewDetails?: (photo: any) => void;
   isFavorite?: boolean;
   className?: string;
