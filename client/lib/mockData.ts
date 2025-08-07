@@ -581,6 +581,22 @@ class MockDataService {
   public initialize() {
     if (this.initialized) return;
 
+    // Check if we're in Builder.io editor context
+    const isBuilderIoEditor =
+      typeof window !== 'undefined' &&
+      (window.location.href.includes('builder.io') ||
+       window.parent !== window ||
+       document.referrer.includes('builder.io'));
+
+    if (isBuilderIoEditor) {
+      // Use minimal mock data for Builder.io to prevent rendering issues
+      this.projects = this.getMinimalMockProjects();
+      this.users = this.getMinimalMockUsers();
+      this.clients = this.getMinimalMockClients();
+      this.initialized = true;
+      return;
+    }
+
     // TEMPORARY: Force reinitialization to update photo structure with fallback URLs
     const forceReinit = false; // Changed to false after first load
     if (forceReinit) {
