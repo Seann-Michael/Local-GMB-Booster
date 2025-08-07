@@ -468,11 +468,11 @@ export default function Index() {
             <div className="block md:hidden">
               {filteredProjects.length > 3 && (
                 <div className="text-xs text-muted-foreground mb-3 text-center">
-                  {filteredProjects.length} projects found
+                  Showing {displayedProjects.length} of {filteredProjects.length} projects
                 </div>
               )}
               <div className="space-y-4">
-                {filteredProjects.map((project) => (
+                {displayedProjects.map((project) => (
                   <ProjectCard
                     key={project.id}
                     project={project}
