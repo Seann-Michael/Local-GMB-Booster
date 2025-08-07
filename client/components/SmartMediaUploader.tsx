@@ -1095,8 +1095,8 @@ export function SmartMediaUploader({
                                 />
                               </div>
 
-                              {/* Core Metadata Grid */}
-                              <div className="grid grid-cols-1 gap-3">
+                              {/* Core Metadata Grid - Condensed */}
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
                                   <Label className="text-sm md:text-xs font-medium">
                                     Tags
@@ -1128,21 +1128,23 @@ export function SmartMediaUploader({
                                     className="h-10 md:h-8 text-base md:text-sm"
                                   />
                                 </div>
-                                <div>
-                                  <Label className="text-sm md:text-xs font-medium">
-                                    Alt Text
-                                  </Label>
-                                  <Input
-                                    value={file.altText}
-                                    onChange={(e) =>
-                                      updateFile(file.id, {
-                                        altText: e.target.value,
-                                      })
-                                    }
-                                    placeholder="Accessibility description"
-                                    className="h-10 md:h-8 text-base md:text-sm"
-                                  />
-                                </div>
+                              </div>
+
+                              {/* Alt Text - Full Width */}
+                              <div>
+                                <Label className="text-sm md:text-xs font-medium">
+                                  Alt Text
+                                </Label>
+                                <Input
+                                  value={file.altText}
+                                  onChange={(e) =>
+                                    updateFile(file.id, {
+                                      altText: e.target.value,
+                                    })
+                                  }
+                                  placeholder="Accessibility description"
+                                  className="h-10 md:h-8 text-base md:text-sm"
+                                />
                               </div>
 
                               {/* Attribution */}
