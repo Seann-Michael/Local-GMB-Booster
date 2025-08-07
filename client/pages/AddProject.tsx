@@ -23,7 +23,10 @@ import { SmartDropdownInput } from "@/components/SmartDropdownInput";
 import { DROPDOWN_FIELDS } from "@/hooks/useDropdownState";
 import { generateProjectId } from "@/lib/idGenerator";
 import { AddressAutocomplete } from "@/components/GoogleMaps";
-import { getGoogleMapsApiKey, validateGoogleMapsApiKey } from "@/lib/googleMaps";
+import {
+  getGoogleMapsApiKey,
+  validateGoogleMapsApiKey,
+} from "@/lib/googleMaps";
 
 interface EnhancedPhoto {
   url: string;
@@ -58,11 +61,21 @@ export default function AddProject() {
 
       // Check environment variable directly
       const envApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-      console.log("🌍 Environment variable VITE_GOOGLE_MAPS_API_KEY:", envApiKey ? `${envApiKey.substring(0, 10)}...${envApiKey.substring(envApiKey.length - 6)}` : "Not Set");
+      console.log(
+        "🌍 Environment variable VITE_GOOGLE_MAPS_API_KEY:",
+        envApiKey
+          ? `${envApiKey.substring(0, 10)}...${envApiKey.substring(envApiKey.length - 6)}`
+          : "Not Set",
+      );
 
       // Test getGoogleMapsApiKey function
       const apiKey = getGoogleMapsApiKey();
-      console.log("🔑 getGoogleMapsApiKey() returned:", apiKey ? `${apiKey.substring(0, 10)}...${apiKey.substring(apiKey.length - 6)}` : "No Key");
+      console.log(
+        "🔑 getGoogleMapsApiKey() returned:",
+        apiKey
+          ? `${apiKey.substring(0, 10)}...${apiKey.substring(apiKey.length - 6)}`
+          : "No Key",
+      );
 
       // Test API key validation if we have one
       if (apiKey) {
@@ -74,7 +87,10 @@ export default function AddProject() {
           if (validation.valid) {
             console.log("✅ Google Maps API key is valid and working");
           } else {
-            console.error("❌ Google Maps API key validation failed:", validation.error);
+            console.error(
+              "❌ Google Maps API key validation failed:",
+              validation.error,
+            );
           }
         } catch (error) {
           console.error("💥 API validation error:", error);
