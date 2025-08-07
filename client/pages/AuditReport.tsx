@@ -71,59 +71,48 @@ interface GeoGridScanData {
 }
 
 // Mock data for demonstration
-const mockAuditData: AuditReportData = {
+const mockGeoScanData: GeoGridScanData = {
   id: "3",
   businessName: "Local Restaurant & Grill",
-  location: "123 Main St, Downtown, CA 90210",
+  gmbProfileUrl: "https://business.google.com/n/12345678901234567890",
   scanDate: "2024-01-20T10:30:00Z",
-  scanType: "Comprehensive Audit",
-  overallScore: 78,
+  scanType: "5km Grid Scan - Downtown Area",
+  overallVisibility: 73,
   status: "completed",
-  results: {
-    gmb: {
-      score: 85,
-      issues: ["Missing business hours for Sunday", "Need more photos"],
-      recommendations: [
-        "Add complete business hours",
-        "Upload high-quality photos of interior and menu",
-        "Respond to recent reviews",
-      ],
+  scanResults: {
+    gridCoverage: {
+      totalGridPoints: 100,
+      scannedPoints: 97,
+      visibility: 73,
+      averageRank: 2.8,
     },
-    citations: {
-      score: 72,
-      found: 28,
-      total: 35,
-      issues: [
-        "Inconsistent phone number on 3 directories",
-        "Missing listings on key platforms",
-      ],
+    localPack: {
+      appearances: 68,
+      totalSearches: 100,
+      averagePosition: 2.3,
+      visibility: 68,
     },
-    reviews: {
-      score: 88,
-      averageRating: 4.2,
-      totalReviews: 127,
-      issues: ["3 unanswered reviews from last month"],
+    organicResults: {
+      appearances: 45,
+      totalSearches: 100,
+      averagePosition: 4.7,
+      visibility: 45,
     },
-    website: {
-      score: 65,
-      issues: [
-        "Missing local schema markup",
-        "Page load speed could be improved",
-        "Missing contact page NAP consistency",
-      ],
-      recommendations: [
-        "Add LocalBusiness schema markup",
-        "Optimize images for faster loading",
-        "Ensure contact information matches GMB",
-      ],
+    geoDistribution: {
+      strongAreas: ["Downtown Core", "Business District", "Main Street"],
+      weakAreas: ["North Suburbs", "Industrial Zone"],
+      noVisibility: ["Airport Area", "Highway Corridor"],
     },
-    social: {
-      score: 70,
-      platforms: ["Facebook", "Instagram"],
-      issues: [
-        "Twitter account inactive",
-        "Inconsistent posting schedule",
-        "Missing location tags on posts",
+    keywordPerformance: {
+      topKeywords: [
+        { keyword: "restaurant near me", rank: 1.8, visibility: 85 },
+        { keyword: "best local food", rank: 2.4, visibility: 72 },
+        { keyword: "downtown dining", rank: 3.1, visibility: 58 },
+      ],
+      improvementOpportunities: [
+        "Target 'lunch specials' keyword in northern areas",
+        "Improve visibility for 'family restaurant' searches",
+        "Optimize for 'outdoor seating' queries",
       ],
     },
   },
