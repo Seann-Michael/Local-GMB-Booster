@@ -212,7 +212,9 @@ export default function Index() {
         <EnhancedBroadcastAlert />
 
         <div className="mb-6">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-4">Projects</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold mb-4">
+            Projects ({filteredProjects.length})
+          </h1>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             {/* Project Sort Buttons */}
             <div className="overflow-x-auto scrollbar-hide">
