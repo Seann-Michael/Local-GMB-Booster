@@ -158,12 +158,12 @@ export default function Maps() {
   const [rankingData] = useState(MOCK_RANKING_DATA);
   
   // Calculated stats
-  const totalLocations = rankingData.length;
-  const rankingLocations = rankingData.filter(r => r.rank !== null).length;
-  const top3Count = rankingData.filter(r => r.rank && r.rank <= 3).length;
-  const top10Count = rankingData.filter(r => r.rank && r.rank <= 10).length;
-  const averageRank = rankingLocations > 0 
-    ? rankingData.filter(r => r.rank).reduce((sum, r) => sum + r.rank!, 0) / rankingLocations 
+  const totalLocations = (rankingData || []).length;
+  const rankingLocations = (rankingData || []).filter(r => r?.rank !== null).length;
+  const top3Count = (rankingData || []).filter(r => r?.rank && r.rank <= 3).length;
+  const top10Count = (rankingData || []).filter(r => r?.rank && r.rank <= 10).length;
+  const averageRank = rankingLocations > 0
+    ? (rankingData || []).filter(r => r?.rank).reduce((sum, r) => sum + (r?.rank || 0), 0) / rankingLocations
     : 0;
 
   const centerLocation = { lat: 38.2493, lng: -122.0397 };
