@@ -52,7 +52,7 @@ export const getGoogleMapsApiKey = (): string => {
 
     const integrations = JSON.parse(stored || "[]");
     console.log("🔍 Parsed integrations:", integrations);
-    console.log("🔢 Number of integrations:", integrations.length);
+    console.log("�� Number of integrations:", integrations.length);
 
     const googleMapsIntegration = integrations.find((int: any) => {
       console.log(
@@ -65,7 +65,7 @@ export const getGoogleMapsApiKey = (): string => {
     if (googleMapsIntegration?.apiKey) {
       let apiKey = googleMapsIntegration.apiKey;
       console.log("🔑 API key found, length:", apiKey.length);
-      console.log("�� API key starts with:", apiKey.substring(0, 10));
+      console.log("🔑 API key starts with:", apiKey.substring(0, 10));
       console.log("🔑 API key ends with:", apiKey.substring(apiKey.length - 6));
 
       // If it's a masked key, warn and return empty (will fall back to iframe)
@@ -94,6 +94,19 @@ export const getGoogleMapsApiKey = (): string => {
 // Load Google Maps API
 export const loadGoogleMapsAPI = (): Promise<typeof google> => {
   return new Promise((resolve, reject) => {
+    // Check if we're in Builder.io editor environment
+    const isBuilderIoEditor =
+      typeof window !== 'undefined' &&
+      (window.location.href.includes('builder.io') ||
+       window.parent !== window ||
+       document.referrer.includes('builder.io'));
+
+    if (isBuilderIoEditor) {
+      console.log("🚫 Builder.io editor detected - Google Maps API loading disabled");
+      reject(new Error("Google Maps API disabled in Builder.io editor"));
+      return;
+    }
+
     if (typeof google !== "undefined" && google.maps) {
       resolve(google);
       return;
