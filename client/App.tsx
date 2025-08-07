@@ -25,7 +25,7 @@ const Maps = lazy(() => import("./pages/Maps"));
 const OneTimeScan = lazy(() => import("./pages/OneTimeScan"));
 const RecurringScans = lazy(() => import("./pages/RecurringScans"));
 const ScanHistory = lazy(() => import("./pages/ScanHistory"));
-const AuditReport = lazy(() => import("./pages/AuditReportTest"));
+const AuditReport = lazy(() => import("./pages/AuditReportSimple"));
 const WorkflowBuilder = lazy(() => import("./pages/WorkflowBuilder"));
 
 import SuperAdmin from "./pages/SuperAdmin";
