@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,12 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -24,52 +18,36 @@ import {
 } from "@/components/ui/tooltip";
 import { AppLayout } from "@/components/AppLayout";
 import { GoogleMapComponent } from "@/components/GoogleMaps/GoogleMapComponent";
-import { AddressAutocomplete } from "@/components/GoogleMaps/AddressAutocomplete";
 import {
   MapPin,
   Target,
   Play,
-  Pause,
-  Square,
   Settings,
   Download,
-  RefreshCw,
-  AlertCircle,
   CheckCircle,
-  Clock,
   TrendingUp,
-  TrendingDown,
   Users,
   Star,
   Grid3X3,
   Circle,
   Crosshair,
-  Map,
   Zap,
   BarChart3,
-  Info,
   Loader2,
   Building2,
   Phone,
   Globe,
   Edit,
-  ChevronDown,
-  ChevronUp,
   Eye,
   EyeOff,
   Award,
   Crown,
   Shield,
-  Sparkles,
-  Filter,
   Search,
-  Calendar,
-  Clock4,
-  MapIcon,
   Layers,
   X,
 } from "lucide-react";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { toast } from "sonner";
 
 // Mock data for demonstration
@@ -94,35 +72,30 @@ const MOCK_KEYWORDS = [
 // Generate mock ranking data
 const generateMockRankingData = () => {
   const center = { lat: 38.2493, lng: -122.0397 };
-  const radius = 0.1; // roughly 10km in degrees
+  const radius = 0.1;
   const results = [];
-
-  // Generate circular pattern of waypoints with ranking data
+  
   for (let i = 0; i < 24; i++) {
     const angle = (i / 24) * 2 * Math.PI;
-    const distance = 0.02 + Math.random() * radius;
+    const distance = 0.02 + (Math.random() * radius);
     const lat = center.lat + Math.cos(angle) * distance;
     const lng = center.lng + Math.sin(angle) * distance;
-
-    // Generate realistic ranking data
-    const distanceFromCenter = Math.sqrt(
-      Math.pow(lat - center.lat, 2) + Math.pow(lng - center.lng, 2),
-    );
+    
+    const distanceFromCenter = Math.sqrt(Math.pow(lat - center.lat, 2) + Math.pow(lng - center.lng, 2));
     let rank = null;
-
-    // Businesses closer to center tend to rank better
+    
     const rankProbability = Math.max(0, 1 - (distanceFromCenter / radius) * 2);
-
+    
     if (Math.random() < rankProbability) {
       if (distanceFromCenter < radius * 0.3) {
-        rank = Math.floor(Math.random() * 3) + 1; // Top 3
+        rank = Math.floor(Math.random() * 3) + 1;
       } else if (distanceFromCenter < radius * 0.6) {
-        rank = Math.floor(Math.random() * 7) + 4; // 4-10
+        rank = Math.floor(Math.random() * 7) + 4;
       } else {
-        rank = Math.floor(Math.random() * 10) + 11; // 11-20
+        rank = Math.floor(Math.random() * 10) + 11;
       }
     }
-
+    
     results.push({
       id: `waypoint-${i}`,
       lat,
@@ -133,10 +106,10 @@ const generateMockRankingData = () => {
         { name: "Tony's Pizza Palace", rank: 1, rating: 4.5, reviews: 89 },
         { name: "Mario's Italian Bistro", rank: 2, rating: 4.3, reviews: 156 },
         { name: "Fairfield Pizza Co", rank: 3, rating: 4.2, reviews: 203 },
-      ].slice(0, Math.floor(Math.random() * 3) + 1),
+      ].slice(0, Math.floor(Math.random() * 3) + 1)
     });
   }
-
+  
   return results;
 };
 
@@ -154,28 +127,18 @@ export default function Maps() {
   const [gridPattern, setGridPattern] = useState("circular");
   const [gridDensity, setGridDensity] = useState("medium");
   const [gridRadius, setGridRadius] = useState("10");
-
-  // Analysis state
+  
   const [analysisComplete, setAnalysisComplete] = useState(true);
   const [rankingData] = useState(MOCK_RANKING_DATA);
-
-  // Calculated stats
+  
+  // Calculated stats with null checks
   const totalLocations = (rankingData || []).length;
-  const rankingLocations = (rankingData || []).filter(
-    (r) => r?.rank !== null,
-  ).length;
-  const top3Count = (rankingData || []).filter(
-    (r) => r?.rank && r.rank <= 3,
-  ).length;
-  const top10Count = (rankingData || []).filter(
-    (r) => r?.rank && r.rank <= 10,
-  ).length;
-  const averageRank =
-    rankingLocations > 0
-      ? (rankingData || [])
-          .filter((r) => r?.rank)
-          .reduce((sum, r) => sum + (r?.rank || 0), 0) / rankingLocations
-      : 0;
+  const rankingLocations = (rankingData || []).filter(r => r?.rank !== null).length;
+  const top3Count = (rankingData || []).filter(r => r?.rank && r.rank <= 3).length;
+  const top10Count = (rankingData || []).filter(r => r?.rank && r.rank <= 10).length;
+  const averageRank = rankingLocations > 0 
+    ? (rankingData || []).filter(r => r?.rank).reduce((sum, r) => sum + (r?.rank || 0), 0) / rankingLocations 
+    : 0;
 
   const centerLocation = { lat: 38.2493, lng: -122.0397 };
 
@@ -183,13 +146,12 @@ export default function Maps() {
     setIsAnalyzing(true);
     setProgress(0);
     setAnalysisComplete(false);
-
-    // Simulate analysis progress
+    
     for (let i = 0; i <= 100; i += 5) {
       setProgress(i);
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100));
     }
-
+    
     setIsAnalyzing(false);
     setAnalysisComplete(true);
     toast.success("Ranking analysis completed!");
@@ -200,18 +162,18 @@ export default function Maps() {
 
     // Add ranking waypoint markers
     (rankingData || []).forEach((point, index) => {
-      let color = "#9CA3AF"; // Gray for not ranking
+      let color = "#9CA3AF";
       let size = "small";
-
+      
       if (point?.rank) {
         if (point.rank <= 3) {
-          color = "#10B981"; // Green for top 3
+          color = "#10B981";
           size = "large";
         } else if (point.rank <= 10) {
-          color = "#F59E0B"; // Yellow for top 10
+          color = "#F59E0B";
           size = "medium";
         } else {
-          color = "#EF4444"; // Red for lower ranking
+          color = "#EF4444";
           size = "small";
         }
       }
@@ -223,40 +185,27 @@ export default function Maps() {
         content: `
           <div style="padding: 12px; min-width: 224px;">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-              <h3 style="font-weight: 600; color: #111827;">${point?.address || "Unknown Location"}</h3>
-              ${
-                point?.rank
-                  ? `<span style="padding: 4px 8px; font-size: 12px; font-weight: 500; border-radius: 9999px; ${
-                      (point?.rank || 0) <= 3
-                        ? "background-color: #dcfce7; color: #166534;"
-                        : (point?.rank || 0) <= 10
-                          ? "background-color: #fef3c7; color: #92400e;"
-                          : "background-color: #fee2e2; color: #991b1b;"
-                    }">#${point?.rank}</span>`
-                  : '<span style="padding: 4px 8px; font-size: 12px; font-weight: 500; background-color: #f3f4f6; color: #4b5563; border-radius: 9999px;">Not Ranking</span>'
+              <h3 style="font-weight: 600; color: #111827;">${point?.address || 'Unknown Location'}</h3>
+              ${point?.rank ? 
+                `<span style="padding: 4px 8px; font-size: 12px; font-weight: 500; border-radius: 9999px; ${
+                  (point?.rank || 0) <= 3 ? 'background-color: #dcfce7; color: #166534;' :
+                  (point?.rank || 0) <= 10 ? 'background-color: #fef3c7; color: #92400e;' : 'background-color: #fee2e2; color: #991b1b;'
+                }">#${point?.rank}</span>` : 
+                '<span style="padding: 4px 8px; font-size: 12px; font-weight: 500; background-color: #f3f4f6; color: #4b5563; border-radius: 9999px;">Not Ranking</span>'
               }
             </div>
-            <p style="font-size: 14px; color: #4b5563; margin-bottom: 12px;">Keyword: ${activeKeyword?.keyword || ""}</p>
-            ${
-              (point.competitors || []).length > 0
-                ? `
+            <p style="font-size: 14px; color: #4b5563; margin-bottom: 12px;">Keyword: ${activeKeyword?.keyword || ''}</p>
+            ${(point?.competitors || []).length > 0 ? `
               <div style="border-top: 1px solid #e5e7eb; padding-top: 8px;">
                 <p style="font-size: 12px; font-weight: 500; color: #374151; margin-bottom: 4px;">Top Competitors:</p>
-                ${(point.competitors || [])
-                  .slice(0, 2)
-                  .map(
-                    (comp) => `
+                ${(point?.competitors || []).slice(0, 2).map(comp => `
                   <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
-                    <span style="color: #4b5563;">${comp.name}</span>
-                    <span style="font-weight: 500;">#${comp.rank}</span>
+                    <span style="color: #4b5563;">${comp?.name}</span>
+                    <span style="font-weight: 500;">#${comp?.rank}</span>
                   </div>
-                `,
-                  )
-                  .join("")}
+                `).join('')}
               </div>
-            `
-                : ""
-            }
+            ` : ''}
           </div>
         `,
         color,
@@ -276,7 +225,7 @@ export default function Maps() {
           <p style="font-size: 14px; color: #4b5563; margin-bottom: 8px;">${business.address}</p>
           <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
             <div style="display: flex; color: #fbbf24;">
-              ${[1, 2, 3, 4, 5].map((i) => `<svg style="width: 12px; height: 12px; fill: currentColor;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`).join("")}
+              ${[1,2,3,4,5].map(i => `<svg style="width: 12px; height: 12px; fill: currentColor;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`).join('')}
             </div>
             <span style="font-size: 14px; color: #4b5563;">${business.rating} (${business.reviewCount})</span>
           </div>
@@ -317,7 +266,7 @@ export default function Maps() {
                   </Tooltip>
                 )}
               </div>
-
+              
               <div className="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
                 <div className="flex items-start gap-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 shadow-md">
@@ -330,11 +279,7 @@ export default function Maps() {
                       </h3>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-6 w-6 p-0 hover:bg-slate-100"
-                          >
+                          <Button variant="ghost" size="sm" className="h-6 w-6 p-0 hover:bg-slate-100">
                             <Edit className="h-3 w-3" />
                           </Button>
                         </TooltipTrigger>
@@ -343,28 +288,20 @@ export default function Maps() {
                         </TooltipContent>
                       </Tooltip>
                     </div>
-
+                    
                     <div className="flex items-center gap-1 mb-2">
                       <div className="flex text-amber-400">
                         {[1, 2, 3, 4, 5].map((star) => (
                           <Star key={star} className="h-3 w-3 fill-current" />
                         ))}
                       </div>
-                      <span className="text-sm font-medium text-slate-700">
-                        {business.rating}
-                      </span>
-                      <span className="text-xs text-slate-500">
-                        ({business.reviewCount})
-                      </span>
+                      <span className="text-sm font-medium text-slate-700">{business.rating}</span>
+                      <span className="text-xs text-slate-500">({business.reviewCount})</span>
                     </div>
 
                     <div className="flex flex-wrap gap-1 mb-3">
                       {(business.categories || []).map((category, idx) => (
-                        <Badge
-                          key={idx}
-                          variant="secondary"
-                          className="text-xs bg-slate-100 text-slate-700"
-                        >
+                        <Badge key={idx} variant="secondary" className="text-xs bg-slate-100 text-slate-700">
                           {category}
                         </Badge>
                       ))}
@@ -390,9 +327,7 @@ export default function Maps() {
                 <div className="mt-3 p-2 bg-emerald-50 border border-emerald-200 rounded-lg">
                   <div className="flex items-center gap-2">
                     <CheckCircle className="h-4 w-4 text-emerald-600" />
-                    <span className="text-sm font-medium text-emerald-800">
-                      {business.hours}
-                    </span>
+                    <span className="text-sm font-medium text-emerald-800">{business.hours}</span>
                   </div>
                 </div>
               </div>
@@ -405,7 +340,7 @@ export default function Maps() {
                   <Search className="h-5 w-5 text-slate-600" />
                   <h2 className="font-bold text-slate-900">Keywords</h2>
                   <Badge variant="outline" className="text-xs">
-                    {(keywords || []).filter((k) => k?.active).length}
+                    {(keywords || []).filter(k => k?.active).length}
                   </Badge>
                 </div>
               </div>
@@ -416,17 +351,14 @@ export default function Maps() {
                     key={kw.id}
                     className={`flex items-center justify-between p-3 rounded-lg border transition-all cursor-pointer ${
                       activeKeyword?.id === kw.id
-                        ? "bg-blue-50 border-blue-200 ring-1 ring-blue-200"
-                        : "bg-white border-slate-200 hover:border-slate-300"
+                        ? 'bg-blue-50 border-blue-200 ring-1 ring-blue-200'
+                        : 'bg-white border-slate-200 hover:border-slate-300'
                     }`}
                     onClick={() => setActiveKeyword(kw)}
                   >
                     <div className="flex items-center gap-2 flex-1 min-w-0">
                       {kw.generated && (
-                        <Badge
-                          variant="secondary"
-                          className="bg-purple-100 text-purple-700 text-xs"
-                        >
+                        <Badge variant="secondary" className="bg-purple-100 text-purple-700 text-xs">
                           Auto
                         </Badge>
                       )}
@@ -451,91 +383,6 @@ export default function Maps() {
                 <Button size="sm" disabled={!newKeyword}>
                   Add
                 </Button>
-              </div>
-            </div>
-
-            {/* Grid Configuration */}
-            <div className="p-5 border-b border-slate-200">
-              <div className="flex items-center gap-2 mb-4">
-                <Grid3X3 className="h-5 w-5 text-slate-600" />
-                <h2 className="font-bold text-slate-900">Analysis Grid</h2>
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <Label className="text-sm font-medium text-slate-700 mb-2 block">
-                    Pattern
-                  </Label>
-                  <Select value={gridPattern} onValueChange={setGridPattern}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="circular">
-                        <div className="flex items-center gap-2">
-                          <Circle className="h-4 w-4" />
-                          Circular Grid
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="grid">
-                        <div className="flex items-center gap-2">
-                          <Grid3X3 className="h-4 w-4" />
-                          Square Grid
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="radial">
-                        <div className="flex items-center gap-2">
-                          <Crosshair className="h-4 w-4" />
-                          Radial Pattern
-                        </div>
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <Label className="text-sm font-medium text-slate-700 mb-2 block">
-                      Density
-                    </Label>
-                    <Select value={gridDensity} onValueChange={setGridDensity}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="low">Low (12 pts)</SelectItem>
-                        <SelectItem value="medium">Med (24 pts)</SelectItem>
-                        <SelectItem value="high">High (48 pts)</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium text-slate-700 mb-2 block">
-                      Radius
-                    </Label>
-                    <Select value={gridRadius} onValueChange={setGridRadius}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="5">5 km</SelectItem>
-                        <SelectItem value="10">10 km</SelectItem>
-                        <SelectItem value="15">15 km</SelectItem>
-                        <SelectItem value="20">20 km</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <Info className="h-4 w-4 text-blue-600" />
-                    <span className="text-sm text-blue-800">
-                      Analysis will use{" "}
-                      <strong>{totalLocations} credits</strong> per keyword
-                    </span>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -591,9 +438,7 @@ export default function Maps() {
                   <div className="grid grid-cols-2 gap-3 mb-4">
                     <Card className="p-3 border-emerald-200 bg-emerald-50">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-emerald-700">
-                          {top3Count}
-                        </div>
+                        <div className="text-2xl font-bold text-emerald-700">{top3Count}</div>
                         <div className="text-xs text-emerald-600 flex items-center justify-center gap-1">
                           <Crown className="h-3 w-3" />
                           Top 3
@@ -602,9 +447,7 @@ export default function Maps() {
                     </Card>
                     <Card className="p-3 border-amber-200 bg-amber-50">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-amber-700">
-                          {top10Count}
-                        </div>
+                        <div className="text-2xl font-bold text-amber-700">{top10Count}</div>
                         <div className="text-xs text-amber-600 flex items-center justify-center gap-1">
                           <Award className="h-3 w-3" />
                           Top 10
@@ -613,20 +456,13 @@ export default function Maps() {
                     </Card>
                     <Card className="p-3 border-slate-200 bg-slate-50">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-slate-700">
-                          {averageRank.toFixed(1)}
-                        </div>
+                        <div className="text-2xl font-bold text-slate-700">{averageRank.toFixed(1)}</div>
                         <div className="text-xs text-slate-600">Avg Rank</div>
                       </div>
                     </Card>
                     <Card className="p-3 border-blue-200 bg-blue-50">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-blue-700">
-                          {((rankingLocations / totalLocations) * 100).toFixed(
-                            0,
-                          )}
-                          %
-                        </div>
+                        <div className="text-2xl font-bold text-blue-700">{((rankingLocations/totalLocations)*100).toFixed(0)}%</div>
                         <div className="text-xs text-blue-600">Coverage</div>
                       </div>
                     </Card>
@@ -644,13 +480,8 @@ export default function Maps() {
                         </span>
                         {result.rank ? (
                           <Badge
-                            variant={
-                              result.rank <= 3
-                                ? "default"
-                                : result.rank <= 10
-                                  ? "secondary"
-                                  : "destructive"
-                            }
+                            variant={result.rank <= 3 ? "default" : 
+                                    result.rank <= 10 ? "secondary" : "destructive"}
                             className="text-xs ml-2"
                           >
                             #{result.rank}
@@ -670,66 +501,6 @@ export default function Maps() {
 
           {/* Enhanced Map Area */}
           <div className="flex-1 relative bg-slate-100">
-            {/* Map Controls Overlay */}
-            <div className="absolute top-4 right-4 z-10 space-y-2">
-              <div className="bg-white/95 backdrop-blur-sm rounded-lg border border-slate-200 shadow-lg p-2">
-                <div className="flex gap-1">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant={viewMode === "roadmap" ? "default" : "ghost"}
-                        size="sm"
-                        onClick={() => setViewMode("roadmap")}
-                        className="h-8"
-                      >
-                        <MapIcon className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Road Map</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant={viewMode === "satellite" ? "default" : "ghost"}
-                        size="sm"
-                        onClick={() => setViewMode("satellite")}
-                        className="h-8"
-                      >
-                        <Layers className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Satellite</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-              </div>
-
-              <div className="bg-white/95 backdrop-blur-sm rounded-lg border border-slate-200 shadow-lg p-2">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant={showCompetitors ? "default" : "ghost"}
-                      size="sm"
-                      onClick={() => setShowCompetitors(!showCompetitors)}
-                      className="h-8"
-                    >
-                      {showCompetitors ? (
-                        <Eye className="h-4 w-4" />
-                      ) : (
-                        <EyeOff className="h-4 w-4" />
-                      )}
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{showCompetitors ? "Hide" : "Show"} Competitors</p>
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-            </div>
-
             {/* Analysis Progress Overlay */}
             {isAnalyzing && (
               <div className="absolute bottom-6 left-6 right-6 z-10">
@@ -741,21 +512,16 @@ export default function Maps() {
                           <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
                         </div>
                         <div>
-                          <div className="font-semibold text-slate-900">
-                            Analyzing Rankings
-                          </div>
+                          <div className="font-semibold text-slate-900">Analyzing Rankings</div>
                           <div className="text-sm text-slate-600">
-                            Processing {totalLocations} locations for "
-                            {activeKeyword?.keyword || ""}"
+                            Processing {totalLocations} locations for "{activeKeyword?.keyword || ''}"
                           </div>
                         </div>
                       </div>
                       <div className="flex-1">
                         <div className="flex justify-between text-sm mb-1">
                           <span className="text-slate-600">Progress</span>
-                          <span className="font-medium text-slate-900">
-                            {progress}%
-                          </span>
+                          <span className="font-medium text-slate-900">{progress}%</span>
                         </div>
                         <div className="w-full bg-slate-200 rounded-full h-2">
                           <div
@@ -777,23 +543,17 @@ export default function Maps() {
                   <CardContent className="p-3">
                     <div className="flex items-center gap-3">
                       <div className="text-center">
-                        <div className="text-lg font-bold text-emerald-600">
-                          {top3Count}
-                        </div>
+                        <div className="text-lg font-bold text-emerald-600">{top3Count}</div>
                         <div className="text-xs text-slate-600">Top 3</div>
                       </div>
                       <div className="w-px h-8 bg-slate-200" />
                       <div className="text-center">
-                        <div className="text-lg font-bold text-amber-600">
-                          {top10Count}
-                        </div>
+                        <div className="text-lg font-bold text-amber-600">{top10Count}</div>
                         <div className="text-xs text-slate-600">Top 10</div>
                       </div>
                       <div className="w-px h-8 bg-slate-200" />
                       <div className="text-center">
-                        <div className="text-lg font-bold text-slate-700">
-                          {averageRank.toFixed(1)}
-                        </div>
+                        <div className="text-lg font-bold text-slate-700">{averageRank.toFixed(1)}</div>
                         <div className="text-xs text-slate-600">Avg</div>
                       </div>
                     </div>
