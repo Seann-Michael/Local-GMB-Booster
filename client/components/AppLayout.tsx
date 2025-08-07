@@ -1225,17 +1225,6 @@ export function AppLayout({ children }: AppLayoutProps) {
           </div>
         </header>
 
-        {/* Mobile second header row with Add Project button */}
-        <div className="md:hidden bg-background border-b px-4 py-3">
-          <div className="flex justify-center">
-            <Link to="/admin/add-project">
-              <Button size="sm" className="gap-2 shadow-sm">
-                <Plus className="h-4 w-4" />
-                <span>Add Project</span>
-              </Button>
-            </Link>
-          </div>
-        </div>
 
         {/* Contextual Header */}
         <div
@@ -1249,8 +1238,7 @@ export function AppLayout({ children }: AppLayoutProps) {
 
         {/* Page Content */}
         <main
-          className="flex-1 overflow-y-auto overflow-x-auto pb-28 md:pb-0 transition-all duration-300 w-full"
-          style={{ paddingBottom: "calc(80px + env(safe-area-inset-bottom))" }}
+          className="flex-1 overflow-y-auto overflow-x-auto transition-all duration-300 w-full"
         >
           {children}
         </main>
@@ -1258,78 +1246,6 @@ export function AppLayout({ children }: AppLayoutProps) {
         {/* Footer */}
         <Footer />
 
-        {/* Mobile Bottom Navigation - Fixed with safe area support */}
-        <nav
-          className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t z-50 shadow-lg"
-          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
-        >
-          <div className="flex items-center justify-around px-1 py-3 pb-1">
-            {sidebarItems.slice(0, 4).map((item) => (
-              <Link key={item.id} to={item.href} className="flex-1">
-                <Button
-                  variant={item.active ? "secondary" : "ghost"}
-                  className={cn(
-                    "w-full flex flex-col items-center gap-1 h-auto py-3 px-1 min-h-[58px]",
-                    item.active && "bg-primary/10 text-primary",
-                  )}
-                  size="sm"
-                >
-                  <item.icon
-                    className={cn("h-5 w-5", item.active && "text-primary")}
-                  />
-                  <span className="text-xs font-medium leading-tight">
-                    {item.label}
-                  </span>
-                </Button>
-              </Link>
-            ))}
-
-            {/* More Menu for Additional Items */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="flex-1 flex flex-col items-center gap-1 h-auto py-3 px-1 min-h-[58px]"
-                  size="sm"
-                >
-                  <MoreVertical className="h-5 w-5" />
-                  <span className="text-xs font-medium leading-tight">
-                    More
-                  </span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 mb-3">
-                {sidebarItems.slice(4).map((item) => (
-                  <DropdownMenuItem key={item.id} asChild>
-                    <Link to={item.href} className="flex items-center gap-2">
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.label}</span>
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-                <DropdownMenuSeparator />
-                {bottomSidebarItems.map((item) => (
-                  <DropdownMenuItem key={item.id} asChild>
-                    <Link to={item.href} className="flex items-center gap-2">
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.label}</span>
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link
-                    to="/admin/add-project"
-                    className="flex items-center gap-2"
-                  >
-                    <Plus className="h-4 w-4" />
-                    <span>New Project</span>
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </nav>
       </div>
 
       {/* App Notifications (PWA updates, install prompts) */}
