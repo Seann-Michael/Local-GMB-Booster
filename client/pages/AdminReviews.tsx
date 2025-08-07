@@ -353,9 +353,7 @@ export default function AdminReviews() {
               <span className="sm:hidden">Preview</span>
             </Button>
             <Button
-              onClick={() =>
-                sendReviewRequest("New Customer", "Recent Project")
-              }
+              onClick={() => setShowReviewRequest(true)}
               className="gap-2 whitespace-nowrap w-full sm:w-auto"
             >
               <Send className="h-4 w-4" />
