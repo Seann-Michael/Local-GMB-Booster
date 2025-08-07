@@ -821,7 +821,9 @@ export function AppLayout({ children }: AppLayoutProps) {
                       />
                       {!sidebarCollapsed && (
                         <>
-                          <span className="font-medium flex-1 text-left">{item.label}</span>
+                          <span className="font-medium flex-1 text-left">
+                            {item.label}
+                          </span>
                           {mapsDropdownOpen ? (
                             <ChevronUp className="h-4 w-4" />
                           ) : (
@@ -840,8 +842,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                               variant={subItem.active ? "secondary" : "ghost"}
                               className={cn(
                                 "w-full justify-start h-9 font-medium text-sm px-3",
-                                subItem.active &&
-                                  "bg-primary/10 text-primary",
+                                subItem.active && "bg-primary/10 text-primary",
                                 !subItem.active &&
                                   "text-muted-foreground hover:text-foreground hover:bg-muted/50",
                               )}

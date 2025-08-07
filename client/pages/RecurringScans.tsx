@@ -100,18 +100,22 @@ export default function RecurringScans() {
   const [showCreateForm, setShowCreateForm] = useState(false);
 
   const toggleScanStatus = (id: string) => {
-    setScans(scans.map(scan => {
-      if (scan.id === id) {
-        const newStatus = scan.status === "active" ? "paused" : "active";
-        toast.success(`Scan ${newStatus === "active" ? "activated" : "paused"}`);
-        return { ...scan, status: newStatus };
-      }
-      return scan;
-    }));
+    setScans(
+      scans.map((scan) => {
+        if (scan.id === id) {
+          const newStatus = scan.status === "active" ? "paused" : "active";
+          toast.success(
+            `Scan ${newStatus === "active" ? "activated" : "paused"}`,
+          );
+          return { ...scan, status: newStatus };
+        }
+        return scan;
+      }),
+    );
   };
 
   const deleteScan = (id: string) => {
-    setScans(scans.filter(scan => scan.id !== id));
+    setScans(scans.filter((scan) => scan.id !== id));
     toast.success("Scan deleted successfully");
   };
 
@@ -149,7 +153,9 @@ export default function RecurringScans() {
               <div className="p-2 bg-blue-600 rounded-lg">
                 <RefreshCw className="h-6 w-6 text-white" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900">Recurring Scans</h1>
+              <h1 className="text-2xl font-bold text-gray-900">
+                Recurring Scans
+              </h1>
             </div>
             <p className="text-gray-600">
               Monitor your local rankings automatically with scheduled scans.
@@ -167,9 +173,11 @@ export default function RecurringScans() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Active Scans</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Active Scans
+                  </p>
                   <p className="text-2xl font-bold text-green-600">
-                    {scans.filter(s => s.status === "active").length}
+                    {scans.filter((s) => s.status === "active").length}
                   </p>
                 </div>
                 <CheckCircle className="h-8 w-8 text-green-600" />
@@ -181,9 +189,11 @@ export default function RecurringScans() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Paused Scans</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Paused Scans
+                  </p>
                   <p className="text-2xl font-bold text-yellow-600">
-                    {scans.filter(s => s.status === "paused").length}
+                    {scans.filter((s) => s.status === "paused").length}
                   </p>
                 </div>
                 <Pause className="h-8 w-8 text-yellow-600" />
@@ -197,7 +207,10 @@ export default function RecurringScans() {
                 <div>
                   <p className="text-sm font-medium text-gray-600">Avg Rank</p>
                   <p className="text-2xl font-bold text-blue-600">
-                    {(scans.reduce((sum, s) => sum + s.averageRank, 0) / scans.length).toFixed(1)}
+                    {(
+                      scans.reduce((sum, s) => sum + s.averageRank, 0) /
+                      scans.length
+                    ).toFixed(1)}
                   </p>
                 </div>
                 <BarChart3 className="h-8 w-8 text-blue-600" />
@@ -209,7 +222,9 @@ export default function RecurringScans() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Locations</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Total Locations
+                  </p>
                   <p className="text-2xl font-bold text-purple-600">
                     {scans.reduce((sum, s) => sum + s.locations, 0)}
                   </p>
@@ -246,13 +261,19 @@ export default function RecurringScans() {
                     <TableCell>
                       <div>
                         <div className="font-medium">{scan.name}</div>
-                        <div className="text-sm text-gray-500">{scan.business}</div>
+                        <div className="text-sm text-gray-500">
+                          {scan.business}
+                        </div>
                       </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex flex-wrap gap-1">
                         {scan.keywords.slice(0, 2).map((keyword) => (
-                          <Badge key={keyword} variant="outline" className="text-xs">
+                          <Badge
+                            key={keyword}
+                            variant="outline"
+                            className="text-xs"
+                          >
                             {keyword}
                           </Badge>
                         ))}
@@ -271,7 +292,9 @@ export default function RecurringScans() {
                     <TableCell>
                       <div className="flex items-center gap-2">
                         {getStatusIcon(scan.status)}
-                        <span className="capitalize text-sm">{scan.status}</span>
+                        <span className="capitalize text-sm">
+                          {scan.status}
+                        </span>
                       </div>
                     </TableCell>
                     <TableCell className="text-sm">
@@ -282,15 +305,18 @@ export default function RecurringScans() {
                     </TableCell>
                     <TableCell>
                       <Badge
-                        variant={scan.averageRank <= 3 ? "default" : 
-                                scan.averageRank <= 10 ? "secondary" : "destructive"}
+                        variant={
+                          scan.averageRank <= 3
+                            ? "default"
+                            : scan.averageRank <= 10
+                              ? "secondary"
+                              : "destructive"
+                        }
                       >
                         #{scan.averageRank.toFixed(1)}
                       </Badge>
                     </TableCell>
-                    <TableCell>
-                      {getTrendIcon(scan.trend)}
-                    </TableCell>
+                    <TableCell>{getTrendIcon(scan.trend)}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <Button
@@ -307,8 +333,8 @@ export default function RecurringScans() {
                         <Button variant="ghost" size="sm">
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button 
-                          variant="ghost" 
+                        <Button
+                          variant="ghost"
                           size="sm"
                           onClick={() => deleteScan(scan.id)}
                         >
@@ -347,7 +373,9 @@ export default function RecurringScans() {
                         <SelectValue placeholder="Select business" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="joes-pizza">Joe's Pizza & More</SelectItem>
+                        <SelectItem value="joes-pizza">
+                          Joe's Pizza & More
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -379,31 +407,29 @@ export default function RecurringScans() {
 
                   <div>
                     <Label htmlFor="startDate">Start Date</Label>
-                    <Input
-                      id="startDate"
-                      type="date"
-                    />
+                    <Input id="startDate" type="date" />
                   </div>
 
                   <div>
                     <Label htmlFor="time">Time</Label>
-                    <Input
-                      id="time"
-                      type="time"
-                      defaultValue="09:00"
-                    />
+                    <Input id="time" type="time" defaultValue="09:00" />
                   </div>
                 </div>
               </div>
 
               <div className="flex justify-end gap-3">
-                <Button variant="outline" onClick={() => setShowCreateForm(false)}>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowCreateForm(false)}
+                >
                   Cancel
                 </Button>
-                <Button onClick={() => {
-                  setShowCreateForm(false);
-                  toast.success("Recurring scan created successfully");
-                }}>
+                <Button
+                  onClick={() => {
+                    setShowCreateForm(false);
+                    toast.success("Recurring scan created successfully");
+                  }}
+                >
                   Create Scan
                 </Button>
               </div>

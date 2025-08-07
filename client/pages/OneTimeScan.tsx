@@ -50,10 +50,14 @@ export default function OneTimeScan() {
   };
 
   const removeKeyword = (keyword: string) => {
-    setKeywords(keywords.filter(k => k !== keyword));
+    setKeywords(keywords.filter((k) => k !== keyword));
   };
 
-  const handleAddressSelect = (address: string, placeId: string, location: { lat: number; lng: number }) => {
+  const handleAddressSelect = (
+    address: string,
+    placeId: string,
+    location: { lat: number; lng: number },
+  ) => {
     setBusinessAddress(address);
   };
 
@@ -73,7 +77,7 @@ export default function OneTimeScan() {
         gridPattern,
         gridRadius,
         searchDepth,
-      }
+      },
     });
   };
 
@@ -91,7 +95,8 @@ export default function OneTimeScan() {
             <h1 className="text-2xl font-bold text-gray-900">One Time Scan</h1>
           </div>
           <p className="text-gray-600">
-            Run a comprehensive local ranking analysis to see how your business ranks across multiple locations.
+            Run a comprehensive local ranking analysis to see how your business
+            ranks across multiple locations.
           </p>
         </div>
 
@@ -142,7 +147,7 @@ export default function OneTimeScan() {
                     value={newKeyword}
                     onChange={(e) => setNewKeyword(e.target.value)}
                     placeholder="Enter a keyword (e.g., pizza restaurant)"
-                    onKeyPress={(e) => e.key === 'Enter' && addKeyword()}
+                    onKeyPress={(e) => e.key === "Enter" && addKeyword()}
                   />
                   <Button onClick={addKeyword} disabled={!newKeyword.trim()}>
                     Add
@@ -165,7 +170,9 @@ export default function OneTimeScan() {
                 )}
 
                 {keywords.length === 0 && (
-                  <p className="text-sm text-gray-500">Add keywords to analyze your rankings for</p>
+                  <p className="text-sm text-gray-500">
+                    Add keywords to analyze your rankings for
+                  </p>
                 )}
               </CardContent>
             </Card>
@@ -245,10 +252,17 @@ export default function OneTimeScan() {
                   <div className="flex items-start gap-3">
                     <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-medium text-blue-900 mb-1">Analysis Coverage</p>
+                      <p className="font-medium text-blue-900 mb-1">
+                        Analysis Coverage
+                      </p>
                       <p className="text-sm text-blue-700">
-                        This scan will analyze <strong>24 locations</strong> in a {gridRadius}km radius around your business
-                        for <strong>{keywords.length} keyword{keywords.length !== 1 ? 's' : ''}</strong>.
+                        This scan will analyze <strong>24 locations</strong> in
+                        a {gridRadius}km radius around your business for{" "}
+                        <strong>
+                          {keywords.length} keyword
+                          {keywords.length !== 1 ? "s" : ""}
+                        </strong>
+                        .
                       </p>
                     </div>
                   </div>
@@ -276,7 +290,9 @@ export default function OneTimeScan() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">Keywords:</span>
-                    <span className="text-sm font-medium">{keywords.length}</span>
+                    <span className="text-sm font-medium">
+                      {keywords.length}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">Locations:</span>
@@ -288,14 +304,20 @@ export default function OneTimeScan() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">Depth:</span>
-                    <span className="text-sm font-medium">Top {searchDepth}</span>
+                    <span className="text-sm font-medium">
+                      Top {searchDepth}
+                    </span>
                   </div>
                 </div>
 
                 <div className="border-t pt-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-900">API Credits:</span>
-                    <span className="text-lg font-bold text-blue-600">{estimatedCredits.toLocaleString()}</span>
+                    <span className="text-sm font-medium text-gray-900">
+                      API Credits:
+                    </span>
+                    <span className="text-lg font-bold text-blue-600">
+                      {estimatedCredits.toLocaleString()}
+                    </span>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
                     Estimated cost based on DataForSEO pricing
@@ -313,38 +335,48 @@ export default function OneTimeScan() {
                   <div className="w-2 h-2 bg-blue-600 rounded-full mt-2"></div>
                   <div>
                     <p className="font-medium text-sm">Ranking Positions</p>
-                    <p className="text-xs text-gray-600">See where you rank for each keyword at every location</p>
+                    <p className="text-xs text-gray-600">
+                      See where you rank for each keyword at every location
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mt-2"></div>
                   <div>
                     <p className="font-medium text-sm">Competitor Analysis</p>
-                    <p className="text-xs text-gray-600">Identify who's ranking above you and their details</p>
+                    <p className="text-xs text-gray-600">
+                      Identify who's ranking above you and their details
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mt-2"></div>
                   <div>
                     <p className="font-medium text-sm">Visual Map Report</p>
-                    <p className="text-xs text-gray-600">Interactive map showing all ranking data</p>
+                    <p className="text-xs text-gray-600">
+                      Interactive map showing all ranking data
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 bg-blue-600 rounded-full mt-2"></div>
                   <div>
                     <p className="font-medium text-sm">Exportable Data</p>
-                    <p className="text-xs text-gray-600">Download results as CSV for further analysis</p>
+                    <p className="text-xs text-gray-600">
+                      Download results as CSV for further analysis
+                    </p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            <Button 
-              onClick={startScan} 
+            <Button
+              onClick={startScan}
               className="w-full"
               size="lg"
-              disabled={!businessName || !businessAddress || keywords.length === 0}
+              disabled={
+                !businessName || !businessAddress || keywords.length === 0
+              }
             >
               <Zap className="h-5 w-5 mr-2" />
               Start One Time Scan
