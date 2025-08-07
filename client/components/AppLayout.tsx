@@ -537,8 +537,30 @@ export function AppLayout({ children }: AppLayoutProps) {
         )}
         style={{ top: "73px", height: "calc(100vh - 73px)" }}
       >
-        {/* Business Selector - Now at top */}
-        <div className="px-4 pt-6 pb-4 border-b bg-background">
+        {/* Brand Logo - At top of sidebar */}
+        <div className="px-4 pt-4 pb-3 border-b bg-background">
+          {!sidebarCollapsed ? (
+            <div className="flex items-center space-x-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary shadow-sm">
+                <Building2 className="h-4 w-4 text-primary-foreground" />
+              </div>
+              <div>
+                <span className="font-bold text-lg text-foreground">
+                  Local SEO Ranker
+                </span>
+              </div>
+            </div>
+          ) : (
+            <div className="flex justify-center">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary shadow-sm">
+                <Building2 className="h-4 w-4 text-primary-foreground" />
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Business Selector */}
+        <div className="px-4 pt-4 pb-4 border-b bg-background">
           {!sidebarCollapsed && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -875,19 +897,11 @@ export function AppLayout({ children }: AppLayoutProps) {
                 )}
               </Button>
 
-              {/* Local SEO Ranker branding - responsive */}
-              <div className="flex items-center space-x-2 min-w-0">
-                <div className="flex h-6 w-6 md:h-8 md:w-8 items-center justify-center rounded-lg bg-primary shadow-sm">
-                  <Building2 className="h-3 w-3 md:h-4 md:w-4 text-primary-foreground" />
-                </div>
-                <span className="font-bold text-sm md:text-lg truncate">
-                  Local SEO Ranker
-                </span>
-              </div>
+              {/* Breadcrumbs moved left to fill space */}
 
               {/* Breadcrumbs */}
               {getBreadcrumbs(location.pathname).length > 0 && (
-                <div className="hidden lg:flex items-center ml-4 pl-4 border-l border-border">
+                <div className="hidden lg:flex items-center ml-2">
                   <Breadcrumb>
                     <BreadcrumbList>
                       {getBreadcrumbs(location.pathname).map((crumb, index) => (
