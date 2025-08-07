@@ -245,7 +245,7 @@ export const AGENCY_SERVICES = [
   { value: "paid-advertising", label: "Paid Advertising" },
   { value: "website-design", label: "Website Design" },
   { value: "website-development", label: "Website Development" },
-  { value: "seo", label: "SEO" },
+  { value: "local-optimization", label: "Local Optimization" },
   { value: "social-media", label: "Social Media Management" },
   { value: "content-marketing", label: "Content Marketing" },
   { value: "email-marketing", label: "Email Marketing" },
