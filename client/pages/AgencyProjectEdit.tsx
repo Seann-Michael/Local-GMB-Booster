@@ -90,7 +90,7 @@ export default function AgencyProjectEdit() {
           clientName: "TechCorp Ltd",
           clientEmail: "john@techcorp.com",
           clientPhone: "+1-555-0123",
-          services: ["website-design", "website-development", "seo"],
+          services: ["website-design", "website-development", "local-optimization"],
           budget: 15000,
           estimatedHours: 120,
           actualHours: 68,
