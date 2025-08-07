@@ -205,10 +205,10 @@ export default function AuditReport() {
             </Button>
             <div>
               <h1 className="text-2xl font-bold tracking-tight">
-                Audit Report #{auditData.id}
+                GMB Geo Grid Scan #{scanData.id}
               </h1>
               <p className="text-muted-foreground">
-                Generated on {new Date(auditData.scanDate).toLocaleDateString()}
+                Generated on {new Date(scanData.scanDate).toLocaleDateString()}
               </p>
             </div>
           </div>
