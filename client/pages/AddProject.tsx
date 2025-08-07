@@ -15,7 +15,7 @@ import {
   Plus,
   Trash2,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import type { ProjectInfo } from "@/lib/mediaMetadata";
@@ -23,6 +23,7 @@ import { SmartDropdownInput } from "@/components/SmartDropdownInput";
 import { DROPDOWN_FIELDS } from "@/hooks/useDropdownState";
 import { generateProjectId } from "@/lib/idGenerator";
 import { AddressAutocomplete } from "@/components/GoogleMaps";
+import { getGoogleMapsApiKey, validateGoogleMapsApiKey } from "@/lib/googleMaps";
 
 interface EnhancedPhoto {
   url: string;
@@ -49,6 +50,40 @@ export default function AddProject() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isEnhancingDescription, setIsEnhancingDescription] = useState(false);
   const [suggestedKeywords, setSuggestedKeywords] = useState<string[]>([]);
+
+  // Debug Google Maps API setup on page load
+  useEffect(() => {
+    const debugGoogleMapsSetup = async () => {
+      console.log("🔧 AddProject: Starting Google Maps API debug...");
+
+      // Check environment variable directly
+      const envApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+      console.log("🌍 Environment variable VITE_GOOGLE_MAPS_API_KEY:", envApiKey ? `${envApiKey.substring(0, 10)}...${envApiKey.substring(envApiKey.length - 6)}` : "Not Set");
+
+      // Test getGoogleMapsApiKey function
+      const apiKey = getGoogleMapsApiKey();
+      console.log("🔑 getGoogleMapsApiKey() returned:", apiKey ? `${apiKey.substring(0, 10)}...${apiKey.substring(apiKey.length - 6)}` : "No Key");
+
+      // Test API key validation if we have one
+      if (apiKey) {
+        console.log("🧪 Testing API key validation...");
+        try {
+          const validation = await validateGoogleMapsApiKey(apiKey);
+          console.log("📊 Validation result:", validation);
+
+          if (validation.valid) {
+            console.log("✅ Google Maps API key is valid and working");
+          } else {
+            console.error("❌ Google Maps API key validation failed:", validation.error);
+          }
+        } catch (error) {
+          console.error("💥 API validation error:", error);
+        }
+      }
+    };
+
+    debugGoogleMapsSetup();
+  }, []);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({
