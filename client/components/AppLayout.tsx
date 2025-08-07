@@ -335,7 +335,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       href: "/admin/maps",
       icon: Target,
       active: location.pathname === "/admin/maps",
-      comingSoon: true,
+      comingSoon: false,
     },
   ];
 
