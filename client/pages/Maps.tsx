@@ -370,7 +370,7 @@ export default function Maps() {
               </div>
 
               <div className="space-y-2 mb-4">
-                {keywords.map((kw) => (
+                {(keywords || []).map((kw) => (
                   <div
                     key={kw.id}
                     className={`flex items-center justify-between p-3 rounded-lg border transition-all cursor-pointer ${
