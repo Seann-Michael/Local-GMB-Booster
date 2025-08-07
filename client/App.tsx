@@ -123,7 +123,7 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <ThemeProvider
-          defaultTheme="system"
+          defaultTheme="dark"
           storageKey="local-seo-ranker-theme"
         >
           <TooltipProvider>
