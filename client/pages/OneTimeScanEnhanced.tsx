@@ -13,12 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AppLayout } from "@/components/AppLayout";
 import {
   MapPin,
@@ -76,9 +71,12 @@ export default function OneTimeScanEnhanced() {
   // Business Search State
   const [businessInput, setBusinessInput] = useState("");
   const [searchResults, setSearchResults] = useState<PlaceResult[]>([]);
-  const [selectedBusiness, setSelectedBusiness] = useState<BusinessLocation | null>(null);
+  const [selectedBusiness, setSelectedBusiness] =
+    useState<BusinessLocation | null>(null);
   const [isSearching, setIsSearching] = useState(false);
-  const [searchMethod, setSearchMethod] = useState<"search" | "manual">("search");
+  const [searchMethod, setSearchMethod] = useState<"search" | "manual">(
+    "search",
+  );
 
   // Manual Business Input
   const [manualBusinessName, setManualBusinessName] = useState("");
@@ -139,7 +137,9 @@ export default function OneTimeScanEnhanced() {
 
         case "url":
           if (validation.extractedData?.cid) {
-            const placeFromUrlCid = await getPlaceByCid(validation.extractedData.cid);
+            const placeFromUrlCid = await getPlaceByCid(
+              validation.extractedData.cid,
+            );
             if (placeFromUrlCid) {
               setSelectedBusiness({
                 name: placeFromUrlCid.name,
@@ -155,7 +155,9 @@ export default function OneTimeScanEnhanced() {
           break;
 
         default:
-          toast.error("Invalid input. Please enter a business name, CID, or Google Maps URL.");
+          toast.error(
+            "Invalid input. Please enter a business name, CID, or Google Maps URL.",
+          );
       }
     } catch (error) {
       console.error("Search error:", error);
@@ -187,7 +189,7 @@ export default function OneTimeScanEnhanced() {
         unit: waypointConfig.unit,
         pattern: waypointConfig.pattern,
       };
-      
+
       const newWaypoints = generateWaypoints(options);
       setWaypoints(newWaypoints);
     }
@@ -243,13 +245,13 @@ export default function OneTimeScanEnhanced() {
   // Start scan
   const startScan = async () => {
     const business = getBusinessForScan();
-    
+
     if (!business || keywords.length === 0 || waypoints.length === 0) {
       toast.error("Please complete all required fields");
       return;
     }
 
-    const enabledWaypoints = waypoints.filter(w => w.enabled);
+    const enabledWaypoints = waypoints.filter((w) => w.enabled);
     if (enabledWaypoints.length === 0) {
       toast.error("Please enable at least one waypoint");
       return;
@@ -258,8 +260,8 @@ export default function OneTimeScanEnhanced() {
     if (!hasSufficientCredits(scanCost)) {
       toast.error(
         `Insufficient credits. Need ${formatCredits(scanCost)} credits, but only have ${formatCredits(
-          balance.remaining
-        )} remaining.`
+          balance.remaining,
+        )} remaining.`,
       );
       return;
     }
@@ -276,7 +278,7 @@ export default function OneTimeScanEnhanced() {
           scanType: "one-time",
           waypointCount: enabledWaypoints.length,
           keywordCount: keywords.length,
-        }
+        },
       );
 
       if (!success) {
@@ -284,7 +286,9 @@ export default function OneTimeScanEnhanced() {
         return;
       }
 
-      toast.success(`Scan started! ${formatCredits(scanCost)} credits deducted.`);
+      toast.success(
+        `Scan started! ${formatCredits(scanCost)} credits deducted.`,
+      );
 
       // Navigate to Maps page with scan data
       navigate("/admin/maps", {
@@ -323,10 +327,13 @@ export default function OneTimeScanEnhanced() {
             <div className="p-2 bg-blue-600 rounded-lg">
               <Target className="h-6 w-6 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">Enhanced One Time Scan</h1>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Enhanced One Time Scan
+            </h1>
           </div>
           <p className="text-gray-600">
-            Advanced local ranking analysis with customizable waypoints, priority levels, and search patterns.
+            Advanced local ranking analysis with customizable waypoints,
+            priority levels, and search patterns.
           </p>
         </div>
 
@@ -342,7 +349,12 @@ export default function OneTimeScanEnhanced() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Tabs value={searchMethod} onValueChange={(v) => setSearchMethod(v as "search" | "manual")}>
+                <Tabs
+                  value={searchMethod}
+                  onValueChange={(v) =>
+                    setSearchMethod(v as "search" | "manual")
+                  }
+                >
                   <TabsList>
                     <TabsTrigger value="search">Search Business</TabsTrigger>
                     <TabsTrigger value="manual">Manual Entry</TabsTrigger>
@@ -356,10 +368,19 @@ export default function OneTimeScanEnhanced() {
                           value={businessInput}
                           onChange={(e) => setBusinessInput(e.target.value)}
                           placeholder="e.g., Pizza Palace, 1234567890123456, or maps.google.com/..."
-                          onKeyPress={(e) => e.key === "Enter" && handleBusinessSearch()}
+                          onKeyPress={(e) =>
+                            e.key === "Enter" && handleBusinessSearch()
+                          }
                         />
-                        <Button onClick={handleBusinessSearch} disabled={isSearching || !businessInput.trim()}>
-                          {isSearching ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
+                        <Button
+                          onClick={handleBusinessSearch}
+                          disabled={isSearching || !businessInput.trim()}
+                        >
+                          {isSearching ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <Search className="h-4 w-4" />
+                          )}
                         </Button>
                       </div>
                     </div>
@@ -375,11 +396,16 @@ export default function OneTimeScanEnhanced() {
                           >
                             <div>
                               <p className="font-medium">{place.name}</p>
-                              <p className="text-sm text-gray-600">{place.formattedAddress}</p>
+                              <p className="text-sm text-gray-600">
+                                {place.formattedAddress}
+                              </p>
                               {place.rating && (
                                 <div className="flex items-center gap-1 mt-1">
                                   <Star className="h-3 w-3 text-yellow-500" />
-                                  <span className="text-xs">{place.rating} ({place.userRatingsTotal} reviews)</span>
+                                  <span className="text-xs">
+                                    {place.rating} ({place.userRatingsTotal}{" "}
+                                    reviews)
+                                  </span>
                                 </div>
                               )}
                             </div>
@@ -393,13 +419,21 @@ export default function OneTimeScanEnhanced() {
                       <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
                         <div className="flex items-start justify-between">
                           <div>
-                            <p className="font-medium text-green-900">Selected Business</p>
-                            <p className="text-green-800">{selectedBusiness.name}</p>
+                            <p className="font-medium text-green-900">
+                              Selected Business
+                            </p>
+                            <p className="text-green-800">
+                              {selectedBusiness.name}
+                            </p>
                             {selectedBusiness.address && (
-                              <p className="text-sm text-green-700">{selectedBusiness.address}</p>
+                              <p className="text-sm text-green-700">
+                                {selectedBusiness.address}
+                              </p>
                             )}
                             {selectedBusiness.cid && (
-                              <p className="text-xs text-green-600">CID: {selectedBusiness.cid}</p>
+                              <p className="text-xs text-green-600">
+                                CID: {selectedBusiness.cid}
+                              </p>
                             )}
                           </div>
                           <Button
@@ -416,7 +450,9 @@ export default function OneTimeScanEnhanced() {
 
                   <TabsContent value="manual" className="space-y-4">
                     <div>
-                      <Label htmlFor="manualBusinessName">Business Name *</Label>
+                      <Label htmlFor="manualBusinessName">
+                        Business Name *
+                      </Label>
                       <Input
                         id="manualBusinessName"
                         value={manualBusinessName}
@@ -432,16 +468,22 @@ export default function OneTimeScanEnhanced() {
                         checked={isServiceBased}
                         onCheckedChange={setIsServiceBased}
                       />
-                      <Label htmlFor="service-based">Service-based business (no physical address)</Label>
+                      <Label htmlFor="service-based">
+                        Service-based business (no physical address)
+                      </Label>
                     </div>
 
                     {!isServiceBased && (
                       <div>
-                        <Label htmlFor="manualBusinessAddress">Business Address</Label>
+                        <Label htmlFor="manualBusinessAddress">
+                          Business Address
+                        </Label>
                         <Textarea
                           id="manualBusinessAddress"
                           value={manualBusinessAddress}
-                          onChange={(e) => setManualBusinessAddress(e.target.value)}
+                          onChange={(e) =>
+                            setManualBusinessAddress(e.target.value)
+                          }
                           placeholder="Enter full business address"
                           className="mt-1"
                           rows={2}
@@ -490,7 +532,9 @@ export default function OneTimeScanEnhanced() {
                 )}
 
                 {keywords.length === 0 && (
-                  <p className="text-sm text-gray-500">Add keywords to analyze rankings for</p>
+                  <p className="text-sm text-gray-500">
+                    Add keywords to analyze rankings for
+                  </p>
                 )}
               </CardContent>
             </Card>
@@ -531,7 +575,10 @@ export default function OneTimeScanEnhanced() {
                     <Select
                       value={scanConfig.apiCallType}
                       onValueChange={(value) =>
-                        setScanConfig({ ...scanConfig, apiCallType: value as "circle" | "rectangle" })
+                        setScanConfig({
+                          ...scanConfig,
+                          apiCallType: value as "circle" | "rectangle",
+                        })
                       }
                     >
                       <SelectTrigger className="mt-1">
@@ -559,7 +606,13 @@ export default function OneTimeScanEnhanced() {
                     <Select
                       value={scanConfig.priority}
                       onValueChange={(value) =>
-                        setScanConfig({ ...scanConfig, priority: value as "standard" | "expedited" | "priority" })
+                        setScanConfig({
+                          ...scanConfig,
+                          priority: value as
+                            | "standard"
+                            | "expedited"
+                            | "priority",
+                        })
                       }
                     >
                       <SelectTrigger className="mt-1">
@@ -567,8 +620,12 @@ export default function OneTimeScanEnhanced() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="standard">Standard</SelectItem>
-                        <SelectItem value="expedited">Expedited (+50%)</SelectItem>
-                        <SelectItem value="priority">Priority (+100%)</SelectItem>
+                        <SelectItem value="expedited">
+                          Expedited (+50%)
+                        </SelectItem>
+                        <SelectItem value="priority">
+                          Priority (+100%)
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -592,7 +649,10 @@ export default function OneTimeScanEnhanced() {
                       <Slider
                         value={[waypointConfig.count]}
                         onValueChange={(value) =>
-                          setWaypointConfig({ ...waypointConfig, count: value[0] })
+                          setWaypointConfig({
+                            ...waypointConfig,
+                            count: value[0],
+                          })
                         }
                         min={3}
                         max={50}
@@ -613,7 +673,10 @@ export default function OneTimeScanEnhanced() {
                       <Slider
                         value={[waypointConfig.distanceBetween]}
                         onValueChange={(value) =>
-                          setWaypointConfig({ ...waypointConfig, distanceBetween: value[0] })
+                          setWaypointConfig({
+                            ...waypointConfig,
+                            distanceBetween: value[0],
+                          })
                         }
                         min={0.1}
                         max={10}
@@ -622,7 +685,9 @@ export default function OneTimeScanEnhanced() {
                       />
                       <div className="flex justify-between text-xs text-gray-500 mt-1">
                         <span>0.1</span>
-                        <span>{waypointConfig.distanceBetween} {waypointConfig.unit}</span>
+                        <span>
+                          {waypointConfig.distanceBetween} {waypointConfig.unit}
+                        </span>
                         <span>10</span>
                       </div>
                     </div>
@@ -633,7 +698,10 @@ export default function OneTimeScanEnhanced() {
                     <Select
                       value={waypointConfig.unit}
                       onValueChange={(value) =>
-                        setWaypointConfig({ ...waypointConfig, unit: value as "miles" | "kilometers" })
+                        setWaypointConfig({
+                          ...waypointConfig,
+                          unit: value as "miles" | "kilometers",
+                        })
                       }
                     >
                       <SelectTrigger className="mt-1">
@@ -651,7 +719,10 @@ export default function OneTimeScanEnhanced() {
                     <Select
                       value={waypointConfig.pattern}
                       onValueChange={(value) =>
-                        setWaypointConfig({ ...waypointConfig, pattern: value as "circle" | "grid" | "line" })
+                        setWaypointConfig({
+                          ...waypointConfig,
+                          pattern: value as "circle" | "grid" | "line",
+                        })
                       }
                     >
                       <SelectTrigger className="mt-1">
@@ -684,7 +755,10 @@ export default function OneTimeScanEnhanced() {
                 {waypoints.length > 0 && (
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <Label>Generated Waypoints ({enabledWaypointsCount} of {waypoints.length} enabled)</Label>
+                      <Label>
+                        Generated Waypoints ({enabledWaypointsCount} of{" "}
+                        {waypoints.length} enabled)
+                      </Label>
                       <Button
                         variant="outline"
                         size="sm"
@@ -697,20 +771,31 @@ export default function OneTimeScanEnhanced() {
 
                     <div className="max-h-40 overflow-y-auto border rounded-lg p-3 space-y-2">
                       {waypoints.map((waypoint) => (
-                        <div key={waypoint.id} className="flex items-center justify-between text-sm">
+                        <div
+                          key={waypoint.id}
+                          className="flex items-center justify-between text-sm"
+                        >
                           <div className="flex items-center gap-2">
                             <Switch
                               checked={waypoint.enabled}
-                              onCheckedChange={() => handleWaypointToggle(waypoint.id)}
+                              onCheckedChange={() =>
+                                handleWaypointToggle(waypoint.id)
+                              }
                               size="sm"
                             />
-                            <span className={waypoint.isCenter ? "font-bold" : ""}>
-                              {waypoint.isCenter ? "📍 Center" : `📌 ${waypoint.id}`}
+                            <span
+                              className={waypoint.isCenter ? "font-bold" : ""}
+                            >
+                              {waypoint.isCenter
+                                ? "📍 Center"
+                                : `📌 ${waypoint.id}`}
                             </span>
                           </div>
                           <div className="text-gray-500">
-                            {waypoint.distance?.toFixed(1)} {waypointConfig.unit}
-                            {waypoint.bearing !== undefined && ` • ${waypoint.bearing.toFixed(0)}°`}
+                            {waypoint.distance?.toFixed(1)}{" "}
+                            {waypointConfig.unit}
+                            {waypoint.bearing !== undefined &&
+                              ` • ${waypoint.bearing.toFixed(0)}°`}
                           </div>
                         </div>
                       ))}
@@ -743,7 +828,9 @@ export default function OneTimeScanEnhanced() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">Keywords:</span>
-                    <span className="text-sm font-medium">{keywords.length}</span>
+                    <span className="text-sm font-medium">
+                      {keywords.length}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">Waypoints:</span>
@@ -753,22 +840,32 @@ export default function OneTimeScanEnhanced() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">Search Depth:</span>
-                    <span className="text-sm font-medium">Top {scanConfig.depth}</span>
+                    <span className="text-sm font-medium">
+                      Top {scanConfig.depth}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">API Type:</span>
-                    <span className="text-sm font-medium capitalize">{scanConfig.apiCallType}</span>
+                    <span className="text-sm font-medium capitalize">
+                      {scanConfig.apiCallType}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">Priority:</span>
-                    <span className="text-sm font-medium capitalize">{scanConfig.priority}</span>
+                    <span className="text-sm font-medium capitalize">
+                      {scanConfig.priority}
+                    </span>
                   </div>
                 </div>
 
                 <div className="border-t pt-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-900">API Credits:</span>
-                    <span className="text-lg font-bold text-blue-600">{formatCredits(scanCost)}</span>
+                    <span className="text-sm font-medium text-gray-900">
+                      API Credits:
+                    </span>
+                    <span className="text-lg font-bold text-blue-600">
+                      {formatCredits(scanCost)}
+                    </span>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
                     Cost includes all selected options and multipliers
@@ -788,17 +885,25 @@ export default function OneTimeScanEnhanced() {
               <CardContent className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">Available:</span>
-                  <span className="text-sm font-medium">{formatCredits(balance.remaining)}</span>
+                  <span className="text-sm font-medium">
+                    {formatCredits(balance.remaining)}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">Required:</span>
-                  <span className="text-sm font-medium">{formatCredits(scanCost)}</span>
+                  <span className="text-sm font-medium">
+                    {formatCredits(scanCost)}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">After Scan:</span>
-                  <span className={`text-sm font-medium ${
-                    balance.remaining >= scanCost ? "text-green-600" : "text-red-600"
-                  }`}>
+                  <span
+                    className={`text-sm font-medium ${
+                      balance.remaining >= scanCost
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                  >
                     {formatCredits(Math.max(0, balance.remaining - scanCost))}
                   </span>
                 </div>
@@ -811,7 +916,9 @@ export default function OneTimeScanEnhanced() {
                 onClick={startScan}
                 className="w-full"
                 size="lg"
-                disabled={!isFormComplete() || balance.remaining < scanCost || isRunning}
+                disabled={
+                  !isFormComplete() || balance.remaining < scanCost || isRunning
+                }
               >
                 {isRunning ? (
                   <>
@@ -832,7 +939,9 @@ export default function OneTimeScanEnhanced() {
                   <div className="flex items-start gap-2">
                     <AlertCircle className="h-4 w-4 text-red-600 mt-0.5" />
                     <div>
-                      <p className="text-sm font-medium text-red-800">Insufficient Credits</p>
+                      <p className="text-sm font-medium text-red-800">
+                        Insufficient Credits
+                      </p>
                       <p className="text-xs text-red-700">
                         You need {formatCredits(scanCost)} credits but only have{" "}
                         {formatCredits(balance.remaining)} remaining.
@@ -853,11 +962,19 @@ export default function OneTimeScanEnhanced() {
                   <div className="flex items-start gap-2">
                     <Info className="h-4 w-4 text-orange-600 mt-0.5" />
                     <div>
-                      <p className="text-sm font-medium text-orange-800">Complete Required Fields</p>
+                      <p className="text-sm font-medium text-orange-800">
+                        Complete Required Fields
+                      </p>
                       <ul className="text-xs text-orange-700 mt-1 space-y-1">
-                        {!getBusinessForScan() && <li>• Select or enter business information</li>}
-                        {keywords.length === 0 && <li>• Add at least one keyword</li>}
-                        {waypoints.length === 0 && <li>• Configure waypoints</li>}
+                        {!getBusinessForScan() && (
+                          <li>• Select or enter business information</li>
+                        )}
+                        {keywords.length === 0 && (
+                          <li>• Add at least one keyword</li>
+                        )}
+                        {waypoints.length === 0 && (
+                          <li>• Configure waypoints</li>
+                        )}
                       </ul>
                     </div>
                   </div>

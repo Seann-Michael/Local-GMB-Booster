@@ -22,8 +22,8 @@ export interface ScanOptions {
   waypointCount: number;
   keywordCount: number;
   depth: number;
-  apiCallType: 'circle' | 'rectangle';
-  priority: 'standard' | 'expedited' | 'priority';
+  apiCallType: "circle" | "rectangle";
+  priority: "standard" | "expedited" | "priority";
   isRecurring?: boolean;
 }
 
@@ -166,8 +166,8 @@ export function calculateScanCost(
     waypointCount,
     keywordCount,
     depth: 20, // Default depth
-    apiCallType: 'circle', // Default to circle
-    priority: 'standard', // Default priority
+    apiCallType: "circle", // Default to circle
+    priority: "standard", // Default priority
     isRecurring,
   });
 }
