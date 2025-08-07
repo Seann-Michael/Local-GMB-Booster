@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { AppLayout } from "@/components/AppLayout";
-import { GoogleMapComponent } from "@/components/GoogleMaps/GoogleMapComponent";
+// import { GoogleMapComponent } from "@/components/GoogleMaps/GoogleMapComponent";
 import {
   MapPin,
   Target,
