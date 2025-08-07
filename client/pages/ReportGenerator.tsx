@@ -364,7 +364,7 @@ const reportConfigs: ReportConfig[] = [
     name: "Business Rankings Report",
     description:
       "Analyze ranking performance across different businesses and keywords",
-    category: "SEO",
+    category: "Local Visibility",
     icon: TrendingUp,
     fields: [
       {
