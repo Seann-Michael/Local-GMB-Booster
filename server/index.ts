@@ -12,6 +12,13 @@ import {
   handleDataForSEOProxy,
   handleDataForSEOStatus
 } from "./routes/dataforseo";
+import {
+  handleSendSMS,
+  handleTwilioWebhook,
+  handleTwilioTest,
+  handleTwilioStatus,
+  handleSendReviewRequest
+} from "./routes/twilio";
 
 export function createServer() {
   const app = express();
