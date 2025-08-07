@@ -365,7 +365,7 @@ export default function Maps() {
                   <Search className="h-5 w-5 text-slate-600" />
                   <h2 className="font-bold text-slate-900">Keywords</h2>
                   <Badge variant="outline" className="text-xs">
-                    {keywords.filter(k => k.active).length}
+                    {(keywords || []).filter(k => k?.active).length}
                   </Badge>
                 </div>
               </div>
