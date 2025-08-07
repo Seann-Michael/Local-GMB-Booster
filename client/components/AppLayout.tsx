@@ -1032,12 +1032,12 @@ export function AppLayout({ children }: AppLayoutProps) {
           )}
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1 md:gap-4 min-w-0 flex-1">
+            <div className="flex items-center gap-3 md:gap-4 min-w-0 flex-1">
               {/* Mobile hamburger menu */}
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden text-foreground hover:bg-muted h-9 w-9 rounded-md"
+                className="md:hidden text-foreground hover:bg-muted h-10 w-10 rounded-md"
                 onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
               >
                 {mobileSidebarOpen ? (
@@ -1099,7 +1099,7 @@ export function AppLayout({ children }: AppLayoutProps) {
               )}
             </div>
 
-            <div className="flex items-center gap-1 flex-shrink-0">
+            <div className="flex items-center gap-2 md:gap-1 flex-shrink-0">
               {/* Functional Search - responsive */}
               <div className="hidden md:block">
                 <HeaderSearch />
