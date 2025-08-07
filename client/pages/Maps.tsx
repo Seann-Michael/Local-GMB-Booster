@@ -17,21 +17,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { AppLayout } from "@/components/AppLayout";
 import { GoogleMapComponent } from "@/components/GoogleMaps/GoogleMapComponent";
 import { AddressAutocomplete } from "@/components/GoogleMaps/AddressAutocomplete";
-import { CompetitorAnalysis } from "@/components/CompetitorAnalysis";
 import { 
   dataForSEOService, 
   type BusinessProfile, 
@@ -66,6 +54,14 @@ import {
   BarChart3,
   Info,
   Loader2,
+  Building2,
+  Phone,
+  Globe,
+  Edit,
+  ChevronDown,
+  ChevronUp,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "sonner";
@@ -86,29 +82,32 @@ interface RankingSession {
 export default function Maps() {
   // Core state
   const [businessProfile, setBusinessProfile] = useState<BusinessProfile>({
-    name: "",
-    address: "",
-    phone: "",
-    website: "",
-    keywords: [],
+    name: "Joe's Pizza & More",
+    address: "2275 Lejeune Cir, Fairfield, CA 94533",
+    phone: "(707) 446-5643",
+    website: "https://joespizza.com",
+    keywords: ["pizza restaurant", "italian food"],
   });
-  const [keyword, setKeyword] = useState("");
-  const [centerLocation, setCenterLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [keyword, setKeyword] = useState("junk removal services near me");
+  const [centerLocation, setCenterLocation] = useState<{ lat: number; lng: number }>({
+    lat: 38.2493,
+    lng: -122.0397
+  });
   const [waypoints, setWaypoints] = useState<GeographicWaypoint[]>([]);
   const [rankingResults, setRankingResults] = useState<RankingResult[]>([]);
   
   // UI state
-  const [showSetup, setShowSetup] = useState(true);
   const [showApiSetup, setShowApiSetup] = useState(!dataForSEOService.hasCredentials());
   const [currentSession, setCurrentSession] = useState<RankingSession | null>(null);
-  const [selectedWaypoint, setSelectedWaypoint] = useState<GeographicWaypoint | null>(null);
+  const [settingsExpanded, setSettingsExpanded] = useState(true);
+  const [resultsExpanded, setResultsExpanded] = useState(false);
   
   // Configuration state
   const [waypointOptions, setWaypointOptions] = useState<WaypointGenerationOptions>({
-    centerLat: 40.7128,
-    centerLng: -74.0060,
+    centerLat: 38.2493,
+    centerLng: -122.0397,
     radiusKm: 10,
-    pattern: "grid",
+    pattern: "circular",
     density: "medium",
   });
   
@@ -119,20 +118,9 @@ export default function Maps() {
   });
 
   useEffect(() => {
-    // Load saved business profile
-    const savedProfile = localStorage.getItem("ranking_business_profile");
-    if (savedProfile) {
-      try {
-        setBusinessProfile(JSON.parse(savedProfile));
-      } catch (error) {
-        console.error("Error loading saved business profile:", error);
-      }
-    }
+    // Auto-generate waypoints on load
+    generateWaypoints();
   }, []);
-
-  const saveBusinessProfile = useCallback(() => {
-    localStorage.setItem("ranking_business_profile", JSON.stringify(businessProfile));
-  }, [businessProfile]);
 
   const handleAddressSelect = useCallback((address: string, placeId: string, location: { lat: number; lng: number }) => {
     setBusinessProfile(prev => ({
@@ -166,7 +154,7 @@ export default function Maps() {
     setWaypoints(optimizedWaypoints);
     
     const estimatedTime = WaypointGenerator.estimateProcessingTime(optimizedWaypoints.length);
-    toast.success(`Generated ${optimizedWaypoints.length} waypoints. Estimated processing time: ${estimatedTime.total}`);
+    toast.success(`Generated ${optimizedWaypoints.length} waypoints`);
   }, [centerLocation, waypointOptions]);
 
   const setupApiCredentials = useCallback(() => {
@@ -179,19 +167,6 @@ export default function Maps() {
     toast.success("API credentials saved successfully");
     setShowApiSetup(false);
   }, [apiCredentials]);
-
-  const testApiConnection = useCallback(async () => {
-    try {
-      const isConnected = await dataForSEOService.testConnection();
-      if (isConnected) {
-        toast.success("API connection successful!");
-      } else {
-        toast.error("API connection failed. Please check your credentials.");
-      }
-    } catch (error) {
-      toast.error("Failed to test API connection");
-    }
-  }, []);
 
   const startRankingAnalysis = useCallback(async () => {
     if (!businessProfile.name || !keyword || waypoints.length === 0) {
@@ -217,8 +192,7 @@ export default function Maps() {
     };
 
     setCurrentSession(session);
-    setShowSetup(false);
-    saveBusinessProfile();
+    setResultsExpanded(true);
 
     try {
       toast.info("Starting ranking analysis...");
@@ -248,19 +222,13 @@ export default function Maps() {
         ? successfulResults.reduce((sum, r) => sum + (r.businessRank || 0), 0) / successfulResults.length
         : 0;
 
-      toast.success(`Analysis completed! Average rank: ${averageRank.toFixed(1)} (${successfulResults.length}/${results.length} locations)`);
+      toast.success(`Analysis completed! Average rank: ${averageRank.toFixed(1)}`);
     } catch (error) {
       console.error("Ranking analysis error:", error);
       setCurrentSession(prev => prev ? { ...prev, status: "error" } : null);
       toast.error("Analysis failed. Please try again.");
     }
-  }, [businessProfile, keyword, waypoints, saveBusinessProfile]);
-
-  const resetAnalysis = useCallback(() => {
-    setCurrentSession(null);
-    setRankingResults([]);
-    setShowSetup(true);
-  }, []);
+  }, [businessProfile, keyword, waypoints]);
 
   const getMapMarkers = useCallback(() => {
     const markers = [];
@@ -269,20 +237,20 @@ export default function Maps() {
     waypoints.forEach(waypoint => {
       const result = rankingResults.find(r => r.waypoint.id === waypoint.id);
       
-      let color = "#gray-500"; // Default: not processed
+      let color = "#6B7280"; // Default: not processed
       let rank = null;
       
       if (result) {
         if (result.error) {
-          color = "#red-500"; // Error
+          color = "#EF4444"; // Error
         } else if (result.businessRank === null) {
-          color = "#orange-500"; // Not ranking
+          color = "#F97316"; // Not ranking
         } else if (result.businessRank <= 3) {
-          color = "#green-500"; // Top 3
+          color = "#10B981"; // Top 3
         } else if (result.businessRank <= 10) {
-          color = "#yellow-500"; // Top 10
+          color = "#F59E0B"; // Top 10
         } else {
-          color = "#red-400"; // Lower ranking
+          color = "#EF4444"; // Lower ranking
         }
         rank = result.businessRank;
       }
@@ -292,11 +260,11 @@ export default function Maps() {
         position: { lat: waypoint.lat, lng: waypoint.lng },
         title: waypoint.name || "Waypoint",
         content: `
-          <div class="p-2 min-w-48">
+          <div class="p-3 min-w-48">
             <h3 class="font-semibold">${waypoint.name || "Waypoint"}</h3>
-            <p class="text-sm text-gray-600">Keyword: ${keyword}</p>
-            ${rank !== null ? `<p class="text-sm"><strong>Rank: #${rank}</strong></p>` : '<p class="text-sm text-gray-500">Not ranking in top 20</p>'}
-            ${result && result.competitors.length > 0 ? `<p class="text-xs mt-1">Top competitor: ${result.competitors[0]?.name}</p>` : ''}
+            <p class="text-sm text-gray-600 mt-1">Keyword: ${keyword}</p>
+            ${rank !== null ? `<p class="text-sm mt-2"><strong>Rank: #${rank}</strong></p>` : '<p class="text-sm text-gray-500 mt-2">Not ranking in top 20</p>'}
+            ${result && result.competitors.length > 0 ? `<p class="text-xs mt-2 text-gray-600">Top competitor: ${result.competitors[0]?.name}</p>` : ''}
           </div>
         `,
         color,
@@ -311,13 +279,13 @@ export default function Maps() {
         position: centerLocation,
         title: businessProfile.name || "Business Location",
         content: `
-          <div class="p-2">
+          <div class="p-3">
             <h3 class="font-semibold">${businessProfile.name || "Business Location"}</h3>
-            <p class="text-sm">${businessProfile.address}</p>
-            <p class="text-xs text-blue-600">Primary Business Location</p>
+            <p class="text-sm mt-1">${businessProfile.address}</p>
+            <p class="text-xs text-blue-600 mt-2">Target Business</p>
           </div>
         `,
-        color: "#blue-600",
+        color: "#DC2626",
         icon: "business",
       });
     }
@@ -359,197 +327,6 @@ export default function Maps() {
 
     toast.success("Results exported successfully");
   }, [rankingResults, businessProfile.name]);
-
-  const renderSetupDialog = () => (
-    <Dialog open={showSetup} onOpenChange={setShowSetup}>
-      <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Target className="h-5 w-5" />
-            Local Ranking Analysis Setup
-          </DialogTitle>
-        </DialogHeader>
-
-        <div className="space-y-6">
-          {/* Business Profile */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Business Information</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="businessName">Business Name *</Label>
-                  <Input
-                    id="businessName"
-                    value={businessProfile.name}
-                    onChange={(e) => setBusinessProfile(prev => ({ ...prev, name: e.target.value }))}
-                    placeholder="Your Business Name"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="businessPhone">Phone Number</Label>
-                  <Input
-                    id="businessPhone"
-                    value={businessProfile.phone || ""}
-                    onChange={(e) => setBusinessProfile(prev => ({ ...prev, phone: e.target.value }))}
-                    placeholder="+1 (555) 123-4567"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="businessAddress">Business Address *</Label>
-                <AddressAutocomplete
-                  onAddressSelect={handleAddressSelect}
-                  placeholder="Enter your business address"
-                  initialValue={businessProfile.address}
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="website">Website</Label>
-                <Input
-                  id="website"
-                  value={businessProfile.website || ""}
-                  onChange={(e) => setBusinessProfile(prev => ({ ...prev, website: e.target.value }))}
-                  placeholder="https://yourwebsite.com"
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Search Configuration */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Search Configuration</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <Label htmlFor="keyword">Target Keyword *</Label>
-                <Input
-                  id="keyword"
-                  value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
-                  placeholder="e.g., pizza restaurant, dentist, plumber"
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Waypoint Configuration */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Analysis Area</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <Label>Pattern</Label>
-                  <Select
-                    value={waypointOptions.pattern}
-                    onValueChange={(value: "grid" | "circular" | "radial") => 
-                      setWaypointOptions(prev => ({ ...prev, pattern: value }))
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="grid">
-                        <div className="flex items-center gap-2">
-                          <Grid3X3 className="h-4 w-4" />
-                          Grid Pattern
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="circular">
-                        <div className="flex items-center gap-2">
-                          <Circle className="h-4 w-4" />
-                          Circular Pattern
-                        </div>
-                      </SelectItem>
-                      <SelectItem value="radial">
-                        <div className="flex items-center gap-2">
-                          <Crosshair className="h-4 w-4" />
-                          Radial Pattern
-                        </div>
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label>Density</Label>
-                  <Select
-                    value={waypointOptions.density}
-                    onValueChange={(value: "low" | "medium" | "high" | "ultra") => 
-                      setWaypointOptions(prev => ({ ...prev, density: value }))
-                    }
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="low">Low (9 points)</SelectItem>
-                      <SelectItem value="medium">Medium (25 points)</SelectItem>
-                      <SelectItem value="high">High (49 points)</SelectItem>
-                      <SelectItem value="ultra">Ultra (100 points)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label>Radius (km)</Label>
-                  <Input
-                    type="number"
-                    value={waypointOptions.radiusKm}
-                    onChange={(e) => setWaypointOptions(prev => ({ 
-                      ...prev, 
-                      radiusKm: parseFloat(e.target.value) || 10 
-                    }))}
-                    min="1"
-                    max="50"
-                  />
-                </div>
-              </div>
-
-              <div className="flex gap-2">
-                <Button onClick={generateWaypoints} variant="outline">
-                  <RefreshCw className="h-4 w-4 mr-2" />
-                  Generate Waypoints
-                </Button>
-                {waypoints.length > 0 && (
-                  <Badge variant="secondary">
-                    {waypoints.length} waypoints generated
-                  </Badge>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Action Buttons */}
-          <div className="flex justify-between">
-            <Button
-              variant="outline"
-              onClick={() => setShowApiSetup(true)}
-            >
-              <Settings className="h-4 w-4 mr-2" />
-              API Settings
-            </Button>
-
-            <Button
-              onClick={startRankingAnalysis}
-              disabled={!businessProfile.name || !keyword || waypoints.length === 0}
-              className="gap-2"
-            >
-              <Play className="h-4 w-4" />
-              Start Analysis
-            </Button>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
 
   const renderApiSetupDialog = () => (
     <Dialog open={showApiSetup} onOpenChange={setShowApiSetup}>
@@ -604,9 +381,6 @@ export default function Maps() {
           </div>
 
           <div className="flex gap-2">
-            <Button onClick={testApiConnection} variant="outline" size="sm">
-              Test Connection
-            </Button>
             <Button onClick={setupApiCredentials}>
               Save Credentials
             </Button>
@@ -618,133 +392,357 @@ export default function Maps() {
 
   return (
     <AppLayout>
-      <div className="w-full px-3 sm:px-4 py-6 max-w-full overflow-x-hidden min-w-0">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
-          <div className="flex-1 min-w-0">
-            <h1 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
-              <Map className="h-6 w-6" />
-              Local Ranking Maps
-            </h1>
-            <p className="text-sm sm:text-base text-muted-foreground">
-              Analyze your Google Maps rankings across multiple locations
-            </p>
+      <div className="flex h-screen pt-16 overflow-hidden">
+        {/* Left Sidebar */}
+        <div className="w-80 bg-white border-r border-gray-200 overflow-y-auto">
+          {/* Target Business Section */}
+          <div className="p-4 border-b border-gray-200">
+            <div className="flex items-center gap-2 mb-3">
+              <Target className="h-5 w-5 text-blue-600" />
+              <h2 className="font-semibold text-gray-900">Target Business</h2>
+            </div>
+            
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600">
+                  <Building2 className="h-5 w-5 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-gray-900 truncate">
+                    {businessProfile.name}
+                  </h3>
+                  <div className="flex items-center gap-1 mt-1">
+                    <div className="flex text-yellow-400">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star key={star} className="h-3 w-3 fill-current" />
+                      ))}
+                    </div>
+                    <span className="text-xs text-gray-600 ml-1">285</span>
+                  </div>
+                </div>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <Edit className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2 text-gray-600">
+                  <MapPin className="h-4 w-4" />
+                  <span className="truncate">{businessProfile.address}</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-600">
+                  <Phone className="h-4 w-4" />
+                  <span>{businessProfile.phone}</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-600">
+                  <Globe className="h-4 w-4" />
+                  <span className="truncate">{businessProfile.website}</span>
+                </div>
+              </div>
+
+              <div className="text-xs text-gray-500 bg-green-50 border border-green-200 rounded p-2">
+                <span className="flex items-center gap-1">
+                  <CheckCircle className="h-3 w-3 text-green-600" />
+                  Open • Closes at 11PM
+                </span>
+              </div>
+            </div>
           </div>
 
-          <div className="flex gap-2">
-            {currentSession && (
-              <>
-                <Button
-                  onClick={exportResults}
-                  variant="outline"
-                  size="sm"
-                  disabled={rankingResults.length === 0}
-                >
-                  <Download className="h-4 w-4 mr-2" />
-                  Export
-                </Button>
-                <Button onClick={resetAnalysis} variant="outline" size="sm">
-                  <RefreshCw className="h-4 w-4 mr-2" />
-                  New Analysis
-                </Button>
-              </>
-            )}
-            <Button onClick={() => setShowSetup(true)}>
-              <Settings className="h-4 w-4 mr-2" />
-              Setup
-            </Button>
-          </div>
-        </div>
+          {/* Settings Section */}
+          <div className="p-4 border-b border-gray-200">
+            <button
+              onClick={() => setSettingsExpanded(!settingsExpanded)}
+              className="flex items-center justify-between w-full mb-3"
+            >
+              <div className="flex items-center gap-2">
+                <Settings className="h-5 w-5 text-gray-600" />
+                <h2 className="font-semibold text-gray-900">Settings</h2>
+              </div>
+              {settingsExpanded ? (
+                <ChevronUp className="h-4 w-4 text-gray-600" />
+              ) : (
+                <ChevronDown className="h-4 w-4 text-gray-600" />
+              )}
+            </button>
 
-        {/* Status Card */}
-        {currentSession && (
-          <Card className="mb-6">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  {currentSession.status === "running" && (
-                    <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
-                  )}
-                  {currentSession.status === "completed" && (
-                    <CheckCircle className="h-5 w-5 text-green-600" />
-                  )}
-                  {currentSession.status === "error" && (
-                    <AlertCircle className="h-5 w-5 text-red-600" />
-                  )}
-                  
-                  <div>
-                    <div className="font-medium">
-                      {currentSession.businessProfile.name} - "{currentSession.keyword}"
+            {settingsExpanded && (
+              <div className="space-y-4">
+                {/* Keywords */}
+                <div>
+                  <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                    Keywords (1)
+                  </Label>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 p-2 bg-purple-50 border border-purple-200 rounded">
+                      <Badge variant="secondary" className="bg-purple-600 text-white text-xs">
+                        Auto Generated
+                      </Badge>
+                      <span className="text-sm flex-1">{keyword}</span>
+                      <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                        ×
+                      </Button>
                     </div>
-                    <div className="text-sm text-muted-foreground">
-                      {currentSession.waypoints.length} locations • Status: {currentSession.status}
-                    </div>
+                    <Input
+                      placeholder="Add keyword..."
+                      value=""
+                      onChange={() => {}}
+                      className="text-sm"
+                    />
                   </div>
                 </div>
 
-                {currentSession.status === "completed" && rankingResults.length > 0 && (
-                  <div className="flex gap-6 text-sm">
-                    <div className="text-center">
-                      <div className="font-medium text-green-600">
-                        {rankingResults.filter(r => r.businessRank && r.businessRank <= 3).length}
+                {/* Map Grid */}
+                <div>
+                  <Label className="text-sm font-medium text-gray-700 mb-2 block">
+                    Map Grid
+                  </Label>
+                  <div className="space-y-3">
+                    <Select
+                      value={waypointOptions.pattern}
+                      onValueChange={(value: "grid" | "circular" | "radial") => {
+                        setWaypointOptions(prev => ({ ...prev, pattern: value }));
+                        setTimeout(generateWaypoints, 100);
+                      }}
+                    >
+                      <SelectTrigger className="text-sm">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="circular">
+                          <div className="flex items-center gap-2">
+                            <Circle className="h-4 w-4" />
+                            Circle
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="grid">
+                          <div className="flex items-center gap-2">
+                            <Grid3X3 className="h-4 w-4" />
+                            Grid
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="radial">
+                          <div className="flex items-center gap-2">
+                            <Crosshair className="h-4 w-4" />
+                            Radial
+                          </div>
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <div className="flex gap-2">
+                      <div className="flex-1">
+                        <Label className="text-xs text-gray-600">Distance</Label>
+                        <Select
+                          value={waypointOptions.density}
+                          onValueChange={(value: "low" | "medium" | "high") => {
+                            setWaypointOptions(prev => ({ ...prev, density: value }));
+                            setTimeout(generateWaypoints, 100);
+                          }}
+                        >
+                          <SelectTrigger className="text-sm">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="low">1mi Pts</SelectItem>
+                            <SelectItem value="medium">0.5mi Pts</SelectItem>
+                            <SelectItem value="high">0.25mi Pts</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
-                      <div className="text-muted-foreground">Top 3</div>
+                      <div className="flex-1">
+                        <Label className="text-xs text-gray-600">Radius</Label>
+                        <Select
+                          value={waypointOptions.radiusKm.toString()}
+                          onValueChange={(value) => {
+                            setWaypointOptions(prev => ({ ...prev, radiusKm: parseInt(value) }));
+                            setTimeout(generateWaypoints, 100);
+                          }}
+                        >
+                          <SelectTrigger className="text-sm">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="5">5 km</SelectItem>
+                            <SelectItem value="10">10 km</SelectItem>
+                            <SelectItem value="15">15 km</SelectItem>
+                            <SelectItem value="20">20 km</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
-                    <div className="text-center">
-                      <div className="font-medium text-yellow-600">
-                        {rankingResults.filter(r => r.businessRank && r.businessRank <= 10).length}
-                      </div>
-                      <div className="text-muted-foreground">Top 10</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="font-medium text-red-600">
-                        {rankingResults.filter(r => r.businessRank === null).length}
-                      </div>
-                      <div className="text-muted-foreground">Not Ranking</div>
+
+                    <div className="text-xs text-gray-600 bg-blue-50 border border-blue-200 rounded p-2">
+                      Analyse over {waypoints.length} credits per keyword
                     </div>
                   </div>
-                )}
+                </div>
               </div>
-            </CardContent>
-          </Card>
-        )}
+            )}
+          </div>
 
-        {/* Map */}
-        <Card>
-          <CardContent className="p-0">
-            <div style={{ height: "600px" }}>
-              <GoogleMapComponent
-                center={centerLocation || { lat: 40.7128, lng: -74.0060 }}
-                zoom={11}
-                markers={getMapMarkers()}
-                onMarkerClick={(marker) => {
-                  const waypoint = waypoints.find(w => w.id === marker.id);
-                  setSelectedWaypoint(waypoint || null);
-                }}
-              />
+          {/* Action Buttons */}
+          <div className="p-4 space-y-3">
+            <div className="flex gap-2">
+              <Button
+                onClick={startRankingAnalysis}
+                disabled={!businessProfile.name || !keyword || waypoints.length === 0 || currentSession?.status === "running"}
+                className="flex-1 bg-blue-600 hover:bg-blue-700"
+              >
+                {currentSession?.status === "running" ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Running...
+                  </>
+                ) : (
+                  <>
+                    <Play className="h-4 w-4 mr-2" />
+                    Start
+                  </>
+                )}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setShowApiSetup(true)}
+                className="px-3"
+              >
+                <Settings className="h-4 w-4" />
+              </Button>
             </div>
-          </CardContent>
-        </Card>
 
-        {/* Competitor Analysis */}
-        {rankingResults.length > 0 && (
-          <div className="mt-6">
-            <CompetitorAnalysis
-              results={rankingResults}
-              businessName={businessProfile.name}
-              keyword={keyword}
-              onWaypointSelect={(waypoint) => {
-                setSelectedWaypoint(waypoint);
-                // Center map on selected waypoint
-                setCenterLocation({ lat: waypoint.lat, lng: waypoint.lng });
-              }}
+            {rankingResults.length > 0 && (
+              <Button
+                variant="outline"
+                onClick={exportResults}
+                className="w-full"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Export Results
+              </Button>
+            )}
+          </div>
+
+          {/* Results Section */}
+          {currentSession && (
+            <div className="border-t border-gray-200">
+              <button
+                onClick={() => setResultsExpanded(!resultsExpanded)}
+                className="flex items-center justify-between w-full p-4"
+              >
+                <div className="flex items-center gap-2">
+                  <BarChart3 className="h-5 w-5 text-gray-600" />
+                  <h2 className="font-semibold text-gray-900">Results</h2>
+                  {currentSession.status === "completed" && (
+                    <Badge variant="secondary" className="bg-green-100 text-green-800">
+                      Complete
+                    </Badge>
+                  )}
+                </div>
+                {resultsExpanded ? (
+                  <ChevronUp className="h-4 w-4 text-gray-600" />
+                ) : (
+                  <ChevronDown className="h-4 w-4 text-gray-600" />
+                )}
+              </button>
+
+              {resultsExpanded && currentSession.status === "completed" && rankingResults.length > 0 && (
+                <div className="px-4 pb-4 space-y-3">
+                  <div className="grid grid-cols-3 gap-2 text-center">
+                    <div className="p-2 bg-green-50 rounded">
+                      <div className="text-lg font-bold text-green-600">
+                        {rankingResults.filter(r => r.businessRank && r.businessRank <= 3).length}
+                      </div>
+                      <div className="text-xs text-green-600">Top 3</div>
+                    </div>
+                    <div className="p-2 bg-yellow-50 rounded">
+                      <div className="text-lg font-bold text-yellow-600">
+                        {rankingResults.filter(r => r.businessRank && r.businessRank <= 10).length}
+                      </div>
+                      <div className="text-xs text-yellow-600">Top 10</div>
+                    </div>
+                    <div className="p-2 bg-red-50 rounded">
+                      <div className="text-lg font-bold text-red-600">
+                        {rankingResults.filter(r => r.businessRank === null).length}
+                      </div>
+                      <div className="text-xs text-red-600">Not Ranking</div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 max-h-40 overflow-y-auto">
+                    {rankingResults.slice(0, 10).map((result, index) => (
+                      <div
+                        key={result.waypoint.id}
+                        className="flex items-center justify-between p-2 bg-gray-50 rounded text-sm"
+                      >
+                        <span className="text-gray-600">{result.waypoint.name}</span>
+                        {result.businessRank ? (
+                          <Badge
+                            variant={result.businessRank <= 3 ? "default" : 
+                                    result.businessRank <= 10 ? "secondary" : "destructive"}
+                            className="text-xs"
+                          >
+                            #{result.businessRank}
+                          </Badge>
+                        ) : (
+                          <Badge variant="outline" className="text-xs">
+                            —
+                          </Badge>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Main Map Area */}
+        <div className="flex-1 relative">
+          <div className="absolute inset-0">
+            <GoogleMapComponent
+              center={centerLocation}
+              zoom={12}
+              markers={getMapMarkers()}
+              height="100%"
+              showControls={true}
+              showDirectionsButton={false}
+              className="h-full border-0 rounded-none"
             />
           </div>
-        )}
-      </div>
 
-      {/* Setup Dialog */}
-      {renderSetupDialog()}
+          {/* Map Overlay Controls */}
+          <div className="absolute top-4 right-4 space-y-2">
+            <Button
+              variant="secondary"
+              size="sm"
+              className="bg-white/90 backdrop-blur-sm shadow-lg"
+            >
+              <Eye className="h-4 w-4 mr-2" />
+              Satellite
+            </Button>
+          </div>
+
+          {/* Status Overlay */}
+          {currentSession?.status === "running" && (
+            <div className="absolute bottom-4 left-4 right-4">
+              <Card className="bg-white/95 backdrop-blur-sm">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3">
+                    <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+                    <div className="flex-1">
+                      <div className="font-medium">Analyzing Rankings...</div>
+                      <div className="text-sm text-gray-600">
+                        Processing {waypoints.length} locations for "{keyword}"
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* API Setup Dialog */}
       {renderApiSetupDialog()}
