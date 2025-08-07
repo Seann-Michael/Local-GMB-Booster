@@ -596,8 +596,8 @@ export function AppLayout({ children }: AppLayoutProps) {
         <nav className="flex-1 px-3 py-2">
           <div className="space-y-1">
             {sidebarItems.map((item) => {
-              // Special handling for Maps with submenu
-              if (item.id === "maps" && item.hasSubmenu) {
+              // Special handling for Audits with submenu
+              if (item.id === "audits" && item.hasSubmenu) {
                 return (
                   <div key={item.id}>
                     <Button
@@ -610,7 +610,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                           "text-muted-foreground hover:text-foreground hover:bg-muted/50",
                       )}
                       size="sm"
-                      onClick={() => setMapsDropdownOpen(!mapsDropdownOpen)}
+                      onClick={() => setAuditsDropdownOpen(!auditsDropdownOpen)}
                     >
                       <item.icon
                         className={cn("h-5 w-5", item.active && "text-primary")}
@@ -618,7 +618,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                       <span className="font-medium flex-1 text-left">
                         {item.label}
                       </span>
-                      {mapsDropdownOpen ? (
+                      {auditsDropdownOpen ? (
                         <ChevronUp className="h-4 w-4" />
                       ) : (
                         <ChevronDown className="h-4 w-4" />
@@ -626,7 +626,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                     </Button>
 
                     {/* Submenu */}
-                    {mapsDropdownOpen && (
+                    {auditsDropdownOpen && (
                       <div className="ml-6 mt-1 space-y-1">
                         {item.submenuItems?.map((subItem) => (
                           <Link key={subItem.id} to={subItem.href} onClick={() => setMobileSidebarOpen(false)}>
@@ -982,8 +982,8 @@ export function AppLayout({ children }: AppLayoutProps) {
         <nav className="flex-1 px-3 py-2">
           <div className="space-y-1">
             {sidebarItems.map((item) => {
-              // Special handling for Maps with submenu
-              if (item.id === "maps" && item.hasSubmenu) {
+              // Special handling for Audits with submenu
+              if (item.id === "audits" && item.hasSubmenu) {
                 return (
                   <div key={item.id}>
                     <Button
@@ -1001,7 +1001,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                         if (sidebarCollapsed) {
                           navigate(item.href);
                         } else {
-                          setMapsDropdownOpen(!mapsDropdownOpen);
+                          setAuditsDropdownOpen(!auditsDropdownOpen);
                         }
                       }}
                     >
@@ -1013,7 +1013,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                           <span className="font-medium flex-1 text-left">
                             {item.label}
                           </span>
-                          {mapsDropdownOpen ? (
+                          {auditsDropdownOpen ? (
                             <ChevronUp className="h-4 w-4" />
                           ) : (
                             <ChevronDown className="h-4 w-4" />
@@ -1023,7 +1023,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                     </Button>
 
                     {/* Submenu */}
-                    {!sidebarCollapsed && mapsDropdownOpen && (
+                    {!sidebarCollapsed && auditsDropdownOpen && (
                       <div className="ml-6 mt-1 space-y-1">
                         {item.submenuItems?.map((subItem) => (
                           <Link key={subItem.id} to={subItem.href}>
