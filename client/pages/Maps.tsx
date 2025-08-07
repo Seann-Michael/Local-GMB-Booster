@@ -282,8 +282,10 @@ export default function Maps() {
                 <h2 className="font-bold text-slate-900">Target Business</h2>
                 {business.verified && (
                   <Tooltip>
-                    <TooltipTrigger>
-                      <Shield className="h-4 w-4 text-blue-600" />
+                    <TooltipTrigger asChild>
+                      <span>
+                        <Shield className="h-4 w-4 text-blue-600" />
+                      </span>
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Verified Business</p>
