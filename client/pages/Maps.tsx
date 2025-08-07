@@ -236,7 +236,7 @@ export default function Maps() {
           </div>
         `,
         color,
-        rank: point.rank,
+        rank: point?.rank || null,
         size,
       });
     });
