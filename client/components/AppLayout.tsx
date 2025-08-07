@@ -1098,7 +1098,7 @@ export function AppLayout({ children }: AppLayoutProps) {
             </div>
 
             {/* Right side icons - far right */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1">
               {/* Functional Search - desktop only */}
               <div className="hidden md:block">
                 <HeaderSearch />
