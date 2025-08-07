@@ -477,62 +477,52 @@ export default function AuditReport() {
           {/* Summary Card */}
           <Card className="md:col-span-2">
             <CardHeader>
-              <CardTitle>Audit Summary</CardTitle>
+              <CardTitle>Geo Grid Scan Summary</CardTitle>
               <CardDescription>
-                Key findings and next steps for improving local SEO performance
+                Geographic visibility analysis and ranking performance across the scanned area
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-center">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                 <div>
                   <div
-                    className={`text-lg font-bold ${getScoreColor(auditData.results.gmb.score)}`}
+                    className={`text-lg font-bold ${getVisibilityColor(scanData.scanResults.gridCoverage.visibility)}`}
                   >
-                    {auditData.results.gmb.score}%
+                    {scanData.scanResults.gridCoverage.visibility}%
                   </div>
-                  <div className="text-xs text-muted-foreground">GMB</div>
+                  <div className="text-xs text-muted-foreground">Grid Coverage</div>
                 </div>
                 <div>
                   <div
-                    className={`text-lg font-bold ${getScoreColor(auditData.results.citations.score)}`}
+                    className={`text-lg font-bold ${getVisibilityColor(scanData.scanResults.localPack.visibility)}`}
                   >
-                    {auditData.results.citations.score}%
+                    {scanData.scanResults.localPack.visibility}%
                   </div>
-                  <div className="text-xs text-muted-foreground">Citations</div>
+                  <div className="text-xs text-muted-foreground">Local Pack</div>
                 </div>
                 <div>
                   <div
-                    className={`text-lg font-bold ${getScoreColor(auditData.results.reviews.score)}`}
+                    className={`text-lg font-bold ${getVisibilityColor(scanData.scanResults.organicResults.visibility)}`}
                   >
-                    {auditData.results.reviews.score}%
+                    {scanData.scanResults.organicResults.visibility}%
                   </div>
-                  <div className="text-xs text-muted-foreground">Reviews</div>
+                  <div className="text-xs text-muted-foreground">Organic</div>
                 </div>
                 <div>
-                  <div
-                    className={`text-lg font-bold ${getScoreColor(auditData.results.website.score)}`}
-                  >
-                    {auditData.results.website.score}%
+                  <div className="text-lg font-bold text-blue-600">
+                    {scanData.scanResults.gridCoverage.averageRank}
                   </div>
-                  <div className="text-xs text-muted-foreground">Website</div>
-                </div>
-                <div>
-                  <div
-                    className={`text-lg font-bold ${getScoreColor(auditData.results.social.score)}`}
-                  >
-                    {auditData.results.social.score}%
-                  </div>
-                  <div className="text-xs text-muted-foreground">Social</div>
+                  <div className="text-xs text-muted-foreground">Avg Rank</div>
                 </div>
               </div>
               <Separator />
               <div className="bg-muted/50 p-4 rounded-lg">
-                <h4 className="font-medium mb-2">Next Steps</h4>
+                <h4 className="font-medium mb-2">Key Insights</h4>
                 <p className="text-sm text-muted-foreground">
-                  Focus on improving Google My Business profile completeness and
-                  website technical SEO issues. Consider implementing a review
-                  management strategy to increase response rates and maintain
-                  positive online reputation.
+                  This GMB profile shows strong visibility in {scanData.scanResults.geoDistribution.strongAreas.length} core areas.
+                  Focus on expanding presence in {scanData.scanResults.geoDistribution.weakAreas.join(", ")} to improve overall
+                  geographic coverage. The profile performs best for location-based searches with an average local pack position
+                  of {scanData.scanResults.localPack.averagePosition}.
                 </p>
               </div>
             </CardContent>
