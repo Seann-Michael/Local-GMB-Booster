@@ -1031,7 +1031,7 @@ export function AppLayout({ children }: AppLayoutProps) {
             sidebarCollapsed && "md:left-16", // Account for collapsed sidebar width
           )}
         >
-          <div className="flex items-center justify-between w-full">
+          <div className="flex items-center justify-between w-full px-3 md:px-0">
             {/* Mobile hamburger menu - far left */}
             <div className="flex items-center">
               <Button
