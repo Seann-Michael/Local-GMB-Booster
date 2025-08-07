@@ -10,14 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { AppLayout } from "@/components/AppLayout";
 import {
   History,
@@ -146,18 +138,14 @@ export default function ScanHistory() {
   const [searchQuery, setSearchQuery] = useState("");
   const [dateFilter, setDateFilter] = useState("");
 
-  const filteredHistory = history.filter((item) => {
-    const matchesStatus =
-      filterStatus === "all" || item.status === filterStatus;
+  const filteredHistory = history.filter(item => {
+    const matchesStatus = filterStatus === "all" || item.status === filterStatus;
     const matchesType = filterType === "all" || item.scanType === filterType;
-    const matchesSearch =
-      !searchQuery ||
+    const matchesSearch = !searchQuery || 
       item.scanName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.business.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.keywords.some((k) =>
-        k.toLowerCase().includes(searchQuery.toLowerCase()),
-      );
-
+      item.keywords.some(k => k.toLowerCase().includes(searchQuery.toLowerCase()));
+    
     return matchesStatus && matchesType && matchesSearch;
   });
 
@@ -185,33 +173,29 @@ export default function ScanHistory() {
   };
 
   const exportScanData = (scanId: string) => {
-    const scan = history.find((s) => s.id === scanId);
+    const scan = history.find(s => s.id === scanId);
     if (scan) {
       toast.success(`Exporting data for "${scan.scanName}"`);
-      // In a real app, this would trigger a download
     }
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
     });
   };
 
   // Calculate summary stats
   const totalScans = history.length;
-  const completedScans = history.filter((h) => h.status === "completed").length;
+  const completedScans = history.filter(h => h.status === "completed").length;
   const totalCreditsUsed = history.reduce((sum, h) => sum + h.creditsUsed, 0);
-  const averageRankAcrossAll =
-    completedScans > 0
-      ? history
-          .filter((h) => h.status === "completed")
-          .reduce((sum, h) => sum + h.averageRank, 0) / completedScans
-      : 0;
+  const averageRankAcrossAll = completedScans > 0 
+    ? history.filter(h => h.status === "completed").reduce((sum, h) => sum + h.averageRank, 0) / completedScans 
+    : 0;
 
   return (
     <AppLayout>
@@ -235,12 +219,8 @@ export default function ScanHistory() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">
-                    Total Scans
-                  </p>
-                  <p className="text-2xl font-bold text-blue-600">
-                    {totalScans}
-                  </p>
+                  <p className="text-sm font-medium text-gray-600">Total Scans</p>
+                  <p className="text-2xl font-bold text-blue-600">{totalScans}</p>
                 </div>
                 <Target className="h-8 w-8 text-blue-600" />
               </div>
@@ -252,9 +232,7 @@ export default function ScanHistory() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">Completed</p>
-                  <p className="text-2xl font-bold text-green-600">
-                    {completedScans}
-                  </p>
+                  <p className="text-2xl font-bold text-green-600">{completedScans}</p>
                 </div>
                 <CheckCircle className="h-8 w-8 text-green-600" />
               </div>
@@ -279,9 +257,7 @@ export default function ScanHistory() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">
-                    Credits Used
-                  </p>
+                  <p className="text-sm font-medium text-gray-600">Credits Used</p>
                   <p className="text-2xl font-bold text-orange-600">
                     {totalCreditsUsed.toLocaleString()}
                   </p>
@@ -350,169 +326,134 @@ export default function ScanHistory() {
           </CardContent>
         </Card>
 
-        {/* History Table */}
+        {/* History List */}
         <Card>
           <CardHeader>
-            <CardTitle>
-              Scan History ({filteredHistory.length} results)
-            </CardTitle>
+            <CardTitle>Scan History ({filteredHistory.length} results)</CardTitle>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Scan Details</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Date & Time</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Locations</TableHead>
-                  <TableHead>Avg Rank</TableHead>
-                  <TableHead>Change</TableHead>
-                  <TableHead>Credits</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredHistory.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell>
-                      <div>
-                        <div className="font-medium">{item.scanName}</div>
-                        <div className="text-sm text-gray-500">
-                          {item.business}
-                        </div>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {item.keywords.slice(0, 2).map((keyword) => (
-                            <Badge
-                              key={keyword}
-                              variant="outline"
-                              className="text-xs"
-                            >
-                              {keyword}
-                            </Badge>
-                          ))}
-                          {item.keywords.length > 2 && (
-                            <Badge variant="outline" className="text-xs">
-                              +{item.keywords.length - 2}
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={
-                          item.scanType === "one-time" ? "default" : "secondary"
-                        }
-                      >
-                        {item.scanType === "one-time"
-                          ? "One Time"
-                          : "Recurring"}
+            <div className="space-y-4">
+              {filteredHistory.map((item) => (
+                <div key={item.id} className="border rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <div className="font-medium">{item.scanName}</div>
+                      <div className="text-sm text-gray-500">{item.business}</div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <Badge variant={item.scanType === "one-time" ? "default" : "secondary"}>
+                        {item.scanType === "one-time" ? "One Time" : "Recurring"}
                       </Badge>
-                    </TableCell>
-                    <TableCell>
                       <div className="flex items-center gap-2">
                         {getStatusIcon(item.status)}
-                        <span className="capitalize text-sm">
-                          {item.status}
-                        </span>
+                        <span className="capitalize text-sm">{item.status}</span>
                       </div>
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      {formatDate(item.startTime)}
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      {item.duration || "N/A"}
-                    </TableCell>
-                    <TableCell>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {item.keywords.slice(0, 3).map((keyword) => (
+                      <Badge key={keyword} variant="outline" className="text-xs">
+                        {keyword}
+                      </Badge>
+                    ))}
+                    {item.keywords.length > 3 && (
+                      <Badge variant="outline" className="text-xs">
+                        +{item.keywords.length - 3}
+                      </Badge>
+                    )}
+                  </div>
+                  
+                  <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-3 text-sm">
+                    <div>
+                      <div className="text-xs text-gray-500">Date & Time</div>
+                      <div>{formatDate(item.startTime)}</div>
+                    </div>
+                    
+                    <div>
+                      <div className="text-xs text-gray-500">Duration</div>
+                      <div>{item.duration || "N/A"}</div>
+                    </div>
+                    
+                    <div>
+                      <div className="text-xs text-gray-500">Locations</div>
                       <div className="flex items-center gap-1">
                         <MapPin className="h-3 w-3 text-gray-400" />
                         {item.locationsScanned}
                       </div>
-                    </TableCell>
-                    <TableCell>
+                    </div>
+                    
+                    <div>
+                      <div className="text-xs text-gray-500">Avg Rank</div>
                       {item.status === "completed" ? (
                         <Badge
-                          variant={
-                            item.averageRank <= 3
-                              ? "default"
-                              : item.averageRank <= 10
-                                ? "secondary"
-                                : "destructive"
-                          }
+                          variant={item.averageRank <= 3 ? "default" : 
+                                  item.averageRank <= 10 ? "secondary" : "destructive"}
                         >
                           #{item.averageRank.toFixed(1)}
                         </Badge>
                       ) : (
                         <span className="text-gray-400">—</span>
                       )}
-                    </TableCell>
-                    <TableCell>
+                    </div>
+                    
+                    <div>
+                      <div className="text-xs text-gray-500">Change</div>
                       <div className="flex items-center gap-1">
                         {getChangeIcon(item.improvementChange)}
-                        <span
-                          className={`text-sm ${
-                            item.improvementChange > 0
-                              ? "text-green-600"
-                              : item.improvementChange < 0
-                                ? "text-red-600"
-                                : "text-gray-600"
-                          }`}
-                        >
-                          {item.improvementChange > 0 ? "+" : ""}
-                          {item.improvementChange.toFixed(1)}
+                        <span className={`text-sm ${
+                          item.improvementChange > 0 ? "text-green-600" : 
+                          item.improvementChange < 0 ? "text-red-600" : "text-gray-600"
+                        }`}>
+                          {item.improvementChange > 0 ? "+" : ""}{item.improvementChange.toFixed(1)}
                         </span>
                       </div>
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      {item.creditsUsed.toLocaleString()}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => viewScanDetails(item.id)}
-                          disabled={item.status !== "completed"}
-                        >
-                          <Eye className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => exportScanData(item.id)}
-                          disabled={item.status !== "completed"}
-                        >
-                          <Download className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                    </div>
+                    
+                    <div>
+                      <div className="text-xs text-gray-500">Credits</div>
+                      <div>{item.creditsUsed.toLocaleString()}</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => viewScanDetails(item.id)}
+                      disabled={item.status !== "completed"}
+                    >
+                      <Eye className="h-4 w-4 mr-1" />
+                      View
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => exportScanData(item.id)}
+                      disabled={item.status !== "completed"}
+                    >
+                      <Download className="h-4 w-4 mr-1" />
+                      Export
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
 
             {filteredHistory.length === 0 && (
               <div className="text-center py-12">
                 <History className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  No scan history found
-                </h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">No scan history found</h3>
                 <p className="text-gray-600 mb-4">
-                  {searchQuery || filterStatus !== "all" || filterType !== "all"
+                  {searchQuery || filterStatus !== "all" || filterType !== "all" 
                     ? "Try adjusting your filters to see more results."
                     : "Start running scans to see your history here."}
                 </p>
-                {!searchQuery &&
-                  filterStatus === "all" &&
-                  filterType === "all" && (
-                    <Button
-                      onClick={() => navigate("/admin/maps/one-time-scan")}
-                    >
-                      Run Your First Scan
-                    </Button>
-                  )}
+                {!searchQuery && filterStatus === "all" && filterType === "all" && (
+                  <Button onClick={() => navigate("/admin/maps/one-time-scan")}>
+                    Run Your First Scan
+                  </Button>
+                )}
               </div>
             )}
           </CardContent>
