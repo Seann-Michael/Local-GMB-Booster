@@ -1098,8 +1098,8 @@ export function AppLayout({ children }: AppLayoutProps) {
             </div>
 
             {/* Right side icons - far right */}
-            <div className="flex items-center gap-2 md:gap-1">
-              {/* Functional Search - responsive */}
+            <div className="flex items-center gap-3">
+              {/* Functional Search - desktop only */}
               <div className="hidden md:block">
                 <HeaderSearch />
               </div>
@@ -1107,14 +1107,11 @@ export function AppLayout({ children }: AppLayoutProps) {
               {/* Notifications Dropdown */}
               <NotificationDropdown />
 
-              {/* Theme Toggle - Now visible on mobile too */}
-              <ThemeToggle />
-
-              {/* Zoom Controls - desktop only */}
-              <div className="hidden md:block">
+              {/* Zoom Controls - now visible on mobile */}
+              <div className="block">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                    <Button variant="ghost" size="icon" className="h-10 w-10">
                       <Monitor className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
