@@ -81,9 +81,13 @@ interface FilterState {
 export default function Gallery() {
   const [photos, setPhotos] = useState<PhotoWithMetadata[]>([]);
   const [filteredPhotos, setFilteredPhotos] = useState<PhotoWithMetadata[]>([]);
+  const [displayedPhotos, setDisplayedPhotos] = useState<PhotoWithMetadata[]>([]);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [showUploader, setShowUploader] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const PHOTOS_PER_PAGE = 20;
 
   // Available filter options
   const [projects, setProjects] = useState<Array<{ id: string; name: string }>>(
@@ -171,9 +175,17 @@ export default function Gallery() {
     setPhotos(allPhotos);
   }, []);
 
+  // Apply pagination whenever filteredPhotos change
+  useEffect(() => {
+    const startIndex = 0;
+    const endIndex = currentPage * PHOTOS_PER_PAGE;
+    setDisplayedPhotos(filteredPhotos.slice(startIndex, endIndex));
+  }, [filteredPhotos, currentPage]);
+
   // Apply filters whenever photos or filters change
   useEffect(() => {
     let filtered = [...photos];
+    setCurrentPage(1); // Reset to first page when filters change
 
     // Date filtering
     if (filters.startDate) {
@@ -228,6 +240,16 @@ export default function Gallery() {
 
     setFilteredPhotos(filtered);
   }, [photos, filters]);
+
+  const loadMorePhotos = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setCurrentPage(prev => prev + 1);
+      setLoading(false);
+    }, 500); // Small delay to show loading state
+  };
+
+  const hasMorePhotos = displayedPhotos.length < filteredPhotos.length;
 
   const downloadPhoto = (
     photoUrl: string,
@@ -470,7 +492,8 @@ export default function Gallery() {
           <div className="flex-1 min-w-0">
             <h1 className="text-xl sm:text-2xl font-bold">Gallery</h1>
             <p className="text-sm sm:text-base text-muted-foreground">
-              {filteredPhotos.length} of {photos.length} items
+              Showing {displayedPhotos.length} of {filteredPhotos.length} items
+              {filteredPhotos.length !== photos.length && ` (filtered from ${photos.length})`}
             </p>
           </div>
 
@@ -749,7 +772,7 @@ export default function Gallery() {
           </Card>
         )}
 
-        {filteredPhotos.length === 0 ? (
+        {displayedPhotos.length === 0 ? (
           <Card>
             <CardContent className="py-12 text-center">
               <Images className="h-12 w-12 mx-auto mb-4 opacity-50" />
@@ -784,7 +807,7 @@ export default function Gallery() {
               </CardHeader>
               <CardContent>
                 {Object.entries(
-                  filteredPhotos.reduce(
+                  displayedPhotos.reduce(
                     (groups, photo) => {
                       const date = new Date(
                         photo.uploadedAt,
@@ -980,6 +1003,31 @@ export default function Gallery() {
                 ))}
               </CardContent>
             </Card>
+
+            {/* Load More Button */}
+            {hasMorePhotos && (
+              <div className="flex justify-center mt-8">
+                <Button
+                  onClick={loadMorePhotos}
+                  disabled={loading}
+                  variant="outline"
+                  size="lg"
+                  className="gap-2"
+                >
+                  {loading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                      Loading...
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="h-4 w-4" />
+                      Load More Photos ({filteredPhotos.length - displayedPhotos.length} remaining)
+                    </>
+                  )}
+                </Button>
+              </div>
+            )}
           </div>
         )}
       </div>
