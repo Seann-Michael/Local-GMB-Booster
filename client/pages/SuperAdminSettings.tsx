@@ -2639,34 +2639,46 @@ export default function SuperAdminSettings() {
 
                   {/* Twilio Configuration */}
                   <div className="space-y-4">
-                    <h4 className="font-medium">Twilio SMS Configuration</h4>
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <div className="space-y-2">
-                        <Label>Account SID</Label>
-                        <Input
-                          type="password"
-                          placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Auth Token</Label>
-                        <Input type="password" placeholder="Enter auth token" />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Phone Number</Label>
-                        <Input placeholder="+1234567890" />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Webhook URL</Label>
-                        <Input placeholder="https://your-domain.com/webhook" />
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-medium">Twilio SMS Configuration</h4>
+                      <Badge variant="outline" className="text-xs">
+                        Environment Variables
+                      </Badge>
+                    </div>
+                    <div className="bg-muted/50 p-4 rounded-lg">
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Twilio is configured via environment variables on the server.
+                        The following variables should be set in your deployment environment:
+                      </p>
+                      <div className="grid gap-2 text-sm font-mono">
+                        <div>TWILIO_ACCOUNT_SID</div>
+                        <div>TWILIO_AUTH_TOKEN</div>
+                        <div>TWILIO_PHONE_NUMBER</div>
+                        <div>TWILIO_WEBHOOK_URL</div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Button variant="outline" size="sm">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={async () => {
+                          try {
+                            const { twilioService } = await import('@/lib/twilio');
+                            const result = await twilioService.testConnection();
+                            if (result.success) {
+                              toast.success('Twilio connection successful!');
+                            } else {
+                              toast.error(`Twilio test failed: ${result.error}`);
+                            }
+                          } catch (error) {
+                            toast.error('Failed to test Twilio connection');
+                          }
+                        }}
+                      >
                         Test Connection
                       </Button>
                       <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                         <span className="text-sm text-muted-foreground">
                           Not configured
                         </span>
