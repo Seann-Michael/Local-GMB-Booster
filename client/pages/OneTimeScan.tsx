@@ -60,27 +60,70 @@ export default function OneTimeScan() {
     setBusinessAddress(e.target.value);
   };
 
-  const startScan = () => {
+  // Calculate scan cost based on current settings
+  const scanCost = useMemo(() => {
+    const waypointCount = parseInt(searchDepth) || 0;
+    const keywordCount = keywords.length;
+    return calculateScanCost(waypointCount, keywordCount, false);
+  }, [searchDepth, keywords.length]);
+
+  const startScan = async () => {
     if (!businessName || !businessAddress || keywords.length === 0) {
       toast.error("Please fill in all required fields");
       return;
     }
 
-    // Navigate to Maps page with scan data
-    navigate("/admin/maps", {
-      state: {
-        scanType: "one-time",
-        businessName,
-        businessAddress,
-        keywords,
-        gridPattern,
-        gridRadius,
-        searchDepth,
-      },
-    });
+    // Check if user has sufficient credits
+    if (!hasSufficientCredits(scanCost)) {
+      toast.error(`Insufficient credits. Need ${formatCredits(scanCost)} credits, but only have ${formatCredits(balance.remaining)} remaining.`);
+      return;
+    }
+
+    setIsRunning(true);
+
+    try {
+      // Deduct credits for the scan
+      const scanId = `scan_${Date.now()}`;
+      const success = deductCredits(
+        scanCost,
+        `One-time scan: ${businessName} (${keywords.length} keywords, ${searchDepth} waypoints)`,
+        {
+          scanId,
+          scanType: 'one-time',
+          waypointCount: parseInt(searchDepth),
+          keywordCount: keywords.length,
+        }
+      );
+
+      if (!success) {
+        toast.error("Failed to deduct credits. Please try again.");
+        return;
+      }
+
+      toast.success(`Scan started! ${formatCredits(scanCost)} credits deducted.`);
+
+      // Navigate to Maps page with scan data
+      navigate("/admin/maps", {
+        state: {
+          scanType: "one-time",
+          businessName,
+          businessAddress,
+          keywords,
+          gridPattern,
+          gridRadius,
+          searchDepth,
+          scanId,
+        },
+      });
+    } catch (error) {
+      toast.error("Failed to start scan. Please try again.");
+      console.error("Scan start error:", error);
+    } finally {
+      setIsRunning(false);
+    }
   };
 
-  const estimatedCredits = keywords.length * 24 * parseInt(searchDepth);
+  const estimatedCredits = scanCost;
 
   return (
     <AppLayout>
