@@ -194,18 +194,47 @@ export default function AdminReviews() {
     });
   };
 
-  const sendReviewRequest = (customer: string, project: string) => {
-    // Mock generating unique review link
-    const reviewId = Math.random().toString(36).substr(2, 9);
-    const reviewLink = `${window.location.origin}/review/${reviewId}`;
+  const handleSendReviewRequest = (
+    method: "sms" | "email" | "both",
+    message: string,
+  ) => {
+    // Mock customer data for demo
+    const customerName = "New Customer";
+    const customerPhone = "(555) 123-4567";
+    const customerEmail = "customer@email.com";
+    const projectName = "Recent Project";
 
-    // In real app, this would trigger Twilio SMS
-    toast.success(`Review request sent to ${customer}! Link: ${reviewLink}`, {
-      action: {
-        label: "Copy Link",
-        onClick: () => navigator.clipboard.writeText(reviewLink),
-      },
-    });
+    if (method === "sms" || method === "both") {
+      const phoneUrl = `sms:${customerPhone}?body=${encodeURIComponent(message)}`;
+      window.open(phoneUrl);
+    }
+
+    if (method === "email" || method === "both") {
+      const subject = `Review Request for ${projectName}`;
+      const emailUrl = `mailto:${customerEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+      window.open(emailUrl);
+    }
+
+    // Store the review request
+    const reviewId = Math.random().toString(36).substr(2, 9);
+    const newRequest: ReviewRequest = {
+      id: reviewId,
+      customerName,
+      customerPhone,
+      projectName,
+      status: "sent",
+      sentAt: new Date().toISOString(),
+    };
+
+    const existingRequests = JSON.parse(
+      localStorage.getItem("reviewRequests") || "[]",
+    );
+    existingRequests.push(newRequest);
+    localStorage.setItem("reviewRequests", JSON.stringify(existingRequests));
+
+    toast.success(`Review request sent via ${method}!`);
+    setShowReviewRequest(false);
+    loadReviewData();
   };
 
   const copyReviewLink = (id: string) => {
