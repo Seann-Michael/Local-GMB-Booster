@@ -1,0 +1,84 @@
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { 
+  getCreditBalance, 
+  getCreditTransactions, 
+  CreditBalance, 
+  CreditTransaction,
+  initializeCreditSystem 
+} from '@/lib/creditSystem';
+
+interface CreditContextType {
+  balance: CreditBalance;
+  transactions: CreditTransaction[];
+  refreshCredits: () => void;
+  isLoading: boolean;
+}
+
+const CreditContext = createContext<CreditContextType | undefined>(undefined);
+
+interface CreditProviderProps {
+  children: ReactNode;
+}
+
+export function CreditProvider({ children }: CreditProviderProps) {
+  const [balance, setBalance] = useState<CreditBalance>({
+    total: 0,
+    used: 0,
+    remaining: 0,
+    lastUpdated: new Date().toISOString(),
+  });
+  const [transactions, setTransactions] = useState<CreditTransaction[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const refreshCredits = () => {
+    try {
+      const currentBalance = getCreditBalance();
+      const currentTransactions = getCreditTransactions();
+      setBalance(currentBalance);
+      setTransactions(currentTransactions);
+    } catch (error) {
+      console.error('Error refreshing credits:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // Initialize credit system
+    initializeCreditSystem();
+    refreshCredits();
+
+    // Listen for credit updates
+    const handleCreditUpdate = (event: CustomEvent) => {
+      setBalance(event.detail.balance);
+      refreshCredits(); // Refresh transactions as well
+    };
+
+    window.addEventListener('creditsUpdated', handleCreditUpdate as EventListener);
+
+    return () => {
+      window.removeEventListener('creditsUpdated', handleCreditUpdate as EventListener);
+    };
+  }, []);
+
+  const value: CreditContextType = {
+    balance,
+    transactions,
+    refreshCredits,
+    isLoading,
+  };
+
+  return (
+    <CreditContext.Provider value={value}>
+      {children}
+    </CreditContext.Provider>
+  );
+}
+
+export function useCredits(): CreditContextType {
+  const context = useContext(CreditContext);
+  if (context === undefined) {
+    throw new Error('useCredits must be used within a CreditProvider');
+  }
+  return context;
+}
