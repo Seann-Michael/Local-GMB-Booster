@@ -1245,23 +1245,6 @@ export function SmartMediaUploader({
                                         className="h-7 text-xs"
                                       />
                                     </div>
-                                    <div>
-                                      <Input
-                                        value={
-                                          file.structuredData?.license || ""
-                                        }
-                                        onChange={(e) =>
-                                          updateFile(file.id, {
-                                            structuredData: {
-                                              ...file.structuredData,
-                                              license: e.target.value,
-                                            },
-                                          })
-                                        }
-                                        placeholder="License (e.g., CC BY 4.0)"
-                                        className="h-7 text-xs"
-                                      />
-                                    </div>
                                   </div>
                                   <div className="text-xs text-blue-600">
                                     This data will be embedded as JSON-LD for
