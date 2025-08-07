@@ -816,6 +816,17 @@ export default function AdminReviews() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Review Request Dialog */}
+        <ReviewRequest
+          isOpen={showReviewRequest}
+          onClose={() => setShowReviewRequest(false)}
+          customerName="Customer"
+          customerPhone="(555) 123-4567"
+          customerEmail="customer@email.com"
+          projectName="Recent Project"
+          onSend={handleSendReviewRequest}
+        />
       </div>
     </AppLayout>
   );
