@@ -221,10 +221,10 @@ export default function Maps() {
               }
             </div>
             <p class="text-sm text-gray-600 mb-3">Keyword: ${activeKeyword.keyword}</p>
-            ${point.competitors.length > 0 ? `
+            ${(point.competitors || []).length > 0 ? `
               <div class="border-t pt-2">
                 <p class="text-xs font-medium text-gray-700 mb-1">Top Competitors:</p>
-                ${point.competitors.slice(0, 2).map(comp => `
+                ${(point.competitors || []).slice(0, 2).map(comp => `
                   <div class="flex items-center justify-between text-xs mb-1">
                     <span class="text-gray-600">${comp.name}</span>
                     <span class="font-medium">#${comp.rank}</span>
