@@ -324,7 +324,7 @@ export default function Maps() {
                     </div>
 
                     <div className="flex flex-wrap gap-1 mb-3">
-                      {business.categories.map((category, idx) => (
+                      {(business.categories || []).map((category, idx) => (
                         <Badge key={idx} variant="secondary" className="text-xs bg-slate-100 text-slate-700">
                           {category}
                         </Badge>
