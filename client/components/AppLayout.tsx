@@ -40,6 +40,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronDown,
+  ChevronUp,
   CheckCircle,
   Home,
   MessageSquare,
