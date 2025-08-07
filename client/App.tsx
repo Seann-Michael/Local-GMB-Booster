@@ -898,6 +898,10 @@ const App = () => (
                   path="/CreditAnalytics"
                   element={<Navigate to="/admin/credits/analytics" replace />}
                 />
+                <Route
+                  path="/ReportGenerator"
+                  element={<Navigate to="/admin/report-generator" replace />}
+                />
 
                 {/* Agency Admin Legacy URL Redirects */}
                 <Route
