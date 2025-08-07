@@ -79,6 +79,8 @@ export default function Index() {
     const loadProjects = async () => {
       try {
         console.log('Loading projects...');
+        // Force fresh data generation
+        mockDataService.resetData();
         const mockProjects = mockDataService.getProjects();
         console.log('Loaded projects:', mockProjects.length, mockProjects);
 
