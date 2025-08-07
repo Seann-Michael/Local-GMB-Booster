@@ -18,10 +18,29 @@ export interface CreditBalance {
   lastUpdated: string;
 }
 
+export interface ScanOptions {
+  waypointCount: number;
+  keywordCount: number;
+  depth: number;
+  apiCallType: 'circle' | 'rectangle';
+  priority: 'standard' | 'expedited' | 'priority';
+  isRecurring?: boolean;
+}
+
 export interface ScanCost {
   baseCredits: number;
   perWaypoint: number;
   perKeyword: number;
+  perDepthUnit: number; // Cost per depth increment (e.g., per 10 results)
+  apiCallTypeMultiplier: {
+    circle: number;
+    rectangle: number;
+  };
+  priorityMultiplier: {
+    standard: number;
+    expedited: number;
+    priority: number;
+  };
   recurring?: {
     setupFee: number;
     perExecution: number;
@@ -33,6 +52,16 @@ export const CREDIT_PRICING: ScanCost = {
   baseCredits: 10, // Base cost per scan
   perWaypoint: 5, // Credits per waypoint
   perKeyword: 2, // Credits per keyword
+  perDepthUnit: 1, // Credits per 10 depth results (20 results = 2 units = 2 credits)
+  apiCallTypeMultiplier: {
+    circle: 1.0, // Standard pricing
+    rectangle: 1.2, // 20% premium for rectangle searches
+  },
+  priorityMultiplier: {
+    standard: 1.0, // Standard pricing
+    expedited: 1.5, // 50% premium for expedited
+    priority: 2.0, // 100% premium for priority
+  },
   recurring: {
     setupFee: 25, // One-time setup fee for recurring scans
     perExecution: 0.8, // Multiplier for each recurring execution (20% discount)
