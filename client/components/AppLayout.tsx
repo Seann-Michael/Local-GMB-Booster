@@ -170,7 +170,7 @@ export function AppLayout({ children }: AppLayoutProps) {
   const canSwitch = canSwitchBusinesses();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  const [mapsDropdownOpen, setMapsDropdownOpen] = useState(false);
+  const [auditsDropdownOpen, setAuditsDropdownOpen] = useState(false);
   const [profileSearchQuery, setProfileSearchQuery] = useState("");
   const [businessName, setBusinessName] = useState("");
   const [zoomLevel, setZoomLevel] = useState(100);
