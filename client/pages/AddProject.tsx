@@ -270,7 +270,11 @@ export default function AddProject() {
       <div className="container px-4 py-6 max-w-full overflow-x-hidden">
         <div className="flex items-center gap-4 mb-6">
           <Link to="/admin/projects">
-            <Button variant="ghost" size="icon" className="min-h-[44px] min-w-[44px]">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="min-h-[44px] min-w-[44px]"
+            >
               <ArrowLeft className="h-5 w-5" />
             </Button>
           </Link>
@@ -282,7 +286,10 @@ export default function AddProject() {
           <GoogleMapsDebug />
         </div>
 
-        <form onSubmit={handleSubmit} className="max-w-full sm:max-w-2xl mx-auto space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="max-w-full sm:max-w-2xl mx-auto space-y-6"
+        >
           <Card>
             <CardHeader>
               <CardTitle>Project Details</CardTitle>
@@ -550,7 +557,12 @@ export default function AddProject() {
 
           <div className="flex flex-col sm:flex-row justify-end gap-4">
             <Link to="/admin/projects" className="w-full sm:w-auto">
-              <Button variant="outline" className="w-full sm:w-auto min-h-[44px]">Cancel</Button>
+              <Button
+                variant="outline"
+                className="w-full sm:w-auto min-h-[44px]"
+              >
+                Cancel
+              </Button>
             </Link>
             <Button
               type="submit"
