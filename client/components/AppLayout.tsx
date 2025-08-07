@@ -198,7 +198,10 @@ export function AppLayout({ children }: AppLayoutProps) {
   useEffect(() => {
     const loadBusinessName = () => {
       const business = getCurrentBusiness();
-      const name = business?.name || localStorage.getItem("business_name") || "My Business";
+      const name =
+        business?.name ||
+        localStorage.getItem("business_name") ||
+        "My Business";
       console.log("Loading business name:", name);
       setBusinessName(name);
     };
@@ -678,7 +681,8 @@ export function AppLayout({ children }: AppLayoutProps) {
                     {(userBusinesses || [])
                       .filter(
                         (business) =>
-                          business.id !== (currentBusiness?.id || currentUser?.id) &&
+                          business.id !==
+                            (currentBusiness?.id || currentUser?.id) &&
                           (!profileSearchQuery ||
                             business.name
                               .toLowerCase()
@@ -700,7 +704,9 @@ export function AppLayout({ children }: AppLayoutProps) {
                               </AvatarFallback>
                             </Avatar>
                             <div className="flex-1">
-                              <div className="font-medium text-sm">{business.name}</div>
+                              <div className="font-medium text-sm">
+                                {business.name}
+                              </div>
                               <div className="text-xs text-muted-foreground">
                                 ID: {business.accountId}
                               </div>

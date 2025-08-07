@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -44,13 +44,12 @@ export function PhotoActionMenu({
   isFavorite = false,
   className = "",
 }: PhotoActionMenuProps) {
-  
   const handleDownload = () => {
     if (onDownload) {
       onDownload(photo);
     } else {
       // Default download behavior
-      const photoUrl = typeof photo === 'string' ? photo : photo.url;
+      const photoUrl = typeof photo === "string" ? photo : photo.url;
       const a = document.createElement("a");
       a.href = photoUrl;
       a.download = `${projectName}-photo-${index + 1}.jpg`;
@@ -75,7 +74,7 @@ export function PhotoActionMenu({
       onShare(photo);
     } else {
       // Default share behavior
-      const photoUrl = typeof photo === 'string' ? photo : photo.url;
+      const photoUrl = typeof photo === "string" ? photo : photo.url;
       if (navigator.share) {
         navigator.share({
           title: `Photo from ${projectName}`,
@@ -113,12 +112,14 @@ export function PhotoActionMenu({
           <Edit className="h-4 w-4" />
           Edit
         </DropdownMenuItem>
-        
+
         <DropdownMenuItem onClick={handleToggleFavorite} className="gap-2">
-          <Star className={`h-4 w-4 ${isFavorite ? 'fill-yellow-400 text-yellow-400' : ''}`} />
-          {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+          <Star
+            className={`h-4 w-4 ${isFavorite ? "fill-yellow-400 text-yellow-400" : ""}`}
+          />
+          {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
         </DropdownMenuItem>
-        
+
         <DropdownMenuItem onClick={handleDownload} className="gap-2">
           <Download className="h-4 w-4" />
           Download
@@ -133,11 +134,11 @@ export function PhotoActionMenu({
           <Info className="h-4 w-4" />
           Edit Metadata
         </DropdownMenuItem>
-        
+
         <DropdownMenuSeparator />
-        
-        <DropdownMenuItem 
-          onClick={handleDelete} 
+
+        <DropdownMenuItem
+          onClick={handleDelete}
           className="gap-2 text-red-600 focus:text-red-600 focus:bg-red-50"
         >
           <Trash2 className="h-4 w-4" />

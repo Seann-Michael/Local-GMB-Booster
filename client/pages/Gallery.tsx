@@ -81,7 +81,9 @@ interface FilterState {
 export default function Gallery() {
   const [photos, setPhotos] = useState<PhotoWithMetadata[]>([]);
   const [filteredPhotos, setFilteredPhotos] = useState<PhotoWithMetadata[]>([]);
-  const [displayedPhotos, setDisplayedPhotos] = useState<PhotoWithMetadata[]>([]);
+  const [displayedPhotos, setDisplayedPhotos] = useState<PhotoWithMetadata[]>(
+    [],
+  );
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [showUploader, setShowUploader] = useState(false);
@@ -244,7 +246,7 @@ export default function Gallery() {
   const loadMorePhotos = () => {
     setLoading(true);
     setTimeout(() => {
-      setCurrentPage(prev => prev + 1);
+      setCurrentPage((prev) => prev + 1);
       setLoading(false);
     }, 500); // Small delay to show loading state
   };
@@ -493,7 +495,8 @@ export default function Gallery() {
             <h1 className="text-xl sm:text-2xl font-bold">Gallery</h1>
             <p className="text-sm sm:text-base text-muted-foreground">
               Showing {displayedPhotos.length} of {filteredPhotos.length} items
-              {filteredPhotos.length !== photos.length && ` (filtered from ${photos.length})`}
+              {filteredPhotos.length !== photos.length &&
+                ` (filtered from ${photos.length})`}
             </p>
           </div>
 
@@ -1022,7 +1025,9 @@ export default function Gallery() {
                   ) : (
                     <>
                       <Plus className="h-4 w-4" />
-                      Load More Photos ({filteredPhotos.length - displayedPhotos.length} remaining)
+                      Load More Photos (
+                      {filteredPhotos.length - displayedPhotos.length}{" "}
+                      remaining)
                     </>
                   )}
                 </Button>

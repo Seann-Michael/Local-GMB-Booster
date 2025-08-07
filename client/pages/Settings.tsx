@@ -551,12 +551,18 @@ export default function Settings() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Settings</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
+              Settings
+            </h1>
             <p className="text-sm sm:text-base text-muted-foreground">
               Manage your business settings and preferences
             </p>
           </div>
-          <Button onClick={handleSave} disabled={isLoading} className="gap-2 w-full sm:w-auto min-h-[44px]">
+          <Button
+            onClick={handleSave}
+            disabled={isLoading}
+            className="gap-2 w-full sm:w-auto min-h-[44px]"
+          >
             <Save className="h-4 w-4" />
             {isLoading ? "Saving..." : "Save Changes"}
           </Button>
@@ -632,7 +638,9 @@ export default function Settings() {
                             navigator.clipboard.writeText(
                               settings.subAccountId,
                             );
-                            toast.success("Business Account ID copied to clipboard");
+                            toast.success(
+                              "Business Account ID copied to clipboard",
+                            );
                           }}
                           className="h-6 w-6 p-0"
                         >

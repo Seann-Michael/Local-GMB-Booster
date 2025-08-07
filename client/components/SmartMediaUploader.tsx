@@ -1172,7 +1172,9 @@ export function SmartMediaUploader({
                                   </Label>
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                                     <div>
-                                      <span className="font-medium">Date Taken:</span>
+                                      <span className="font-medium">
+                                        Date Taken:
+                                      </span>
                                       <Input
                                         value={file.exifData.dateTaken || ""}
                                         onChange={(e) =>
@@ -1188,10 +1190,14 @@ export function SmartMediaUploader({
                                       />
                                     </div>
                                     <div>
-                                      <span className="font-medium">GPS Location:</span>
+                                      <span className="font-medium">
+                                        GPS Location:
+                                      </span>
                                       <div className="grid grid-cols-2 gap-2 mt-1">
                                         <Input
-                                          value={file.exifData.gpsLatitude || ""}
+                                          value={
+                                            file.exifData.gpsLatitude || ""
+                                          }
                                           onChange={(e) =>
                                             updateFile(file.id, {
                                               exifData: {
@@ -1204,7 +1210,9 @@ export function SmartMediaUploader({
                                           className="h-8 text-xs"
                                         />
                                         <Input
-                                          value={file.exifData.gpsLongitude || ""}
+                                          value={
+                                            file.exifData.gpsLongitude || ""
+                                          }
                                           onChange={(e) =>
                                             updateFile(file.id, {
                                               exifData: {
@@ -1463,7 +1471,9 @@ export function SmartMediaUploader({
                                   </h4>
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     <div>
-                                      <Label className="text-xs">Date Taken</Label>
+                                      <Label className="text-xs">
+                                        Date Taken
+                                      </Label>
                                       <Input
                                         value={file.exifData.dateTaken || ""}
                                         onChange={(e) =>
@@ -1479,10 +1489,14 @@ export function SmartMediaUploader({
                                       />
                                     </div>
                                     <div className="space-y-2">
-                                      <Label className="text-xs">GPS Coordinates</Label>
+                                      <Label className="text-xs">
+                                        GPS Coordinates
+                                      </Label>
                                       <div className="grid grid-cols-2 gap-2">
                                         <Input
-                                          value={file.exifData.gpsLatitude || ""}
+                                          value={
+                                            file.exifData.gpsLatitude || ""
+                                          }
                                           onChange={(e) =>
                                             updateFile(file.id, {
                                               exifData: {
@@ -1495,7 +1509,9 @@ export function SmartMediaUploader({
                                           placeholder="Latitude"
                                         />
                                         <Input
-                                          value={file.exifData.gpsLongitude || ""}
+                                          value={
+                                            file.exifData.gpsLongitude || ""
+                                          }
                                           onChange={(e) =>
                                             updateFile(file.id, {
                                               exifData: {

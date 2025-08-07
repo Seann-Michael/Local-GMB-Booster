@@ -80,27 +80,27 @@ export default function Index() {
     // Load projects from mock data service
     const loadProjects = async () => {
       try {
-        console.log('Loading projects...');
+        console.log("Loading projects...");
         // Force fresh data generation
         mockDataService.resetData();
         const mockProjects = mockDataService.getProjects();
-        console.log('Loaded projects:', mockProjects.length, mockProjects);
+        console.log("Loaded projects:", mockProjects.length, mockProjects);
 
         if (mockProjects.length < 10) {
-          console.warn('Few projects found, regenerating mock data...');
+          console.warn("Few projects found, regenerating mock data...");
           // Force regenerate mock data if too few
           mockDataService.resetData();
           const newProjects = mockDataService.getProjects();
-          console.log('Generated new projects:', newProjects.length);
+          console.log("Generated new projects:", newProjects.length);
           setProjects(newProjects);
-          setFilteredProjects(newProjects.filter(p => !p.archived));
+          setFilteredProjects(newProjects.filter((p) => !p.archived));
         } else {
           setProjects(mockProjects);
-          setFilteredProjects(mockProjects.filter(p => !p.archived));
+          setFilteredProjects(mockProjects.filter((p) => !p.archived));
         }
       } catch (error) {
-        console.error('Error loading projects:', error);
-        toast.error('Failed to load projects');
+        console.error("Error loading projects:", error);
+        toast.error("Failed to load projects");
         // Fallback to empty array
         setProjects([]);
         setFilteredProjects([]);
@@ -225,11 +225,11 @@ export default function Index() {
   const markProjectIncomplete = (projectId: string) => {
     mockDataService.updateProject(projectId, {
       status: "active",
-      completedDate: undefined
+      completedDate: undefined,
     });
     const updatedProjects = mockDataService.getProjects();
     setProjects(updatedProjects);
-    setFilteredProjects(updatedProjects.filter(p => !p.archived));
+    setFilteredProjects(updatedProjects.filter((p) => !p.archived));
     toast.success("Project marked as incomplete");
   };
 
@@ -468,7 +468,8 @@ export default function Index() {
             <div className="block md:hidden">
               {filteredProjects.length > 3 && (
                 <div className="text-xs text-muted-foreground mb-3 text-center">
-                  Showing {displayedProjects.length} of {filteredProjects.length} projects
+                  Showing {displayedProjects.length} of{" "}
+                  {filteredProjects.length} projects
                 </div>
               )}
               <div className="space-y-4">
@@ -480,7 +481,9 @@ export default function Index() {
                       mockDataService.deleteProject(project.id);
                       const updatedProjects = mockDataService.getProjects();
                       setProjects(updatedProjects);
-                      setFilteredProjects(updatedProjects.filter(p => !p.archived));
+                      setFilteredProjects(
+                        updatedProjects.filter((p) => !p.archived),
+                      );
                     }}
                     onMarkIncomplete={
                       project.status === "completed"
@@ -491,7 +494,9 @@ export default function Index() {
                       mockDataService.updateProject(project.id, { starred });
                       const updatedProjects = mockDataService.getProjects();
                       setProjects(updatedProjects);
-                      setFilteredProjects(updatedProjects.filter(p => !p.archived));
+                      setFilteredProjects(
+                        updatedProjects.filter((p) => !p.archived),
+                      );
                     }}
                   />
                 ))}
@@ -516,7 +521,9 @@ export default function Index() {
                       mockDataService.deleteProject(project.id);
                       const updatedProjects = mockDataService.getProjects();
                       setProjects(updatedProjects);
-                      setFilteredProjects(updatedProjects.filter(p => !p.archived));
+                      setFilteredProjects(
+                        updatedProjects.filter((p) => !p.archived),
+                      );
                     }}
                     onMarkIncomplete={
                       project.status === "completed"
@@ -527,7 +534,9 @@ export default function Index() {
                       mockDataService.updateProject(project.id, { starred });
                       const updatedProjects = mockDataService.getProjects();
                       setProjects(updatedProjects);
-                      setFilteredProjects(updatedProjects.filter(p => !p.archived));
+                      setFilteredProjects(
+                        updatedProjects.filter((p) => !p.archived),
+                      );
                     }}
                   />
                 </div>
