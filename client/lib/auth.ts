@@ -1,5 +1,6 @@
 export interface BusinessProfile {
   id: string;
+  accountId: string; // Format: XXX-XXX-XXX
   name: string;
   description?: string;
   address?: string;
