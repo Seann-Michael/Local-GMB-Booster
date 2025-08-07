@@ -145,7 +145,12 @@ const generateMockProjects = (): MockProject[] => {
     "963 Chestnut Road, Normal, IL 61761",
     "159 Willow Lane, Carbondale, IL 62901",
     "357 Magnolia Drive, Bloomington, IL 61701",
-    "486 Dogwood Circle, Urbana, IL 61801"
+    "486 Dogwood Circle, Urbana, IL 61801",
+    "234 Spruce Street, Schaumburg, IL 60173",
+    "567 Aspen Avenue, Des Plaines, IL 60016",
+    "890 Redwood Road, Mount Prospect, IL 60056",
+    "123 Cypress Court, Arlington Heights, IL 60004",
+    "456 Juniper Lane, Wheeling, IL 60090"
   ];
 
   const keywords = [
