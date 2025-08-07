@@ -59,14 +59,9 @@ interface FileWithMetadata {
   attribution: string;
   caption: string;
   exifData?: {
-    camera?: string;
-    lens?: string;
-    focalLength?: string;
-    aperture?: string;
-    shutterSpeed?: string;
-    iso?: string;
     dateTaken?: string;
-    gpsCoordinates?: string;
+    gpsLatitude?: string;
+    gpsLongitude?: string;
     [key: string]: any;
   };
   structuredData?: {
