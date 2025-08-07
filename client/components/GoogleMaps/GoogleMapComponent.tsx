@@ -6,15 +6,28 @@ import { MapPin, Navigation, Maximize } from "lucide-react";
 import { toast } from "sonner";
 import { getGoogleMapsApiKey } from "@/lib/googleMaps";
 
+interface MapMarker {
+  id: string;
+  position: { lat: number; lng: number };
+  title: string;
+  content?: string;
+  color?: string;
+  rank?: number | null;
+  icon?: string;
+}
+
 interface GoogleMapComponentProps {
   address?: string;
   lat?: number;
   lng?: number;
+  center?: { lat: number; lng: number };
   zoom?: number;
   height?: string;
   showControls?: boolean;
   showDirectionsButton?: boolean;
   className?: string;
+  markers?: MapMarker[];
+  onMarkerClick?: (marker: MapMarker) => void;
 }
 
 export const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
