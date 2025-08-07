@@ -212,8 +212,8 @@ export default function Maps() {
         content: `
           <div class="p-3 min-w-56">
             <div class="flex items-center justify-between mb-2">
-              <h3 class="font-semibold text-gray-900">${point.address}</h3>
-              ${point.rank ? 
+              <h3 class="font-semibold text-gray-900">${point?.address || 'Unknown Location'}</h3>
+              ${point?.rank ? 
                 `<span class="px-2 py-1 text-xs font-medium rounded-full ${
                   point.rank <= 3 ? 'bg-green-100 text-green-800' :
                   point.rank <= 10 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'
