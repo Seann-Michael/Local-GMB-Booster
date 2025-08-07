@@ -167,20 +167,20 @@ export default function AuditReport() {
     );
   }
 
-  if (!auditData) {
+  if (!scanData) {
     return (
       <AppLayout>
         <div className="p-6 max-w-6xl mx-auto">
           <Card>
             <CardContent className="text-center py-12">
               <FileText className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-              <h3 className="text-lg font-medium mb-2">Report Not Found</h3>
+              <h3 className="text-lg font-medium mb-2">Geo Scan Report Not Found</h3>
               <p className="text-muted-foreground mb-4">
-                The audit report with ID "{id}" could not be found.
+                The geo grid scan report with ID "{id}" could not be found.
               </p>
               <Button onClick={() => navigate("/admin/audits")}>
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Audits
+                Back to GMB Scans
               </Button>
             </CardContent>
           </Card>
