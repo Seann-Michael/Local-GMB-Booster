@@ -76,20 +76,35 @@ export default function Index() {
 
   useEffect(() => {
     // Load projects from mock data service
-    try {
-      console.log('Loading projects...');
-      const mockProjects = mockDataService.getProjects();
-      console.log('Loaded projects:', mockProjects.length, mockProjects);
-      setProjects(mockProjects);
-      setFilteredProjects(mockProjects);
-    } catch (error) {
-      console.error('Error loading projects:', error);
-      toast.error('Failed to load projects');
-      // Fallback to empty array
-      setProjects([]);
-      setFilteredProjects([]);
-    }
-    setIsLoading(false);
+    const loadProjects = async () => {
+      try {
+        console.log('Loading projects...');
+        const mockProjects = mockDataService.getProjects();
+        console.log('Loaded projects:', mockProjects.length, mockProjects);
+
+        if (mockProjects.length === 0) {
+          console.warn('No projects found, generating mock data...');
+          // Force regenerate mock data if empty
+          mockDataService.resetData();
+          const newProjects = mockDataService.getProjects();
+          console.log('Generated new projects:', newProjects.length);
+          setProjects(newProjects);
+          setFilteredProjects(newProjects.filter(p => !p.archived));
+        } else {
+          setProjects(mockProjects);
+          setFilteredProjects(mockProjects.filter(p => !p.archived));
+        }
+      } catch (error) {
+        console.error('Error loading projects:', error);
+        toast.error('Failed to load projects');
+        // Fallback to empty array
+        setProjects([]);
+        setFilteredProjects([]);
+      }
+      setIsLoading(false);
+    };
+
+    loadProjects();
   }, []);
 
   const applyFilters = () => {
