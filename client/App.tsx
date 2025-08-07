@@ -367,6 +367,14 @@ const App = () => (
                   }
                 />
                 <Route
+                  path="/admin/credits/analytics"
+                  element={
+                    <ProtectedRoute>
+                      <CreditAnalytics />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
                   path="/admin/workflow-builder"
                   element={
                     <ProtectedRoute>
