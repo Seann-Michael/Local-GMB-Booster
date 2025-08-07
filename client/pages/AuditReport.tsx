@@ -25,6 +25,7 @@ import {
   TrendingUp,
   Globe,
   Smartphone,
+  Search,
 } from "lucide-react";
 
 interface GeoGridScanData {
