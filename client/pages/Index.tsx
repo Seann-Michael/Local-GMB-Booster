@@ -77,11 +77,14 @@ export default function Index() {
   useEffect(() => {
     // Load projects from mock data service
     try {
+      console.log('Loading projects...');
       const mockProjects = mockDataService.getProjects();
+      console.log('Loaded projects:', mockProjects.length, mockProjects);
       setProjects(mockProjects);
       setFilteredProjects(mockProjects);
     } catch (error) {
       console.error('Error loading projects:', error);
+      toast.error('Failed to load projects');
       // Fallback to empty array
       setProjects([]);
       setFilteredProjects([]);
