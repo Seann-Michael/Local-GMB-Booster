@@ -247,16 +247,16 @@ export default function Maps() {
       position: centerLocation,
       title: business.name,
       content: `
-        <div class="p-3">
-          <h3 class="font-semibold text-gray-900 mb-1">${business.name}</h3>
-          <p class="text-sm text-gray-600 mb-2">${business.address}</p>
-          <div class="flex items-center gap-2 mb-2">
-            <div class="flex text-yellow-400">
-              ${[1,2,3,4,5].map(i => `<svg class="w-3 h-3 fill-current"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`).join('')}
+        <div style="padding: 12px;">
+          <h3 style="font-weight: 600; color: #111827; margin-bottom: 4px;">${business.name}</h3>
+          <p style="font-size: 14px; color: #4b5563; margin-bottom: 8px;">${business.address}</p>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <div style="display: flex; color: #fbbf24;">
+              ${[1,2,3,4,5].map(i => `<svg style="width: 12px; height: 12px; fill: currentColor;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`).join('')}
             </div>
-            <span class="text-sm text-gray-600">${business.rating} (${business.reviewCount})</span>
+            <span style="font-size: 14px; color: #4b5563;">${business.rating} (${business.reviewCount})</span>
           </div>
-          <p class="text-xs text-blue-600 font-medium">🎯 Target Business</p>
+          <p style="font-size: 12px; color: #2563eb; font-weight: 500;">🎯 Target Business</p>
         </div>
       `,
       color: "#DC2626",
