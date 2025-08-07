@@ -226,13 +226,13 @@ export default function AuditReport() {
                 <Download className="h-4 w-4" />
                 Export Report
               </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
+              <Button
+                variant="outline"
+                size="sm"
                 className="gap-2"
                 onClick={() => setShowComparison(!showComparison)}
               >
-                <Compare className="h-4 w-4" />
+                <GitCompare className="h-4 w-4" />
                 Compare Scans
               </Button>
             </div>
