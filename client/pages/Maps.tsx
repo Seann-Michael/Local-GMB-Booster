@@ -389,6 +389,128 @@ export default function Maps() {
               </div>
             </div>
 
+            {/* Advanced Configuration */}
+            <div className="p-5 border-b border-slate-200">
+              <div className="flex items-center gap-2 mb-4">
+                <Settings className="h-5 w-5 text-slate-600" />
+                <h2 className="font-bold text-slate-900">Search Configuration</h2>
+              </div>
+
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label className="text-sm font-medium text-slate-700 mb-2 block">
+                      Device
+                    </Label>
+                    <Select value={deviceType} onValueChange={(value: "desktop" | "mobile") => setDeviceType(value)}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="desktop">Desktop</SelectItem>
+                        <SelectItem value="mobile">Mobile</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-slate-700 mb-2 block">
+                      Language
+                    </Label>
+                    <Select value={languageCode} onValueChange={setLanguageCode}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="en">English</SelectItem>
+                        <SelectItem value="es">Spanish</SelectItem>
+                        <SelectItem value="fr">French</SelectItem>
+                        <SelectItem value="de">German</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div>
+                  <Label className="text-sm font-medium text-slate-700 mb-2 block">
+                    Search Depth (Results per location)
+                  </Label>
+                  <Select value={searchDepth} onValueChange={setSearchDepth}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="10">Top 10 Results</SelectItem>
+                      <SelectItem value="20">Top 20 Results</SelectItem>
+                      <SelectItem value="50">Top 50 Results</SelectItem>
+                      <SelectItem value="100">Top 100 Results</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label className="text-sm font-medium text-slate-700 mb-2 block">
+                      Pattern
+                    </Label>
+                    <Select value={gridPattern} onValueChange={setGridPattern}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="circular">
+                          <div className="flex items-center gap-2">
+                            <Circle className="h-4 w-4" />
+                            Circular
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="grid">
+                          <div className="flex items-center gap-2">
+                            <Grid3X3 className="h-4 w-4" />
+                            Grid
+                          </div>
+                        </SelectItem>
+                        <SelectItem value="radial">
+                          <div className="flex items-center gap-2">
+                            <Crosshair className="h-4 w-4" />
+                            Radial
+                          </div>
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label className="text-sm font-medium text-slate-700 mb-2 block">
+                      Radius
+                    </Label>
+                    <Select value={gridRadius} onValueChange={setGridRadius}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="5">5 km</SelectItem>
+                        <SelectItem value="10">10 km</SelectItem>
+                        <SelectItem value="15">15 km</SelectItem>
+                        <SelectItem value="20">20 km</SelectItem>
+                        <SelectItem value="30">30 km</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="p-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
+                  <div className="flex items-start gap-2">
+                    <Target className="h-4 w-4 text-blue-600 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="font-medium text-blue-800 mb-1">DataForSEO Analysis</p>
+                      <p className="text-blue-700">
+                        Using <strong>{totalLocations} waypoints</strong> × <strong>{searchDepth} results</strong> = {totalLocations * parseInt(searchDepth)} total API credits
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Action Buttons */}
             <div className="p-5">
               <div className="space-y-3">
@@ -418,7 +540,7 @@ export default function Maps() {
                   </Button>
                   <Button variant="outline" size="sm">
                     <Settings className="h-4 w-4 mr-2" />
-                    Settings
+                    API Setup
                   </Button>
                 </div>
               </div>
