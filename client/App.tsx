@@ -831,6 +831,10 @@ const App = () => (
                   path="/photos"
                   element={<Navigate to="/admin/gallery" replace />}
                 />
+                <Route
+                  path="/OneTimeScan"
+                  element={<Navigate to="/admin/audits/one-time-scan" replace />}
+                />
 
                 {/* Agency Admin Legacy URL Redirects */}
                 <Route
