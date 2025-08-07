@@ -583,10 +583,10 @@ class MockDataService {
 
     // Check if we're in Builder.io editor context
     const isBuilderIoEditor =
-      typeof window !== 'undefined' &&
-      (window.location.href.includes('builder.io') ||
-       window.parent !== window ||
-       document.referrer.includes('builder.io'));
+      typeof window !== "undefined" &&
+      (window.location.href.includes("builder.io") ||
+        window.parent !== window ||
+        document.referrer.includes("builder.io"));
 
     if (isBuilderIoEditor) {
       // Use minimal mock data for Builder.io to prevent rendering issues
@@ -672,9 +672,9 @@ class MockDataService {
           createdBy: "user-1",
           createdAt: "2024-01-01T00:00:00Z",
           updatedAt: "2024-02-15T00:00:00Z",
-          version: 1
-        }
-      }
+          version: 1,
+        },
+      },
     ];
   }
 
@@ -689,8 +689,8 @@ class MockDataService {
         phone: "+1234567890",
         isActive: true,
         lastLogin: "2024-01-01T00:00:00Z",
-        createdAt: "2024-01-01T00:00:00Z"
-      }
+        createdAt: "2024-01-01T00:00:00Z",
+      },
     ];
   }
 
@@ -706,8 +706,8 @@ class MockDataService {
         projects: ["builder-project-1"],
         notes: "",
         createdAt: "2024-01-01T00:00:00Z",
-        updatedAt: "2024-01-01T00:00:00Z"
-      }
+        updatedAt: "2024-01-01T00:00:00Z",
+      },
     ];
   }
 

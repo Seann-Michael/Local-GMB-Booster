@@ -33,10 +33,10 @@ export default function Index() {
 
   // Check if we're in Builder.io editor
   const isBuilderIoEditor =
-    typeof window !== 'undefined' &&
-    (window.location.href.includes('builder.io') ||
-     window.parent !== window ||
-     document.referrer.includes('builder.io'));
+    typeof window !== "undefined" &&
+    (window.location.href.includes("builder.io") ||
+      window.parent !== window ||
+      document.referrer.includes("builder.io"));
 
   const [projects, setProjects] = useState<Project[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -93,36 +93,38 @@ export default function Index() {
         if (isBuilderIoEditor) {
           // Use minimal data for Builder.io editor
           console.log("Builder.io editor detected, using minimal data");
-          const minimalProjects = [{
-            id: "sample-1",
-            name: "Sample Project",
-            description: "A sample project for Builder.io preview",
-            status: "completed" as const,
-            priority: "medium" as const,
-            clientName: "Sample Client",
-            clientEmail: "client@example.com",
-            startDate: "2024-01-01",
-            endDate: "2024-02-15",
-            lastActivity: "2024-02-15",
-            progress: 100,
-            starred: false,
-            archived: false,
-            tags: ["sample"],
-            photos: [],
-            teamMembers: [],
-            documents: [],
-            notes: [],
-            budget: 25000,
-            spent: 24500,
-            estimatedHours: 120,
-            actualHours: 115,
-            metadata: {
-              createdBy: "user-1",
-              createdAt: "2024-01-01T00:00:00Z",
-              updatedAt: "2024-02-15T00:00:00Z",
-              version: 1
-            }
-          }];
+          const minimalProjects = [
+            {
+              id: "sample-1",
+              name: "Sample Project",
+              description: "A sample project for Builder.io preview",
+              status: "completed" as const,
+              priority: "medium" as const,
+              clientName: "Sample Client",
+              clientEmail: "client@example.com",
+              startDate: "2024-01-01",
+              endDate: "2024-02-15",
+              lastActivity: "2024-02-15",
+              progress: 100,
+              starred: false,
+              archived: false,
+              tags: ["sample"],
+              photos: [],
+              teamMembers: [],
+              documents: [],
+              notes: [],
+              budget: 25000,
+              spent: 24500,
+              estimatedHours: 120,
+              actualHours: 115,
+              metadata: {
+                createdBy: "user-1",
+                createdAt: "2024-01-01T00:00:00Z",
+                updatedAt: "2024-02-15T00:00:00Z",
+                version: 1,
+              },
+            },
+          ];
           setProjects(minimalProjects);
           setFilteredProjects(minimalProjects);
           setIsLoading(false);
