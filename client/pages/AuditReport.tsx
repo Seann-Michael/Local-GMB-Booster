@@ -175,7 +175,9 @@ export default function AuditReport() {
           <Card>
             <CardContent className="text-center py-12">
               <FileText className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-              <h3 className="text-lg font-medium mb-2">Geo Scan Report Not Found</h3>
+              <h3 className="text-lg font-medium mb-2">
+                Geo Scan Report Not Found
+              </h3>
               <p className="text-muted-foreground mb-4">
                 The geo grid scan report with ID "{id}" could not be found.
               </p>
@@ -275,7 +277,11 @@ export default function AuditReport() {
                   <MapPin className="h-5 w-5" />
                   Grid Coverage
                 </CardTitle>
-                <Badge variant={getVisibilityVariant(scanData.scanResults.gridCoverage.visibility)}>
+                <Badge
+                  variant={getVisibilityVariant(
+                    scanData.scanResults.gridCoverage.visibility,
+                  )}
+                >
                   {scanData.scanResults.gridCoverage.visibility}%
                 </Badge>
               </div>
@@ -286,13 +292,17 @@ export default function AuditReport() {
                   <div className="text-2xl font-bold text-green-600">
                     {scanData.scanResults.gridCoverage.scannedPoints}
                   </div>
-                  <div className="text-xs text-muted-foreground">Scanned Points</div>
+                  <div className="text-xs text-muted-foreground">
+                    Scanned Points
+                  </div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-muted-foreground">
                     {scanData.scanResults.gridCoverage.totalGridPoints}
                   </div>
-                  <div className="text-xs text-muted-foreground">Total Grid Points</div>
+                  <div className="text-xs text-muted-foreground">
+                    Total Grid Points
+                  </div>
                 </div>
               </div>
               <Separator />
@@ -315,7 +325,11 @@ export default function AuditReport() {
                   <Star className="h-5 w-5" />
                   Local Pack
                 </CardTitle>
-                <Badge variant={getVisibilityVariant(scanData.scanResults.localPack.visibility)}>
+                <Badge
+                  variant={getVisibilityVariant(
+                    scanData.scanResults.localPack.visibility,
+                  )}
+                >
                   {scanData.scanResults.localPack.visibility}%
                 </Badge>
               </div>
@@ -326,19 +340,25 @@ export default function AuditReport() {
                   <div className="text-2xl font-bold text-green-600">
                     {scanData.scanResults.localPack.appearances}
                   </div>
-                  <div className="text-xs text-muted-foreground">Appearances</div>
+                  <div className="text-xs text-muted-foreground">
+                    Appearances
+                  </div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-blue-600">
                     {scanData.scanResults.localPack.averagePosition}
                   </div>
-                  <div className="text-xs text-muted-foreground">Avg Position</div>
+                  <div className="text-xs text-muted-foreground">
+                    Avg Position
+                  </div>
                 </div>
               </div>
               <Separator />
               <div className="text-center">
                 <div className="text-sm text-muted-foreground">
-                  Appeared in {scanData.scanResults.localPack.appearances} of {scanData.scanResults.localPack.totalSearches} local pack searches
+                  Appeared in {scanData.scanResults.localPack.appearances} of{" "}
+                  {scanData.scanResults.localPack.totalSearches} local pack
+                  searches
                 </div>
               </div>
             </CardContent>
@@ -352,7 +372,11 @@ export default function AuditReport() {
                   <Globe className="h-5 w-5" />
                   Organic Results
                 </CardTitle>
-                <Badge variant={getVisibilityVariant(scanData.scanResults.organicResults.visibility)}>
+                <Badge
+                  variant={getVisibilityVariant(
+                    scanData.scanResults.organicResults.visibility,
+                  )}
+                >
                   {scanData.scanResults.organicResults.visibility}%
                 </Badge>
               </div>
@@ -363,19 +387,24 @@ export default function AuditReport() {
                   <div className="text-2xl font-bold text-green-600">
                     {scanData.scanResults.organicResults.appearances}
                   </div>
-                  <div className="text-xs text-muted-foreground">Appearances</div>
+                  <div className="text-xs text-muted-foreground">
+                    Appearances
+                  </div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-orange-600">
                     {scanData.scanResults.organicResults.averagePosition}
                   </div>
-                  <div className="text-xs text-muted-foreground">Avg Position</div>
+                  <div className="text-xs text-muted-foreground">
+                    Avg Position
+                  </div>
                 </div>
               </div>
               <Separator />
               <div className="text-center">
                 <div className="text-sm text-muted-foreground">
-                  GMB profile appeared in organic results for {scanData.scanResults.organicResults.appearances} searches
+                  GMB profile appeared in organic results for{" "}
+                  {scanData.scanResults.organicResults.appearances} searches
                 </div>
               </div>
             </CardContent>
@@ -396,11 +425,13 @@ export default function AuditReport() {
                   Strong Areas
                 </h4>
                 <div className="flex flex-wrap gap-1">
-                  {scanData.scanResults.geoDistribution.strongAreas.map((area, index) => (
-                    <Badge key={index} variant="default" className="text-xs">
-                      {area}
-                    </Badge>
-                  ))}
+                  {scanData.scanResults.geoDistribution.strongAreas.map(
+                    (area, index) => (
+                      <Badge key={index} variant="default" className="text-xs">
+                        {area}
+                      </Badge>
+                    ),
+                  )}
                 </div>
               </div>
               <div>
@@ -409,11 +440,17 @@ export default function AuditReport() {
                   Weak Areas
                 </h4>
                 <div className="flex flex-wrap gap-1">
-                  {scanData.scanResults.geoDistribution.weakAreas.map((area, index) => (
-                    <Badge key={index} variant="secondary" className="text-xs">
-                      {area}
-                    </Badge>
-                  ))}
+                  {scanData.scanResults.geoDistribution.weakAreas.map(
+                    (area, index) => (
+                      <Badge
+                        key={index}
+                        variant="secondary"
+                        className="text-xs"
+                      >
+                        {area}
+                      </Badge>
+                    ),
+                  )}
                 </div>
               </div>
               <div>
@@ -422,11 +459,17 @@ export default function AuditReport() {
                   No Visibility
                 </h4>
                 <div className="flex flex-wrap gap-1">
-                  {scanData.scanResults.geoDistribution.noVisibility.map((area, index) => (
-                    <Badge key={index} variant="destructive" className="text-xs">
-                      {area}
-                    </Badge>
-                  ))}
+                  {scanData.scanResults.geoDistribution.noVisibility.map(
+                    (area, index) => (
+                      <Badge
+                        key={index}
+                        variant="destructive"
+                        className="text-xs"
+                      >
+                        {area}
+                      </Badge>
+                    ),
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -442,19 +485,33 @@ export default function AuditReport() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <h4 className="font-medium text-sm mb-2">Best Performing Keywords</h4>
+                <h4 className="font-medium text-sm mb-2">
+                  Best Performing Keywords
+                </h4>
                 <div className="space-y-2">
-                  {scanData.scanResults.keywordPerformance.topKeywords.map((keyword, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 bg-muted/50 rounded">
-                      <span className="text-sm font-medium">{keyword.keyword}</span>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs text-muted-foreground">Rank {keyword.rank}</span>
-                        <Badge variant={getVisibilityVariant(keyword.visibility)} className="text-xs">
-                          {keyword.visibility}%
-                        </Badge>
+                  {scanData.scanResults.keywordPerformance.topKeywords.map(
+                    (keyword, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-2 bg-muted/50 rounded"
+                      >
+                        <span className="text-sm font-medium">
+                          {keyword.keyword}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-muted-foreground">
+                            Rank {keyword.rank}
+                          </span>
+                          <Badge
+                            variant={getVisibilityVariant(keyword.visibility)}
+                            className="text-xs"
+                          >
+                            {keyword.visibility}%
+                          </Badge>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ),
+                  )}
                 </div>
               </div>
               <Separator />
@@ -464,12 +521,14 @@ export default function AuditReport() {
                   Growth Opportunities
                 </h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
-                  {scanData.scanResults.keywordPerformance.improvementOpportunities.map((opportunity, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <span className="text-blue-500 mt-1">•</span>
-                      {opportunity}
-                    </li>
-                  ))}
+                  {scanData.scanResults.keywordPerformance.improvementOpportunities.map(
+                    (opportunity, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <span className="text-blue-500 mt-1">•</span>
+                        {opportunity}
+                      </li>
+                    ),
+                  )}
                 </ul>
               </div>
             </CardContent>
@@ -480,7 +539,8 @@ export default function AuditReport() {
             <CardHeader>
               <CardTitle>Geo Grid Scan Summary</CardTitle>
               <CardDescription>
-                Geographic visibility analysis and ranking performance across the scanned area
+                Geographic visibility analysis and ranking performance across
+                the scanned area
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -491,7 +551,9 @@ export default function AuditReport() {
                   >
                     {scanData.scanResults.gridCoverage.visibility}%
                   </div>
-                  <div className="text-xs text-muted-foreground">Grid Coverage</div>
+                  <div className="text-xs text-muted-foreground">
+                    Grid Coverage
+                  </div>
                 </div>
                 <div>
                   <div
@@ -499,7 +561,9 @@ export default function AuditReport() {
                   >
                     {scanData.scanResults.localPack.visibility}%
                   </div>
-                  <div className="text-xs text-muted-foreground">Local Pack</div>
+                  <div className="text-xs text-muted-foreground">
+                    Local Pack
+                  </div>
                 </div>
                 <div>
                   <div
@@ -520,10 +584,13 @@ export default function AuditReport() {
               <div className="bg-muted/50 p-4 rounded-lg">
                 <h4 className="font-medium mb-2">Key Insights</h4>
                 <p className="text-sm text-muted-foreground">
-                  This GMB profile shows strong visibility in {scanData.scanResults.geoDistribution.strongAreas.length} core areas.
-                  Focus on expanding presence in {scanData.scanResults.geoDistribution.weakAreas.join(", ")} to improve overall
-                  geographic coverage. The profile performs best for location-based searches with an average local pack position
-                  of {scanData.scanResults.localPack.averagePosition}.
+                  This GMB profile shows strong visibility in{" "}
+                  {scanData.scanResults.geoDistribution.strongAreas.length} core
+                  areas. Focus on expanding presence in{" "}
+                  {scanData.scanResults.geoDistribution.weakAreas.join(", ")} to
+                  improve overall geographic coverage. The profile performs best
+                  for location-based searches with an average local pack
+                  position of {scanData.scanResults.localPack.averagePosition}.
                 </p>
               </div>
             </CardContent>
