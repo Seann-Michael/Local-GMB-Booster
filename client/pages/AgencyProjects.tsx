@@ -90,9 +90,9 @@ export default function AgencyProjects() {
       },
       {
         id: "proj-2",
-        name: "Monthly SEO Services",
+        name: "Monthly Local Optimization Services",
         description:
-          "Ongoing SEO optimization and content marketing for RetailPlus",
+          "Ongoing local visibility optimization and content marketing for RetailPlus",
         type: "recurring",
         status: "active",
         clientId: "client-2",
