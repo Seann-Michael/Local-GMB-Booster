@@ -415,18 +415,72 @@ export default function OneTimeScan() {
               </CardContent>
             </Card>
 
-            <Button
-              onClick={startScan}
-              className="w-full"
-              size="lg"
-              disabled={
-                !businessName || !businessAddress || keywords.length === 0
-              }
-            >
-              <Zap className="h-5 w-5 mr-2" />
-              Start One Time Scan
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </Button>
+            <div className="space-y-3">
+              {/* Credit Cost Display */}
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <Zap className="h-4 w-4 text-blue-600" />
+                  <span className="text-sm font-medium text-gray-700">Scan Cost</span>
+                </div>
+                <div className="text-right">
+                  <div className="text-lg font-bold text-gray-900">
+                    {formatCredits(scanCost)} credits
+                  </div>
+                  {balance.remaining < scanCost && (
+                    <div className="text-xs text-red-600">Insufficient credits</div>
+                  )}
+                </div>
+              </div>
+
+              <Button
+                onClick={startScan}
+                className="w-full"
+                size="lg"
+                disabled={
+                  !businessName ||
+                  !businessAddress ||
+                  keywords.length === 0 ||
+                  balance.remaining < scanCost ||
+                  isRunning
+                }
+              >
+                {isRunning ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                    Starting Scan...
+                  </>
+                ) : (
+                  <>
+                    <Zap className="h-5 w-5 mr-2" />
+                    Start One Time Scan
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </>
+                )}
+              </Button>
+
+              {/* Insufficient Credits Warning */}
+              {balance.remaining < scanCost && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="flex items-start gap-2">
+                    <div className="text-red-600">⚠️</div>
+                    <div>
+                      <p className="text-sm font-medium text-red-800">
+                        Insufficient Credits
+                      </p>
+                      <p className="text-xs text-red-700">
+                        You need {formatCredits(scanCost)} credits but only have {formatCredits(balance.remaining)} remaining.
+                        <button
+                          onClick={() => navigate('/admin/credits/purchase')}
+                          className="text-red-800 underline ml-1"
+                        >
+                          Purchase more credits
+                        </button>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
