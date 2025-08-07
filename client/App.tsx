@@ -842,7 +842,9 @@ const App = () => (
                 />
                 <Route
                   path="/OneTimeScan"
-                  element={<Navigate to="/admin/audits/one-time-scan" replace />}
+                  element={
+                    <Navigate to="/admin/audits/one-time-scan" replace />
+                  }
                 />
 
                 {/* Builder.io compatibility routes (URLs without separators) */}
@@ -880,7 +882,9 @@ const App = () => (
                 />
                 <Route
                   path="/RecurringScans"
-                  element={<Navigate to="/admin/audits/recurring-scans" replace />}
+                  element={
+                    <Navigate to="/admin/audits/recurring-scans" replace />
+                  }
                 />
                 <Route
                   path="/ScanHistory"

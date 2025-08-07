@@ -69,7 +69,14 @@ import {
 interface ReportField {
   id: string;
   label: string;
-  type: "text" | "number" | "date" | "status" | "currency" | "percentage" | "rating";
+  type:
+    | "text"
+    | "number"
+    | "date"
+    | "status"
+    | "currency"
+    | "percentage"
+    | "rating";
   sortable: boolean;
   filterable: boolean;
   required?: boolean;
@@ -89,7 +96,13 @@ interface ReportConfig {
 interface FilterConfig {
   id: string;
   label: string;
-  type: "select" | "multiSelect" | "dateRange" | "numberRange" | "text" | "boolean";
+  type:
+    | "select"
+    | "multiSelect"
+    | "dateRange"
+    | "numberRange"
+    | "text"
+    | "boolean";
   options?: { value: string; label: string }[];
   placeholder?: string;
   required?: boolean;
@@ -113,18 +126,90 @@ const reportConfigs: ReportConfig[] = [
     category: "Analytics",
     icon: Target,
     fields: [
-      { id: "scanId", label: "Scan ID", type: "text", sortable: true, filterable: true },
-      { id: "businessName", label: "Business Name", type: "text", sortable: true, filterable: true },
-      { id: "scanType", label: "Scan Type", type: "status", sortable: true, filterable: true },
-      { id: "keywords", label: "Keywords", type: "number", sortable: true, filterable: true },
-      { id: "waypoints", label: "Waypoints", type: "number", sortable: true, filterable: true },
-      { id: "creditsUsed", label: "Credits Used", type: "number", sortable: true, filterable: true },
-      { id: "successRate", label: "Success Rate", type: "percentage", sortable: true, filterable: true },
-      { id: "avgRanking", label: "Avg Ranking", type: "number", sortable: true, filterable: true },
-      { id: "executionTime", label: "Execution Time (min)", type: "number", sortable: true, filterable: true },
-      { id: "scanDate", label: "Scan Date", type: "date", sortable: true, filterable: true },
-      { id: "priority", label: "Priority", type: "status", sortable: true, filterable: true },
-      { id: "status", label: "Status", type: "status", sortable: true, filterable: true },
+      {
+        id: "scanId",
+        label: "Scan ID",
+        type: "text",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "businessName",
+        label: "Business Name",
+        type: "text",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "scanType",
+        label: "Scan Type",
+        type: "status",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "keywords",
+        label: "Keywords",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "waypoints",
+        label: "Waypoints",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "creditsUsed",
+        label: "Credits Used",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "successRate",
+        label: "Success Rate",
+        type: "percentage",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "avgRanking",
+        label: "Avg Ranking",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "executionTime",
+        label: "Execution Time (min)",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "scanDate",
+        label: "Scan Date",
+        type: "date",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "priority",
+        label: "Priority",
+        type: "status",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "status",
+        label: "Status",
+        type: "status",
+        sortable: true,
+        filterable: true,
+      },
     ],
     filters: [
       {
@@ -174,19 +259,74 @@ const reportConfigs: ReportConfig[] = [
   {
     id: "credit-usage",
     name: "Credit Usage Report",
-    description: "Track credit consumption patterns and optimization opportunities",
+    description:
+      "Track credit consumption patterns and optimization opportunities",
     category: "Financial",
     icon: Zap,
     fields: [
-      { id: "userId", label: "User ID", type: "text", sortable: true, filterable: true },
-      { id: "userName", label: "User Name", type: "text", sortable: true, filterable: true },
-      { id: "transactionDate", label: "Date", type: "date", sortable: true, filterable: true },
-      { id: "transactionType", label: "Type", type: "status", sortable: true, filterable: true },
-      { id: "creditsAmount", label: "Credits", type: "number", sortable: true, filterable: true },
-      { id: "description", label: "Description", type: "text", sortable: true, filterable: true },
-      { id: "scanDetails", label: "Scan Details", type: "text", sortable: false, filterable: true },
-      { id: "remainingBalance", label: "Balance After", type: "number", sortable: true, filterable: true },
-      { id: "costEfficiency", label: "Cost Efficiency", type: "percentage", sortable: true, filterable: true },
+      {
+        id: "userId",
+        label: "User ID",
+        type: "text",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "userName",
+        label: "User Name",
+        type: "text",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "transactionDate",
+        label: "Date",
+        type: "date",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "transactionType",
+        label: "Type",
+        type: "status",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "creditsAmount",
+        label: "Credits",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "description",
+        label: "Description",
+        type: "text",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "scanDetails",
+        label: "Scan Details",
+        type: "text",
+        sortable: false,
+        filterable: true,
+      },
+      {
+        id: "remainingBalance",
+        label: "Balance After",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "costEfficiency",
+        label: "Cost Efficiency",
+        type: "percentage",
+        sortable: true,
+        filterable: true,
+      },
     ],
     filters: [
       {
@@ -222,22 +362,95 @@ const reportConfigs: ReportConfig[] = [
   {
     id: "business-rankings",
     name: "Business Rankings Report",
-    description: "Analyze ranking performance across different businesses and keywords",
+    description:
+      "Analyze ranking performance across different businesses and keywords",
     category: "SEO",
     icon: TrendingUp,
     fields: [
-      { id: "businessName", label: "Business Name", type: "text", sortable: true, filterable: true },
-      { id: "keyword", label: "Keyword", type: "text", sortable: true, filterable: true },
-      { id: "currentRank", label: "Current Rank", type: "number", sortable: true, filterable: true },
-      { id: "previousRank", label: "Previous Rank", type: "number", sortable: true, filterable: true },
-      { id: "rankChange", label: "Rank Change", type: "number", sortable: true, filterable: true },
-      { id: "averageRank", label: "Average Rank", type: "number", sortable: true, filterable: true },
-      { id: "bestRank", label: "Best Rank", type: "number", sortable: true, filterable: true },
-      { id: "worstRank", label: "Worst Rank", type: "number", sortable: true, filterable: true },
-      { id: "trackingDays", label: "Tracking Days", type: "number", sortable: true, filterable: true },
-      { id: "lastUpdated", label: "Last Updated", type: "date", sortable: true, filterable: true },
-      { id: "competitorCount", label: "Competitors", type: "number", sortable: true, filterable: true },
-      { id: "visibility", label: "Visibility Score", type: "percentage", sortable: true, filterable: true },
+      {
+        id: "businessName",
+        label: "Business Name",
+        type: "text",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "keyword",
+        label: "Keyword",
+        type: "text",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "currentRank",
+        label: "Current Rank",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "previousRank",
+        label: "Previous Rank",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "rankChange",
+        label: "Rank Change",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "averageRank",
+        label: "Average Rank",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "bestRank",
+        label: "Best Rank",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "worstRank",
+        label: "Worst Rank",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "trackingDays",
+        label: "Tracking Days",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "lastUpdated",
+        label: "Last Updated",
+        type: "date",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "competitorCount",
+        label: "Competitors",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "visibility",
+        label: "Visibility Score",
+        type: "percentage",
+        sortable: true,
+        filterable: true,
+      },
     ],
     filters: [
       {
@@ -279,21 +492,88 @@ const reportConfigs: ReportConfig[] = [
   {
     id: "location-analysis",
     name: "Location Performance Report",
-    description: "Analyze ranking performance across different geographic locations",
+    description:
+      "Analyze ranking performance across different geographic locations",
     category: "Geographic",
     icon: Map,
     fields: [
-      { id: "businessName", label: "Business", type: "text", sortable: true, filterable: true },
-      { id: "location", label: "Location", type: "text", sortable: true, filterable: true },
-      { id: "coordinates", label: "Coordinates", type: "text", sortable: false, filterable: false },
-      { id: "averageRank", label: "Avg Rank", type: "number", sortable: true, filterable: true },
-      { id: "topKeywords", label: "Top Keywords", type: "number", sortable: true, filterable: true },
-      { id: "visibilityScore", label: "Visibility", type: "percentage", sortable: true, filterable: true },
-      { id: "competitorDensity", label: "Competitor Density", type: "number", sortable: true, filterable: true },
-      { id: "scanFrequency", label: "Scan Frequency", type: "text", sortable: true, filterable: true },
-      { id: "lastScan", label: "Last Scan", type: "date", sortable: true, filterable: true },
-      { id: "improvement", label: "30-day Change", type: "number", sortable: true, filterable: true },
-      { id: "marketPotential", label: "Market Potential", type: "status", sortable: true, filterable: true },
+      {
+        id: "businessName",
+        label: "Business",
+        type: "text",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "location",
+        label: "Location",
+        type: "text",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "coordinates",
+        label: "Coordinates",
+        type: "text",
+        sortable: false,
+        filterable: false,
+      },
+      {
+        id: "averageRank",
+        label: "Avg Rank",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "topKeywords",
+        label: "Top Keywords",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "visibilityScore",
+        label: "Visibility",
+        type: "percentage",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "competitorDensity",
+        label: "Competitor Density",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "scanFrequency",
+        label: "Scan Frequency",
+        type: "text",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "lastScan",
+        label: "Last Scan",
+        type: "date",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "improvement",
+        label: "30-day Change",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "marketPotential",
+        label: "Market Potential",
+        type: "status",
+        sortable: true,
+        filterable: true,
+      },
     ],
     filters: [
       {
@@ -329,21 +609,88 @@ const reportConfigs: ReportConfig[] = [
   {
     id: "system-performance",
     name: "System Performance Report",
-    description: "Monitor system health, API response times, and operational metrics",
+    description:
+      "Monitor system health, API response times, and operational metrics",
     category: "Operations",
     icon: Database,
     fields: [
-      { id: "timestamp", label: "Timestamp", type: "date", sortable: true, filterable: true },
-      { id: "endpoint", label: "API Endpoint", type: "text", sortable: true, filterable: true },
-      { id: "responseTime", label: "Response Time (ms)", type: "number", sortable: true, filterable: true },
-      { id: "statusCode", label: "Status Code", type: "status", sortable: true, filterable: true },
-      { id: "requestCount", label: "Request Count", type: "number", sortable: true, filterable: true },
-      { id: "errorRate", label: "Error Rate", type: "percentage", sortable: true, filterable: true },
-      { id: "throughput", label: "Throughput (req/sec)", type: "number", sortable: true, filterable: true },
-      { id: "cpuUsage", label: "CPU Usage", type: "percentage", sortable: true, filterable: true },
-      { id: "memoryUsage", label: "Memory Usage", type: "percentage", sortable: true, filterable: true },
-      { id: "activeUsers", label: "Active Users", type: "number", sortable: true, filterable: true },
-      { id: "queueLength", label: "Queue Length", type: "number", sortable: true, filterable: true },
+      {
+        id: "timestamp",
+        label: "Timestamp",
+        type: "date",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "endpoint",
+        label: "API Endpoint",
+        type: "text",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "responseTime",
+        label: "Response Time (ms)",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "statusCode",
+        label: "Status Code",
+        type: "status",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "requestCount",
+        label: "Request Count",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "errorRate",
+        label: "Error Rate",
+        type: "percentage",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "throughput",
+        label: "Throughput (req/sec)",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "cpuUsage",
+        label: "CPU Usage",
+        type: "percentage",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "memoryUsage",
+        label: "Memory Usage",
+        type: "percentage",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "activeUsers",
+        label: "Active Users",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
+      {
+        id: "queueLength",
+        label: "Queue Length",
+        type: "number",
+        sortable: true,
+        filterable: true,
+      },
     ],
     filters: [
       {
@@ -595,23 +942,27 @@ export default function ReportGenerator() {
   const [reportData, setReportData] = useState<ReportData[]>([]);
   const [loading, setLoading] = useState(false);
   const [sortConfig, setSortConfig] = useState<SortConfig | null>(null);
-  const [columnVisibility, setColumnVisibility] = useState<{ [key: string]: boolean }>({});
+  const [columnVisibility, setColumnVisibility] = useState<{
+    [key: string]: boolean;
+  }>({});
   const [filters, setFilters] = useState<{ [key: string]: any }>({});
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(25);
 
-  const currentConfig = reportConfigs.find(config => config.id === selectedReport);
+  const currentConfig = reportConfigs.find(
+    (config) => config.id === selectedReport,
+  );
 
   // Initialize column visibility when report changes
   React.useEffect(() => {
     if (currentConfig) {
       const visibility: { [key: string]: boolean } = {};
-      currentConfig.fields.forEach(field => {
+      currentConfig.fields.forEach((field) => {
         visibility[field.id] = true; // Show all columns by default
       });
       setColumnVisibility(visibility);
-      
+
       // Set default sort
       if (currentConfig.defaultSort) {
         setSortConfig(currentConfig.defaultSort);
@@ -624,7 +975,7 @@ export default function ReportGenerator() {
 
     setLoading(true);
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
     const generator = dataGenerators[selectedReport];
     if (generator) {
@@ -635,14 +986,14 @@ export default function ReportGenerator() {
   };
 
   const handleSort = (fieldId: string) => {
-    const field = currentConfig?.fields.find(f => f.id === fieldId);
+    const field = currentConfig?.fields.find((f) => f.id === fieldId);
     if (!field?.sortable) return;
 
-    setSortConfig(prev => {
+    setSortConfig((prev) => {
       if (prev?.field === fieldId) {
         return {
           field: fieldId,
-          direction: prev.direction === "asc" ? "desc" : "asc"
+          direction: prev.direction === "asc" ? "desc" : "asc",
         };
       }
       return { field: fieldId, direction: "asc" };
@@ -655,10 +1006,10 @@ export default function ReportGenerator() {
     // Apply search filter
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
-      filtered = filtered.filter(row =>
-        Object.values(row).some(value =>
-          String(value).toLowerCase().includes(searchLower)
-        )
+      filtered = filtered.filter((row) =>
+        Object.values(row).some((value) =>
+          String(value).toLowerCase().includes(searchLower),
+        ),
       );
     }
 
@@ -670,18 +1021,20 @@ export default function ReportGenerator() {
           const [min, max] = value;
           const fieldName = key.replace("Range", "");
           if (min !== undefined) {
-            filtered = filtered.filter(row => row[fieldName] >= min);
+            filtered = filtered.filter((row) => row[fieldName] >= min);
           }
           if (max !== undefined) {
-            filtered = filtered.filter(row => row[fieldName] <= max);
+            filtered = filtered.filter((row) => row[fieldName] <= max);
           }
         } else if (Array.isArray(value)) {
           // Handle multi-select
-          filtered = filtered.filter(row => value.includes(row[key]));
+          filtered = filtered.filter((row) => value.includes(row[key]));
         } else {
           // Handle single value filters
-          filtered = filtered.filter(row => 
-            String(row[key]).toLowerCase().includes(String(value).toLowerCase())
+          filtered = filtered.filter((row) =>
+            String(row[key])
+              .toLowerCase()
+              .includes(String(value).toLowerCase()),
           );
         }
       }
@@ -702,7 +1055,7 @@ export default function ReportGenerator() {
 
         const aStr = String(aVal).toLowerCase();
         const bStr = String(bVal).toLowerCase();
-        
+
         if (aStr < bStr) return sortConfig.direction === "asc" ? -1 : 1;
         if (aStr > bStr) return sortConfig.direction === "asc" ? 1 : -1;
         return 0;
@@ -736,15 +1089,23 @@ export default function ReportGenerator() {
         return `⭐ ${Number(value).toFixed(1)}`;
       case "status":
         const getStatusVariant = (status: string) => {
-          const positive = ["completed", "active", "success", "improving", "high"];
+          const positive = [
+            "completed",
+            "active",
+            "success",
+            "improving",
+            "high",
+          ];
           const warning = ["pending", "running", "medium", "stable"];
           const negative = ["failed", "error", "declined", "low", "declining"];
-          
-          if (positive.some(p => status.toLowerCase().includes(p))) return "default";
-          if (warning.some(w => status.toLowerCase().includes(w))) return "secondary";
+
+          if (positive.some((p) => status.toLowerCase().includes(p)))
+            return "default";
+          if (warning.some((w) => status.toLowerCase().includes(w)))
+            return "secondary";
           return "destructive";
         };
-        
+
         return (
           <Badge variant={getStatusVariant(String(value))}>
             {String(value)}
@@ -761,12 +1122,15 @@ export default function ReportGenerator() {
     if (!sortConfig || sortConfig.field !== fieldId) {
       return <ArrowUpDown className="h-4 w-4" />;
     }
-    return sortConfig.direction === "asc" ? 
-      <ArrowUp className="h-4 w-4" /> : 
-      <ArrowDown className="h-4 w-4" />;
+    return sortConfig.direction === "asc" ? (
+      <ArrowUp className="h-4 w-4" />
+    ) : (
+      <ArrowDown className="h-4 w-4" />
+    );
   };
 
-  const visibleFields = currentConfig?.fields.filter(field => columnVisibility[field.id]) || [];
+  const visibleFields =
+    currentConfig?.fields.filter((field) => columnVisibility[field.id]) || [];
 
   return (
     <AppLayout>
@@ -774,9 +1138,12 @@ export default function ReportGenerator() {
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Report Generator</h1>
+            <h1 className="text-3xl font-bold tracking-tight">
+              Report Generator
+            </h1>
             <p className="text-muted-foreground">
-              Generate comprehensive reports with customizable parameters and data visualization
+              Generate comprehensive reports with customizable parameters and
+              data visualization
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -807,25 +1174,33 @@ export default function ReportGenerator() {
             <div>
               <Label className="text-base font-medium">Report Type</Label>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-3">
-                {reportConfigs.map(config => {
+                {reportConfigs.map((config) => {
                   const Icon = config.icon;
                   return (
                     <Card
                       key={config.id}
                       className={`cursor-pointer transition-colors hover:border-primary/50 ${
-                        selectedReport === config.id ? "border-primary bg-primary/5" : ""
+                        selectedReport === config.id
+                          ? "border-primary bg-primary/5"
+                          : ""
                       }`}
                       onClick={() => setSelectedReport(config.id)}
                     >
                       <CardContent className="p-4">
                         <div className="flex items-start gap-3">
-                          <div className={`p-2 rounded-lg ${
-                            selectedReport === config.id ? "bg-primary text-white" : "bg-muted"
-                          }`}>
+                          <div
+                            className={`p-2 rounded-lg ${
+                              selectedReport === config.id
+                                ? "bg-primary text-white"
+                                : "bg-muted"
+                            }`}
+                          >
                             <Icon className="h-4 w-4" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-medium text-sm">{config.name}</h3>
+                            <h3 className="font-medium text-sm">
+                              {config.name}
+                            </h3>
                             <p className="text-xs text-muted-foreground mt-1">
                               {config.description}
                             </p>
@@ -844,24 +1219,37 @@ export default function ReportGenerator() {
             {/* Filters */}
             {currentConfig && currentConfig.filters.length > 0 && (
               <div>
-                <Label className="text-base font-medium">Filters & Parameters</Label>
+                <Label className="text-base font-medium">
+                  Filters & Parameters
+                </Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-3">
-                  {currentConfig.filters.map(filter => (
+                  {currentConfig.filters.map((filter) => (
                     <div key={filter.id} className="space-y-2">
                       <Label className="text-sm">{filter.label}</Label>
                       {filter.type === "select" && (
                         <Select
                           value={filters[filter.id] || ""}
                           onValueChange={(value) =>
-                            setFilters(prev => ({ ...prev, [filter.id]: value }))
+                            setFilters((prev) => ({
+                              ...prev,
+                              [filter.id]: value,
+                            }))
                           }
                         >
                           <SelectTrigger>
-                            <SelectValue placeholder={filter.placeholder || `Select ${filter.label.toLowerCase()}`} />
+                            <SelectValue
+                              placeholder={
+                                filter.placeholder ||
+                                `Select ${filter.label.toLowerCase()}`
+                              }
+                            />
                           </SelectTrigger>
                           <SelectContent>
-                            {filter.options?.map(option => (
-                              <SelectItem key={option.value} value={option.value}>
+                            {filter.options?.map((option) => (
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                              >
                                 {option.label}
                               </SelectItem>
                             ))}
@@ -870,10 +1258,16 @@ export default function ReportGenerator() {
                       )}
                       {filter.type === "text" && (
                         <Input
-                          placeholder={filter.placeholder || `Enter ${filter.label.toLowerCase()}`}
+                          placeholder={
+                            filter.placeholder ||
+                            `Enter ${filter.label.toLowerCase()}`
+                          }
                           value={filters[filter.id] || ""}
                           onChange={(e) =>
-                            setFilters(prev => ({ ...prev, [filter.id]: e.target.value }))
+                            setFilters((prev) => ({
+                              ...prev,
+                              [filter.id]: e.target.value,
+                            }))
                           }
                         />
                       )}
@@ -884,7 +1278,7 @@ export default function ReportGenerator() {
                             placeholder="Start date"
                             value={filters[`${filter.id}_start`] || ""}
                             onChange={(e) =>
-                              setFilters(prev => ({
+                              setFilters((prev) => ({
                                 ...prev,
                                 [`${filter.id}_start`]: e.target.value,
                               }))
@@ -895,7 +1289,7 @@ export default function ReportGenerator() {
                             placeholder="End date"
                             value={filters[`${filter.id}_end`] || ""}
                             onChange={(e) =>
-                              setFilters(prev => ({
+                              setFilters((prev) => ({
                                 ...prev,
                                 [`${filter.id}_end`]: e.target.value,
                               }))
@@ -910,11 +1304,13 @@ export default function ReportGenerator() {
                             placeholder="Min"
                             value={filters[`${filter.id}_min`] || ""}
                             onChange={(e) =>
-                              setFilters(prev => ({
+                              setFilters((prev) => ({
                                 ...prev,
                                 [`${filter.id}`]: [
-                                  e.target.value ? Number(e.target.value) : undefined,
-                                  filters[`${filter.id}`]?.[1]
+                                  e.target.value
+                                    ? Number(e.target.value)
+                                    : undefined,
+                                  filters[`${filter.id}`]?.[1],
                                 ],
                               }))
                             }
@@ -924,11 +1320,13 @@ export default function ReportGenerator() {
                             placeholder="Max"
                             value={filters[`${filter.id}_max`] || ""}
                             onChange={(e) =>
-                              setFilters(prev => ({
+                              setFilters((prev) => ({
                                 ...prev,
                                 [`${filter.id}`]: [
                                   filters[`${filter.id}`]?.[0],
-                                  e.target.value ? Number(e.target.value) : undefined
+                                  e.target.value
+                                    ? Number(e.target.value)
+                                    : undefined,
                                 ],
                               }))
                             }
@@ -944,8 +1342,8 @@ export default function ReportGenerator() {
             {/* Run Report Button */}
             <div className="flex items-center justify-between pt-4 border-t">
               <div className="flex items-center gap-4">
-                <Button 
-                  onClick={runReport} 
+                <Button
+                  onClick={runReport}
                   disabled={!selectedReport || loading}
                   size="lg"
                 >
@@ -958,7 +1356,10 @@ export default function ReportGenerator() {
                 </Button>
                 {currentConfig && (
                   <div className="text-sm text-muted-foreground">
-                    <span className="font-medium">{currentConfig.fields.length}</span> available fields
+                    <span className="font-medium">
+                      {currentConfig.fields.length}
+                    </span>{" "}
+                    available fields
                   </div>
                 )}
               </div>
@@ -977,10 +1378,10 @@ export default function ReportGenerator() {
                     Report Results
                   </CardTitle>
                   <CardDescription>
-                    Showing {paginatedData.length} of {sortedAndFilteredData.length} records
-                    {sortedAndFilteredData.length !== reportData.length && 
-                      ` (filtered from ${reportData.length} total)`
-                    }
+                    Showing {paginatedData.length} of{" "}
+                    {sortedAndFilteredData.length} records
+                    {sortedAndFilteredData.length !== reportData.length &&
+                      ` (filtered from ${reportData.length} total)`}
                   </CardDescription>
                 </div>
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
@@ -1003,12 +1404,12 @@ export default function ReportGenerator() {
                     <DropdownMenuContent align="end" className="w-56">
                       <DropdownMenuLabel>Toggle Columns</DropdownMenuLabel>
                       <DropdownMenuSeparator />
-                      {currentConfig?.fields.map(field => (
+                      {currentConfig?.fields.map((field) => (
                         <DropdownMenuCheckboxItem
                           key={field.id}
                           checked={columnVisibility[field.id]}
                           onCheckedChange={() =>
-                            setColumnVisibility(prev => ({
+                            setColumnVisibility((prev) => ({
                               ...prev,
                               [field.id]: !prev[field.id],
                             }))
@@ -1029,11 +1430,17 @@ export default function ReportGenerator() {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        {visibleFields.map(field => (
+                        {visibleFields.map((field) => (
                           <TableHead
                             key={field.id}
-                            className={field.sortable ? "cursor-pointer hover:bg-muted/50" : ""}
-                            onClick={() => field.sortable && handleSort(field.id)}
+                            className={
+                              field.sortable
+                                ? "cursor-pointer hover:bg-muted/50"
+                                : ""
+                            }
+                            onClick={() =>
+                              field.sortable && handleSort(field.id)
+                            }
                           >
                             <div className="flex items-center space-x-2">
                               <span>{field.label}</span>
@@ -1046,7 +1453,7 @@ export default function ReportGenerator() {
                     <TableBody>
                       {paginatedData.map((row, index) => (
                         <TableRow key={index}>
-                          {visibleFields.map(field => (
+                          {visibleFields.map((field) => (
                             <TableCell key={field.id}>
                               {formatCellValue(row[field.id], field.type)}
                             </TableCell>
@@ -1085,7 +1492,7 @@ export default function ReportGenerator() {
                         variant="outline"
                         size="sm"
                         disabled={currentPage === 1}
-                        onClick={() => setCurrentPage(prev => prev - 1)}
+                        onClick={() => setCurrentPage((prev) => prev - 1)}
                       >
                         Previous
                       </Button>
@@ -1096,7 +1503,7 @@ export default function ReportGenerator() {
                         variant="outline"
                         size="sm"
                         disabled={currentPage === totalPages}
-                        onClick={() => setCurrentPage(prev => prev + 1)}
+                        onClick={() => setCurrentPage((prev) => prev + 1)}
                       >
                         Next
                       </Button>
@@ -1115,7 +1522,9 @@ export default function ReportGenerator() {
               <BarChart3 className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
               <h3 className="text-lg font-medium mb-2">Select a Report Type</h3>
               <p className="text-muted-foreground max-w-md mx-auto">
-                Choose from our comprehensive report types above to generate detailed insights about your business performance, scan results, and system metrics.
+                Choose from our comprehensive report types above to generate
+                detailed insights about your business performance, scan results,
+                and system metrics.
               </p>
             </CardContent>
           </Card>

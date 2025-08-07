@@ -65,25 +65,29 @@ const reportConfigs: ReportConfig[] = [
   {
     id: "credit-usage",
     name: "Credit Usage Report",
-    description: "Track credit consumption patterns and optimization opportunities",
+    description:
+      "Track credit consumption patterns and optimization opportunities",
     category: "Financial",
   },
   {
     id: "business-rankings",
     name: "Business Rankings Report",
-    description: "Analyze ranking performance across different businesses and keywords",
+    description:
+      "Analyze ranking performance across different businesses and keywords",
     category: "SEO",
   },
   {
     id: "location-analysis",
     name: "Location Performance Report",
-    description: "Analyze ranking performance across different geographic locations",
+    description:
+      "Analyze ranking performance across different geographic locations",
     category: "Geographic",
   },
   {
     id: "system-performance",
     name: "System Performance Report",
-    description: "Monitor system health, API response times, and operational metrics",
+    description:
+      "Monitor system health, API response times, and operational metrics",
     category: "Operations",
   },
 ];
@@ -159,7 +163,8 @@ const generateSampleData = (reportType: string): ReportData[] => {
           transactionDate: "2024-01-18",
           transactionType: "scan",
           creditsAmount: -280,
-          description: "Recurring scan: Fresh Dental (8 keywords, 15 waypoints)",
+          description:
+            "Recurring scan: Fresh Dental (8 keywords, 15 waypoints)",
           remainingBalance: 5000,
         },
       ];
@@ -245,12 +250,18 @@ const generateSampleData = (reportType: string): ReportData[] => {
 
 const getIcon = (category: string) => {
   switch (category) {
-    case "Analytics": return Target;
-    case "Financial": return Zap;
-    case "SEO": return TrendingUp;
-    case "Geographic": return Map;
-    case "Operations": return Database;
-    default: return BarChart3;
+    case "Analytics":
+      return Target;
+    case "Financial":
+      return Zap;
+    case "SEO":
+      return TrendingUp;
+    case "Geographic":
+      return Map;
+    case "Operations":
+      return Database;
+    default:
+      return BarChart3;
   }
 };
 
@@ -262,15 +273,17 @@ export default function BasicReportGenerator() {
   const [sortField, setSortField] = useState<string>("");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
-  const currentConfig = reportConfigs.find(config => config.id === selectedReport);
+  const currentConfig = reportConfigs.find(
+    (config) => config.id === selectedReport,
+  );
 
   const runReport = async () => {
     if (!selectedReport) return;
 
     setLoading(true);
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     const data = generateSampleData(selectedReport);
     setReportData(data);
     setLoading(false);
@@ -291,10 +304,10 @@ export default function BasicReportGenerator() {
     // Apply search filter
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
-      filtered = filtered.filter(row =>
-        Object.values(row).some(value =>
-          String(value).toLowerCase().includes(searchLower)
-        )
+      filtered = filtered.filter((row) =>
+        Object.values(row).some((value) =>
+          String(value).toLowerCase().includes(searchLower),
+        ),
       );
     }
 
@@ -310,7 +323,7 @@ export default function BasicReportGenerator() {
 
         const aStr = String(aVal).toLowerCase();
         const bStr = String(bVal).toLowerCase();
-        
+
         if (aStr < bStr) return sortDirection === "asc" ? -1 : 1;
         if (aStr > bStr) return sortDirection === "asc" ? 1 : -1;
         return 0;
@@ -324,26 +337,41 @@ export default function BasicReportGenerator() {
     if (value === null || value === undefined) return "-";
 
     // Handle status badges
-    if (key === "status" || key === "transactionType" || key === "priority" || key === "marketPotential") {
+    if (
+      key === "status" ||
+      key === "transactionType" ||
+      key === "priority" ||
+      key === "marketPotential"
+    ) {
       const getVariant = (val: string) => {
-        const positive = ["completed", "active", "success", "improving", "high", "purchase", "priority"];
+        const positive = [
+          "completed",
+          "active",
+          "success",
+          "improving",
+          "high",
+          "purchase",
+          "priority",
+        ];
         const warning = ["pending", "running", "medium", "stable", "expedited"];
-        
-        if (positive.some(p => val.toLowerCase().includes(p))) return "default";
-        if (warning.some(w => val.toLowerCase().includes(w))) return "secondary";
+
+        if (positive.some((p) => val.toLowerCase().includes(p)))
+          return "default";
+        if (warning.some((w) => val.toLowerCase().includes(w)))
+          return "secondary";
         return "destructive";
       };
-      
-      return (
-        <Badge variant={getVariant(String(value))}>
-          {String(value)}
-        </Badge>
-      );
+
+      return <Badge variant={getVariant(String(value))}>{String(value)}</Badge>;
     }
 
     // Handle numbers with formatting
     if (typeof value === "number") {
-      if (key.includes("Amount") || key.includes("Balance") || key.includes("credits")) {
+      if (
+        key.includes("Amount") ||
+        key.includes("Balance") ||
+        key.includes("credits")
+      ) {
         return value.toLocaleString();
       }
       return value.toString();
@@ -356,9 +384,11 @@ export default function BasicReportGenerator() {
     if (sortField !== field) {
       return <ArrowUpDown className="h-4 w-4" />;
     }
-    return sortDirection === "asc" ? 
-      <ArrowUp className="h-4 w-4" /> : 
-      <ArrowDown className="h-4 w-4" />;
+    return sortDirection === "asc" ? (
+      <ArrowUp className="h-4 w-4" />
+    ) : (
+      <ArrowDown className="h-4 w-4" />
+    );
   };
 
   const getTableHeaders = (data: ReportData[]) => {
@@ -372,9 +402,12 @@ export default function BasicReportGenerator() {
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Report Generator</h1>
+            <h1 className="text-3xl font-bold tracking-tight">
+              Report Generator
+            </h1>
             <p className="text-muted-foreground">
-              Generate comprehensive reports with customizable parameters and data analysis
+              Generate comprehensive reports with customizable parameters and
+              data analysis
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -401,25 +434,33 @@ export default function BasicReportGenerator() {
             <div>
               <Label className="text-base font-medium">Report Type</Label>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-3">
-                {reportConfigs.map(config => {
+                {reportConfigs.map((config) => {
                   const Icon = getIcon(config.category);
                   return (
                     <Card
                       key={config.id}
                       className={`cursor-pointer transition-colors hover:border-primary/50 ${
-                        selectedReport === config.id ? "border-primary bg-primary/5" : ""
+                        selectedReport === config.id
+                          ? "border-primary bg-primary/5"
+                          : ""
                       }`}
                       onClick={() => setSelectedReport(config.id)}
                     >
                       <CardContent className="p-4">
                         <div className="flex items-start gap-3">
-                          <div className={`p-2 rounded-lg ${
-                            selectedReport === config.id ? "bg-primary text-white" : "bg-muted"
-                          }`}>
+                          <div
+                            className={`p-2 rounded-lg ${
+                              selectedReport === config.id
+                                ? "bg-primary text-white"
+                                : "bg-muted"
+                            }`}
+                          >
                             <Icon className="h-4 w-4" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-medium text-sm">{config.name}</h3>
+                            <h3 className="font-medium text-sm">
+                              {config.name}
+                            </h3>
                             <p className="text-xs text-muted-foreground mt-1">
                               {config.description}
                             </p>
@@ -437,8 +478,8 @@ export default function BasicReportGenerator() {
 
             {/* Generate Report Button */}
             <div className="flex items-center justify-between pt-4 border-t">
-              <Button 
-                onClick={runReport} 
+              <Button
+                onClick={runReport}
                 disabled={!selectedReport || loading}
                 size="lg"
               >
@@ -469,7 +510,8 @@ export default function BasicReportGenerator() {
                     Report Results
                   </CardTitle>
                   <CardDescription>
-                    Showing {filteredAndSortedData.length} of {reportData.length} records
+                    Showing {filteredAndSortedData.length} of{" "}
+                    {reportData.length} records
                   </CardDescription>
                 </div>
                 <div className="relative w-64">
@@ -488,7 +530,7 @@ export default function BasicReportGenerator() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      {getTableHeaders(reportData).map(header => (
+                      {getTableHeaders(reportData).map((header) => (
                         <TableHead
                           key={header}
                           className="cursor-pointer hover:bg-muted/50"
@@ -496,7 +538,7 @@ export default function BasicReportGenerator() {
                         >
                           <div className="flex items-center space-x-2">
                             <span className="capitalize">
-                              {header.replace(/([A-Z])/g, ' $1').trim()}
+                              {header.replace(/([A-Z])/g, " $1").trim()}
                             </span>
                             {getSortIcon(header)}
                           </div>
@@ -507,7 +549,7 @@ export default function BasicReportGenerator() {
                   <TableBody>
                     {filteredAndSortedData.map((row, index) => (
                       <TableRow key={index}>
-                        {getTableHeaders(reportData).map(header => (
+                        {getTableHeaders(reportData).map((header) => (
                           <TableCell key={header}>
                             {formatCellValue(row[header], header)}
                           </TableCell>
@@ -528,7 +570,9 @@ export default function BasicReportGenerator() {
               <BarChart3 className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
               <h3 className="text-lg font-medium mb-2">Select a Report Type</h3>
               <p className="text-muted-foreground max-w-md mx-auto">
-                Choose from our comprehensive report types above to generate detailed insights about your business performance, scan results, and system metrics.
+                Choose from our comprehensive report types above to generate
+                detailed insights about your business performance, scan results,
+                and system metrics.
               </p>
             </CardContent>
           </Card>
