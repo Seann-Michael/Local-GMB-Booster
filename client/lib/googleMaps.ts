@@ -24,13 +24,13 @@ export interface AddressComponent {
 
 // Google Maps API Key Management
 export const getGoogleMapsApiKey = (): string => {
-  console.log("🗝️ Getting Google Maps API key...");
+  console.log("Getting Google Maps API key...");
 
   // HARDCODED FOR TESTING - Always return the test key
   const testApiKey = "AIzaSyD1cV5whJEuAhVLIU0UxRS9n64gfewRiIs";
-  console.log("⚠️ TESTING MODE: Using hardcoded API key");
-  console.log("🔑 Key starts with:", testApiKey.substring(0, 10));
-  console.log("🔑 Key length:", testApiKey.length);
+  console.log("TESTING MODE: Using hardcoded API key");
+  console.log("Key starts with:", testApiKey.substring(0, 10));
+  console.log("Key length:", testApiKey.length);
   return testApiKey;
 };
 
